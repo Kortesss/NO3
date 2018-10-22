@@ -76,6 +76,10 @@ private slots:
 
     void on_action_9_triggered();
 
+    void on_action_11_triggered();
+
+    void on_action_10_triggered();
+
 private:
     Ui::MainWindow *ui;
 
@@ -84,7 +88,7 @@ private:
     QPoint pozit(QPoint p);
     QList<double> mass_x;
     QList<double> mass_y;
-    QList <double> pressX, pressY;
+    QList <double> mass_minX, mass_maxX, mass_minY, mass_maxY;
     double minx;
     double miny;
     double maxx;

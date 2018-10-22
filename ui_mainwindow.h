@@ -18,6 +18,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -43,6 +44,7 @@ public:
     QAction *action_9;
     QAction *action_10;
     QAction *action_8;
+    QAction *action_11;
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout_3;
@@ -53,6 +55,7 @@ public:
     QLabel *label;
     QLabel *label_2;
     QDoubleSpinBox *doubleSpinBox1;
+    QListWidget *listWidget;
     QTextBrowser *textBrowser_4;
     QTextBrowser *textBrowser_3;
     QTextBrowser *textBrowser_2;
@@ -70,9 +73,12 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(610, 410);
+        MainWindow->resize(578, 421);
         action = new QAction(MainWindow);
         action->setObjectName(QStringLiteral("action"));
+        QIcon icon;
+        icon.addFile(QStringLiteral(":/img/img/open.png"), QSize(), QIcon::Normal, QIcon::Off);
+        action->setIcon(icon);
         action_2 = new QAction(MainWindow);
         action_2->setObjectName(QStringLiteral("action_2"));
         action_3 = new QAction(MainWindow);
@@ -88,10 +94,17 @@ public:
         action_7->setObjectName(QStringLiteral("action_7"));
         action_9 = new QAction(MainWindow);
         action_9->setObjectName(QStringLiteral("action_9"));
+        action_9->setCheckable(true);
         action_10 = new QAction(MainWindow);
         action_10->setObjectName(QStringLiteral("action_10"));
+        action_10->setCheckable(true);
         action_8 = new QAction(MainWindow);
         action_8->setObjectName(QStringLiteral("action_8"));
+        action_11 = new QAction(MainWindow);
+        action_11->setObjectName(QStringLiteral("action_11"));
+        QIcon icon1;
+        icon1.addFile(QStringLiteral(":/img/img/exit.png"), QSize(), QIcon::Normal, QIcon::Off);
+        action_11->setIcon(icon1);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         verticalLayout_2 = new QVBoxLayout(centralWidget);
@@ -151,6 +164,17 @@ public:
 
         horizontalLayout_3->addLayout(gridLayout);
 
+        listWidget = new QListWidget(centralWidget);
+        listWidget->setObjectName(QStringLiteral("listWidget"));
+        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(listWidget->sizePolicy().hasHeightForWidth());
+        listWidget->setSizePolicy(sizePolicy);
+        listWidget->setMaximumSize(QSize(116, 76));
+
+        horizontalLayout_3->addWidget(listWidget);
+
         textBrowser_4 = new QTextBrowser(centralWidget);
         textBrowser_4->setObjectName(QStringLiteral("textBrowser_4"));
         textBrowser_4->setMaximumSize(QSize(60, 40));
@@ -195,7 +219,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 610, 21));
+        menuBar->setGeometry(QRect(0, 0, 578, 21));
         menu = new QMenu(menuBar);
         menu->setObjectName(QStringLiteral("menu"));
         menu_2 = new QMenu(menuBar);
@@ -216,6 +240,7 @@ public:
         menu->addAction(action_2);
         menu->addAction(action_3);
         menu->addAction(action_8);
+        menu->addAction(action_11);
         menu_2->addAction(action_7);
         menu_2->addAction(menu_3->menuAction());
         menu_3->addAction(action_9);
@@ -253,6 +278,7 @@ public:
         action_9->setText(QApplication::translate("MainWindow", "\320\234\320\270\320\275\320\270\320\274\321\203\320\274", 0));
         action_10->setText(QApplication::translate("MainWindow", "\320\234\320\260\320\272\321\201\320\270\320\274\321\203\320\274", 0));
         action_8->setText(QApplication::translate("MainWindow", "\320\235\320\276\320\262\321\213\320\271 \321\215\320\272\321\201\320\277\320\265\321\200\320\265\320\274\320\265\320\275\321\202", 0));
+        action_11->setText(QApplication::translate("MainWindow", "\320\222\321\213\321\205\320\276\320\264", 0));
         label_3->setText(QApplication::translate("MainWindow", "x2", 0));
         label->setText(QApplication::translate("MainWindow", "x1", 0));
         label_2->setText(QApplication::translate("MainWindow", "\320\244\320\270\320\273\321\214\321\202\321\200\320\260\321\206\320\270\321\217 \321\215\320\272\321\201\321\202\321\200\320\265\320\274\321\203\320\274\320\276\320\262", 0));

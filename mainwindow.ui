@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>610</width>
-    <height>410</height>
+    <width>578</width>
+    <height>421</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -112,6 +112,22 @@
        </layout>
       </item>
       <item>
+       <widget class="QListWidget" name="listWidget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>116</width>
+          <height>76</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QTextBrowser" name="textBrowser_4">
         <property name="maximumSize">
          <size>
@@ -206,7 +222,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>610</width>
+     <width>578</width>
      <height>21</height>
     </rect>
    </property>
@@ -218,6 +234,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="action_2"/>
     <addaction name="action_3"/>
     <addaction name="action_8"/>
+    <addaction name="action_11"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -251,6 +268,10 @@ p, li { white-space: pre-wrap; }
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action">
+   <property name="icon">
+    <iconset resource="source.qrc">
+     <normaloff>:/img/img/open.png</normaloff>:/img/img/open.png</iconset>
+   </property>
    <property name="text">
     <string>Выбрать Файл</string>
    </property>
@@ -298,11 +319,17 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="action_9">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Минимум</string>
    </property>
   </action>
   <action name="action_10">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Максимум</string>
    </property>
@@ -310,6 +337,15 @@ p, li { white-space: pre-wrap; }
   <action name="action_8">
    <property name="text">
     <string>Новый эксперемент</string>
+   </property>
+  </action>
+  <action name="action_11">
+   <property name="icon">
+    <iconset resource="source.qrc">
+     <normaloff>:/img/img/exit.png</normaloff>:/img/img/exit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Выход</string>
    </property>
   </action>
  </widget>
@@ -322,6 +358,8 @@ p, li { white-space: pre-wrap; }
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="source.qrc"/>
+ </resources>
  <connections/>
 </ui>
