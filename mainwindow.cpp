@@ -209,10 +209,10 @@ void MainWindow::on_action_2_triggered() {
     x2=i;
     int j=x1;
       for (i=x1; i<x2; i++) {
-            qDebug() << ">mass_x="<<this->mass_x[i];
-            qDebug() << ">mass_y="<<this->mass_y[j];
+//            qDebug() << ">mass_x="<<this->mass_x[i];
+//            qDebug() << ">mass_y="<<this->mass_y[j];
             znpozit=prdelfun(this->mass_x[i],this->mass_x[i+1],this->mass_y[j],this->mass_y[j+1]);
-            qDebug() << "znpozit="<<znpozit;
+//            qDebug() << "znpozit="<<znpozit;
             dirivate.append(znpozit);
 //            Derivative *derivative = new Derivative(x1,x2,y1,y2);
 //            Derivative *derivative = new Derivative(this->mass_x[i],this->mass_x[i+1],this->mass_y[j],this->mass_y[j+1]);
@@ -222,7 +222,7 @@ void MainWindow::on_action_2_triggered() {
             j++;
     }
       this->x1=x1;this->x2=x2;
-    qDebug() << "sred="<<sred;
+//    qDebug() << "sred="<<sred;
     ui->textBrowser_4->clear();
     ui->textBrowser_4->append(QString("dx/dy ")+QString::number(sred));
     /*int i,j=100,k=200;
