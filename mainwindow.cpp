@@ -137,26 +137,57 @@ void MainWindow::on_action_triggered()
         this->koef=(this->maxx-this->minx)/(this->mass_x.count());//расчет коэф. плотности данных
         ui->textBrowser_2->append(QString("%1").arg(this->maxx));
         ui->textBrowser_3->append(QString("%1").arg(this->minx));
+        ui->listWidget->addItem("График "+QString::number(ui->listWidget->count()));
     }
 }
 //-----------------------------------------------------
 
 //функция обработки нажатия кнопки мыши и считывание координат
   void MainWindow::mousePress(QMouseEvent *mouseEvent){
-    qDebug() << ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x())
-                     << ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y());
+      ui->statusBar->showMessage("x = "+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()))
+                                 +"; y = "+QString::number(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())));
 
-  //добавляем координаты x, y
-    if(this->graph_zero){
-        this->pressX.append(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()));
-        this->pressY.append(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
-        ui->widget->addGraph();
-        ui->widget->graph(1)->setData(this->pressX.toVector(), this->pressY.toVector());
-        ui->widget->graph(1)->setPen(QColor(67, 138, 155, 255));//задаем синий цвет
-        ui->widget->graph(1)->setLineStyle(QCPGraph::lsNone);//убираем линии
-        ui->widget->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
-        ui->widget->replot();
-   }
+      if (mouseEvent->button() == Qt::LeftButton){
+          Derivative *de = new Derivative(1.0,1.2,2.1,3.2);
+          qDebug() << de->get_dd();
+        //длобавляем минимумы x, y
+      if(this->graph_zero){
+          if (ui->action_9->isChecked()){
+              this->mass_minX.append(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()));
+              this->mass_minY.append(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
+              ui->widget->addGraph();
+                  ui->widget->graph(1)->setData(this->mass_minX.toVector(), this->mass_minY.toVector());
+                  ui->widget->graph(1)->setPen(QColor(67, 138, 0, 255));
+                  ui->widget->graph(1)->setLineStyle(QCPGraph::lsNone);//убираем линии
+                  ui->widget->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
+                  ui->widget->replot();
+          }
+      //добавляем максимумы x, y
+          if (ui->action_10->isChecked()){
+              this->mass_maxX.append(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()));
+              this->mass_maxY.append(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
+              ui->widget->addGraph();
+                  ui->widget->graph(2)->setData(this->mass_maxX.toVector(), this->mass_maxY.toVector());
+                  ui->widget->graph(2)->setPen(QColor(255, 0, 0, 255));
+                  ui->widget->graph(2)->setLineStyle(QCPGraph::lsNone);//убираем линии
+                  ui->widget->graph(2)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
+                  ui->widget->replot();
+          }
+      }
+      }
+      //if (mouseEvent->button() == Qt::RightButton){
+          //удаление точек
+      //    QMutableListIterator<double> i(this->mass_minY);
+
+      //    while(i.hasNext()) {
+      //      int currentValue=i.next();
+      //      qDebug() << currentValue;
+      //      qDebug() << round(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
+      //      if(currentValue==round(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())))
+      //        i.remove();
+      //    }
+
+      //}
 }
 
 //функция обработки отпускания кнопки мыши и зуммирования
@@ -209,10 +240,10 @@ void MainWindow::on_action_2_triggered() {
     x2=i;
     int j=x1;
       for (i=x1; i<x2; i++) {
-//            qDebug() << ">mass_x="<<this->mass_x[i];
-//            qDebug() << ">mass_y="<<this->mass_y[j];
+            qDebug() << ">mass_x="<<this->mass_x[i];
+            qDebug() << ">mass_y="<<this->mass_y[j];
             znpozit=prdelfun(this->mass_x[i],this->mass_x[i+1],this->mass_y[j],this->mass_y[j+1]);
-//            qDebug() << "znpozit="<<znpozit;
+            qDebug() << "znpozit="<<znpozit;
             dirivate.append(znpozit);
 //            Derivative *derivative = new Derivative(x1,x2,y1,y2);
 //            Derivative *derivative = new Derivative(this->mass_x[i],this->mass_x[i+1],this->mass_y[j],this->mass_y[j+1]);
@@ -222,7 +253,7 @@ void MainWindow::on_action_2_triggered() {
             j++;
     }
       this->x1=x1;this->x2=x2;
-//    qDebug() << "sred="<<sred;
+    qDebug() << "sred="<<sred;
     ui->textBrowser_4->clear();
     ui->textBrowser_4->append(QString("dx/dy ")+QString::number(sred));
     /*int i,j=100,k=200;
@@ -260,15 +291,14 @@ void MainWindow::on_action_7_triggered()
     //Экстремумы
         if ((this->mass_x.count())>0) {
            if (this->graph_zero){//если нулевой граф построен
-                QList <double> mass_minX, mass_maxX, mass_minY, mass_maxY;
                 bool up; //переменная отвечающая за возрастание
                 if (this->mass_x[1]>this->mass_x[0]) up = true; //смотрим, возрастает ли график
                 for(int i = 0; i < this->mass_x.count()-1; i ++){
                     if (up){ //если возрастает
                         if (this->mass_y[i + 1] < this->mass_y[i]){ //ждем когда она перестанет возрастать
                             if((this->mass_y[i] - this->mass_y[i + 1])>ui->doubleSpinBox1->value()){
-                                mass_maxX.append(this->mass_x[i]);
-                                mass_maxY.append(this->mass_y[i]);
+                                this->mass_maxX.append(this->mass_x[i]);
+                                this->mass_maxY.append(this->mass_y[i]);
                                 up = false;
                             }
                         }
@@ -276,8 +306,8 @@ void MainWindow::on_action_7_triggered()
                     else{
                         if (this->mass_y[i + 1] > this->mass_y[i]){ //ждем когда она перестанет убывать
                             if((this->mass_y[i+1] - this->mass_y[i])>ui->doubleSpinBox1->value()){
-                                mass_minX.append(this->mass_x[i]);
-                                mass_minY.append(this->mass_y[i]);
+                                this->mass_minX.append(this->mass_x[i]);
+                                this->mass_minY.append(this->mass_y[i]);
                                 up = true;
                             }
                         }
@@ -285,12 +315,12 @@ void MainWindow::on_action_7_triggered()
                 }
 
                 ui->widget->addGraph();
-                ui->widget->graph(1)->setData(mass_minX.toVector(), mass_minY.toVector());
+                ui->widget->graph(1)->setData(this->mass_minX.toVector(), this->mass_minY.toVector());
                 ui->widget->graph(1)->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
                 ui->widget->graph(1)->setLineStyle(QCPGraph::lsNone);//убираем линии
                 ui->widget->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
                 ui->widget->addGraph();
-                ui->widget->graph(2)->setData(mass_maxX.toVector(), mass_maxY.toVector());
+                ui->widget->graph(2)->setData(this->mass_maxX.toVector(), this->mass_maxY.toVector());
                 ui->widget->graph(2)->setPen(QColor(255, 0, 0, 255));//задаем красный цвет точки
                 ui->widget->graph(2)->setLineStyle(QCPGraph::lsNone);//убираем линии
                 ui->widget->graph(2)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
@@ -320,5 +350,15 @@ void MainWindow::on_action_8_triggered()
 
 void MainWindow::on_action_9_triggered()
 {
+    ui->action_10->setChecked(false);
+}
 
+void MainWindow::on_action_11_triggered()
+{
+    QApplication::quit();
+}
+
+void MainWindow::on_action_10_triggered()
+{
+    ui->action_9->setChecked(false);
 }
