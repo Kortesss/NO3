@@ -89,6 +89,7 @@ void MainWindow::on_action_3_triggered()
         ui->widget->xAxis->setLabel("x");
         ui->widget->yAxis->setLabel("y");
         qDebug() << "ццццц";
+//        qDebug() << "ццццц";
 
         //Установим область, которая будет показываться на графике
         ui->widget->xAxis->setRange(this->minx, this->maxx);//Для оси Ox
