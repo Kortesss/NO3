@@ -70,8 +70,6 @@ private slots:
 
     void on_action_7_triggered();
 
-    void on_lineEdit1_returnPressed();
-
     void on_action_8_triggered();
 
     void on_action_9_triggered();
@@ -79,6 +77,8 @@ private slots:
     void on_action_11_triggered();
 
     void on_action_10_triggered();
+
+    void on_doubleSpinBox1_editingFinished();
 
 private:
     Ui::MainWindow *ui;
@@ -94,7 +94,7 @@ private:
     double maxx;
     double maxy;
     double koef;
-    bool graph_zero;
+    //bool graph_zero;
     QPoint press;
     QPoint release;
     QVector<double> dirivate;
