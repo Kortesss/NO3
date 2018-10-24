@@ -6,7 +6,7 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow), graph_zero(false)
+    ui(new Ui::MainWindow)//, graph_zero(false)
 {
     ui->setupUi(this);
     connect(ui->widget,SIGNAL(mousePress(QMouseEvent*)),this,SLOT(mousePress(QMouseEvent*)));
@@ -66,7 +66,7 @@ void MainWindow::on_action_4_triggered()
             if (y[i]>maxY) maxY = y[i];
         }
         ui->widget->yAxis->setRange(minY, maxY);//Для оси Oy
-        this->graph_zero = true;
+        //this->graph_zero = true;
         //И перерисуем график на нашем widget
         ui->widget->replot();
 }
@@ -88,8 +88,6 @@ void MainWindow::on_action_3_triggered()
         //Подписываем оси Ox и Oy
         ui->widget->xAxis->setLabel("x");
         ui->widget->yAxis->setLabel("y");
-        qDebug() << "ццццц";
-//        qDebug() << "ццццц";
 
         //Установим область, которая будет показываться на графике
         ui->widget->xAxis->setRange(this->minx, this->maxx);//Для оси Ox
@@ -97,7 +95,7 @@ void MainWindow::on_action_3_triggered()
         ui->widget->yAxis->setRange(this->miny,this->maxy);//Для оси Oy
         //И перерисуем график на нашем widget
         ui->widget->replot();
-        this->graph_zero = true;
+        //this->graph_zero = true;
         ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
 }
 
@@ -139,6 +137,7 @@ void MainWindow::on_action_triggered()
         ui->textBrowser_2->append(QString("%1").arg(this->maxx));
         ui->textBrowser_3->append(QString("%1").arg(this->minx));
         ui->listWidget->addItem("График "+QString::number(ui->listWidget->count()));
+
     }
 }
 //-----------------------------------------------------
@@ -149,10 +148,9 @@ void MainWindow::on_action_triggered()
                                  +"; y = "+QString::number(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())));
 
       if (mouseEvent->button() == Qt::LeftButton){
-          Derivative *de = new Derivative(1.0,1.2,2.1,3.2);
-          qDebug() << de->get_dd();
-        //длобавляем минимумы x, y
-      if(this->graph_zero){
+          //Derivative *de = new Derivative(1.0,1.2,2.1,3.2); просто пытался обратиться к тому классу
+          //qDebug() << de->get_dd();
+      if(this->ui->widget->graphCount()!=0){
           if (ui->action_9->isChecked()){
               this->mass_minX.append(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()));
               this->mass_minY.append(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
@@ -167,7 +165,8 @@ void MainWindow::on_action_triggered()
           if (ui->action_10->isChecked()){
               this->mass_maxX.append(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()));
               this->mass_maxY.append(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
-              ui->widget->addGraph();
+                ui->widget->addGraph();
+                ui->widget->addGraph();
                   ui->widget->graph(2)->setData(this->mass_maxX.toVector(), this->mass_maxY.toVector());
                   ui->widget->graph(2)->setPen(QColor(255, 0, 0, 255));
                   ui->widget->graph(2)->setLineStyle(QCPGraph::lsNone);//убираем линии
@@ -223,7 +222,7 @@ double MainWindow::prfun(double px){
 
 //вызов вычисления производной кучочно-непрерывной функции
 void MainWindow::on_action_2_triggered() {
-  if (this->graph_zero){
+  if (this->ui->widget->graphCount()!=0){
     double x1 = ui->doubleSpinBox_x1->value();
     double x2 = ui->doubleSpinBox_x2->value();
 //расчет производной по отметкам (начало конец по Х)
@@ -241,10 +240,10 @@ void MainWindow::on_action_2_triggered() {
     x2=i;
     int j=x1;
       for (i=x1; i<x2; i++) {
-            qDebug() << ">mass_x="<<this->mass_x[i];
-            qDebug() << ">mass_y="<<this->mass_y[j];
+            //qDebug() << ">mass_x="<<this->mass_x[i];
+            //qDebug() << ">mass_y="<<this->mass_y[j];
             znpozit=prdelfun(this->mass_x[i],this->mass_x[i+1],this->mass_y[j],this->mass_y[j+1]);
-            qDebug() << "znpozit="<<znpozit;
+            //qDebug() << "znpozit="<<znpozit;
             dirivate.append(znpozit);
 //            Derivative *derivative = new Derivative(x1,x2,y1,y2);
 //            Derivative *derivative = new Derivative(this->mass_x[i],this->mass_x[i+1],this->mass_y[j],this->mass_y[j+1]);
@@ -254,7 +253,7 @@ void MainWindow::on_action_2_triggered() {
             j++;
     }
       this->x1=x1;this->x2=x2;
-    qDebug() << "sred="<<sred;
+   // qDebug() << "sred="<<sred;
     ui->textBrowser_4->clear();
     ui->textBrowser_4->append(QString("dx/dy ")+QString::number(sred));
     /*int i,j=100,k=200;
@@ -290,8 +289,9 @@ void MainWindow::on_action_5_triggered()
 void MainWindow::on_action_7_triggered()
 {
     //Экстремумы
+    this->mass_minX.clear(); this->mass_maxX.clear(); this->mass_minY.clear(); this->mass_maxY.clear();//чтобы память не засорять
         if ((this->mass_x.count())>0) {
-           if (this->graph_zero){//если нулевой граф построен
+           if (this->ui->widget->graphCount()!=0){//если нулевой граф построен
                 bool up; //переменная отвечающая за возрастание
                 if (this->mass_x[1]>this->mass_x[0]) up = true; //смотрим, возрастает ли график
                 for(int i = 0; i < this->mass_x.count()-1; i ++){
@@ -314,7 +314,8 @@ void MainWindow::on_action_7_triggered()
                         }
                     }
                 }
-
+                //ui->widget->clearGraphs();
+                //this->on_action_3_triggered();
                 ui->widget->addGraph();
                 ui->widget->graph(1)->setData(this->mass_minX.toVector(), this->mass_minY.toVector());
                 ui->widget->graph(1)->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
@@ -336,13 +337,6 @@ void MainWindow::on_action_7_triggered()
         }
 }
 
-void MainWindow::on_lineEdit1_returnPressed()
-{
-    this->on_action_7_triggered();
-}
-
-
-
 void MainWindow::on_action_8_triggered()
 {
     MainWindow *NewWindow=new MainWindow;
@@ -362,4 +356,9 @@ void MainWindow::on_action_11_triggered()
 void MainWindow::on_action_10_triggered()
 {
     ui->action_9->setChecked(false);
+}
+
+void MainWindow::on_doubleSpinBox1_editingFinished()
+{
+    this->on_action_7_triggered();
 }
