@@ -3,7 +3,7 @@
 #include "derivative.h"
 #include <QDebug>
 #include "somewindow.h"
-#include "delta.h"
+#include "deltawin.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -370,6 +370,6 @@ void MainWindow::on_action_12_triggered()
 
 void MainWindow::on_action_delta_triggered()
 { //Расчет изменения дельты сигнала
-    delta *DeltaWin = new delta(this->mass_minX, this->mass_maxX, this->mass_minY, this->mass_maxY, this);
-    DeltaWin->show();
+    deltaWin *DeltaW = new deltaWin(this->mass_minX, this->mass_maxX, this->mass_minY, this->mass_maxY, this);
+    DeltaW->show();
 }
