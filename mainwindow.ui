@@ -233,6 +233,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="action"/>
     <addaction name="action_2"/>
     <addaction name="action_3"/>
+    <addaction name="action_12"/>
     <addaction name="action_8"/>
     <addaction name="action_11"/>
    </widget>
@@ -250,8 +251,15 @@ p, li { white-space: pre-wrap; }
     <addaction name="action_7"/>
     <addaction name="menu_3"/>
    </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
+     <string>Δ сигнала</string>
+    </property>
+    <addaction name="action_delta"/>
+   </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
+   <addaction name="menu_4"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -269,7 +277,7 @@ p, li { white-space: pre-wrap; }
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action">
    <property name="icon">
-    <iconset resource="source.qrc">
+    <iconset>
      <normaloff>:/img/img/open.png</normaloff>:/img/img/open.png</iconset>
    </property>
    <property name="text">
@@ -341,11 +349,25 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="action_11">
    <property name="icon">
-    <iconset resource="source.qrc">
+    <iconset>
      <normaloff>:/img/img/exit.png</normaloff>:/img/img/exit.png</iconset>
    </property>
    <property name="text">
     <string>Выход</string>
+   </property>
+  </action>
+  <action name="action_12">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/img/img/512px-Save_font_awesome.svg.png</normaloff>:/img/img/512px-Save_font_awesome.svg.png</iconset>
+   </property>
+   <property name="text">
+    <string>Сохранить график</string>
+   </property>
+  </action>
+  <action name="action_delta">
+   <property name="text">
+    <string>Найти</string>
    </property>
   </action>
  </widget>
@@ -358,8 +380,6 @@ p, li { white-space: pre-wrap; }
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="source.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

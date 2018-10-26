@@ -3,10 +3,11 @@
 #include "derivative.h"
 #include <QDebug>
 #include "somewindow.h"
+#include "delta.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)//, graph_zero(false)
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     connect(ui->widget,SIGNAL(mousePress(QMouseEvent*)),this,SLOT(mousePress(QMouseEvent*)));
@@ -22,18 +23,12 @@ MainWindow::~MainWindow()
 //Рисуем график y=x*x
 void MainWindow::on_action_4_triggered()
 {
-        //Сгенерируем данные
-        //Для этого создадим два массива точек:
-        //один для сохранения x координат точек,
-        //а второй для y соответственно
-
         double a = -1; //Начало интервала, где рисуем график по оси Ox
         double b =  1; //Конец интервала, где рисуем график по оси Ox
         double h = 0.01; //Шаг, с которым будем пробегать по оси Ox
 
         int N=(b-a)/h + 2; //Вычисляем количество точек, которые будем отрисовывать
         QVector<double> x(N), y(N); //Массивы координат точек
-
         //Вычисляем наши данные
         int i=0;
         for (double X=a; X<=b; X+=h)//Пробегаем по всем точкам
@@ -42,15 +37,10 @@ void MainWindow::on_action_4_triggered()
             y[i] = X*X;//Формула нашей функции
             i++;
         }
-
-        ui->widget->clearGraphs();//Если нужно, но очищаем все графики
-        //Добавляем один график в widget
+        ui->widget->clearGraphs();
         ui->widget->addGraph();
         //Говорим, что отрисовать нужно график по нашим двум массивам x и y
         ui->widget->graph(0)->setData(x, y);
-
-
-        //Подписываем оси Ox и Oy
         ui->widget->xAxis->setLabel("x");
         ui->widget->yAxis->setLabel("y");
 
@@ -60,8 +50,7 @@ void MainWindow::on_action_4_triggered()
         //Для показа границ по оси Oy сложнее, так как надо по правильному
         //вычислить минимальное и максимальное значение в векторах
         double minY = y[0], maxY = y[0];
-        for (int i=1; i<N; i++)
-        {
+        for (int i=1; i<N; i++){
             if (y[i]<minY) minY = y[i];
             if (y[i]>maxY) maxY = y[i];
         }
@@ -314,8 +303,7 @@ void MainWindow::on_action_7_triggered()
                         }
                     }
                 }
-                //ui->widget->clearGraphs();
-                //this->on_action_3_triggered();
+
                 ui->widget->addGraph();
                 ui->widget->graph(1)->setData(this->mass_minX.toVector(), this->mass_minY.toVector());
                 ui->widget->graph(1)->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
@@ -361,4 +349,27 @@ void MainWindow::on_action_10_triggered()
 void MainWindow::on_doubleSpinBox1_editingFinished()
 {
     this->on_action_7_triggered();
+}
+
+void MainWindow::on_action_12_triggered()
+{//Сохранение графика
+    QString nameGr = "";
+    if (ui->listWidget->selectedItems().size()>0) nameGr = ui->listWidget->currentItem()->text();
+
+    QString fileName = QFileDialog::getSaveFileName(0, QString::fromUtf8("Сохранение графика"),
+                       nameGr, "Изображение png (*.png);; Изображение jpg (*.jpg);; Изображение bmp(*.bmp);; Документ pdf(*.pdf)");
+    if (!fileName.isNull()){
+        QFile file(fileName);
+        if (!file.open(QIODevice::WriteOnly|QFile::WriteOnly)) QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Что-то пошло не так."));
+            else if (fileName.contains(".png", Qt::CaseInsensitive)) ui->widget->savePng(fileName);
+                else if (fileName.contains(".jpg", Qt::CaseInsensitive)) ui->widget->saveJpg(fileName);
+                    else if (fileName.contains(".bmp", Qt::CaseInsensitive)) ui->widget->saveBmp(fileName);
+                        else ui->widget->savePdf(fileName);
+    }
+}
+
+void MainWindow::on_action_delta_triggered()
+{ //Расчет изменения дельты сигнала
+    delta *DeltaWin = new delta(this->mass_minX, this->mass_maxX, this->mass_minY, this->mass_maxY, this);
+    DeltaWin->show();
 }
