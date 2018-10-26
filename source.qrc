@@ -2,5 +2,6 @@
     <qresource prefix="/img">
         <file>img/open.png</file>
         <file>img/exit.png</file>
+        <file>img/512px-Save_font_awesome.svg.png</file>
     </qresource>
 </RCC>

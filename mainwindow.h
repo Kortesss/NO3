@@ -47,16 +47,7 @@ public slots:
 
 //      }
 private slots:
-//    void on_pushButton_clicked();
-
-//    void on_pushButton_2_clicked();
-
-//    void on_pushButton_3_clicked();
-
- //   void on_textBrowser_destroyed();
     void mousePress(QMouseEvent *event);
-
-//    void on_pushButton_4_clicked();
 
     void on_action_triggered();
 
@@ -80,21 +71,19 @@ private slots:
 
     void on_doubleSpinBox1_editingFinished();
 
+    void on_action_12_triggered();
+
+    void on_action_delta_triggered();
+
 private:
     Ui::MainWindow *ui;
 
     double prdelfun(double x1,double x2,double y1,double y2);
     double prfun(double px);
     QPoint pozit(QPoint p);
-    QList<double> mass_x;
-    QList<double> mass_y;
+    QList<double> mass_x, mass_y;
     QList <double> mass_minX, mass_maxX, mass_minY, mass_maxY;
-    double minx;
-    double miny;
-    double maxx;
-    double maxy;
-    double koef;
-    //bool graph_zero;
+    double minx, miny, maxx, maxy, koef;
     QPoint press;
     QPoint release;
     QVector<double> dirivate;

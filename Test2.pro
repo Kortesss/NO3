@@ -16,16 +16,19 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     qcustomplot.cpp \
     derivative.cpp \
-    somewindow.cpp
+    somewindow.cpp \
+    delta.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
     derivative.h \
         ui_mainwindow.h \
-    somewindow.h
+    somewindow.h \
+    delta.h
 
 FORMS    += mainwindow.ui \
-    somewindow.ui
+    somewindow.ui \
+    delta.ui
 
 RESOURCES += \
     source.qrc
