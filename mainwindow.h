@@ -75,6 +75,8 @@ private slots:
 
     void on_action_delta_triggered();
 
+    void on_action_13_triggered();
+
 private:
     Ui::MainWindow *ui;
 

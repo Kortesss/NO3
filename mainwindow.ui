@@ -250,6 +250,7 @@ p, li { white-space: pre-wrap; }
     </widget>
     <addaction name="action_7"/>
     <addaction name="menu_3"/>
+    <addaction name="action_13"/>
    </widget>
    <widget class="QMenu" name="menu_4">
     <property name="title">
@@ -277,7 +278,7 @@ p, li { white-space: pre-wrap; }
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action">
    <property name="icon">
-    <iconset>
+    <iconset resource="source.qrc">
      <normaloff>:/img/img/open.png</normaloff>:/img/img/open.png</iconset>
    </property>
    <property name="text">
@@ -349,7 +350,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="action_11">
    <property name="icon">
-    <iconset>
+    <iconset resource="source.qrc">
      <normaloff>:/img/img/exit.png</normaloff>:/img/img/exit.png</iconset>
    </property>
    <property name="text">
@@ -358,7 +359,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="action_12">
    <property name="icon">
-    <iconset>
+    <iconset resource="source.qrc">
      <normaloff>:/img/img/512px-Save_font_awesome.svg.png</normaloff>:/img/img/512px-Save_font_awesome.svg.png</iconset>
    </property>
    <property name="text">
@@ -368,6 +369,11 @@ p, li { white-space: pre-wrap; }
   <action name="action_delta">
    <property name="text">
     <string>Найти</string>
+   </property>
+  </action>
+  <action name="action_13">
+   <property name="text">
+    <string>Удалить</string>
    </property>
   </action>
  </widget>
@@ -380,6 +386,8 @@ p, li { white-space: pre-wrap; }
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="source.qrc"/>
+ </resources>
  <connections/>
 </ui>

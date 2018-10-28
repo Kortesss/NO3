@@ -370,6 +370,20 @@ void MainWindow::on_action_12_triggered()
 
 void MainWindow::on_action_delta_triggered()
 { //Расчет изменения дельты сигнала
-    deltaWin *DeltaW = new deltaWin(this->mass_minX, this->mass_maxX, this->mass_minY, this->mass_maxY, this);
-    DeltaW->show();
+    if (this->mass_minX.count()!=0 && this->mass_maxX.count()!=0 && this->mass_minY.count()!=0 && this->mass_maxY.count()!=0){
+        //сортировка экстремумов по возрастанию, вдруг мы добавили в конец списка Qlist новый экстремум, который идет не по порядку
+        qSort(this->mass_minX.begin(), this->mass_minX.end(), qLess<double>());
+        qSort(this->mass_maxX.begin(), this->mass_maxX.end(), qLess<double>());
+        //но игрикам не подходит сортирвка, поэтому лучше строить по порядку пока что
+        deltaWin *DeltaW = new deltaWin(this->mass_minX, this->mass_maxX, this->mass_minY, this->mass_maxY, this);
+        DeltaW->show();
+    }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Экстремумы не определены!"));}
+}
+
+void MainWindow::on_action_13_triggered()
+{  //удаление экстремумов
+    this->mass_minX.clear(); this->mass_maxX.clear(); this->mass_minY.clear(); this->mass_maxY.clear();
+    ui->widget->removeGraph(1); ui->widget->removeGraph(1); ui->widget->removeGraph(1);
+    ui->widget->replot();
+
 }

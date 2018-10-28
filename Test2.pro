@@ -17,7 +17,6 @@ SOURCES += main.cpp\
     qcustomplot.cpp \
     derivative.cpp \
     somewindow.cpp \
-    delta.cpp \
     deltawin.cpp
 
 HEADERS  += mainwindow.h \
@@ -25,12 +24,10 @@ HEADERS  += mainwindow.h \
     derivative.h \
         ui_mainwindow.h \
     somewindow.h \
-    delta.h \
     deltawin.h
 
 FORMS    += mainwindow.ui \
     somewindow.ui \
-    delta.ui \
     deltawin.ui
 
 RESOURCES += \

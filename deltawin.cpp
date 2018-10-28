@@ -22,6 +22,7 @@ void deltaWin::deltaList(QList <double> mass_minX, QList <double> mass_maxX, QLi
         }
         int k = 0;
         this->deltaR.append(qFabs(mass_minY[0] - mass_maxY[0])); //это начала, дальше пойдет закономерность по циклу от 1 до n
+        ui->list3->addItem(QString::number(this->deltaR[k])); k+=1;
         for(int i = 1; i < mass_minY.count(); i ++){
             for(int j = i-1; j <= i && j<mass_maxY.count(); j ++){
                 this->deltaR.append(qFabs(mass_minY[i] - mass_maxY[j]));
