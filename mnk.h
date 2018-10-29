@@ -8,7 +8,7 @@ class mnk
 {
 public:
     mnk(QList <double> x, QList <double> y, int n);
-    double get_yy();
+    double get_yy(double x);
 private:
     double a;
     double b;

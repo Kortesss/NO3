@@ -167,7 +167,7 @@ void MainWindow::on_action_triggered()
                   ui->widget->graph(2)->setName("Максимумы");
                   ui->widget->graph(1)->setPen(QColor(67, 138, 0, 255));
                   ui->widget->graph(1)->setLineStyle(QCPGraph::lsNone);
-                  ui->widget->graph(1)->setName("Минимумы");
+                  ui->widget->graph(1)->setName("Минимумы ");
                   ui->widget->replot();
           }
       }
@@ -400,8 +400,34 @@ void MainWindow::on_action_13_triggered()
 
 void MainWindow::on_action_18_triggered()
 { //Метод наименьших квадратов (МНК)
-    mnk *mnk1 = new mnk(this->mass_minX, this->mass_minY, this->mass_minX.count());
-    for(int i = 0; i < this->mass_minX.count(); i++){
-        qDebug() << mnk1->get_yy(this->mass_minX[i]);
+    if (this->mass_minX.count() != 0){
+        trendMin.clear();
+        mnk *mnk1 = new mnk(this->mass_minX, this->mass_minY, this->mass_minX.count());
+        for(int i = 0; i < this->mass_minX.count(); i++){
+            this->trendMin.append(mnk1->get_yy(this->mass_minX[i]));
+        }
+        if (this->mass_minX.count()!=0) {
+            if (this->mass_maxX.count() == 0){  // если максимумы не проставлены, выдаст ошибку
+                ui->widget->addGraph();
+                ui->widget->graph(2)->setPen(QColor(255, 0, 0, 255));
+                ui->widget->graph(2)->setLineStyle(QCPGraph::lsNone);//убираем линии
+                ui->widget->graph(2)->setName(" ");
+            }
+            ui->widget->addGraph();
+            ui->widget->graph(3)->setData(this->mass_minX.toVector(), this->trendMin.toVector());
+            ui->widget->graph(3)->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
+            ui->widget->graph(3)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 3));
+            ui->widget->graph(3)->setName("Линия тренда min");
+            ui->widget->replot();
+        }
+    }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки минимума не определены!"));}
+}
+
+void MainWindow::on_action_20_triggered()
+{
+    if ((this->trendMin.count() != 0)){
+        this->trendMin.clear();
+        ui->widget->removeGraph(3);
+        ui->widget->replot();
     }
 }

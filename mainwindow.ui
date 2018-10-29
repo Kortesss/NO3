@@ -266,6 +266,12 @@ p, li { white-space: pre-wrap; }
        <string>Минимумов</string>
       </property>
       <addaction name="action_18"/>
+      <addaction name="action_20"/>
+      <addaction name="separator"/>
+      <addaction name="action_22"/>
+      <addaction name="action_23"/>
+      <addaction name="separator"/>
+      <addaction name="action_25"/>
      </widget>
      <addaction name="menu_6"/>
      <addaction name="action_17"/>
@@ -399,6 +405,26 @@ p, li { white-space: pre-wrap; }
   <action name="action_18">
    <property name="text">
     <string>Метод наименьших квадратов</string>
+   </property>
+  </action>
+  <action name="action_20">
+   <property name="text">
+    <string>Удалить</string>
+   </property>
+  </action>
+  <action name="action_22">
+   <property name="text">
+    <string>Другой метод</string>
+   </property>
+  </action>
+  <action name="action_23">
+   <property name="text">
+    <string>Удалить</string>
+   </property>
+  </action>
+  <action name="action_25">
+   <property name="text">
+    <string>...</string>
    </property>
   </action>
  </widget>
