@@ -17,14 +17,16 @@ SOURCES += main.cpp\
     qcustomplot.cpp \
     derivative.cpp \
     somewindow.cpp \
-    deltawin.cpp
+    deltawin.cpp \
+    mnk.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
     derivative.h \
         ui_mainwindow.h \
     somewindow.h \
-    deltawin.h
+    deltawin.h \
+    mnk.h
 
 FORMS    += mainwindow.ui \
     somewindow.ui \

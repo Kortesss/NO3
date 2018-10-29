@@ -4,6 +4,7 @@
 #include <QDebug>
 #include "somewindow.h"
 #include "deltawin.h"
+#include "mnk.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -395,4 +396,12 @@ void MainWindow::on_action_13_triggered()
     ui->widget->removeGraph(2); ui->widget->removeGraph(1); axis_max=false; axis_min=false;
     ui->widget->replot();
 
+}
+
+void MainWindow::on_action_18_triggered()
+{ //Метод наименьших квадратов (МНК)
+    mnk *mnk1 = new mnk(this->mass_minX, this->mass_minY, this->mass_minX.count());
+    for(int i = 0; i < this->mass_minX.count(); i++){
+        qDebug() << mnk1->get_yy(this->mass_minX[i]);
+    }
 }
