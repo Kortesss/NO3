@@ -90,6 +90,7 @@ private:
     QPoint release;
     QVector<double> dirivate;
     double x1, x2;
+    bool axis_max=false, axis_min=false;
 //    NewWindow *someNewWindow;
 };
 

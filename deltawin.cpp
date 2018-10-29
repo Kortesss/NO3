@@ -32,12 +32,12 @@ void deltaWin::deltaList(QList <double> mass_minX, QList <double> mass_maxX, QLi
         }
     }else{//если график в начале убывает
         for(int i = 1; i < mass_maxX.count(); i ++){
-            this->deltaT1.append(mass_maxX[i] - mass_minX[i-1]);
-            ui->list1->addItem(QString::number(this->deltaT1[i-1]));
+            this->deltaT2.append(mass_maxX[i] - mass_minX[i-1]);
+            ui->list2->addItem(QString::number(this->deltaT2[i-1]));
         }
         for(int i = 0; i < mass_minX.count(); i ++){
-            this->deltaT2.append(mass_minX[i] - mass_maxX[i]);
-            ui->list2->addItem(QString::number(this->deltaT2[i]));
+            this->deltaT1.append(mass_minX[i] - mass_maxX[i]);
+            ui->list1->addItem(QString::number(this->deltaT1[i]));
         }
         int h = 0;
         for(int i = 0; i < mass_minY.count(); i ++){

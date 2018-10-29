@@ -55,8 +55,6 @@ void MainWindow::on_action_4_triggered()
             if (y[i]>maxY) maxY = y[i];
         }
         ui->widget->yAxis->setRange(minY, maxY);//Для оси Oy
-        //this->graph_zero = true;
-        //И перерисуем график на нашем widget
         ui->widget->replot();
 }
 
@@ -82,9 +80,11 @@ void MainWindow::on_action_3_triggered()
         ui->widget->xAxis->setRange(this->minx, this->maxx);//Для оси Ox
         //ui->widget->xAxis->setRange(200,800);//Для оси Ox
         ui->widget->yAxis->setRange(this->miny,this->maxy);//Для оси Oy
+        ui->widget->legend->setVisible(true);
+        ui->widget->graph(0)->setName("График 1");
+        ui->widget->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);//устанавливаем легенду в правый верхний угол
         //И перерисуем график на нашем widget
         ui->widget->replot();
-        //this->graph_zero = true;
         ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
 }
 
@@ -125,7 +125,7 @@ void MainWindow::on_action_triggered()
         this->koef=(this->maxx-this->minx)/(this->mass_x.count());//расчет коэф. плотности данных
         ui->textBrowser_2->append(QString("%1").arg(this->maxx));
         ui->textBrowser_3->append(QString("%1").arg(this->minx));
-        ui->listWidget->addItem("График "+QString::number(ui->listWidget->count()));
+        ui->listWidget->addItem("График "+QString::number(ui->listWidget->count()+1));
 
     }
 }
@@ -143,23 +143,30 @@ void MainWindow::on_action_triggered()
           if (ui->action_9->isChecked()){
               this->mass_minX.append(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()));
               this->mass_minY.append(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
-              ui->widget->addGraph();
+              if (!this->axis_min) {ui->widget->addGraph();
+              this->axis_min = true;} //если координаты мин не были добавлены, добавляем 1 раз
+
                   ui->widget->graph(1)->setData(this->mass_minX.toVector(), this->mass_minY.toVector());
                   ui->widget->graph(1)->setPen(QColor(67, 138, 0, 255));
                   ui->widget->graph(1)->setLineStyle(QCPGraph::lsNone);//убираем линии
                   ui->widget->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
+                  ui->widget->graph(1)->setName("Минимумы");
                   ui->widget->replot();
           }
       //добавляем максимумы x, y
           if (ui->action_10->isChecked()){
               this->mass_maxX.append(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()));
               this->mass_maxY.append(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
-                ui->widget->addGraph();
-                ui->widget->addGraph();
+                if (!this->axis_max) {ui->widget->addGraph(); this->axis_max = true; }
+                if (!this->axis_min) {ui->widget->addGraph(); this->axis_min = true;}
                   ui->widget->graph(2)->setData(this->mass_maxX.toVector(), this->mass_maxY.toVector());
                   ui->widget->graph(2)->setPen(QColor(255, 0, 0, 255));
                   ui->widget->graph(2)->setLineStyle(QCPGraph::lsNone);//убираем линии
                   ui->widget->graph(2)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
+                  ui->widget->graph(2)->setName("Максимумы");
+                  ui->widget->graph(1)->setPen(QColor(67, 138, 0, 255));
+                  ui->widget->graph(1)->setLineStyle(QCPGraph::lsNone);
+                  ui->widget->graph(1)->setName("Минимумы");
                   ui->widget->replot();
           }
       }
@@ -304,16 +311,18 @@ void MainWindow::on_action_7_triggered()
                     }
                 }
 
-                ui->widget->addGraph();
+                if (!this->axis_min) {ui->widget->addGraph(); this->axis_min = true;}
                 ui->widget->graph(1)->setData(this->mass_minX.toVector(), this->mass_minY.toVector());
                 ui->widget->graph(1)->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
                 ui->widget->graph(1)->setLineStyle(QCPGraph::lsNone);//убираем линии
                 ui->widget->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
-                ui->widget->addGraph();
+                ui->widget->graph(1)->setName("Минимумы");
+                if (!this->axis_max) {ui->widget->addGraph(); this->axis_max = true; }
                 ui->widget->graph(2)->setData(this->mass_maxX.toVector(), this->mass_maxY.toVector());
                 ui->widget->graph(2)->setPen(QColor(255, 0, 0, 255));//задаем красный цвет точки
                 ui->widget->graph(2)->setLineStyle(QCPGraph::lsNone);//убираем линии
                 ui->widget->graph(2)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
+                ui->widget->graph(2)->setName("Максимумы");
                 ui->widget->replot();
              }
               else{
@@ -383,7 +392,7 @@ void MainWindow::on_action_delta_triggered()
 void MainWindow::on_action_13_triggered()
 {  //удаление экстремумов
     this->mass_minX.clear(); this->mass_maxX.clear(); this->mass_minY.clear(); this->mass_maxY.clear();
-    ui->widget->removeGraph(1); ui->widget->removeGraph(1); ui->widget->removeGraph(1);
+    ui->widget->removeGraph(2); ui->widget->removeGraph(1); axis_max=false; axis_min=false;
     ui->widget->replot();
 
 }
