@@ -273,8 +273,15 @@ p, li { white-space: pre-wrap; }
       <addaction name="separator"/>
       <addaction name="action_25"/>
      </widget>
+     <widget class="QMenu" name="menu_7">
+      <property name="title">
+       <string>Максимумов</string>
+      </property>
+      <addaction name="action_14"/>
+      <addaction name="action_15"/>
+     </widget>
      <addaction name="menu_6"/>
-     <addaction name="action_17"/>
+     <addaction name="menu_7"/>
     </widget>
     <addaction name="menu_5"/>
    </widget>
@@ -397,11 +404,6 @@ p, li { white-space: pre-wrap; }
     <string>Удалить</string>
    </property>
   </action>
-  <action name="action_17">
-   <property name="text">
-    <string>Максимумов</string>
-   </property>
-  </action>
   <action name="action_18">
    <property name="text">
     <string>Метод наименьших квадратов</string>
@@ -425,6 +427,16 @@ p, li { white-space: pre-wrap; }
   <action name="action_25">
    <property name="text">
     <string>...</string>
+   </property>
+  </action>
+  <action name="action_14">
+   <property name="text">
+    <string>Метод наименьших квадратов</string>
+   </property>
+  </action>
+  <action name="action_15">
+   <property name="text">
+    <string>Удалить</string>
    </property>
   </action>
  </widget>
