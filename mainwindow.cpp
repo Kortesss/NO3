@@ -403,6 +403,8 @@ void MainWindow::on_action_18_triggered()
     if (this->mass_minX.count() != 0){
         trendMin.clear();
         mnk *mnk1 = new mnk(this->mass_minX, this->mass_minY, this->mass_minX.count());
+        double Kdet = mnk1->get_Kdet();
+        QMessageBox::information(NULL,"Информация","Коэффициент детерминации = "+QString::number(Kdet));
         for(int i = 0; i < this->mass_minX.count(); i++){
             this->trendMin.append(mnk1->get_yy(this->mass_minX[i]));
         }
@@ -415,7 +417,7 @@ void MainWindow::on_action_18_triggered()
          ui->widget->addGraph();
          ui->widget->graph(3)->setData(this->mass_minX.toVector(), this->trendMin.toVector());
          ui->widget->graph(3)->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
-         ui->widget->graph(3)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 3));
+         ui->widget->graph(3)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
          ui->widget->graph(3)->setName("Линия тренда min");
          ui->widget->replot();
     }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки минимума не определены!"));}
@@ -436,6 +438,8 @@ void MainWindow::on_action_14_triggered()
         if (this->mass_maxX.count() != 0){
             trendMax.clear();
             mnk *mnk2 = new mnk(this->mass_maxX, this->mass_maxY, this->mass_maxX.count());
+            double Kdet = mnk2->get_Kdet();
+            QMessageBox::information(NULL,"Информация","Коэффициент детерминации = "+QString::number(Kdet));
             for(int i = 0; i < this->mass_maxX.count(); i++){
                 this->trendMax.append(mnk2->get_yy(this->mass_maxX[i]));
             }
@@ -448,9 +452,14 @@ void MainWindow::on_action_14_triggered()
                 ui->widget->addGraph();
                 ui->widget->graph(4)->setData(this->mass_maxX.toVector(), this->trendMax.toVector());
                 ui->widget->graph(4)->setPen(QColor(255, 0, 0, 255));
-                ui->widget->graph(4)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 3));
+                ui->widget->graph(4)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
                 ui->widget->graph(4)->setName("Линия тренда max");
                 ui->widget->replot();
 
         }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки максимума не определены!"));}
+}
+
+void MainWindow::on_action_16_triggered()
+{   //очистка всех графиков
+    ui->widget->clearGraphs();  ui->widget->replot();
 }

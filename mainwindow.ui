@@ -233,6 +233,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="action"/>
     <addaction name="action_2"/>
     <addaction name="action_3"/>
+    <addaction name="action_16"/>
     <addaction name="action_delta"/>
     <addaction name="action_12"/>
     <addaction name="action_8"/>
@@ -298,6 +299,7 @@ p, li { white-space: pre-wrap; }
    </attribute>
    <addaction name="action_2"/>
    <addaction name="action_3"/>
+   <addaction name="action_16"/>
    <addaction name="action_5"/>
    <addaction name="action_delta"/>
    <addaction name="action_8"/>
@@ -437,6 +439,11 @@ p, li { white-space: pre-wrap; }
   <action name="action_15">
    <property name="text">
     <string>Удалить</string>
+   </property>
+  </action>
+  <action name="action_16">
+   <property name="text">
+    <string>Очистить графики</string>
    </property>
   </action>
  </widget>
