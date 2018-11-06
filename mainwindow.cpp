@@ -78,7 +78,7 @@ void MainWindow::on_action_3_triggered()
         ui->widget->yAxis->setLabel("y");
 
         //Установим область, которая будет показываться на графике
-        ui->widget->xAxis->setRange(this->minx, this->maxx);//Для оси Ox
+        ui->widget->xAxis->setRange(this->minx, this->maxx);// Для оси Ox
         //ui->widget->xAxis->setRange(200,800);//Для оси Ox
         ui->widget->yAxis->setRange(this->miny,this->maxy);//Для оси Oy
         ui->widget->legend->setVisible(true);
