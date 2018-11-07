@@ -63,3 +63,13 @@ double mnk::get_Kdet()
 {
     return Kdet;
 }
+
+double mnk::get_a()
+{
+    return a;
+}
+
+double mnk::get_b()
+{
+    return b;
+}

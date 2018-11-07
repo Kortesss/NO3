@@ -5082,7 +5082,10 @@ debug/mnk.o: mnk.cpp mnk.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtGui/qicon.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QObject \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QWidget \
-		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/qmath.h
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/qmath.h \
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QMessageBox \
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/qmessagebox.h \
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/qdialog.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\mnk.o mnk.cpp
 
 debug/qrc_source.o: debug/qrc_source.cpp 
