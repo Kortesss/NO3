@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     connect(ui->widget,SIGNAL(mousePress(QMouseEvent*)),this,SLOT(mousePress(QMouseEvent*)));
     connect(ui->widget,SIGNAL(mouseRelease(QMouseEvent*)),this,SLOT(mouseRelease(QMouseEvent*)));
-    connect(ui->widget, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(mouseMove(QMouseEvent*)));
+    connect(ui->widget, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(histogramMouseMoved(QMouseEvent*)));
 }
 
 MainWindow::~MainWindow()
@@ -134,19 +134,18 @@ void MainWindow::on_action_triggered()
 
 //функция обработки нажатия кнопки мыши и считывание координат
   void MainWindow::mousePress(QMouseEvent *mouseEvent){
-      ui->statusBar->showMessage("x = "+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()))
-                                 +"; y = "+QString::number(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())));
-
+      QCPItemText *text = new QCPItemText(ui->widget);
       if (mouseEvent->button() == Qt::LeftButton){
-          //Derivative *de = new Derivative(1.0,1.2,2.1,3.2); просто пытался обратиться к тому классу
-          //qDebug() << de->get_dd();
       if(this->ui->widget->graphCount()!=0){
           if (ui->action_9->isChecked()){
               this->mass_minX.append(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()));
               this->mass_minY.append(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
               if (!this->axis_min) {ui->widget->addGraph();
               this->axis_min = true;} //если координаты мин не были добавлены, добавляем 1 раз
-
+              text->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()))
+                            +";"+QString::number(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()))+")");
+              text->position->setCoords(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x())-5, ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())-2);
+              ui->widget->replot();
                   ui->widget->graph(1)->setData(this->mass_minX.toVector(), this->mass_minY.toVector());
                   ui->widget->graph(1)->setPen(QColor(67, 138, 0, 255));
                   ui->widget->graph(1)->setLineStyle(QCPGraph::lsNone);//убираем линии
@@ -168,11 +167,15 @@ void MainWindow::on_action_triggered()
                   ui->widget->graph(1)->setPen(QColor(67, 138, 0, 255));
                   ui->widget->graph(1)->setLineStyle(QCPGraph::lsNone);
                   ui->widget->graph(1)->setName("Минимумы ");
+                  text->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()))
+                                +";"+QString::number(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()))+")");
+                  text->position->setCoords(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x())-5, ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())+2);
                   ui->widget->replot();
           }
       }
       }
-      //if (mouseEvent->button() == Qt::RightButton){
+     // if (mouseEvent->button() == Qt::RightButton){
+          //QCPGraph * const graph = plot->graph(0);
           //удаление точек
       //    QMutableListIterator<double> i(this->mass_minY);
 
@@ -184,11 +187,13 @@ void MainWindow::on_action_triggered()
       //        i.remove();
       //    }
 
-      //}
+     // }
 }
 
-//функция обработки отпускания кнопки мыши и зуммирования
-//void MainWindow::mouseRelease(QMouseEvent *event) {}
+void MainWindow::histogramMouseMoved(QMouseEvent *event){
+    ui->statusBar->showMessage("x="+QString::number(ui->widget->xAxis->pixelToCoord(event->pos().x()))
+                               +"; y="+QString::number(ui->widget->yAxis->pixelToCoord(event->pos().y())));
+}
 
 //вычисление производной по 2м точкам
 double MainWindow::prdelfun(double x1,double x2,double y1,double y2){
@@ -212,10 +217,6 @@ double MainWindow::prfun(double px){
   f2 = (f(px + h) - 2 * f(px) + f(px - h)) / (h * h);
 */
 }
-
-//------------------------------------------------------
-/*void MainWindow::on_textBrowser_destroyed()
-{}*/
 
 //вызов вычисления производной кучочно-непрерывной функции
 void MainWindow::on_action_2_triggered() {

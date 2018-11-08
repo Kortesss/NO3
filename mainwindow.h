@@ -48,6 +48,7 @@ public slots:
 //      }
 private slots:
     void mousePress(QMouseEvent *event);
+    void histogramMouseMoved(QMouseEvent *event);
 
     void on_action_triggered();
 
