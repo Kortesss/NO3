@@ -93,6 +93,7 @@ private:
     double prfun(double px);
     QPoint pozit(QPoint p);
     QList<double> mass_x, mass_y;
+
     QList <double> mass_minX, mass_maxX, mass_minY, mass_maxY, trendMin, trendMax;
     double minx, miny, maxx, maxy, koef;
     QPoint press;

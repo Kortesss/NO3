@@ -135,6 +135,7 @@ void MainWindow::on_action_triggered()
 //функция обработки нажатия кнопки мыши и считывание координат
   void MainWindow::mousePress(QMouseEvent *mouseEvent){
       QCPItemText *text = new QCPItemText(ui->widget);
+
       if (mouseEvent->button() == Qt::LeftButton){
       if(this->ui->widget->graphCount()!=0){
           if (ui->action_9->isChecked()){
@@ -142,8 +143,8 @@ void MainWindow::on_action_triggered()
               this->mass_minY.append(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
               if (!this->axis_min) {ui->widget->addGraph();
               this->axis_min = true;} //если координаты мин не были добавлены, добавляем 1 раз
-              text->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()))
-                            +";"+QString::number(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()))+")");
+              text->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',2)
+                            +"; "+QString::number(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()),'f',2)+")");
               text->position->setCoords(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x())-5, ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())-2);
               ui->widget->replot();
                   ui->widget->graph(1)->setData(this->mass_minX.toVector(), this->mass_minY.toVector());
@@ -167,14 +168,16 @@ void MainWindow::on_action_triggered()
                   ui->widget->graph(1)->setPen(QColor(67, 138, 0, 255));
                   ui->widget->graph(1)->setLineStyle(QCPGraph::lsNone);
                   ui->widget->graph(1)->setName("Минимумы ");
-                  text->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()))
-                                +";"+QString::number(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()))+")");
+                  text->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',2)
+                                +"; "+QString::number(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()),'f',2)+")");
                   text->position->setCoords(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x())-5, ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())+2);
                   ui->widget->replot();
           }
       }
       }
-     // if (mouseEvent->button() == Qt::RightButton){
+    if (mouseEvent->button() == Qt::RightButton){
+        ui->widget->clearPlottables();
+        ui->widget->replot();
           //QCPGraph * const graph = plot->graph(0);
           //удаление точек
       //    QMutableListIterator<double> i(this->mass_minY);
@@ -187,12 +190,12 @@ void MainWindow::on_action_triggered()
       //        i.remove();
       //    }
 
-     // }
+      }
 }
 
 void MainWindow::histogramMouseMoved(QMouseEvent *event){
-    ui->statusBar->showMessage("x="+QString::number(ui->widget->xAxis->pixelToCoord(event->pos().x()))
-                               +"; y="+QString::number(ui->widget->yAxis->pixelToCoord(event->pos().y())));
+    ui->statusBar->showMessage("x="+QString::number(ui->widget->xAxis->pixelToCoord(event->pos().x()),'f',2)
+                               +"; y="+QString::number(ui->widget->yAxis->pixelToCoord(event->pos().y()),'f',2));
 }
 
 //вычисление производной по 2м точкам
@@ -395,6 +398,7 @@ void MainWindow::on_action_13_triggered()
 {  //удаление экстремумов
     this->mass_minX.clear(); this->mass_maxX.clear(); this->mass_minY.clear(); this->mass_maxY.clear();
     ui->widget->removeGraph(2); ui->widget->removeGraph(1); axis_max=false; axis_min=false;
+   // text->text().clear();
     ui->widget->replot();
 
 }
