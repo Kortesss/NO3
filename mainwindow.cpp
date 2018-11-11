@@ -12,12 +12,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     connect(ui->widget,SIGNAL(mousePress(QMouseEvent*)),this,SLOT(mousePress(QMouseEvent*)));
-    connect(ui->widget,SIGNAL(mouseRelease(QMouseEvent*)),this,SLOT(mouseRelease(QMouseEvent*)));
     connect(ui->widget, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(histogramMouseMoved(QMouseEvent*)));
+    axis_max=false; axis_min=false;
 }
 
 MainWindow::~MainWindow()
 {
+    qDebug() << "деструктор MainWindow";
     delete ui;
 }
 
@@ -143,7 +144,7 @@ void MainWindow::on_action_triggered()
               this->mass_minY.append(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
               if (!this->axis_min) {ui->widget->addGraph();
               this->axis_min = true;} //если координаты мин не были добавлены, добавляем 1 раз
-              text->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',2)
+              text->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',2) //округление до 2-х знаков
                             +"; "+QString::number(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()),'f',2)+")");
               text->position->setCoords(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x())-5, ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())-2);
               ui->widget->replot();
@@ -191,10 +192,11 @@ void MainWindow::on_action_triggered()
       //    }
 
       }
+   //delete text;
 }
 
 void MainWindow::histogramMouseMoved(QMouseEvent *event){
-    ui->statusBar->showMessage("x="+QString::number(ui->widget->xAxis->pixelToCoord(event->pos().x()),'f',2)
+    ui->statusBar->showMessage("x="+QString::number(ui->widget->xAxis->pixelToCoord(event->pos().x()),'f',2)//округление до 2-х знаков
                                +"; y="+QString::number(ui->widget->yAxis->pixelToCoord(event->pos().y()),'f',2));
 }
 
@@ -205,20 +207,6 @@ double MainWindow::prdelfun(double x1,double x2,double y1,double y2){
     dy=y2-y1;
     dd=dy/dx;
     return dd;
-}
-
-//функция приближенного вычисления производной(не работает пока)
-double MainWindow::prfun(double px){
-  //double h, fl, fr, fc, f2;
-  px = 1; // точка, в которой вычисляем производную
-  //h = 0.1; // шаг, с которым вычисляем производную
-  // приближенно вычисляем первую производную различными способами
-/*  fl = (f(px) - f(px - h)) / h; // левая
-  fr = (f(px + h) - f(px)) / h; // правая
-  fc = (f(px + h) - f(px - h)) / (2 * h); // центральная
-  // приближенно вычисляем вторую производную
-  f2 = (f(px + h) - 2 * f(px) + f(px - h)) / (h * h);
-*/
 }
 
 //вызов вычисления производной кучочно-непрерывной функции
@@ -248,7 +236,6 @@ void MainWindow::on_action_2_triggered() {
             dirivate.append(znpozit);
 //            Derivative *derivative = new Derivative(x1,x2,y1,y2);
 //            Derivative *derivative = new Derivative(this->mass_x[i],this->mass_x[i+1],this->mass_y[j],this->mass_y[j+1]);
-
 //            ui->textBrowser_4->append(QString("%1").arg(derivative->get_dd()));
             sred=sred+znpozit;
             j++;
@@ -269,7 +256,7 @@ void MainWindow::on_action_2_triggered() {
     }
     sred=sred/100;
     qDebug() << "sred="<<sred;*/
-    //delete Derivative();
+    //delete derivative();
   }
   else{  QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных"));}
 }
@@ -278,13 +265,9 @@ void MainWindow::on_action_2_triggered() {
 void MainWindow::on_action_5_triggered()
 //отрисовка графика производной
 {
-//    MainWindow *NewWindow=new MainWindow;
-//    NewWindow->show();
-//    ui->widget->addGraph();
     SomeWindow *DXWindow=new SomeWindow(dirivate,this->x1,this->x2,this->koef,this);
-//    QCustomPlot object ;
     DXWindow->show();
-
+    DXWindow->setAttribute(Qt::WA_DeleteOnClose); //деструктор
 }
 
 void MainWindow::on_action_7_triggered()
@@ -343,6 +326,7 @@ void MainWindow::on_action_8_triggered()
 {
     MainWindow *NewWindow=new MainWindow;
     NewWindow->show();
+    NewWindow->setAttribute(Qt::WA_DeleteOnClose);
 }
 
 void MainWindow::on_action_9_triggered()
@@ -379,6 +363,7 @@ void MainWindow::on_action_12_triggered()
                 else if (fileName.contains(".jpg", Qt::CaseInsensitive)) ui->widget->saveJpg(fileName);
                     else if (fileName.contains(".bmp", Qt::CaseInsensitive)) ui->widget->saveBmp(fileName);
                         else ui->widget->savePdf(fileName);
+        file.close();
     }
 }
 
@@ -391,6 +376,7 @@ void MainWindow::on_action_delta_triggered()
         //но игрикам не подходит сортирвка, поэтому лучше строить по порядку пока что
         deltaWin *DeltaW = new deltaWin(this->mass_minX, this->mass_maxX, this->mass_minY, this->mass_maxY, this);
         DeltaW->show();
+        DeltaW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
     }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Экстремумы не определены!"));}
 }
 
@@ -411,7 +397,7 @@ void MainWindow::on_action_18_triggered()
         double Kdet = mnk1->get_Kdet();
         double a = mnk1->get_a();
         double b = mnk1->get_b();
-        QMessageBox::information(NULL,"Информация","Коэффициент детерминации = "+QString::number(Kdet));
+        //QMessageBox::information(NULL,"Информация","Коэффициент детерминации = "+QString::number(Kdet));
         for(int i = 0; i < this->mass_minX.count(); i++){
             this->trendMin.append(mnk1->get_yy(this->mass_minX[i]));
         }
@@ -425,8 +411,9 @@ void MainWindow::on_action_18_triggered()
          ui->widget->graph(3)->setData(this->mass_minX.toVector(), this->trendMin.toVector());
          ui->widget->graph(3)->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
          ui->widget->graph(3)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
-         ui->widget->graph(3)->setName(QString::number(a)+"*x+"+QString::number(b)+" R^2="+QString::number(Kdet));
+         ui->widget->graph(3)->setName(QString::number(a,'f',2)+"*x+"+QString::number(b,'f',2)+" R^2="+QString::number(Kdet,'f',2));
          ui->widget->replot();
+         delete mnk1; //деструктор
     }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки минимума не определены!"));}
 }
 
@@ -448,7 +435,7 @@ void MainWindow::on_action_14_triggered()
             double Kdet = mnk2->get_Kdet();
             double a = mnk2->get_a();
             double b = mnk2->get_b();
-            QMessageBox::information(NULL,"Информация","Коэффициент детерминации = "+QString::number(Kdet));
+            //QMessageBox::information(NULL,"Информация","Коэффициент детерминации = "+QString::number(Kdet));
             for(int i = 0; i < this->mass_maxX.count(); i++){
                 this->trendMax.append(mnk2->get_yy(this->mass_maxX[i]));
             }
@@ -462,9 +449,9 @@ void MainWindow::on_action_14_triggered()
                 ui->widget->graph(4)->setData(this->mass_maxX.toVector(), this->trendMax.toVector());
                 ui->widget->graph(4)->setPen(QColor(255, 0, 0, 255));
                 ui->widget->graph(4)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
-                ui->widget->graph(4)->setName(QString::number(a)+"*x+"+QString::number(b)+" R^2="+QString::number(Kdet));
+                ui->widget->graph(4)->setName(QString::number(a,'f',2)+"*x+"+QString::number(b,'f',2)+" R^2="+QString::number(Kdet,'f',2));
                 ui->widget->replot();
-
+            delete mnk2; //деструктор
         }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки максимума не определены!"));}
 }
 

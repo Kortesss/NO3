@@ -45,5 +45,6 @@ void SomeWindow::graphDirivate(QVector<double> dirivate, double x1,double x2,dou
 }
 SomeWindow::~SomeWindow()
 {
+    qDebug() << "Деструктор SomeWindow";
     delete ui;
 }

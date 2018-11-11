@@ -1,6 +1,7 @@
 #include "deltawin.h"
 #include "ui_deltawin.h"
 #include <qmath.h>
+#include <QDebug>
 
 deltaWin::deltaWin(QList <double> mass_minX, QList <double> mass_maxX, QList <double> mass_minY, QList <double> mass_maxY, QWidget *parent) :
     QMainWindow(parent),
@@ -53,5 +54,6 @@ void deltaWin::deltaList(QList <double> mass_minX, QList <double> mass_maxX, QLi
 
 deltaWin::~deltaWin()
 {
+    qDebug() << "Деструктор дельты сигнала";
     delete ui;
 }

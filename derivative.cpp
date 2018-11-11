@@ -1,4 +1,5 @@
 #include "derivative.h"
+#include <QDebug>
 
 Derivative::Derivative(double x1,double x2,double y1,double y2)
 {
@@ -13,4 +14,7 @@ double Derivative::get_dd()
     return dd;
 }
 
-
+Derivative::~Derivative()
+{
+    qDebug() << "Деструктор производной";
+}

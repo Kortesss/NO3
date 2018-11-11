@@ -39,13 +39,7 @@ public:
     ~MainWindow();
 
 public slots:
-//    void openNewWindow(QWidget * parent = 0) // описываем реализацию внутри тела программы
-//       {
-//           someNewWindow = new NewWindow(); // Be sure to destroy you window somewhere
-        //  someNewWindow->show();
-          //  mMyNewWindow->show();
 
-//      }
 private slots:
     void mousePress(QMouseEvent *event);
     void histogramMouseMoved(QMouseEvent *event);
@@ -100,7 +94,7 @@ private:
     QPoint release;
     QVector<double> dirivate;
     double x1, x2;
-    bool axis_max=false, axis_min=false;
+    bool axis_max, axis_min;
 //    NewWindow *someNewWindow;
 };
 
