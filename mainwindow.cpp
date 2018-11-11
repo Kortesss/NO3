@@ -393,6 +393,7 @@ void MainWindow::on_action_18_triggered()
 { //Метод наименьших квадратов (МНК) минимума
     if (this->mass_minX.count() != 0){
         trendMin.clear();
+        QList<double> yLevel, xLevel;
         mnk *mnk1 = new mnk(this->mass_minX, this->mass_minY, this->mass_minX.count());
         double Kdet = mnk1->get_Kdet();
         double a = mnk1->get_a();
@@ -401,7 +402,13 @@ void MainWindow::on_action_18_triggered()
         for(int i = 0; i < this->mass_minX.count(); i++){
             this->trendMin.append(mnk1->get_yy(this->mass_minX[i]));
         }
-        if (!axis_max){  // если максимумы не проставлены, выдаст ошибку
+
+        yLevel.append(this->trendMin[0]+((this->trendMin[this->trendMin.count()-1]-this->trendMin[0])/100)*ui->spinLevel->value());
+        yLevel.append(yLevel[0]+yLevel[0]*0.1);
+        yLevel.append(yLevel[0]-yLevel[0]*0.1);
+
+        xLevel.append((yLevel[0]-b)/a);   xLevel.append((yLevel[0]-b)/a); xLevel.append((yLevel[0]-b)/a);
+        if (!axis_max){  // если максимумы не проставлены
              ui->widget->addGraph();
              ui->widget->graph(2)->setPen(QColor(255, 0, 0, 255));
              ui->widget->graph(2)->setLineStyle(QCPGraph::lsNone);//убираем линии
@@ -412,6 +419,13 @@ void MainWindow::on_action_18_triggered()
          ui->widget->graph(3)->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
          ui->widget->graph(3)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
          ui->widget->graph(3)->setName(QString::number(a,'f',2)+"*x+"+QString::number(b,'f',2)+" R^2="+QString::number(Kdet,'f',2));
+         //----
+         ui->widget->addGraph();
+         ui->widget->graph(4)->setData(xLevel.toVector(), yLevel.toVector());
+         ui->widget->graph(4)->setPen(QColor(0, 50, 115, 255));//задаем синий цвет
+         ui->widget->graph(4)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
+         ui->widget->graph(4)->setName("Линия перегиба min");
+         yLevel.clear(); xLevel.clear();
          ui->widget->replot();
          delete mnk1; //деструктор
     }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки минимума не определены!"));}
@@ -431,6 +445,7 @@ void MainWindow::on_action_14_triggered()
     //Метод наименьших квадратов (МНК)максимума
         if (this->mass_maxX.count() != 0){
             trendMax.clear();
+            QList<double> yLevel, xLevel;
             mnk *mnk2 = new mnk(this->mass_maxX, this->mass_maxY, this->mass_maxX.count());
             double Kdet = mnk2->get_Kdet();
             double a = mnk2->get_a();
@@ -439,7 +454,12 @@ void MainWindow::on_action_14_triggered()
             for(int i = 0; i < this->mass_maxX.count(); i++){
                 this->trendMax.append(mnk2->get_yy(this->mass_maxX[i]));
             }
-                if (this->trendMin.count() == 0){  // если МНК мин не нарисована, выдаст ошибку
+            yLevel.append(this->trendMax[0]+((this->trendMax[this->trendMax.count()-1]-this->trendMax[0])/100)*ui->spinLevel->value());
+            yLevel.append(yLevel[0]+yLevel[0]*0.1);
+            yLevel.append(yLevel[0]-yLevel[0]*0.1);
+
+            xLevel.append((yLevel[0]-b)/a);   xLevel.append((yLevel[0]-b)/a); xLevel.append((yLevel[0]-b)/a);
+                if (this->trendMin.count() == 0){  // если МНК мин не нарисована
                     ui->widget->addGraph();
                     ui->widget->graph(3)->setPen(QColor(67, 138, 0, 255));
                     ui->widget->graph(3)->setLineStyle(QCPGraph::lsNone);//убираем линии
@@ -450,6 +470,13 @@ void MainWindow::on_action_14_triggered()
                 ui->widget->graph(4)->setPen(QColor(255, 0, 0, 255));
                 ui->widget->graph(4)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
                 ui->widget->graph(4)->setName(QString::number(a,'f',2)+"*x+"+QString::number(b,'f',2)+" R^2="+QString::number(Kdet,'f',2));
+                //----
+                ui->widget->addGraph();
+                ui->widget->graph(5)->setData(xLevel.toVector(), yLevel.toVector());
+                ui->widget->graph(5)->setPen(QColor(0, 50, 115, 255));//задаем синий цвет
+                ui->widget->graph(5)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
+                ui->widget->graph(5)->setName("Линия перегиба max");
+                yLevel.clear(); xLevel.clear();
                 ui->widget->replot();
             delete mnk2; //деструктор
         }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки максимума не определены!"));}
@@ -457,5 +484,6 @@ void MainWindow::on_action_14_triggered()
 
 void MainWindow::on_action_16_triggered()
 {   //очистка всех графиков
+    on_action_13_triggered();
     ui->widget->clearGraphs();  ui->widget->replot();
 }
