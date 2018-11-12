@@ -52,21 +52,13 @@ private slots:
 
     void on_action_4_triggered();
 
-    void on_action_5_triggered();
-
     void on_action_7_triggered();
 
     void on_action_8_triggered();
 
-    void on_action_9_triggered();
-
     void on_action_11_triggered();
 
-    void on_action_10_triggered();
-
     void on_action_12_triggered();
-
-    void on_action_13_triggered();
 
     void on_action_18_triggered();
 
@@ -76,15 +68,19 @@ private slots:
 
     void on_action_16_triggered();
 
-    void on_spinLevel_valueChanged(double arg1);
+    void on_spinLevel_valueChanged();
 
-    void on_doubleSpinBox1_valueChanged(double arg1);
+    void on_doubleSpinBox1_valueChanged();
 
     void on_actionD_triggered();
 
     void on_action_21_triggered();
 
     void on_action_6_triggered();
+
+    void on_checkMin_clicked();
+
+    void on_checkMax_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -101,7 +97,7 @@ private:
     QVector<double> dirivate;
     double x1, x2;
     bool axis_max, axis_min, mnkMax, mnkMin, levelMin, levelMax;
-//    NewWindow *someNewWindow;
+    //QCPItemText *text;
 };
 
 #endif // MAINWINDOW_H

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>586</width>
-    <height>397</height>
+    <height>417</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,6 +17,9 @@
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinAndMaxSize</enum>
+      </property>
       <item>
        <layout class="QGridLayout" name="gridLayout">
         <property name="rightMargin">
@@ -45,13 +48,6 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Порог значения тренда, %</string>
-          </property>
-         </widget>
-        </item>
         <item row="3" column="0">
          <widget class="QLabel" name="label">
           <property name="maximumSize">
@@ -62,6 +58,13 @@
           </property>
           <property name="text">
            <string>x1</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Порог значения тренда, %</string>
           </property>
          </widget>
         </item>
@@ -123,6 +126,23 @@
           </property>
           <property name="maximum">
            <double>9999.989999999999782</double>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QCheckBox" name="checkMax">
+          <property name="text">
+           <string>Максимум</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QCheckBox" name="checkMin">
+          <property name="layoutDirection">
+           <enum>Qt::RightToLeft</enum>
+          </property>
+          <property name="text">
+           <string>Минимум</string>
           </property>
          </widget>
         </item>
@@ -260,13 +280,6 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>Экстремумы функции</string>
     </property>
-    <widget class="QMenu" name="menu_3">
-     <property name="title">
-      <string>Установить вручную</string>
-     </property>
-     <addaction name="action_9"/>
-     <addaction name="action_10"/>
-    </widget>
     <widget class="QMenu" name="menu_8">
      <property name="title">
       <string>Автопоиск</string>
@@ -286,8 +299,8 @@ p, li { white-space: pre-wrap; }
      <addaction name="action_26"/>
     </widget>
     <addaction name="menu_8"/>
-    <addaction name="menu_3"/>
-    <addaction name="action_13"/>
+    <addaction name="action_9"/>
+    <addaction name="action_7"/>
     <addaction name="menu_9"/>
     <addaction name="action_21"/>
    </widget>
@@ -360,22 +373,6 @@ p, li { white-space: pre-wrap; }
     <string>выбор фильтра или значения</string>
    </property>
   </action>
-  <action name="action_9">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Точки минимумов</string>
-   </property>
-  </action>
-  <action name="action_10">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Точки максимумов</string>
-   </property>
-  </action>
   <action name="action_8">
    <property name="text">
     <string>Новый эксперимент</string>
@@ -397,11 +394,6 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>Сохранить график</string>
-   </property>
-  </action>
-  <action name="action_13">
-   <property name="text">
-    <string>Удалить точки экстремумов</string>
    </property>
   </action>
   <action name="action_18">
@@ -454,37 +446,17 @@ p, li { white-space: pre-wrap; }
     <string>Порог тренда процентов</string>
    </property>
   </action>
-  <action name="action_xml_version_1_0_encoding_UTF_8_ui_version_4_0_widget_name_qt_fake_top_level_widget_class_QDoubleSpinBox_name_doubleSpinBox1_property_name_geometry_rect_x_154_x_y_8_y_width_80_width_height_20_height_rect_property_property_name_decimals_number_2_number_property_property_name_maximum_double_99_989999999999995_double_property_property_name_singleStep_double_0_010000000000000_double_property_property_name_value_double_0_050000000000000_double_property_widget_widget_resources_ui">
+  <action name="action_7">
    <property name="text">
-    <string>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;ui version=&quot;4.0&quot;&gt;
- &lt;widget name=&quot;__qt_fake_top_level&quot;&gt;
-  &lt;widget class=&quot;QDoubleSpinBox&quot; name=&quot;doubleSpinBox1&quot;&gt;
-   &lt;property name=&quot;geometry&quot;&gt;
-    &lt;rect&gt;
-     &lt;x&gt;154&lt;/x&gt;
-     &lt;y&gt;8&lt;/y&gt;
-     &lt;width&gt;80&lt;/width&gt;
-     &lt;height&gt;20&lt;/height&gt;
-    &lt;/rect&gt;
-   &lt;/property&gt;
-   &lt;property name=&quot;decimals&quot;&gt;
-    &lt;number&gt;2&lt;/number&gt;
-   &lt;/property&gt;
-   &lt;property name=&quot;maximum&quot;&gt;
-    &lt;double&gt;99.989999999999995&lt;/double&gt;
-   &lt;/property&gt;
-   &lt;property name=&quot;singleStep&quot;&gt;
-    &lt;double&gt;0.010000000000000&lt;/double&gt;
-   &lt;/property&gt;
-   &lt;property name=&quot;value&quot;&gt;
-    &lt;double&gt;0.050000000000000&lt;/double&gt;
-   &lt;/property&gt;
-  &lt;/widget&gt;
- &lt;/widget&gt;
- &lt;resources/&gt;
-&lt;/ui&gt;
-</string>
+    <string>Удалить точки экстремумов</string>
+   </property>
+  </action>
+  <action name="action_9">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Установить вручную</string>
    </property>
   </action>
  </widget>
