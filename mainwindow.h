@@ -66,8 +66,6 @@ private slots:
 
     void on_action_12_triggered();
 
-    void on_action_delta_triggered();
-
     void on_action_13_triggered();
 
     void on_action_18_triggered();
@@ -81,6 +79,12 @@ private slots:
     void on_spinLevel_valueChanged(double arg1);
 
     void on_doubleSpinBox1_valueChanged(double arg1);
+
+    void on_actionD_triggered();
+
+    void on_action_21_triggered();
+
+    void on_action_6_triggered();
 
 private:
     Ui::MainWindow *ui;
@@ -96,7 +100,7 @@ private:
     QPoint release;
     QVector<double> dirivate;
     double x1, x2;
-    bool axis_max, axis_min, mnkMax, mnkMin;
+    bool axis_max, axis_min, mnkMax, mnkMin, levelMin, levelMax;
 //    NewWindow *someNewWindow;
 };
 

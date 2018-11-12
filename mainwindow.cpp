@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->widget,SIGNAL(mousePress(QMouseEvent*)),this,SLOT(mousePress(QMouseEvent*)));
     connect(ui->widget, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(histogramMouseMoved(QMouseEvent*)));
     axis_max=false; axis_min=false; mnkMax=false; mnkMin=false;
+    levelMax=false; levelMin=false;
 }
 
 MainWindow::~MainWindow()
@@ -371,7 +372,7 @@ void MainWindow::on_action_13_triggered()
 void MainWindow::on_action_18_triggered()
 { //Метод наименьших квадратов (МНК) минимума
     if (this->mass_minX.count() != 0){
-        trendMin.clear(); mnkMin=true; mnkMax=false;
+        trendMin.clear();
         QList<double> yLevel, xLevel;
         mnk *mnk1 = new mnk(this->mass_minX, this->mass_minY, this->mass_minX.count());
         double Kdet = mnk1->get_Kdet();
@@ -393,13 +394,13 @@ void MainWindow::on_action_18_triggered()
              ui->widget->graph(2)->setLineStyle(QCPGraph::lsNone);//убираем линии
              ui->widget->graph(2)->setName("Максимумы"); axis_max=true;
          }
-         ui->widget->addGraph();
+         if (!this->mnkMin) {ui->widget->addGraph(); this->mnkMin = true;}
          ui->widget->graph(3)->setData(this->mass_minX.toVector(), this->trendMin.toVector());
          ui->widget->graph(3)->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
          ui->widget->graph(3)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
          ui->widget->graph(3)->setName(QString::number(a,'f',2)+"*x+"+QString::number(b,'f',2)+" R^2="+QString::number(Kdet,'f',2));
          //----
-         ui->widget->addGraph();
+         if (!this->levelMin) {ui->widget->addGraph(); this->levelMin = true;}
          ui->widget->graph(4)->setData(xLevel.toVector(), yLevel.toVector());
          ui->widget->graph(4)->setPen(QColor(0, 50, 115, 255));//задаем синий цвет
          ui->widget->graph(4)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 6));
@@ -423,7 +424,7 @@ void MainWindow::on_action_14_triggered()
 {
     //Метод наименьших квадратов (МНК)максимума
         if (this->mass_maxX.count() != 0){
-            trendMax.clear(); mnkMin=false;
+            trendMax.clear();
             QList<double> yLevel, xLevel;
             mnk *mnk2 = new mnk(this->mass_maxX, this->mass_maxY, this->mass_maxX.count());
             double Kdet = mnk2->get_Kdet();
@@ -444,13 +445,13 @@ void MainWindow::on_action_14_triggered()
                     ui->widget->graph(3)->setLineStyle(QCPGraph::lsNone);//убираем линии
                     ui->widget->graph(3)->setName(" ");
                 }
-                ui->widget->addGraph();
+                if (!this->mnkMax) {ui->widget->addGraph(); this->mnkMax = true;}
                 ui->widget->graph(4)->setData(this->mass_maxX.toVector(), this->trendMax.toVector());
                 ui->widget->graph(4)->setPen(QColor(255, 0, 0, 255));
                 ui->widget->graph(4)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
                 ui->widget->graph(4)->setName(QString::number(a,'f',2)+"*x+"+QString::number(b,'f',2)+" R^2="+QString::number(Kdet,'f',2));
                 //----
-                ui->widget->addGraph();
+                if (!this->levelMax) {ui->widget->addGraph(); this->levelMax = true;}
                 ui->widget->graph(5)->setData(xLevel.toVector(), yLevel.toVector());
                 ui->widget->graph(5)->setPen(QColor(0, 50, 115, 255));//задаем синий цвет
                 ui->widget->graph(5)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
