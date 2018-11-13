@@ -57,7 +57,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Начальное значение скорости</string>
+           <string>Начальное значение</string>
           </property>
          </widget>
         </item>
@@ -87,7 +87,7 @@
            </size>
           </property>
           <property name="text">
-           <string>Конечное значение скорости</string>
+           <string>Конечное значение</string>
           </property>
          </widget>
         </item>
@@ -281,6 +281,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="action_10"/>
     <addaction name="action_9"/>
     <addaction name="action_7"/>
+    <addaction name="action_13"/>
     <addaction name="action_21"/>
    </widget>
    <widget class="QMenu" name="menu_4">
@@ -425,6 +426,11 @@ p, li { white-space: pre-wrap; }
   <action name="action_10">
    <property name="text">
     <string>Автопоиск</string>
+   </property>
+  </action>
+  <action name="action_13">
+   <property name="text">
+    <string>Скорость изменения параметра</string>
    </property>
   </action>
  </widget>

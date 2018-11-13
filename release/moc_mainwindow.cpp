@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
     QByteArrayData data[24];
-    char stringdata0[470];
+    char stringdata0[471];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -36,36 +36,37 @@ QT_MOC_LITERAL(3, 23, 12), // "QMouseEvent*"
 QT_MOC_LITERAL(4, 36, 5), // "event"
 QT_MOC_LITERAL(5, 42, 19), // "histogramMouseMoved"
 QT_MOC_LITERAL(6, 62, 19), // "on_action_triggered"
-QT_MOC_LITERAL(7, 82, 21), // "on_action_2_triggered"
-QT_MOC_LITERAL(8, 104, 21), // "on_action_3_triggered"
-QT_MOC_LITERAL(9, 126, 21), // "on_action_4_triggered"
-QT_MOC_LITERAL(10, 148, 21), // "on_action_7_triggered"
-QT_MOC_LITERAL(11, 170, 21), // "on_action_8_triggered"
-QT_MOC_LITERAL(12, 192, 22), // "on_action_11_triggered"
-QT_MOC_LITERAL(13, 215, 22), // "on_action_12_triggered"
-QT_MOC_LITERAL(14, 238, 22), // "on_action_20_triggered"
-QT_MOC_LITERAL(15, 261, 22), // "on_action_16_triggered"
-QT_MOC_LITERAL(16, 284, 25), // "on_spinLevel_valueChanged"
-QT_MOC_LITERAL(17, 310, 30), // "on_doubleSpinBox1_valueChanged"
-QT_MOC_LITERAL(18, 341, 20), // "on_actionD_triggered"
-QT_MOC_LITERAL(19, 362, 22), // "on_action_21_triggered"
-QT_MOC_LITERAL(20, 385, 19), // "on_checkMin_clicked"
-QT_MOC_LITERAL(21, 405, 19), // "on_checkMax_clicked"
-QT_MOC_LITERAL(22, 425, 21), // "on_action_5_triggered"
-QT_MOC_LITERAL(23, 447, 22) // "on_action_10_triggered"
+QT_MOC_LITERAL(7, 82, 21), // "on_action_3_triggered"
+QT_MOC_LITERAL(8, 104, 21), // "on_action_4_triggered"
+QT_MOC_LITERAL(9, 126, 21), // "on_action_7_triggered"
+QT_MOC_LITERAL(10, 148, 21), // "on_action_8_triggered"
+QT_MOC_LITERAL(11, 170, 22), // "on_action_11_triggered"
+QT_MOC_LITERAL(12, 193, 22), // "on_action_12_triggered"
+QT_MOC_LITERAL(13, 216, 22), // "on_action_20_triggered"
+QT_MOC_LITERAL(14, 239, 22), // "on_action_16_triggered"
+QT_MOC_LITERAL(15, 262, 25), // "on_spinLevel_valueChanged"
+QT_MOC_LITERAL(16, 288, 30), // "on_doubleSpinBox1_valueChanged"
+QT_MOC_LITERAL(17, 319, 20), // "on_actionD_triggered"
+QT_MOC_LITERAL(18, 340, 22), // "on_action_21_triggered"
+QT_MOC_LITERAL(19, 363, 19), // "on_checkMin_clicked"
+QT_MOC_LITERAL(20, 383, 19), // "on_checkMax_clicked"
+QT_MOC_LITERAL(21, 403, 21), // "on_action_5_triggered"
+QT_MOC_LITERAL(22, 425, 22), // "on_action_10_triggered"
+QT_MOC_LITERAL(23, 448, 22) // "on_action_13_triggered"
 
     },
     "MainWindow\0mousePress\0\0QMouseEvent*\0"
     "event\0histogramMouseMoved\0on_action_triggered\0"
-    "on_action_2_triggered\0on_action_3_triggered\0"
-    "on_action_4_triggered\0on_action_7_triggered\0"
-    "on_action_8_triggered\0on_action_11_triggered\0"
-    "on_action_12_triggered\0on_action_20_triggered\0"
-    "on_action_16_triggered\0on_spinLevel_valueChanged\0"
+    "on_action_3_triggered\0on_action_4_triggered\0"
+    "on_action_7_triggered\0on_action_8_triggered\0"
+    "on_action_11_triggered\0on_action_12_triggered\0"
+    "on_action_20_triggered\0on_action_16_triggered\0"
+    "on_spinLevel_valueChanged\0"
     "on_doubleSpinBox1_valueChanged\0"
     "on_actionD_triggered\0on_action_21_triggered\0"
     "on_checkMin_clicked\0on_checkMax_clicked\0"
-    "on_action_5_triggered\0on_action_10_triggered"
+    "on_action_5_triggered\0on_action_10_triggered\0"
+    "on_action_13_triggered"
 };
 #undef QT_MOC_LITERAL
 
@@ -138,23 +139,23 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 0: _t->mousePress((*reinterpret_cast< QMouseEvent*(*)>(_a[1]))); break;
         case 1: _t->histogramMouseMoved((*reinterpret_cast< QMouseEvent*(*)>(_a[1]))); break;
         case 2: _t->on_action_triggered(); break;
-        case 3: _t->on_action_2_triggered(); break;
-        case 4: _t->on_action_3_triggered(); break;
-        case 5: _t->on_action_4_triggered(); break;
-        case 6: _t->on_action_7_triggered(); break;
-        case 7: _t->on_action_8_triggered(); break;
-        case 8: _t->on_action_11_triggered(); break;
-        case 9: _t->on_action_12_triggered(); break;
-        case 10: _t->on_action_20_triggered(); break;
-        case 11: _t->on_action_16_triggered(); break;
-        case 12: _t->on_spinLevel_valueChanged(); break;
-        case 13: _t->on_doubleSpinBox1_valueChanged(); break;
-        case 14: _t->on_actionD_triggered(); break;
-        case 15: _t->on_action_21_triggered(); break;
-        case 16: _t->on_checkMin_clicked(); break;
-        case 17: _t->on_checkMax_clicked(); break;
-        case 18: _t->on_action_5_triggered(); break;
-        case 19: _t->on_action_10_triggered(); break;
+        case 3: _t->on_action_3_triggered(); break;
+        case 4: _t->on_action_4_triggered(); break;
+        case 5: _t->on_action_7_triggered(); break;
+        case 6: _t->on_action_8_triggered(); break;
+        case 7: _t->on_action_11_triggered(); break;
+        case 8: _t->on_action_12_triggered(); break;
+        case 9: _t->on_action_20_triggered(); break;
+        case 10: _t->on_action_16_triggered(); break;
+        case 11: _t->on_spinLevel_valueChanged(); break;
+        case 12: _t->on_doubleSpinBox1_valueChanged(); break;
+        case 13: _t->on_actionD_triggered(); break;
+        case 14: _t->on_action_21_triggered(); break;
+        case 15: _t->on_checkMin_clicked(); break;
+        case 16: _t->on_checkMax_clicked(); break;
+        case 17: _t->on_action_5_triggered(); break;
+        case 18: _t->on_action_10_triggered(); break;
+        case 19: _t->on_action_13_triggered(); break;
         default: ;
         }
     }

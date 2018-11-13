@@ -3706,6 +3706,7 @@ debug/mainwindow.o: mainwindow.cpp mainwindow.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QAction \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QApplication \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QButtonGroup \
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QCheckBox \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QDoubleSpinBox \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QGridLayout \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QHBoxLayout \
@@ -3716,7 +3717,6 @@ debug/mainwindow.o: mainwindow.cpp mainwindow.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QMenuBar \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QStatusBar \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QTextBrowser \
-		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QToolBar \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QVBoxLayout \
 		derivative.h \
 		somewindow.h \
@@ -4318,7 +4318,8 @@ debug/derivative.o: derivative.cpp derivative.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/qtabwidget.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtGui/qicon.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QObject \
-		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QWidget
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QWidget \
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\derivative.o derivative.cpp
 
 debug/somewindow.o: somewindow.cpp somewindow.h \
@@ -4971,7 +4972,8 @@ debug/deltawin.o: deltawin.cpp deltawin.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QStatusBar \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/qstatusbar.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QWidget \
-		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/qmath.h
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/qmath.h \
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\deltawin.o deltawin.cpp
 
 debug/mnk.o: mnk.cpp mnk.h \
@@ -5085,7 +5087,8 @@ debug/mnk.o: mnk.cpp mnk.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/qmath.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QMessageBox \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/qmessagebox.h \
-		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/qdialog.h
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/qdialog.h \
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QDebug
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\mnk.o mnk.cpp
 
 debug/qrc_source.o: debug/qrc_source.cpp 

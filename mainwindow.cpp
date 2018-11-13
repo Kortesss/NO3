@@ -211,58 +211,6 @@ double MainWindow::prdelfun(double x1,double x2,double y1,double y2){
     return dd;
 }
 
-//вызов вычисления производной кучочно-непрерывной функции
-void MainWindow::on_action_2_triggered() {
-  if (this->ui->widget->graphCount()!=0){
-    double x1 = ui->doubleSpinBox_x1->value();
-    double x2 = ui->doubleSpinBox_x2->value();
-//расчет производной по отметкам (начало конец по Х)
-    double sred=0, znpozit=0;
-    dirivate.clear();
-    //обработка введеных значений если они за пределами возможных
-    if (x1<this->minx) x1=this->minx;
-    if (x2>this->maxx) x2=this->maxx;
-    //ищем ближайшее к введеному значение из массива данных
-    int i=0;
-    while (x1>this->mass_x[i]) { i++;}
-    x1=i;
-    i=0;
-    while (x2>this->mass_x[i]) { i++;}
-    x2=i;
-    int j=x1;
-      for (i=x1; i<x2; i++) {
-            //qDebug() << ">mass_x="<<this->mass_x[i];
-            //qDebug() << ">mass_y="<<this->mass_y[j];
-            znpozit=prdelfun(this->mass_x[i],this->mass_x[i+1],this->mass_y[j],this->mass_y[j+1]);
-            //qDebug() << "znpozit="<<znpozit;
-            dirivate.append(znpozit);
-//            Derivative *derivative = new Derivative(x1,x2,y1,y2);
-//            Derivative *derivative = new Derivative(this->mass_x[i],this->mass_x[i+1],this->mass_y[j],this->mass_y[j+1]);
-//            ui->textBrowser_4->append(QString("%1").arg(derivative->get_dd()));
-            sred=sred+znpozit;
-            j++;
-    }
-      this->x1=x1;this->x2=x2;
-   // qDebug() << "sred="<<sred;
-    ui->textBrowser_4->clear();
-    ui->textBrowser_4->append(QString("dx/dy ")+QString::number(sred));
-    /*int i,j=100,k=200;
-    double sred=0, znpozit=0;
-    for (i=100; i<k; i++) {
-            qDebug() << ">mass_x="<<this->mass_x[i];
-            qDebug() << ">mass_y="<<this->mass_y[j];
-            znpozit=prdelfun(this->mass_x[i],this->mass_x[i+1],this->mass_y[j],this->mass_y[j+1]);
-            qDebug() << "znpozit="<<znpozit;
-            sred=sred+znpozit;
-            j++;
-    }
-    sred=sred/100;
-    qDebug() << "sred="<<sred;*/
-    //delete derivative();
-  }
-  else{  QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных"));}
-}
-
 void MainWindow::on_action_7_triggered()
 {
     //удаление экстремумов
@@ -346,7 +294,7 @@ void MainWindow::on_actionD_triggered()
 
 void MainWindow::on_action_21_triggered()
 {
-    on_action_2_triggered();
+    on_action_13_triggered();
     //отрисовка графика производной
         SomeWindow *DXWindow=new SomeWindow(dirivate,this->x1,this->x2,this->koef,this);
         DXWindow->show();
@@ -505,4 +453,56 @@ void MainWindow::on_action_10_triggered()
         else{
             QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню, а то все рухнет )"));
         }
+}
+
+void MainWindow::on_action_13_triggered()
+{ //вызов вычисления производной кучочно-непрерывной функции
+    if (this->ui->widget->graphCount()!=0){
+      double x1 = ui->doubleSpinBox_x1->value();
+      double x2 = ui->doubleSpinBox_x2->value();
+  //расчет производной по отметкам (начало конец по Х)
+      double sred=0, znpozit=0;
+      dirivate.clear();
+      //обработка введеных значений если они за пределами возможных
+      if (x1<this->minx) x1=this->minx;
+      if (x2>this->maxx) x2=this->maxx;
+      //ищем ближайшее к введеному значение из массива данных
+      int i=0;
+      while (x1>this->mass_x[i]) { i++;}
+      x1=i;
+      i=0;
+      while (x2>this->mass_x[i]) { i++;}
+      x2=i;
+      int j=x1;
+        for (i=x1; i<x2; i++) {
+              //qDebug() << ">mass_x="<<this->mass_x[i];
+              //qDebug() << ">mass_y="<<this->mass_y[j];
+              znpozit=prdelfun(this->mass_x[i],this->mass_x[i+1],this->mass_y[j],this->mass_y[j+1]);
+              //qDebug() << "znpozit="<<znpozit;
+              dirivate.append(znpozit);
+  //            Derivative *derivative = new Derivative(x1,x2,y1,y2);
+  //            Derivative *derivative = new Derivative(this->mass_x[i],this->mass_x[i+1],this->mass_y[j],this->mass_y[j+1]);
+  //            ui->textBrowser_4->append(QString("%1").arg(derivative->get_dd()));
+              sred=sred+znpozit;
+              j++;
+      }
+        this->x1=x1;this->x2=x2;
+     // qDebug() << "sred="<<sred;
+      ui->textBrowser_4->clear();
+      ui->textBrowser_4->append(QString("dx/dy ")+QString::number(sred));
+      /*int i,j=100,k=200;
+      double sred=0, znpozit=0;
+      for (i=100; i<k; i++) {
+              qDebug() << ">mass_x="<<this->mass_x[i];
+              qDebug() << ">mass_y="<<this->mass_y[j];
+              znpozit=prdelfun(this->mass_x[i],this->mass_x[i+1],this->mass_y[j],this->mass_y[j+1]);
+              qDebug() << "znpozit="<<znpozit;
+              sred=sred+znpozit;
+              j++;
+      }
+      sred=sred/100;
+      qDebug() << "sred="<<sred;*/
+      //delete derivative();
+    }
+    else{  QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных"));}
 }

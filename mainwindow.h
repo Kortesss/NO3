@@ -46,8 +46,6 @@ private slots:
 
     void on_action_triggered();
 
-    void on_action_2_triggered();
-
     void on_action_3_triggered();
 
     void on_action_4_triggered();
@@ -79,6 +77,8 @@ private slots:
     void on_action_5_triggered();
 
     void on_action_10_triggered();
+
+    void on_action_13_triggered();
 
 private:
     Ui::MainWindow *ui;
