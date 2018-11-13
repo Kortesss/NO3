@@ -304,48 +304,6 @@ void MainWindow::on_action_12_triggered()
     }
 }
 
-void MainWindow::on_action_18_triggered()
-{ //Метод наименьших квадратов (МНК) минимума
-    if (this->mass_minX.count() != 0){
-        trendMin.clear();
-        QList<double> yLevel, xLevel;
-        mnk *mnk1 = new mnk(this->mass_minX, this->mass_minY, this->mass_minX.count());
-        double Kdet = mnk1->get_Kdet();
-        double a = mnk1->get_a();
-        double b = mnk1->get_b();
-        //QMessageBox::information(NULL,"Информация","Коэффициент детерминации = "+QString::number(Kdet));
-        for(int i = 0; i < this->mass_minX.count(); i++){
-            this->trendMin.append(mnk1->get_yy(this->mass_minX[i]));
-        }
-
-        yLevel.append(this->trendMin[0]+this->trendMin[0]*(ui->spinLevel->value()/100));
-        yLevel.append(yLevel[0]+yLevel[0]*0.1);
-        yLevel.append(yLevel[0]-yLevel[0]*0.1);
-
-        xLevel.append((yLevel[0]-b)/a);   xLevel.append((yLevel[0]-b)/a); xLevel.append((yLevel[0]-b)/a);
-        if (!axis_max){  // если максимумы не проставлены
-             ui->widget->addGraph();
-             ui->widget->graph(2)->setPen(QColor(255, 0, 0, 255));
-             ui->widget->graph(2)->setLineStyle(QCPGraph::lsNone);//убираем линии
-             ui->widget->graph(2)->setName("Максимумы"); axis_max=true;
-         }
-         if (!this->mnkMin) {ui->widget->addGraph(); this->mnkMin = true;}
-         ui->widget->graph(3)->setData(this->mass_minX.toVector(), this->trendMin.toVector());
-         ui->widget->graph(3)->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
-         ui->widget->graph(3)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
-         ui->widget->graph(3)->setName(QString::number(a,'f',2)+"*x+"+QString::number(b,'f',2)+" R^2="+QString::number(Kdet,'f',2));
-         //----
-         if (!this->levelMin) {ui->widget->addGraph(); this->levelMin = true;}
-         ui->widget->graph(4)->setData(xLevel.toVector(), yLevel.toVector());
-         ui->widget->graph(4)->setPen(QColor(32, 154, 230, 255));//задаем синий цвет
-         ui->widget->graph(4)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 6));
-         ui->widget->graph(4)->setName("Линия перегиба min");
-         yLevel.clear(); xLevel.clear(); ui->action_9->setChecked(false);
-         ui->widget->replot();
-         delete mnk1; //деструктор
-    }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки минимума не определены!"));}
-}
-
 void MainWindow::on_action_20_triggered()
 {
     if ((this->trendMin.count() != 0)){
@@ -353,54 +311,6 @@ void MainWindow::on_action_20_triggered()
         ui->widget->removeGraph(3);
         ui->widget->replot();
     }
-}
-
-void MainWindow::on_action_14_triggered()
-{
-    //Метод наименьших квадратов (МНК)максимума
-        if (this->mass_maxX.count() != 0){
-            trendMax.clear();
-            QList<double> yLevel, xLevel;
-            mnk *mnk2 = new mnk(this->mass_maxX, this->mass_maxY, this->mass_maxX.count());
-            double Kdet = mnk2->get_Kdet();
-            double a = mnk2->get_a();
-            double b = mnk2->get_b();
-            //QMessageBox::information(NULL,"Информация","Коэффициент детерминации = "+QString::number(Kdet));
-            for(int i = 0; i < this->mass_maxX.count(); i++){
-                this->trendMax.append(mnk2->get_yy(this->mass_maxX[i]));
-            }
-            yLevel.append(this->trendMax[0]+this->trendMax[0]*(ui->spinLevel->value()/100));
-            yLevel.append(yLevel[0]+yLevel[0]*0.1);
-            yLevel.append(yLevel[0]-yLevel[0]*0.1);
-
-            xLevel.append((yLevel[0]-b)/a);   xLevel.append((yLevel[0]-b)/a); xLevel.append((yLevel[0]-b)/a);
-                if (!this->mnkMin){  // если МНК мин не нарисована
-                    ui->widget->addGraph();
-                    ui->widget->graph(3)->setPen(QColor(67, 138, 0, 255));
-                    ui->widget->graph(3)->setLineStyle(QCPGraph::lsNone);//убираем линии
-                    ui->widget->graph(3)->setName(" "); this->mnkMin=true;
-                }
-                if (!this->levelMin){  // если МНК мин не нарисована
-                    ui->widget->addGraph();
-                    ui->widget->graph(4)->setPen(QColor(67, 138, 0, 255));
-                    ui->widget->graph(4)->setLineStyle(QCPGraph::lsNone);//убираем линии
-                    ui->widget->graph(4)->setName(" "); this->levelMin=true;
-                }
-                if (!this->mnkMax) {ui->widget->addGraph(); this->mnkMax = true;}
-                ui->widget->graph(5)->setData(this->mass_maxX.toVector(), this->trendMax.toVector());
-                ui->widget->graph(5)->setPen(QColor(255, 0, 0, 255));
-                ui->widget->graph(5)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
-                ui->widget->graph(5)->setName(QString::number(a,'f',2)+"*x+"+QString::number(b,'f',2)+" R^2="+QString::number(Kdet,'f',2));
-                //----
-                if (!this->levelMax) {ui->widget->addGraph(); this->levelMax = true;}
-                ui->widget->graph(6)->setData(xLevel.toVector(), yLevel.toVector());
-                ui->widget->graph(6)->setPen(QColor(2, 15, 250, 255));//задаем темно-синий цвет
-                ui->widget->graph(6)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 6));
-                ui->widget->graph(6)->setName("Линия перегиба max");
-                yLevel.clear(); xLevel.clear(); ui->action_9->setChecked(false);
-                ui->widget->replot();
-            delete mnk2; //деструктор
-        }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки максимума не определены!"));}
 }
 
 void MainWindow::on_action_16_triggered()
@@ -411,13 +321,142 @@ void MainWindow::on_action_16_triggered()
 
 void MainWindow::on_spinLevel_valueChanged()
 {  //спин мнк
-    if (ui->checkMin->isChecked())   on_action_18_triggered();
-    if (ui->checkMax->isChecked())   on_action_14_triggered();
+   on_action_5_triggered();
 }
 
 void MainWindow::on_doubleSpinBox1_valueChanged()
 {
     //измение спина экстремомов
+    on_action_10_triggered();
+}
+
+void MainWindow::on_actionD_triggered()
+{
+    //Расчет изменения дельты сигнала
+        if (this->mass_minX.count()!=0 && this->mass_maxX.count()!=0 && this->mass_minY.count()!=0 && this->mass_maxY.count()!=0){
+            //сортировка экстремумов по возрастанию, вдруг мы добавили в конец списка Qlist новый экстремум, который идет не по порядку
+            qSort(this->mass_minX.begin(), this->mass_minX.end(), qLess<double>());
+            qSort(this->mass_maxX.begin(), this->mass_maxX.end(), qLess<double>());
+            //но игрикам не подходит сортирвка, поэтому лучше строить по порядку пока что
+            deltaWin *DeltaW = new deltaWin(this->mass_minX, this->mass_maxX, this->mass_minY, this->mass_maxY, this);
+            DeltaW->show();
+            DeltaW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+        }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Экстремумы не определены!"));}
+}
+
+void MainWindow::on_action_21_triggered()
+{
+    on_action_2_triggered();
+    //отрисовка графика производной
+        SomeWindow *DXWindow=new SomeWindow(dirivate,this->x1,this->x2,this->koef,this);
+        DXWindow->show();
+        DXWindow->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+}
+
+void MainWindow::on_checkMin_clicked()
+{
+    ui->checkMax->setChecked(false);
+}
+
+void MainWindow::on_checkMax_clicked()
+{
+    ui->checkMin->setChecked(false);
+}
+
+void MainWindow::on_action_5_triggered()
+{
+    if (ui->checkMin->isChecked()){
+        //Метод наименьших квадратов (МНК) минимума
+            if (this->mass_minX.count() != 0){
+                trendMin.clear();
+                QList<double> yLevel, xLevel;
+                mnk *mnk1 = new mnk(this->mass_minX, this->mass_minY, this->mass_minX.count());
+                double Kdet = mnk1->get_Kdet();
+                double a = mnk1->get_a();
+                double b = mnk1->get_b();
+                //QMessageBox::information(NULL,"Информация","Коэффициент детерминации = "+QString::number(Kdet));
+                for(int i = 0; i < this->mass_minX.count(); i++){
+                    this->trendMin.append(mnk1->get_yy(this->mass_minX[i]));
+                }
+
+                yLevel.append(this->trendMin[0]+this->trendMin[0]*(ui->spinLevel->value()/100));
+                yLevel.append(yLevel[0]+yLevel[0]*0.1);
+                yLevel.append(yLevel[0]-yLevel[0]*0.1);
+
+                xLevel.append((yLevel[0]-b)/a);   xLevel.append((yLevel[0]-b)/a); xLevel.append((yLevel[0]-b)/a);
+                if (!axis_max){  // если максимумы не проставлены
+                     ui->widget->addGraph();
+                     ui->widget->graph(2)->setPen(QColor(255, 0, 0, 255));
+                     ui->widget->graph(2)->setLineStyle(QCPGraph::lsNone);//убираем линии
+                     ui->widget->graph(2)->setName("Максимумы"); axis_max=true;
+                 }
+                 if (!this->mnkMin) {ui->widget->addGraph(); this->mnkMin = true;}
+                 ui->widget->graph(3)->setData(this->mass_minX.toVector(), this->trendMin.toVector());
+                 ui->widget->graph(3)->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
+                 ui->widget->graph(3)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
+                 ui->widget->graph(3)->setName(QString::number(a,'f',2)+"*x+"+QString::number(b,'f',2)+" R^2="+QString::number(Kdet,'f',2));
+                 //----
+                 if (!this->levelMin) {ui->widget->addGraph(); this->levelMin = true;}
+                 ui->widget->graph(4)->setData(xLevel.toVector(), yLevel.toVector());
+                 ui->widget->graph(4)->setPen(QColor(32, 154, 230, 255));//задаем синий цвет
+                 ui->widget->graph(4)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 6));
+                 ui->widget->graph(4)->setName("Линия перегиба min");
+                 yLevel.clear(); xLevel.clear(); ui->action_9->setChecked(false);
+                 ui->widget->replot();
+                 delete mnk1; //деструктор
+            }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки минимума не определены!"));}
+    }
+    if (ui->checkMax->isChecked()){
+        //Метод наименьших квадратов (МНК)максимума
+            if (this->mass_maxX.count() != 0){
+                trendMax.clear();
+                QList<double> yLevel, xLevel;
+                mnk *mnk2 = new mnk(this->mass_maxX, this->mass_maxY, this->mass_maxX.count());
+                double Kdet = mnk2->get_Kdet();
+                double a = mnk2->get_a();
+                double b = mnk2->get_b();
+                //QMessageBox::information(NULL,"Информация","Коэффициент детерминации = "+QString::number(Kdet));
+                for(int i = 0; i < this->mass_maxX.count(); i++){
+                    this->trendMax.append(mnk2->get_yy(this->mass_maxX[i]));
+                }
+                yLevel.append(this->trendMax[0]+this->trendMax[0]*(ui->spinLevel->value()/100));
+                yLevel.append(yLevel[0]+yLevel[0]*0.1);
+                yLevel.append(yLevel[0]-yLevel[0]*0.1);
+
+                xLevel.append((yLevel[0]-b)/a);   xLevel.append((yLevel[0]-b)/a); xLevel.append((yLevel[0]-b)/a);
+                    if (!this->mnkMin){  // если МНК мин не нарисована
+                        ui->widget->addGraph();
+                        ui->widget->graph(3)->setPen(QColor(67, 138, 0, 255));
+                        ui->widget->graph(3)->setLineStyle(QCPGraph::lsNone);//убираем линии
+                        ui->widget->graph(3)->setName(" "); this->mnkMin=true;
+                    }
+                    if (!this->levelMin){  // если МНК мин не нарисована
+                        ui->widget->addGraph();
+                        ui->widget->graph(4)->setPen(QColor(67, 138, 0, 255));
+                        ui->widget->graph(4)->setLineStyle(QCPGraph::lsNone);//убираем линии
+                        ui->widget->graph(4)->setName(" "); this->levelMin=true;
+                    }
+                    if (!this->mnkMax) {ui->widget->addGraph(); this->mnkMax = true;}
+                    ui->widget->graph(5)->setData(this->mass_maxX.toVector(), this->trendMax.toVector());
+                    ui->widget->graph(5)->setPen(QColor(255, 0, 0, 255));
+                    ui->widget->graph(5)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
+                    ui->widget->graph(5)->setName(QString::number(a,'f',2)+"*x+"+QString::number(b,'f',2)+" R^2="+QString::number(Kdet,'f',2));
+                    //----
+                    if (!this->levelMax) {ui->widget->addGraph(); this->levelMax = true;}
+                    ui->widget->graph(6)->setData(xLevel.toVector(), yLevel.toVector());
+                    ui->widget->graph(6)->setPen(QColor(2, 15, 250, 255));//задаем темно-синий цвет
+                    ui->widget->graph(6)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 6));
+                    ui->widget->graph(6)->setName("Линия перегиба max");
+                    yLevel.clear(); xLevel.clear(); ui->action_9->setChecked(false);
+                    ui->widget->replot();
+                delete mnk2; //деструктор
+            }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки максимума не определены!"));}
+    }
+    if (!ui->checkMin->isChecked() && !ui->checkMax->isChecked()) QMessageBox::information(NULL,"Результат", "Пожалуйста, выберите минимум или максимум.");
+}
+
+void MainWindow::on_action_10_triggered()
+{
     //Экстремумы
     this->mass_minX.clear(); this->mass_maxX.clear(); this->mass_minY.clear(); this->mass_maxY.clear();//чтобы память не засорять
         if ((this->mass_x.count())>0) {
@@ -466,41 +505,4 @@ void MainWindow::on_doubleSpinBox1_valueChanged()
         else{
             QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню, а то все рухнет )"));
         }
-}
-
-void MainWindow::on_actionD_triggered()
-{
-    //Расчет изменения дельты сигнала
-        if (this->mass_minX.count()!=0 && this->mass_maxX.count()!=0 && this->mass_minY.count()!=0 && this->mass_maxY.count()!=0){
-            //сортировка экстремумов по возрастанию, вдруг мы добавили в конец списка Qlist новый экстремум, который идет не по порядку
-            qSort(this->mass_minX.begin(), this->mass_minX.end(), qLess<double>());
-            qSort(this->mass_maxX.begin(), this->mass_maxX.end(), qLess<double>());
-            //но игрикам не подходит сортирвка, поэтому лучше строить по порядку пока что
-            deltaWin *DeltaW = new deltaWin(this->mass_minX, this->mass_maxX, this->mass_minY, this->mass_maxY, this);
-            DeltaW->show();
-            DeltaW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
-        }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Экстремумы не определены!"));}
-}
-
-void MainWindow::on_action_21_triggered()
-{
-    //отрисовка графика производной
-        SomeWindow *DXWindow=new SomeWindow(dirivate,this->x1,this->x2,this->koef,this);
-        DXWindow->show();
-        DXWindow->setAttribute(Qt::WA_DeleteOnClose); //деструктор
-}
-
-void MainWindow::on_action_6_triggered()
-{
-
-}
-
-void MainWindow::on_checkMin_clicked()
-{
-    ui->checkMax->setChecked(false);
-}
-
-void MainWindow::on_checkMax_clicked()
-{
-    ui->checkMin->setChecked(false);
 }

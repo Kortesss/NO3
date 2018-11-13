@@ -52,12 +52,12 @@
          <widget class="QLabel" name="label">
           <property name="maximumSize">
            <size>
-            <width>20</width>
+            <width>163</width>
             <height>16777215</height>
            </size>
           </property>
           <property name="text">
-           <string>x1</string>
+           <string>Начальное значение скорости</string>
           </property>
          </widget>
         </item>
@@ -82,12 +82,12 @@
          <widget class="QLabel" name="label_3">
           <property name="maximumSize">
            <size>
-            <width>20</width>
+            <width>153</width>
             <height>16777215</height>
            </size>
           </property>
           <property name="text">
-           <string>x2</string>
+           <string>Конечное значение скорости</string>
           </property>
          </widget>
         </item>
@@ -248,9 +248,7 @@ p, li { white-space: pre-wrap; }
        </widget>
       </item>
       <item>
-       <widget class="QCustomPlot" name="widget" native="true">
-        <zorder></zorder>
-       </widget>
+       <widget class="QCustomPlot" name="widget" native="true"/>
       </item>
      </layout>
     </item>
@@ -280,28 +278,9 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>Экстремумы функции</string>
     </property>
-    <widget class="QMenu" name="menu_8">
-     <property name="title">
-      <string>Автопоиск</string>
-     </property>
-     <widget class="QMenu" name="menu_10">
-      <property name="title">
-       <string>Фильтрация</string>
-      </property>
-     </widget>
-     <addaction name="menu_10"/>
-    </widget>
-    <widget class="QMenu" name="menu_9">
-     <property name="title">
-      <string>Скорость изменения параметра</string>
-     </property>
-     <addaction name="action_24"/>
-     <addaction name="action_26"/>
-    </widget>
-    <addaction name="menu_8"/>
+    <addaction name="action_10"/>
     <addaction name="action_9"/>
     <addaction name="action_7"/>
-    <addaction name="menu_9"/>
     <addaction name="action_21"/>
    </widget>
    <widget class="QMenu" name="menu_4">
@@ -312,23 +291,7 @@ p, li { white-space: pre-wrap; }
      <property name="title">
       <string>Линия тренда</string>
      </property>
-     <widget class="QMenu" name="menu_6">
-      <property name="title">
-       <string>Минимумов</string>
-      </property>
-      <addaction name="action_18"/>
-      <addaction name="action_20"/>
-     </widget>
-     <widget class="QMenu" name="menu_7">
-      <property name="title">
-       <string>Максимумов</string>
-      </property>
-      <addaction name="action_14"/>
-      <addaction name="action_15"/>
-     </widget>
-     <addaction name="menu_6"/>
-     <addaction name="menu_7"/>
-     <addaction name="action_27"/>
+     <addaction name="action_5"/>
     </widget>
     <addaction name="menu_5"/>
     <addaction name="actionD"/>
@@ -428,7 +391,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="actionD">
    <property name="text">
-    <string>d Сигнала</string>
+    <string>Δ сигнала</string>
    </property>
   </action>
   <action name="action_24">
@@ -439,11 +402,6 @@ p, li { white-space: pre-wrap; }
   <action name="action_26">
    <property name="text">
     <string>Конечное значение диапазона</string>
-   </property>
-  </action>
-  <action name="action_27">
-   <property name="text">
-    <string>Порог тренда процентов</string>
    </property>
   </action>
   <action name="action_7">
@@ -457,6 +415,16 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>Установить вручную</string>
+   </property>
+  </action>
+  <action name="action_5">
+   <property name="text">
+    <string>Метод наименьших квадратов</string>
+   </property>
+  </action>
+  <action name="action_10">
+   <property name="text">
+    <string>Автопоиск</string>
    </property>
   </action>
  </widget>

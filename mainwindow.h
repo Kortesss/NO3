@@ -60,11 +60,7 @@ private slots:
 
     void on_action_12_triggered();
 
-    void on_action_18_triggered();
-
     void on_action_20_triggered();
-
-    void on_action_14_triggered();
 
     void on_action_16_triggered();
 
@@ -76,11 +72,13 @@ private slots:
 
     void on_action_21_triggered();
 
-    void on_action_6_triggered();
-
     void on_checkMin_clicked();
 
     void on_checkMax_clicked();
+
+    void on_action_5_triggered();
+
+    void on_action_10_triggered();
 
 private:
     Ui::MainWindow *ui;
