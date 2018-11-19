@@ -15,6 +15,46 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->widget, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(histogramMouseMoved(QMouseEvent*)));
     axis_max=false; axis_min=false; mnkMax=false; mnkMin=false;
     levelMax=false; levelMin=false;
+
+
+    ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+    ui->widget->xAxis->setLabel("x");
+    ui->widget->yAxis->setLabel("y");
+    graphMin = ui->widget->addGraph(); //Добавление минимумов
+    graphMin->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
+    graphMin->setLineStyle(QCPGraph::lsNone);//убираем линии
+    graphMin->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
+    graphMin->setName(" ");
+    graphMax = ui->widget->addGraph(); //Добавление максимумов
+    graphMax->setPen(QColor(255, 0, 0, 255));//задаем красный цвет точки
+    graphMax->setLineStyle(QCPGraph::lsNone);//убираем линии
+    graphMax->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
+    graphMax->setName(" ");
+
+    graphMnkMin = ui->widget->addGraph(); //Добавление МНК мин
+    graphMnkMin->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
+    graphMnkMin->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
+    graphMnkMin->setName(" ");
+    graphLevelMin = ui->widget->addGraph(); //Добавление линии перегиба мин
+    graphLevelMin->setPen(QColor(32, 154, 230, 255));//задаем синий цвет
+    graphLevelMin->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 6));
+    graphLevelMin->setName(" ");
+
+    graphMnkMax = ui->widget->addGraph(); //Добавление МНК максимумов
+    graphMnkMax->setPen(QColor(255, 0, 0, 255));
+    graphMnkMax->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
+    graphMnkMax->setName(" ");
+    graphLevelMax = ui->widget->addGraph(); //Добавление линии перегиба max
+    graphLevelMax->setPen(QColor(2, 15, 250, 255));//задаем темно-синий цвет
+    graphLevelMax->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 6));
+    graphLevelMax->setName(" ");
+
+    graphic1 = ui->widget->addGraph();	//Добавление графика 1
+    graphic1->setName(" ");
+    graphic1->setPen(QColor(50, 50, 50, 255));//задаем цвет точки
+    //формируем вид точек
+    graphic1->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
+
 }
 
 MainWindow::~MainWindow()
@@ -61,36 +101,6 @@ void MainWindow::on_action_4_triggered()
         ui->widget->replot();
 }
 
-//рисуем график из загруженного массива
-void MainWindow::on_action_3_triggered()
-{
-    //Рисуем точки
-        ui->widget->clearGraphs();//Если нужно, очищаем все графики
-        //Добавляем один график в widget
-        ui->widget->addGraph();
-        //Говорим, что отрисовать нужно график по нашим двум массивам x и y
-        ui->widget->graph(0)->setData(this->mass_x.toVector(), this->mass_y.toVector());
-
-        ui->widget->graph(0)->setPen(QColor(50, 50, 50, 255));//задаем цвет точки
-        //ui->widget->graph(0)->setLineStyle(QCPGraph::lsNone);//убираем линии
-        //формируем вид точек
-        ui->widget->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
-        //Подписываем оси Ox и Oy
-        ui->widget->xAxis->setLabel("x");
-        ui->widget->yAxis->setLabel("y");
-
-        //Установим область, которая будет показываться на графике
-        ui->widget->xAxis->setRange(this->minx, this->maxx);// Для оси Ox
-        //ui->widget->xAxis->setRange(200,800);//Для оси Ox
-        ui->widget->yAxis->setRange(this->miny,this->maxy);//Для оси Oy
-        ui->widget->legend->setVisible(true);
-        ui->widget->graph(0)->setName("График 1");
-        ui->widget->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);//устанавливаем легенду в правый верхний угол
-        //И перерисуем график на нашем widget
-        ui->widget->replot();
-        ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
-}
-
 //выбор файла и заполнение массива данных
 void MainWindow::on_action_triggered()
 {
@@ -132,49 +142,48 @@ void MainWindow::on_action_triggered()
 
     }
 }
-//-----------------------------------------------------
+
+//рисуем график из загруженного массива
+void MainWindow::on_action_3_triggered()
+{    //Рисуем точки
+        //ui->widget->clearGraphs();//Если нужно, очищаем все графики
+        graphic1->setData(this->mass_x.toVector(), this->mass_y.toVector());
+        //Установим область, которая будет показываться на графике
+        ui->widget->xAxis->setRange(this->minx, this->maxx);// Для оси Ox
+        ui->widget->yAxis->setRange(this->miny,this->maxy);//Для оси Oy
+        graphic1->setName("График "+QString::number(ui->listWidget->count()+1));
+        ui->widget->legend->setVisible(true);
+        ui->widget->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);//устанавливаем легенду в правый верхний угол
+        ui->widget->replot();
+
+}
 
 //функция обработки нажатия кнопки мыши и считывание координат
   void MainWindow::mousePress(QMouseEvent *mouseEvent){
 
       if (mouseEvent->button() == Qt::LeftButton){
           QCPItemText *text = new QCPItemText(ui->widget); text->setVisible(true);
-      if(this->ui->widget->graphCount()!=0){
-
+      if(graphic1->dataCount()!=0){
           if (ui->action_9->isChecked()&& ui->checkMin->isChecked()){
               this->mass_minX.append(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()));
               this->mass_minY.append(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
-              if (!this->axis_min) {ui->widget->addGraph();
-              this->axis_min = true;} //если координаты мин не были добавлены, добавляем 1 раз
               text->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',2) //округление до 2-х знаков
                             +"; "+QString::number(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()),'f',2)+")");
               text->position->setCoords(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x())-5, ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())-2);
+              graphMin->setData(this->mass_minX.toVector(), this->mass_minY.toVector());
+              graphMin->setName("Минимумы"); graphMin->setVisible(true);
               ui->widget->replot();
-                  ui->widget->graph(1)->setData(this->mass_minX.toVector(), this->mass_minY.toVector());
-                  ui->widget->graph(1)->setPen(QColor(67, 138, 0, 255));
-                  ui->widget->graph(1)->setLineStyle(QCPGraph::lsNone);//убираем линии
-                  ui->widget->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
-                  ui->widget->graph(1)->setName("Минимумы");
-                  ui->widget->replot();
           }
       //добавляем максимумы x, y
           if (ui->action_9->isChecked() && ui->checkMax->isChecked()){
               this->mass_maxX.append(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()));
               this->mass_maxY.append(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
-                if (!this->axis_max) {ui->widget->addGraph(); this->axis_max = true; }
-                if (!this->axis_min) {ui->widget->addGraph(); this->axis_min = true;}
-                  ui->widget->graph(2)->setData(this->mass_maxX.toVector(), this->mass_maxY.toVector());
-                  ui->widget->graph(2)->setPen(QColor(255, 0, 0, 255));
-                  ui->widget->graph(2)->setLineStyle(QCPGraph::lsNone);//убираем линии
-                  ui->widget->graph(2)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
-                  ui->widget->graph(2)->setName("Максимумы");
-                  ui->widget->graph(1)->setPen(QColor(67, 138, 0, 255));
-                  ui->widget->graph(1)->setLineStyle(QCPGraph::lsNone);
-                  ui->widget->graph(1)->setName("Минимумы ");
-                  text->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',2)
+              graphMax->setData(this->mass_maxX.toVector(), this->mass_maxY.toVector());
+              graphMax->setName("Максимумы"); graphMax->setVisible(true);
+              text->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',2)
                                 +"; "+QString::number(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()),'f',2)+")");
-                  text->position->setCoords(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x())-5, ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())+2);
-                  ui->widget->replot();
+              text->position->setCoords(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x())-5, ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())+2);
+              ui->widget->replot();
           }
       }
       }
@@ -214,9 +223,12 @@ double MainWindow::prdelfun(double x1,double x2,double y1,double y2){
 void MainWindow::on_action_7_triggered()
 {
     //удаление экстремумов
-       this->mass_minX.clear(); this->mass_maxX.clear(); this->mass_minY.clear(); this->mass_maxY.clear();
-       ui->widget->removeGraph(2); ui->widget->removeGraph(1); axis_max=false; axis_min=false;
-       mnkMax=false; mnkMin=false;  levelMax=false; levelMin=false;
+    if (ui->checkMin->isChecked()){this->mass_minX.clear(); this->mass_minY.clear(); graphMin->setVisible(false); graphMin->setName(" ");}
+    if (ui->checkMax->isChecked()){this->mass_maxY.clear(); this->mass_maxX.clear(); graphMax->setVisible(false); graphMax->setName(" ");}
+    if (!ui->checkMin->isChecked() && !ui->checkMax->isChecked()){
+        this->mass_minX.clear(); this->mass_minY.clear(); graphMin->setVisible(false); graphMin->setName(" ");
+        this->mass_maxY.clear(); this->mass_maxX.clear(); graphMax->setVisible(false); graphMax->setName(" ");
+    }
       //text->setVisible(false);
       //text->text().clear();
        ui->widget->replot();
@@ -252,24 +264,9 @@ void MainWindow::on_action_12_triggered()
     }
 }
 
-void MainWindow::on_action_20_triggered()
-{
-    if ((this->trendMin.count() != 0)){
-        this->trendMin.clear();
-        ui->widget->removeGraph(3);
-        ui->widget->replot();
-    }
-}
-
-void MainWindow::on_action_16_triggered()
-{   //очистка всех графиков
-    on_action_7_triggered();
-    ui->widget->clearGraphs();  ui->widget->replot();
-}
-
 void MainWindow::on_spinLevel_valueChanged()
 {  //спин мнк
-   on_action_5_triggered();
+   on_action_17_triggered();
 }
 
 void MainWindow::on_doubleSpinBox1_valueChanged()
@@ -311,104 +308,12 @@ void MainWindow::on_checkMax_clicked()
     ui->checkMin->setChecked(false);
 }
 
-void MainWindow::on_action_5_triggered()
-{
-    if (ui->checkMin->isChecked()){
-        //Метод наименьших квадратов (МНК) минимума
-            if (this->mass_minX.count() != 0){
-                trendMin.clear();
-                QList<double> yLevel, xLevel;
-                mnk *mnk1 = new mnk(this->mass_minX, this->mass_minY, this->mass_minX.count());
-                double Kdet = mnk1->get_Kdet();
-                double a = mnk1->get_a();
-                double b = mnk1->get_b();
-                //QMessageBox::information(NULL,"Информация","Коэффициент детерминации = "+QString::number(Kdet));
-                for(int i = 0; i < this->mass_minX.count(); i++){
-                    this->trendMin.append(mnk1->get_yy(this->mass_minX[i]));
-                }
-
-                yLevel.append(this->trendMin[0]+this->trendMin[0]*(ui->spinLevel->value()/100));
-                yLevel.append(yLevel[0]+yLevel[0]*0.1);
-                yLevel.append(yLevel[0]-yLevel[0]*0.1);
-
-                xLevel.append((yLevel[0]-b)/a);   xLevel.append((yLevel[0]-b)/a); xLevel.append((yLevel[0]-b)/a);
-                if (!axis_max){  // если максимумы не проставлены
-                     ui->widget->addGraph();
-                     ui->widget->graph(2)->setPen(QColor(255, 0, 0, 255));
-                     ui->widget->graph(2)->setLineStyle(QCPGraph::lsNone);//убираем линии
-                     ui->widget->graph(2)->setName("Максимумы"); axis_max=true;
-                 }
-                 if (!this->mnkMin) {ui->widget->addGraph(); this->mnkMin = true;}
-                 ui->widget->graph(3)->setData(this->mass_minX.toVector(), this->trendMin.toVector());
-                 ui->widget->graph(3)->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
-                 ui->widget->graph(3)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
-                 ui->widget->graph(3)->setName(QString::number(a,'f',2)+"*x+"+QString::number(b,'f',2)+" R^2="+QString::number(Kdet,'f',2));
-                 //----
-                 if (!this->levelMin) {ui->widget->addGraph(); this->levelMin = true;}
-                 ui->widget->graph(4)->setData(xLevel.toVector(), yLevel.toVector());
-                 ui->widget->graph(4)->setPen(QColor(32, 154, 230, 255));//задаем синий цвет
-                 ui->widget->graph(4)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 6));
-                 ui->widget->graph(4)->setName("Линия перегиба min");
-                 yLevel.clear(); xLevel.clear(); ui->action_9->setChecked(false);
-                 ui->widget->replot();
-                 delete mnk1; //деструктор
-            }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки минимума не определены!"));}
-    }
-    if (ui->checkMax->isChecked()){
-        //Метод наименьших квадратов (МНК)максимума
-            if (this->mass_maxX.count() != 0){
-                trendMax.clear();
-                QList<double> yLevel, xLevel;
-                mnk *mnk2 = new mnk(this->mass_maxX, this->mass_maxY, this->mass_maxX.count());
-                double Kdet = mnk2->get_Kdet();
-                double a = mnk2->get_a();
-                double b = mnk2->get_b();
-                //QMessageBox::information(NULL,"Информация","Коэффициент детерминации = "+QString::number(Kdet));
-                for(int i = 0; i < this->mass_maxX.count(); i++){
-                    this->trendMax.append(mnk2->get_yy(this->mass_maxX[i]));
-                }
-                yLevel.append(this->trendMax[0]+this->trendMax[0]*(ui->spinLevel->value()/100));
-                yLevel.append(yLevel[0]+yLevel[0]*0.1);
-                yLevel.append(yLevel[0]-yLevel[0]*0.1);
-
-                xLevel.append((yLevel[0]-b)/a);   xLevel.append((yLevel[0]-b)/a); xLevel.append((yLevel[0]-b)/a);
-                    if (!this->mnkMin){  // если МНК мин не нарисована
-                        ui->widget->addGraph();
-                        ui->widget->graph(3)->setPen(QColor(67, 138, 0, 255));
-                        ui->widget->graph(3)->setLineStyle(QCPGraph::lsNone);//убираем линии
-                        ui->widget->graph(3)->setName(" "); this->mnkMin=true;
-                    }
-                    if (!this->levelMin){  // если МНК мин не нарисована
-                        ui->widget->addGraph();
-                        ui->widget->graph(4)->setPen(QColor(67, 138, 0, 255));
-                        ui->widget->graph(4)->setLineStyle(QCPGraph::lsNone);//убираем линии
-                        ui->widget->graph(4)->setName(" "); this->levelMin=true;
-                    }
-                    if (!this->mnkMax) {ui->widget->addGraph(); this->mnkMax = true;}
-                    ui->widget->graph(5)->setData(this->mass_maxX.toVector(), this->trendMax.toVector());
-                    ui->widget->graph(5)->setPen(QColor(255, 0, 0, 255));
-                    ui->widget->graph(5)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
-                    ui->widget->graph(5)->setName(QString::number(a,'f',2)+"*x+"+QString::number(b,'f',2)+" R^2="+QString::number(Kdet,'f',2));
-                    //----
-                    if (!this->levelMax) {ui->widget->addGraph(); this->levelMax = true;}
-                    ui->widget->graph(6)->setData(xLevel.toVector(), yLevel.toVector());
-                    ui->widget->graph(6)->setPen(QColor(2, 15, 250, 255));//задаем темно-синий цвет
-                    ui->widget->graph(6)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 6));
-                    ui->widget->graph(6)->setName("Линия перегиба max");
-                    yLevel.clear(); xLevel.clear(); ui->action_9->setChecked(false);
-                    ui->widget->replot();
-                delete mnk2; //деструктор
-            }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки максимума не определены!"));}
-    }
-    if (!ui->checkMin->isChecked() && !ui->checkMax->isChecked()) QMessageBox::information(NULL,"Результат", "Пожалуйста, выберите минимум или максимум.");
-}
-
 void MainWindow::on_action_10_triggered()
 {
     //Экстремумы
     this->mass_minX.clear(); this->mass_maxX.clear(); this->mass_minY.clear(); this->mass_maxY.clear();//чтобы память не засорять
         if ((this->mass_x.count())>0) {
-           if (this->ui->widget->graphCount()!=0){//если нулевой граф построен
+           if (graphic1->dataCount()!=0){//если график1 построен
                 bool up; //переменная отвечающая за возрастание
                 if (this->mass_x[1]>this->mass_x[0]) up = true; //смотрим, возрастает ли график
                 for(int i = 0; i < this->mass_x.count()-1; i ++){
@@ -431,19 +336,12 @@ void MainWindow::on_action_10_triggered()
                         }
                     }
                 }
-
-                if (!this->axis_min) {ui->widget->addGraph(); this->axis_min = true;}
-                ui->widget->graph(1)->setData(this->mass_minX.toVector(), this->mass_minY.toVector());
-                ui->widget->graph(1)->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
-                ui->widget->graph(1)->setLineStyle(QCPGraph::lsNone);//убираем линии
-                ui->widget->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
-                ui->widget->graph(1)->setName("Минимумы");
-                if (!this->axis_max) {ui->widget->addGraph(); this->axis_max = true; }
-                ui->widget->graph(2)->setData(this->mass_maxX.toVector(), this->mass_maxY.toVector());
-                ui->widget->graph(2)->setPen(QColor(255, 0, 0, 255));//задаем красный цвет точки
-                ui->widget->graph(2)->setLineStyle(QCPGraph::lsNone);//убираем линии
-                ui->widget->graph(2)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
-                ui->widget->graph(2)->setName("Максимумы");
+                graphMin->setData(this->mass_minX.toVector(), this->mass_minY.toVector());
+                graphMin->setName("Минимумы");
+                graphMin->setVisible(true);
+                graphMax->setData(this->mass_maxX.toVector(), this->mass_maxY.toVector());
+                graphMax->setName("Максимумы");
+                graphMax->setVisible(true);
                 ui->widget->replot();
              }
               else{
@@ -457,7 +355,7 @@ void MainWindow::on_action_10_triggered()
 
 void MainWindow::on_action_13_triggered()
 { //вызов вычисления производной кучочно-непрерывной функции
-    if (this->ui->widget->graphCount()!=0){
+    if (graphic1->dataCount()!=0){
       double x1 = ui->doubleSpinBox_x1->value();
       double x2 = ui->doubleSpinBox_x2->value();
   //расчет производной по отметкам (начало конец по Х)
@@ -505,4 +403,93 @@ void MainWindow::on_action_13_triggered()
       //delete derivative();
     }
     else{  QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных"));}
+}
+
+void MainWindow::on_action_17_triggered()
+{
+    if (ui->checkMin->isChecked()){
+        //Метод наименьших квадратов (МНК) минимума
+            if (this->mass_minX.count() != 0){
+                trendMin.clear();
+                QList<double> yLevel, xLevel;
+                mnk *mnk1 = new mnk(this->mass_minX, this->mass_minY, this->mass_minX.count());
+                double Kdet = mnk1->get_Kdet();
+                double a = mnk1->get_a();
+                double b = mnk1->get_b();
+                //QMessageBox::information(NULL,"Информация","Коэффициент детерминации = "+QString::number(Kdet));
+                for(int i = 0; i < this->mass_minX.count(); i++){
+                    this->trendMin.append(mnk1->get_yy(this->mass_minX[i]));
+                }
+                yLevel.append(this->trendMin[0]+this->trendMin[0]*(ui->spinLevel->value()/100));
+                yLevel.append(yLevel[0]+yLevel[0]*0.1);
+                yLevel.append(yLevel[0]-yLevel[0]*0.1);
+                xLevel.append((yLevel[0]-b)/a);   xLevel.append((yLevel[0]-b)/a); xLevel.append((yLevel[0]-b)/a);
+
+                graphMnkMin->setData(this->mass_minX.toVector(), this->trendMin.toVector());
+                graphMnkMin->setVisible(true);
+                graphMnkMin->setName(QString::number(a,'f',2)+"*x+"+QString::number(b,'f',2)+" R^2="+QString::number(Kdet,'f',2));
+                graphLevelMin->setData(xLevel.toVector(), yLevel.toVector());
+                graphLevelMin->setName("Линия перегиба min");
+                graphLevelMin->setVisible(true);
+                //----
+                yLevel.clear(); xLevel.clear(); ui->action_9->setChecked(false);
+                ui->widget->replot();
+                delete mnk1; //деструктор
+            }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки минимума не определены!"));}
+    }
+    if (ui->checkMax->isChecked()){
+        //Метод наименьших квадратов (МНК)максимума
+            if (this->mass_maxX.count() != 0){
+                trendMax.clear();
+                QList<double> yLevel, xLevel;
+                mnk *mnk2 = new mnk(this->mass_maxX, this->mass_maxY, this->mass_maxX.count());
+                double Kdet = mnk2->get_Kdet();
+                double a = mnk2->get_a();
+                double b = mnk2->get_b();
+                //QMessageBox::information(NULL,"Информация","Коэффициент детерминации = "+QString::number(Kdet));
+                for(int i = 0; i < this->mass_maxX.count(); i++){
+                    this->trendMax.append(mnk2->get_yy(this->mass_maxX[i]));
+                }
+                yLevel.append(this->trendMax[0]+this->trendMax[0]*(ui->spinLevel->value()/100));
+                yLevel.append(yLevel[0]+yLevel[0]*0.1);
+                yLevel.append(yLevel[0]-yLevel[0]*0.1);
+
+                xLevel.append((yLevel[0]-b)/a);   xLevel.append((yLevel[0]-b)/a); xLevel.append((yLevel[0]-b)/a);
+                graphMnkMax->setData(this->mass_maxX.toVector(), this->trendMax.toVector());
+                graphMnkMax->setVisible(true);
+                graphMnkMax->setName(QString::number(a,'f',2)+"*x+"+QString::number(b,'f',2)+" R^2="+QString::number(Kdet,'f',2));
+                graphLevelMax->setData(xLevel.toVector(), yLevel.toVector());
+                graphLevelMax->setName("Линия перегиба max");
+                graphLevelMax->setVisible(true);
+                //----
+                yLevel.clear(); xLevel.clear(); ui->action_9->setChecked(false);
+                ui->widget->replot();
+                delete mnk2; //деструктор
+            }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки максимума не определены!"));}
+    }
+    if (!ui->checkMin->isChecked() && !ui->checkMax->isChecked()) QMessageBox::information(NULL,"Результат", "Пожалуйста, выберите минимум или максимум.");
+}
+
+void MainWindow::on_action_19_triggered()
+{   //удаление МНК
+    if (ui->checkMin->isChecked()){ this->trendMin.clear(); graphMnkMin->setVisible(false); graphMnkMin->setName(" ");
+        graphLevelMin->setVisible(false); graphLevelMin->setName(" ");}
+    if (ui->checkMax->isChecked()){ this->trendMax.clear(); graphMnkMax->setVisible(false); graphMnkMax->setName(" ");
+        graphLevelMax->setVisible(false); graphLevelMax->setName(" ");}
+    if (!ui->checkMin->isChecked() && !ui->checkMax->isChecked()){
+        this->trendMin.clear(); graphMnkMin->setVisible(false); graphMnkMin->setName(" ");
+        graphLevelMin->setVisible(false);  graphLevelMin->setName(" ");
+        this->trendMax.clear(); graphMnkMax->setVisible(false); graphMnkMax->setName(" ");
+        graphLevelMax->setVisible(false); graphLevelMax->setName(" ");
+    }
+    ui->widget->replot();
+}
+
+void MainWindow::on_action_16_triggered()
+{   //очистка всех графиков
+    this->mass_minX.clear(); this->mass_maxX.clear(); this->mass_minY.clear(); this->mass_maxY.clear();
+    graphMin->setVisible(false); graphMax->setVisible(false);
+    this->trendMin.clear(); graphMnkMin->setVisible(false); graphLevelMin->setVisible(false);
+    this->trendMax.clear(); graphMnkMax->setVisible(false); graphLevelMax->setVisible(false);
+    ui->widget->replot();
 }

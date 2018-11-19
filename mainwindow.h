@@ -58,8 +58,6 @@ private slots:
 
     void on_action_12_triggered();
 
-    void on_action_20_triggered();
-
     void on_action_16_triggered();
 
     void on_spinLevel_valueChanged();
@@ -74,11 +72,13 @@ private slots:
 
     void on_checkMax_clicked();
 
-    void on_action_5_triggered();
-
     void on_action_10_triggered();
 
     void on_action_13_triggered();
+
+    void on_action_17_triggered();
+
+    void on_action_19_triggered();
 
 private:
     Ui::MainWindow *ui;
@@ -95,7 +95,7 @@ private:
     QVector<double> dirivate;
     double x1, x2;
     bool axis_max, axis_min, mnkMax, mnkMin, levelMin, levelMax;
-    QCPGraph *graphMin;
+    QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax;
     //QCPItemText *text;
 };
 

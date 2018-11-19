@@ -20,7 +20,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
     QByteArrayData data[24];
-    char stringdata0[471];
+    char stringdata0[472];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -42,17 +42,17 @@ QT_MOC_LITERAL(9, 126, 21), // "on_action_7_triggered"
 QT_MOC_LITERAL(10, 148, 21), // "on_action_8_triggered"
 QT_MOC_LITERAL(11, 170, 22), // "on_action_11_triggered"
 QT_MOC_LITERAL(12, 193, 22), // "on_action_12_triggered"
-QT_MOC_LITERAL(13, 216, 22), // "on_action_20_triggered"
-QT_MOC_LITERAL(14, 239, 22), // "on_action_16_triggered"
-QT_MOC_LITERAL(15, 262, 25), // "on_spinLevel_valueChanged"
-QT_MOC_LITERAL(16, 288, 30), // "on_doubleSpinBox1_valueChanged"
-QT_MOC_LITERAL(17, 319, 20), // "on_actionD_triggered"
-QT_MOC_LITERAL(18, 340, 22), // "on_action_21_triggered"
-QT_MOC_LITERAL(19, 363, 19), // "on_checkMin_clicked"
-QT_MOC_LITERAL(20, 383, 19), // "on_checkMax_clicked"
-QT_MOC_LITERAL(21, 403, 21), // "on_action_5_triggered"
-QT_MOC_LITERAL(22, 425, 22), // "on_action_10_triggered"
-QT_MOC_LITERAL(23, 448, 22) // "on_action_13_triggered"
+QT_MOC_LITERAL(13, 216, 22), // "on_action_16_triggered"
+QT_MOC_LITERAL(14, 239, 25), // "on_spinLevel_valueChanged"
+QT_MOC_LITERAL(15, 265, 30), // "on_doubleSpinBox1_valueChanged"
+QT_MOC_LITERAL(16, 296, 20), // "on_actionD_triggered"
+QT_MOC_LITERAL(17, 317, 22), // "on_action_21_triggered"
+QT_MOC_LITERAL(18, 340, 19), // "on_checkMin_clicked"
+QT_MOC_LITERAL(19, 360, 19), // "on_checkMax_clicked"
+QT_MOC_LITERAL(20, 380, 22), // "on_action_10_triggered"
+QT_MOC_LITERAL(21, 403, 22), // "on_action_13_triggered"
+QT_MOC_LITERAL(22, 426, 22), // "on_action_17_triggered"
+QT_MOC_LITERAL(23, 449, 22) // "on_action_19_triggered"
 
     },
     "MainWindow\0mousePress\0\0QMouseEvent*\0"
@@ -60,13 +60,12 @@ QT_MOC_LITERAL(23, 448, 22) // "on_action_13_triggered"
     "on_action_3_triggered\0on_action_4_triggered\0"
     "on_action_7_triggered\0on_action_8_triggered\0"
     "on_action_11_triggered\0on_action_12_triggered\0"
-    "on_action_20_triggered\0on_action_16_triggered\0"
-    "on_spinLevel_valueChanged\0"
+    "on_action_16_triggered\0on_spinLevel_valueChanged\0"
     "on_doubleSpinBox1_valueChanged\0"
     "on_actionD_triggered\0on_action_21_triggered\0"
     "on_checkMin_clicked\0on_checkMax_clicked\0"
-    "on_action_5_triggered\0on_action_10_triggered\0"
-    "on_action_13_triggered"
+    "on_action_10_triggered\0on_action_13_triggered\0"
+    "on_action_17_triggered\0on_action_19_triggered"
 };
 #undef QT_MOC_LITERAL
 
@@ -145,17 +144,17 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 6: _t->on_action_8_triggered(); break;
         case 7: _t->on_action_11_triggered(); break;
         case 8: _t->on_action_12_triggered(); break;
-        case 9: _t->on_action_20_triggered(); break;
-        case 10: _t->on_action_16_triggered(); break;
-        case 11: _t->on_spinLevel_valueChanged(); break;
-        case 12: _t->on_doubleSpinBox1_valueChanged(); break;
-        case 13: _t->on_actionD_triggered(); break;
-        case 14: _t->on_action_21_triggered(); break;
-        case 15: _t->on_checkMin_clicked(); break;
-        case 16: _t->on_checkMax_clicked(); break;
-        case 17: _t->on_action_5_triggered(); break;
-        case 18: _t->on_action_10_triggered(); break;
-        case 19: _t->on_action_13_triggered(); break;
+        case 9: _t->on_action_16_triggered(); break;
+        case 10: _t->on_spinLevel_valueChanged(); break;
+        case 11: _t->on_doubleSpinBox1_valueChanged(); break;
+        case 12: _t->on_actionD_triggered(); break;
+        case 13: _t->on_action_21_triggered(); break;
+        case 14: _t->on_checkMin_clicked(); break;
+        case 15: _t->on_checkMax_clicked(); break;
+        case 16: _t->on_action_10_triggered(); break;
+        case 17: _t->on_action_13_triggered(); break;
+        case 18: _t->on_action_17_triggered(); break;
+        case 19: _t->on_action_19_triggered(); break;
         default: ;
         }
     }

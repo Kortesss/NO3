@@ -292,7 +292,14 @@ p, li { white-space: pre-wrap; }
      <property name="title">
       <string>Линия тренда</string>
      </property>
-     <addaction name="action_5"/>
+     <widget class="QMenu" name="menu_3">
+      <property name="title">
+       <string>Метод наименьших квадратов</string>
+      </property>
+      <addaction name="action_17"/>
+      <addaction name="action_19"/>
+     </widget>
+     <addaction name="menu_3"/>
     </widget>
     <addaction name="menu_5"/>
     <addaction name="actionD"/>
@@ -360,26 +367,6 @@ p, li { white-space: pre-wrap; }
     <string>Сохранить график</string>
    </property>
   </action>
-  <action name="action_18">
-   <property name="text">
-    <string>Метод наименьших квадратов</string>
-   </property>
-  </action>
-  <action name="action_20">
-   <property name="text">
-    <string>Удалить</string>
-   </property>
-  </action>
-  <action name="action_14">
-   <property name="text">
-    <string>Метод наименьших квадратов</string>
-   </property>
-  </action>
-  <action name="action_15">
-   <property name="text">
-    <string>Удалить</string>
-   </property>
-  </action>
   <action name="action_16">
    <property name="text">
     <string>Очистить графики</string>
@@ -418,11 +405,6 @@ p, li { white-space: pre-wrap; }
     <string>Установить вручную</string>
    </property>
   </action>
-  <action name="action_5">
-   <property name="text">
-    <string>Метод наименьших квадратов</string>
-   </property>
-  </action>
   <action name="action_10">
    <property name="text">
     <string>Автопоиск</string>
@@ -431,6 +413,16 @@ p, li { white-space: pre-wrap; }
   <action name="action_13">
    <property name="text">
     <string>Скорость изменения параметра</string>
+   </property>
+  </action>
+  <action name="action_17">
+   <property name="text">
+    <string>Построить</string>
+   </property>
+  </action>
+  <action name="action_19">
+   <property name="text">
+    <string>Удалить</string>
    </property>
   </action>
  </widget>

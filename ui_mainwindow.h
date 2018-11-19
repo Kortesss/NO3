@@ -42,10 +42,6 @@ public:
     QAction *action_8;
     QAction *action_11;
     QAction *action_12;
-    QAction *action_18;
-    QAction *action_20;
-    QAction *action_14;
-    QAction *action_15;
     QAction *action_16;
     QAction *action_21;
     QAction *actionD;
@@ -53,9 +49,10 @@ public:
     QAction *action_26;
     QAction *action_7;
     QAction *action_9;
-    QAction *action_5;
     QAction *action_10;
     QAction *action_13;
+    QAction *action_17;
+    QAction *action_19;
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout_3;
@@ -82,6 +79,7 @@ public:
     QMenu *menu_2;
     QMenu *menu_4;
     QMenu *menu_5;
+    QMenu *menu_3;
     QStatusBar *statusBar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -115,14 +113,6 @@ public:
         QIcon icon2;
         icon2.addFile(QStringLiteral(":/img/img/512px-Save_font_awesome.svg.png"), QSize(), QIcon::Normal, QIcon::Off);
         action_12->setIcon(icon2);
-        action_18 = new QAction(MainWindow);
-        action_18->setObjectName(QStringLiteral("action_18"));
-        action_20 = new QAction(MainWindow);
-        action_20->setObjectName(QStringLiteral("action_20"));
-        action_14 = new QAction(MainWindow);
-        action_14->setObjectName(QStringLiteral("action_14"));
-        action_15 = new QAction(MainWindow);
-        action_15->setObjectName(QStringLiteral("action_15"));
         action_16 = new QAction(MainWindow);
         action_16->setObjectName(QStringLiteral("action_16"));
         action_21 = new QAction(MainWindow);
@@ -138,12 +128,14 @@ public:
         action_9 = new QAction(MainWindow);
         action_9->setObjectName(QStringLiteral("action_9"));
         action_9->setCheckable(true);
-        action_5 = new QAction(MainWindow);
-        action_5->setObjectName(QStringLiteral("action_5"));
         action_10 = new QAction(MainWindow);
         action_10->setObjectName(QStringLiteral("action_10"));
         action_13 = new QAction(MainWindow);
         action_13->setObjectName(QStringLiteral("action_13"));
+        action_17 = new QAction(MainWindow);
+        action_17->setObjectName(QStringLiteral("action_17"));
+        action_19 = new QAction(MainWindow);
+        action_19->setObjectName(QStringLiteral("action_19"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         verticalLayout_2 = new QVBoxLayout(centralWidget);
@@ -291,6 +283,8 @@ public:
         menu_4->setObjectName(QStringLiteral("menu_4"));
         menu_5 = new QMenu(menu_4);
         menu_5->setObjectName(QStringLiteral("menu_5"));
+        menu_3 = new QMenu(menu_5);
+        menu_3->setObjectName(QStringLiteral("menu_3"));
         MainWindow->setMenuBar(menuBar);
         statusBar = new QStatusBar(MainWindow);
         statusBar->setObjectName(QStringLiteral("statusBar"));
@@ -312,7 +306,9 @@ public:
         menu_2->addAction(action_21);
         menu_4->addAction(menu_5->menuAction());
         menu_4->addAction(actionD);
-        menu_5->addAction(action_5);
+        menu_5->addAction(menu_3->menuAction());
+        menu_3->addAction(action_17);
+        menu_3->addAction(action_19);
 
         retranslateUi(MainWindow);
 
@@ -333,10 +329,6 @@ public:
         action_8->setText(QApplication::translate("MainWindow", "\320\235\320\276\320\262\321\213\320\271 \321\215\320\272\321\201\320\277\320\265\321\200\320\270\320\274\320\265\320\275\321\202", 0));
         action_11->setText(QApplication::translate("MainWindow", "\320\222\321\213\321\205\320\276\320\264", 0));
         action_12->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\263\321\200\320\260\321\204\320\270\320\272", 0));
-        action_18->setText(QApplication::translate("MainWindow", "\320\234\320\265\321\202\320\276\320\264 \320\275\320\260\320\270\320\274\320\265\320\275\321\214\321\210\320\270\321\205 \320\272\320\262\320\260\320\264\321\200\320\260\321\202\320\276\320\262", 0));
-        action_20->setText(QApplication::translate("MainWindow", "\320\243\320\264\320\260\320\273\320\270\321\202\321\214", 0));
-        action_14->setText(QApplication::translate("MainWindow", "\320\234\320\265\321\202\320\276\320\264 \320\275\320\260\320\270\320\274\320\265\320\275\321\214\321\210\320\270\321\205 \320\272\320\262\320\260\320\264\321\200\320\260\321\202\320\276\320\262", 0));
-        action_15->setText(QApplication::translate("MainWindow", "\320\243\320\264\320\260\320\273\320\270\321\202\321\214", 0));
         action_16->setText(QApplication::translate("MainWindow", "\320\236\321\207\320\270\321\201\321\202\320\270\321\202\321\214 \320\263\321\200\320\260\321\204\320\270\320\272\320\270", 0));
         action_21->setText(QApplication::translate("MainWindow", "\320\223\321\200\320\260\321\204\320\270\320\272 \321\201\320\272\320\276\321\200\320\276\321\201\321\202\320\270 \320\270\320\267\320\274\320\265\320\275\320\265\320\275\320\270\321\217 \320\277\320\260\321\200\320\260\320\274\320\265\321\202\321\200\320\260", 0));
         actionD->setText(QApplication::translate("MainWindow", "\316\224 \321\201\320\270\320\263\320\275\320\260\320\273\320\260", 0));
@@ -344,9 +336,10 @@ public:
         action_26->setText(QApplication::translate("MainWindow", "\320\232\320\276\320\275\320\265\321\207\320\275\320\276\320\265 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\265 \320\264\320\270\320\260\320\277\320\260\320\267\320\276\320\275\320\260", 0));
         action_7->setText(QApplication::translate("MainWindow", "\320\243\320\264\320\260\320\273\320\270\321\202\321\214 \321\202\320\276\321\207\320\272\320\270 \321\215\320\272\321\201\321\202\321\200\320\265\320\274\321\203\320\274\320\276\320\262", 0));
         action_9->setText(QApplication::translate("MainWindow", "\320\243\321\201\321\202\320\260\320\275\320\276\320\262\320\270\321\202\321\214 \320\262\321\200\321\203\321\207\320\275\321\203\321\216", 0));
-        action_5->setText(QApplication::translate("MainWindow", "\320\234\320\265\321\202\320\276\320\264 \320\275\320\260\320\270\320\274\320\265\320\275\321\214\321\210\320\270\321\205 \320\272\320\262\320\260\320\264\321\200\320\260\321\202\320\276\320\262", 0));
         action_10->setText(QApplication::translate("MainWindow", "\320\220\320\262\321\202\320\276\320\277\320\276\320\270\321\201\320\272", 0));
         action_13->setText(QApplication::translate("MainWindow", "\320\241\320\272\320\276\321\200\320\276\321\201\321\202\321\214 \320\270\320\267\320\274\320\265\320\275\320\265\320\275\320\270\321\217 \320\277\320\260\321\200\320\260\320\274\320\265\321\202\321\200\320\260", 0));
+        action_17->setText(QApplication::translate("MainWindow", "\320\237\320\276\321\201\321\202\321\200\320\276\320\270\321\202\321\214", 0));
+        action_19->setText(QApplication::translate("MainWindow", "\320\243\320\264\320\260\320\273\320\270\321\202\321\214", 0));
         label_2->setText(QApplication::translate("MainWindow", "\320\244\320\270\320\273\321\214\321\202\321\200\320\260\321\206\320\270\321\217 \321\215\320\272\321\201\321\202\321\200\320\265\320\274\321\203\320\274\320\276\320\262", 0));
         label->setText(QApplication::translate("MainWindow", "\320\235\320\260\321\207\320\260\320\273\321\214\320\275\320\276\320\265 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\265", 0));
         label_4->setText(QApplication::translate("MainWindow", "\320\237\320\276\321\200\320\276\320\263 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\321\217 \321\202\321\200\320\265\320\275\320\264\320\260, %", 0));
@@ -372,6 +365,7 @@ public:
         menu_2->setTitle(QApplication::translate("MainWindow", "\320\255\320\272\321\201\321\202\321\200\320\265\320\274\321\203\320\274\321\213 \321\204\321\203\320\275\320\272\321\206\320\270\320\270", 0));
         menu_4->setTitle(QApplication::translate("MainWindow", "\320\242\320\265\321\205\320\275\320\270\321\207\320\265\321\201\320\272\320\270\320\271 \320\260\320\275\320\260\320\273\320\270\320\267", 0));
         menu_5->setTitle(QApplication::translate("MainWindow", "\320\233\320\270\320\275\320\270\321\217 \321\202\321\200\320\265\320\275\320\264\320\260", 0));
+        menu_3->setTitle(QApplication::translate("MainWindow", "\320\234\320\265\321\202\320\276\320\264 \320\275\320\260\320\270\320\274\320\265\320\275\321\214\321\210\320\270\321\205 \320\272\320\262\320\260\320\264\321\200\320\260\321\202\320\276\320\262", 0));
     } // retranslateUi
 
 };
