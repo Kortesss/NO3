@@ -95,6 +95,7 @@ private:
     QVector<double> dirivate;
     double x1, x2;
     bool axis_max, axis_min, mnkMax, mnkMin, levelMin, levelMax;
+    QCPGraph *graphMin;
     //QCPItemText *text;
 };
 
