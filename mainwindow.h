@@ -96,7 +96,7 @@ private:
     double x1, x2;
     bool axis_max, axis_min, mnkMax, mnkMin, levelMin, levelMax;
     QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax;
-    //QCPItemText *text;
+    QList <QCPItemText*> textListMin, textListMax;//точки экстрем. для отображения координат
 };
 
 #endif // MAINWINDOW_H
