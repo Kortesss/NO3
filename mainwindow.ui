@@ -402,7 +402,7 @@ p, li { white-space: pre-wrap; }
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Установить вручную</string>
+    <string>Ручная настройка</string>
    </property>
   </action>
   <action name="action_10">

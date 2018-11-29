@@ -191,15 +191,28 @@ void MainWindow::on_action_3_triggered()
       }
       }
     if (mouseEvent->button() == Qt::RightButton){//удаление точек
-        ui->widget->clearPlottables();
+        if (ui->action_9->isChecked()&& ui->checkMin->isChecked()){
+            for(int i = 0; i < this->mass_minX.count(); i ++){
+                if(QString::compare(QString::number(this->mass_minX[i],'f',0), QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',0))==0){
+                    this->mass_minX.removeAt(i);   this->mass_minY.removeAt(i);
+                    graphMin->setData(this->mass_minX.toVector(), this->mass_minY.toVector());
+                    if (this->textListMin.count()>0) this->textListMin[i]->setVisible(false); this->textListMin.removeAt(i);
+                    on_action_17_triggered();
+                }
+            }
+        }
+        if (ui->action_9->isChecked() && ui->checkMax->isChecked()){
+            for(int i = 0; i < this->mass_maxX.count(); i ++){
+                if(QString::compare(QString::number(this->mass_maxX[i],'f',0), QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',0))==0){
+                    this->mass_maxX.removeAt(i);   this->mass_maxY.removeAt(i);
+                    graphMax->setData(this->mass_maxX.toVector(), this->mass_maxY.toVector());
+                    if (this->textListMax.count()>0) this->textListMax[i]->setVisible(false); this->textListMax.removeAt(i);
+                    on_action_17_triggered();
+                }
+            }
+        }
         ui->widget->replot();
-      //      int currentValue=i.next();
-      //      if(currentValue==round(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())))
-      //        i.remove();
-      //    }
-
       }
-   //delete text;
 }
 
 void MainWindow::histogramMouseMoved(QMouseEvent *event){
@@ -435,7 +448,7 @@ void MainWindow::on_action_17_triggered()
                 graphLevelMin->setName("Линия перегиба min");
                 graphLevelMin->setVisible(true);
                 //----
-                yLevel.clear(); xLevel.clear(); ui->action_9->setChecked(false);
+                yLevel.clear(); xLevel.clear();
                 ui->widget->replot();
                 delete mnk1; //деструктор
             }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки минимума не определены!"));}
@@ -465,12 +478,12 @@ void MainWindow::on_action_17_triggered()
                 graphLevelMax->setName("Линия перегиба max");
                 graphLevelMax->setVisible(true);
                 //----
-                yLevel.clear(); xLevel.clear(); ui->action_9->setChecked(false);
+                yLevel.clear(); xLevel.clear();
                 ui->widget->replot();
                 delete mnk2; //деструктор
             }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки максимума не определены!"));}
     }
-    if (!ui->checkMin->isChecked() && !ui->checkMax->isChecked()) QMessageBox::information(NULL,"Результат", "Пожалуйста, выберите минимум или максимум.");
+    if (!ui->checkMin->isChecked() && !ui->checkMax->isChecked()) QMessageBox::information(NULL,"Внимание", "Пожалуйста, выберите минимум или максимум.");
 }
 
 void MainWindow::on_action_19_triggered()
@@ -492,8 +505,8 @@ void MainWindow::on_action_16_triggered()
 {   //очистка всех графиков
     this->mass_minX.clear(); this->mass_maxX.clear(); this->mass_minY.clear(); this->mass_maxY.clear();
     graphMin->setVisible(false); graphMax->setVisible(false); graphMin->setName(" ");graphMax->setName(" ");
-    this->trendMin.clear(); graphMnkMin->setVisible(false); graphLevelMin->setVisible(false);graphMnkMin->setName(" ");
-    this->trendMax.clear(); graphMnkMax->setVisible(false); graphLevelMax->setVisible(false);graphMnkMax->setName(" ");
+    this->trendMin.clear(); graphMnkMin->setVisible(false); graphMnkMin->setName(" "); graphLevelMin->setVisible(false); graphLevelMin->setName(" ");
+    this->trendMax.clear(); graphMnkMax->setVisible(false); graphMnkMax->setName(" "); graphLevelMax->setVisible(false); graphLevelMax->setName(" ");
     for (int i = 0; i < this->textListMin.length(); i++) {this->textListMin[i]->setVisible(false);}
     for (int i = 0; i < this->textListMax.length(); i++) {this->textListMax[i]->setVisible(false);}
     this->textListMin.clear(); this->textListMax.clear();
