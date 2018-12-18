@@ -226,7 +226,7 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(listWidget->sizePolicy().hasHeightForWidth());
         listWidget->setSizePolicy(sizePolicy);
-        listWidget->setMaximumSize(QSize(116, 76));
+        listWidget->setMaximumSize(QSize(132, 76));
 
         horizontalLayout_3->addWidget(listWidget);
 

@@ -137,7 +137,19 @@ void MainWindow::on_action_triggered()
         this->koef=(this->maxx-this->minx)/(this->mass_x.count());//расчет коэф. плотности данных
         ui->textBrowser_2->append(QString("%1").arg(this->maxx));
         ui->textBrowser_3->append(QString("%1").arg(this->minx));
-        ui->listWidget->addItem("График "+QString::number(ui->listWidget->count()+1));
+        //ui->listWidget->addItem("График "+QString::number(ui->listWidget->count()+1));
+        QProgressBar *progBar = new QProgressBar(this);
+        progBar->setTextVisible(true);
+        progBar->setFormat("График "+QString::number(ui->listWidget->count()+1));
+        progBar->setAlignment(Qt::AlignCenter);
+        progBar->setStyleSheet("QProgressBar {border: 1px solid grey; border-radius: 3px;} QProgressBar::chunk {background-color: #05B8CC; width: 20px;}");
+        QListWidgetItem *it;
+        it = new QListWidgetItem(ui->listWidget);
+        ui->listWidget->insertItem(ui->listWidget->count(),it);
+        it->setSizeHint(QSize(120,15));
+        progBar->setRange(0,100);
+        progBar->setValue(60);
+        ui->listWidget->setItemWidget(it, progBar);
 
     }
 }
