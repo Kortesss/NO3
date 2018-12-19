@@ -103,6 +103,9 @@ void MainWindow::on_action_4_triggered()
 //выбор файла и заполнение массива данных
 void MainWindow::on_action_triggered()
 {
+    QProgressBar *progBar = new QProgressBar(this); //объявляем прогресс-бар
+    QListWidgetItem *it = new QListWidgetItem(ui->listWidget); //объявляем итем и связываем его со списком графиков
+
     QString fileName = QFileDialog::getOpenFileName(this,
                                 QString::fromUtf8("Открыть файл"),
                                 QDir::currentPath(),
@@ -112,6 +115,14 @@ void MainWindow::on_action_triggered()
        setWindowTitle(file.fileName());
        this->mass_x.clear();
        this->mass_y.clear();
+       ui->listWidget->insertItem(ui->listWidget->count()-1,it);//вставляем в список графиков тот итем
+       ui->listWidget->setItemWidget(it, progBar);//связываем итем и прогресс-бар
+       progBar->setFormat("График "+QString::number(ui->listWidget->count()));//настраиваем бар.. Текст
+       progBar->setAlignment(Qt::AlignCenter);//текст по центру
+       progBar->setTextVisible(true);//показываем текст
+       progBar->setStyleSheet("QProgressBar {border: 1px solid grey; border-radius: 3px;} QProgressBar::chunk {background-color: #05B8CC;}");
+       progBar->setRange(0,100);//устанавливаем его диапазон до 100%
+
        if(!file.open(QIODevice::ReadOnly)) {
         QMessageBox::information(0, "Заголовок сообщения об ошибке", file.errorString());
         }
@@ -128,6 +139,7 @@ void MainWindow::on_action_triggered()
             this->mass_x.append(fields[0].toDouble());
             //добавляем в список Y
             this->mass_y.append(fields[1].toDouble());
+            progBar->setValue((file.pos()*100)/file.size()); //двигаем значение бара по чтению текущей позиции из файла
         }
         file.close();
         this->minx = *std::min_element(this->mass_x.begin(), this->mass_x.end());
@@ -137,20 +149,9 @@ void MainWindow::on_action_triggered()
         this->koef=(this->maxx-this->minx)/(this->mass_x.count());//расчет коэф. плотности данных
         ui->textBrowser_2->append(QString("%1").arg(this->maxx));
         ui->textBrowser_3->append(QString("%1").arg(this->minx));
-        //ui->listWidget->addItem("График "+QString::number(ui->listWidget->count()+1));
-        QProgressBar *progBar = new QProgressBar(this);
-        progBar->setTextVisible(true);
-        progBar->setFormat("График "+QString::number(ui->listWidget->count()+1));
-        progBar->setAlignment(Qt::AlignCenter);
-        progBar->setStyleSheet("QProgressBar {border: 1px solid grey; border-radius: 3px;} QProgressBar::chunk {background-color: #05B8CC; width: 20px;}");
-        QListWidgetItem *it;
-        it = new QListWidgetItem(ui->listWidget);
-        ui->listWidget->insertItem(ui->listWidget->count(),it);
-        it->setSizeHint(QSize(120,15));
-        progBar->setRange(0,100);
-        progBar->setValue(60);
-        ui->listWidget->setItemWidget(it, progBar);
-
+        delete it; delete progBar;
+        ui->listWidget->addItem("График "+QString::number(ui->listWidget->count()+1));//+1 потому что там еще ничего нет
+        ui->listWidget->item(ui->listWidget->count()-1)->setTextAlignment(Qt::AlignCenter);
     }
 }
 
