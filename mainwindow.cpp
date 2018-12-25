@@ -105,7 +105,16 @@ void MainWindow::on_action_triggered()
 {
     QProgressBar *progBar = new QProgressBar(this); //объявляем прогресс-бар
     QListWidgetItem *it = new QListWidgetItem(ui->listWidget); //объявляем итем и связываем его со списком графиков
-
+    //btn->animateClick();
+        QWidget* wgt = new QWidget;
+        QLayout* l = new QHBoxLayout;
+        l->addWidget(progBar);
+        QPushButton *btn = new QPushButton("S");
+        btn->setStyleSheet("QPushButton {width:5px; height:5px;}");
+        //connect(btn, SIGNAL(clicked()), SLOT(onBtnClicked()));
+        l->addWidget(btn);
+        wgt->setLayout(l);
+        //it->setSizeHint(20);
     QString fileName = QFileDialog::getOpenFileName(this,
                                 QString::fromUtf8("Открыть файл"),
                                 QDir::currentPath(),
@@ -120,7 +129,7 @@ void MainWindow::on_action_triggered()
        progBar->setFormat("График "+QString::number(ui->listWidget->count()));//настраиваем бар.. Текст
        progBar->setAlignment(Qt::AlignCenter);//текст по центру
        progBar->setTextVisible(true);//показываем текст
-       progBar->setStyleSheet("QProgressBar {border: 1px solid grey; border-radius: 3px;} QProgressBar::chunk {background-color: #05B8CC;}");
+       progBar->setStyleSheet("QProgressBar {border: 1px solid grey;} QProgressBar::chunk {background-color: #05B8CC;}");
        progBar->setRange(0,100);//устанавливаем его диапазон до 100%
 
        if(!file.open(QIODevice::ReadOnly)) {
@@ -149,7 +158,7 @@ void MainWindow::on_action_triggered()
         this->koef=(this->maxx-this->minx)/(this->mass_x.count());//расчет коэф. плотности данных
         ui->textBrowser_2->append(QString("%1").arg(this->maxx));
         ui->textBrowser_3->append(QString("%1").arg(this->minx));
-        delete it; delete progBar;
+        delete it; delete progBar;  delete btn;  delete l; delete wgt;
         ui->listWidget->addItem("График "+QString::number(ui->listWidget->count()+1));//+1 потому что там еще ничего нет
         ui->listWidget->item(ui->listWidget->count()-1)->setTextAlignment(Qt::AlignCenter);
     }
