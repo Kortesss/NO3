@@ -36,9 +36,15 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+    void setMassX(double massX);
+    void setMassY(double massY);
+    bool Stop;
     ~MainWindow();
 
 public slots:
+
+signals:
+void sendNumberBoolStop(bool);
 
 private slots:
     void mousePress(QMouseEvent *event);

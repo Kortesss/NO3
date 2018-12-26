@@ -99,101 +99,50 @@ void MainWindow::on_action_4_triggered()
         ui->widget->replot();
 }
 
+void MainWindow::setMassX(double massX){this->mass_x.append(massX);}
+void MainWindow::setMassY(double massY){this->mass_y.append(massY);}
 //выбор файла и заполнение массива данных
 void MainWindow::on_action_triggered()
 {
-    QProgressBar *progBar = new QProgressBar(this); //объявляем прогресс-бар
-    QListWidgetItem *it = new QListWidgetItem(ui->listWidget); //объявляем итем и связываем его со списком графиков
-    //btn->animateClick();
-        QWidget* wgt = new QWidget;
-        QLayout* l = new QHBoxLayout;
-        l->addWidget(progBar);
-        QPushButton *btn = new QPushButton("S");
-        btn->setStyleSheet("QPushButton {width:5px; height:5px;}");
-        //connect(btn, SIGNAL(clicked()), SLOT(onBtnClicked()));
-        l->addWidget(btn);
-        wgt->setLayout(l);
-        //it->setSizeHint(20);
-    QString fileName = QFileDialog::getOpenFileName(this,
-                                QString::fromUtf8("Открыть файл"),
-                                QDir::currentPath(),
-                                "(*.txt);;All files (*.*)");
-    if (fileName.length() > 0){
-       QFile file(fileName);
-       setWindowTitle(file.fileName());
-       this->mass_x.clear();
-       this->mass_y.clear();
-       ui->listWidget->insertItem(ui->listWidget->count()-1,it);//вставляем в список графиков тот итем
-       ui->listWidget->setItemWidget(it, progBar);//связываем итем и прогресс-бар
-       progBar->setFormat("График "+QString::number(ui->listWidget->count()));//настраиваем бар.. Текст
-       progBar->setAlignment(Qt::AlignCenter);//текст по центру
-       progBar->setTextVisible(true);//показываем текст
-       progBar->setStyleSheet("QProgressBar {border: 1px solid grey;} QProgressBar::chunk {background-color: #05B8CC;}");
-       progBar->setRange(0,100);//устанавливаем его диапазон до 100%
+    this->mass_x.clear();
+    this->mass_y.clear();
+    QThread *thread= new QThread; //создали экземпляр класса QThread для нового потока в приложении
+    loadFile *loadF = new loadFile(ui, this); //cоздали экземпляр класса чтения файла
 
-       if(!file.open(QIODevice::ReadOnly)) {
-        QMessageBox::information(0, "Заголовок сообщения об ошибке", file.errorString());
-        }
-        QTextStream in(&file);
+    loadF->moveToThread(thread); //переместили экземпляр нашего класса в новый поток
+    //Соединили сигнал нового потока о старте работы потока с методом doWork() класса LoadFile,
+    //чтобы этот метод запустился при старте потока
+    connect(thread, SIGNAL(started()), loadF, SLOT(doWork()));
+    // Оповещаем поток, что нужно остановиться
+    connect(this, SIGNAL(sendNumberBoolStop(bool)), loadF, SLOT(reciveBoolStop(bool)), Qt::DirectConnection);
+    // По завершению выходим из потока, и удаляем рабочий класс
+    connect(loadF, SIGNAL(destroyed(QObject*)), thread, SLOT(quit()));  // ТАК ПРАВИЛЬНО
+    connect(loadF, SIGNAL(finished()), loadF, SLOT(deleteLater()));
 
-        while(!in.atEnd()) {
-            QString line = in.readLine();
-            QRegExp rx("(\\ |\\t)"); //RegEx for ' ' or '\t'
-            line=line.replace(',','.');
-            QStringList fields = line.split(rx);
-            ui->textBrowser->append(QString("%1 %2").arg(fields[0].toDouble()).arg(fields[1].toDouble()));
-            //   ui->textBrowser->append(line);
-            //добавляем в список X
-            this->mass_x.append(fields[0].toDouble());
-            //добавляем в список Y
-            this->mass_y.append(fields[1].toDouble());
-            progBar->setValue((file.pos()*100)/file.size()); //двигаем значение бара по чтению текущей позиции из файла
+    // Удаляем поток, после выполнения операции
+    connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
+    thread->start();//запускаем поток
 
-        }
-        file.close();
-        delete it; delete progBar;  delete btn;  delete l; delete wgt;
-        ui->listWidget->addItem("График "+QString::number(ui->listWidget->count()+1));//+1 потому что там еще ничего нет
-        ui->listWidget->item(ui->listWidget->count()-1)->setTextAlignment(Qt::AlignCenter);
-        this->minx = *std::min_element(this->mass_x.begin(), this->mass_x.end());
-        this->maxx = *std::max_element(this->mass_x.begin(), this->mass_x.end());
-        this->miny = *std::min_element(this->mass_y.begin(), this->mass_y.end());
-        this->maxy = *std::max_element(this->mass_y.begin(), this->mass_y.end());
-        this->koef=(this->maxx-this->minx)/(this->mass_x.count());//расчет коэф. плотности данных
-        ui->textBrowser_2->append(QString("%1").arg(this->maxx));
-        ui->textBrowser_3->append(QString("%1").arg(this->minx));  
-        //Рисуем точки
-                //ui->widget->clearGraphs();//Если нужно, очищаем все графики
-                graphic1->setData(this->mass_x.toVector(), this->mass_y.toVector());
-                //Установим область, которая будет показываться на графике
-                ui->widget->xAxis->setRange(this->minx, this->maxx);// Для оси Ox
-                ui->widget->yAxis->setRange(this->miny,this->maxy);//Для оси Oy     
-        graphic1->setName("График "+QString::number(ui->listWidget->count()));
-        ui->widget->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);//устанавливаем легенду в правый верхний угол
-        ui->widget->legend->setVisible(true); ui->widget->replot();
-    }
 }
 
 //рисуем график из загруженного массива
 void MainWindow::on_action_3_triggered()
-{    //Рисуем точки
-        //ui->widget->clearGraphs();//Если нужно, очищаем все графики
-        graphic1->setData(this->mass_x.toVector(), this->mass_y.toVector());
-        //Установим область, которая будет показываться на графике
-        ui->widget->xAxis->setRange(this->minx, this->maxx);// Для оси Ox
-        ui->widget->yAxis->setRange(this->miny,this->maxy);//Для оси Oy
-        graphic1->setName("График "+QString::number(ui->listWidget->count()));
-        ui->widget->legend->setVisible(true);
-        ui->widget->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);//устанавливаем легенду в правый верхний угол
-        ui->widget->replot();
-
-        QThread *thread= new QThread; //создали экземпляр класса QThread для нового потока в приложении
-        loadFile *loadF = new loadFile(ui, this); //cоздали экземпляр класса чтения файла
-
-        loadF->moveToThread(thread); //переместили экземпляр нашего класса в новый поток
-        //Соединили сигнал нового потока о старте работы потока с методом doWork() класса LoadFile,
-        //чтобы этот метод запустился при старте потока
-        connect(thread, SIGNAL(started()), loadF, SLOT(doWork()));
-        thread->start();//запускаем поток
+{
+    this->minx = *std::min_element(this->mass_x.begin(), this->mass_x.end());
+    this->maxx = *std::max_element(this->mass_x.begin(), this->mass_x.end());
+    this->miny = *std::min_element(this->mass_y.begin(), this->mass_y.end());
+    this->maxy = *std::max_element(this->mass_y.begin(), this->mass_y.end());
+    this->koef=(this->maxx-this->minx)/(this->mass_x.count());//расчет коэф. плотности данных
+    ui->textBrowser_2->append(QString("%1").arg(this->maxx));
+    ui->textBrowser_3->append(QString("%1").arg(this->minx));
+    //Рисуем точки
+    graphic1->setData(this->mass_x.toVector(), this->mass_y.toVector());
+    //Установим область, которая будет показываться на графике
+    ui->widget->xAxis->setRange(this->minx, this->maxx);// Для оси Ox
+    ui->widget->yAxis->setRange(this->miny,this->maxy);//Для оси Oy
+    graphic1->setName("График "+QString::number(ui->listWidget->count()));
+    ui->widget->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);//устанавливаем легенду в правый верхний угол
+    ui->widget->legend->setVisible(true); ui->widget->replot();
 }
 
 //функция обработки нажатия кнопки мыши и считывание координат

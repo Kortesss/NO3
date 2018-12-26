@@ -12,11 +12,17 @@ public:
     explicit loadFile(Ui::MainWindow *ui, MainWindow *th);
     Ui::MainWindow *ui0;
     MainWindow *th0;
+    bool Stop;
+    int temp;
 
 signals:
+    void finished();
+    void sendNumber(int);
 
 public slots:
     void doWork();
+    void process();
+    void reciveBoolStop(bool Numb);
 
 private:
 
