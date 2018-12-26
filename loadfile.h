@@ -2,16 +2,24 @@
 #define LOADFILE_H
 
 #include <QObject>
+#include <mainwindow.h>
 
 class loadFile : public QObject
 {
     Q_OBJECT
 public:
-    explicit loadFile(QObject *parent = 0);
+    ~loadFile();
+    explicit loadFile(Ui::MainWindow *ui, MainWindow *th);
+    Ui::MainWindow *ui0;
+    MainWindow *th0;
 
 signals:
 
 public slots:
+    void doWork();
+
+private:
+
 };
 
 #endif // LOADFILE_H

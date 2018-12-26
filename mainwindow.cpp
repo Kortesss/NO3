@@ -5,12 +5,11 @@
 #include "somewindow.h"
 #include "deltawin.h"
 #include "mnk.h"
+#include "loadfile.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{
+MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
+
     connect(ui->widget,SIGNAL(mousePress(QMouseEvent*)),this,SLOT(mousePress(QMouseEvent*)));
     connect(ui->widget, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(histogramMouseMoved(QMouseEvent*)));
     axis_max=false; axis_min=false; mnkMax=false; mnkMin=false;
@@ -149,18 +148,28 @@ void MainWindow::on_action_triggered()
             //добавляем в список Y
             this->mass_y.append(fields[1].toDouble());
             progBar->setValue((file.pos()*100)/file.size()); //двигаем значение бара по чтению текущей позиции из файла
+
         }
         file.close();
+        delete it; delete progBar;  delete btn;  delete l; delete wgt;
+        ui->listWidget->addItem("График "+QString::number(ui->listWidget->count()+1));//+1 потому что там еще ничего нет
+        ui->listWidget->item(ui->listWidget->count()-1)->setTextAlignment(Qt::AlignCenter);
         this->minx = *std::min_element(this->mass_x.begin(), this->mass_x.end());
         this->maxx = *std::max_element(this->mass_x.begin(), this->mass_x.end());
         this->miny = *std::min_element(this->mass_y.begin(), this->mass_y.end());
         this->maxy = *std::max_element(this->mass_y.begin(), this->mass_y.end());
         this->koef=(this->maxx-this->minx)/(this->mass_x.count());//расчет коэф. плотности данных
         ui->textBrowser_2->append(QString("%1").arg(this->maxx));
-        ui->textBrowser_3->append(QString("%1").arg(this->minx));
-        delete it; delete progBar;  delete btn;  delete l; delete wgt;
-        ui->listWidget->addItem("График "+QString::number(ui->listWidget->count()+1));//+1 потому что там еще ничего нет
-        ui->listWidget->item(ui->listWidget->count()-1)->setTextAlignment(Qt::AlignCenter);
+        ui->textBrowser_3->append(QString("%1").arg(this->minx));  
+        //Рисуем точки
+                //ui->widget->clearGraphs();//Если нужно, очищаем все графики
+                graphic1->setData(this->mass_x.toVector(), this->mass_y.toVector());
+                //Установим область, которая будет показываться на графике
+                ui->widget->xAxis->setRange(this->minx, this->maxx);// Для оси Ox
+                ui->widget->yAxis->setRange(this->miny,this->maxy);//Для оси Oy     
+        graphic1->setName("График "+QString::number(ui->listWidget->count()));
+        ui->widget->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);//устанавливаем легенду в правый верхний угол
+        ui->widget->legend->setVisible(true); ui->widget->replot();
     }
 }
 
@@ -177,6 +186,14 @@ void MainWindow::on_action_3_triggered()
         ui->widget->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);//устанавливаем легенду в правый верхний угол
         ui->widget->replot();
 
+        QThread *thread= new QThread; //создали экземпляр класса QThread для нового потока в приложении
+        loadFile *loadF = new loadFile(ui, this); //cоздали экземпляр класса чтения файла
+
+        loadF->moveToThread(thread); //переместили экземпляр нашего класса в новый поток
+        //Соединили сигнал нового потока о старте работы потока с методом doWork() класса LoadFile,
+        //чтобы этот метод запустился при старте потока
+        connect(thread, SIGNAL(started()), loadF, SLOT(doWork()));
+        thread->start();//запускаем поток
 }
 
 //функция обработки нажатия кнопки мыши и считывание координат
