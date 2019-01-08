@@ -4,7 +4,9 @@
 #include <QDebug>
 
 deltaWin::deltaWin(QList <double> mass_minX, QList <double> mass_maxX, QList <double> mass_minY, QList <double> mass_maxY, QWidget *parent) :
-    QMainWindow(parent), ui(new Ui::deltaWin){
+    QMainWindow(parent),
+    ui(new Ui::deltaWin)
+{
     ui->setupUi(this);
     deltaList(mass_minX, mass_maxX, mass_minY, mass_maxY);
 }
