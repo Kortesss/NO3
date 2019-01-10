@@ -8,6 +8,7 @@
 #include <QIODevice>
 #include <QPoint>
 #include "qcustomplot.h"
+#include <QTimer>
 
 using namespace std;
 namespace Ui {
@@ -86,6 +87,8 @@ private slots:
 
     void on_action_19_triggered();
 
+    void TimerTick();
+
 private:
     Ui::MainWindow *ui;
 
@@ -103,6 +106,8 @@ private:
     bool axis_max, axis_min, mnkMax, mnkMin, levelMin, levelMax;
     QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax;
     QList <QCPItemText*> textListMin, textListMax;//точки экстрем. для отображения координат
+    QTimer timer;
+    int t;
 };
 
 #endif // MAINWINDOW_H

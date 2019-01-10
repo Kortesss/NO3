@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
 
     connect(ui->widget,SIGNAL(mousePress(QMouseEvent*)),this,SLOT(mousePress(QMouseEvent*)));
     connect(ui->widget, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(histogramMouseMoved(QMouseEvent*)));
+    connect(&timer, SIGNAL(timeout()), SLOT(TimerTick()));  t = 0;
+
     axis_max=false; axis_min=false; mnkMax=false; mnkMin=false;
     levelMax=false; levelMin=false;
 
@@ -53,6 +55,13 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     //формируем вид точек
     graphic1->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
 
+}
+
+void MainWindow::TimerTick(){
+    if (this->t<this->mass_x.length()){
+    ui->textBrowser->append(QString("%1 %2").arg(mass_x[t]).arg(mass_y[t]));
+    t++;
+    }
 }
 
 MainWindow::~MainWindow()
@@ -99,29 +108,60 @@ void MainWindow::on_action_4_triggered()
         ui->widget->replot();
 }
 
-void MainWindow::setMassX(double massX){this->mass_x.append(massX);}
-void MainWindow::setMassY(double massY){this->mass_y.append(massY);}
 //выбор файла и заполнение массива данных
 void MainWindow::on_action_triggered()
 {
     this->mass_x.clear();
     this->mass_y.clear();
-    QThread *thread= new QThread; //создали экземпляр класса QThread для нового потока в приложении
-    loadFile *loadF = new loadFile(ui, this); //cоздали экземпляр класса чтения файла
+    QProgressBar *progBar = new QProgressBar(this); //объявляем прогресс-бар
+        QListWidgetItem *it = new QListWidgetItem(ui->listWidget); //объявляем итем и связываем его со списком графиков
+        //btn->animateClick();
+        QWidget* wgt = new QWidget;
+        QLayout* l = new QHBoxLayout;
+        l->addWidget(progBar);
+        QPushButton *btn = new QPushButton("S");
+        btn->setStyleSheet("QPushButton {width:5px; height:5px;}");
+        //connect(btn, SIGNAL(clicked()), SLOT(onBtnClicked()));
+        l->addWidget(btn);
+        wgt->setLayout(l);
+        //it->setSizeHint(20);
+        QString fileName = QFileDialog::getOpenFileName(0,
+                        QString::fromUtf8("Открыть файл"),
+                        QDir::currentPath(),
+                        "(*.txt);;All files (*.*)");
+        if (fileName.length() > 0){
+            QFile file(fileName);
+            setWindowTitle(file.fileName());
+            ui->listWidget->insertItem(ui->listWidget->count()-1,it);//вставляем в список графиков тот итем
+            ui->listWidget->setItemWidget(it, progBar);//связываем итем и прогресс-бар
+            progBar->setFormat("График "+QString::number(ui->listWidget->count()));//настраиваем бар.. Текст
+            progBar->setAlignment(Qt::AlignCenter);//текст по центру
+            progBar->setTextVisible(true);//показываем текст
+            progBar->setStyleSheet("QProgressBar {border: 1px solid grey;} QProgressBar::chunk {background-color: #05B8CC;}");
+            progBar->setRange(0,100);//устанавливаем его диапазон до 100%
 
-    loadF->moveToThread(thread); //переместили экземпляр нашего класса в новый поток
-    //Соединили сигнал нового потока о старте работы потока с методом doWork() класса LoadFile,
-    //чтобы этот метод запустился при старте потока
-    connect(thread, SIGNAL(started()), loadF, SLOT(doWork()));
-    // Оповещаем поток, что нужно остановиться
-    connect(this, SIGNAL(sendNumberBoolStop(bool)), loadF, SLOT(reciveBoolStop(bool)), Qt::DirectConnection);
-    // По завершению выходим из потока, и удаляем рабочий класс
-    connect(loadF, SIGNAL(destroyed(QObject*)), thread, SLOT(quit()));  // ТАК ПРАВИЛЬНО
-    connect(loadF, SIGNAL(finished()), loadF, SLOT(deleteLater()));
-
-    // Удаляем поток, после выполнения операции
-    connect(thread, SIGNAL(finished()), thread, SLOT(deleteLater()));
-    thread->start();//запускаем поток
+            if(!file.open(QIODevice::ReadOnly)) {
+                QMessageBox::information(0, "Заголовок сообщения об ошибке", file.errorString());
+            }
+        QTextStream in(&file);
+        while(!in.atEnd()) {
+            QString line = in.readLine();
+            QRegExp rx("(\\ |\\t)"); //RegEx for ' ' or '\t'
+            line=line.replace(',','.');
+            QStringList fields = line.split(rx);
+            //ui->textBrowser->append(QString("%1 %2").arg(fields[0].toDouble()).arg(fields[1].toDouble()));
+            //добавляем в список X
+            this->mass_x.append(fields[0].toDouble());
+            //добавляем в список Y
+            this->mass_y.append(fields[1].toDouble());
+            progBar->setValue((file.pos()*100)/file.size()); //двигаем значение бара по чтению текущей позиции из файла
+        }
+        file.close(); timer.start(1);
+        delete it; delete progBar;  delete btn;  delete l; delete wgt;
+        ui->listWidget->addItem("График "+QString::number(ui->listWidget->count()+1));//+1 потому что там еще ничего нет
+        ui->listWidget->item(ui->listWidget->count()-1)->setTextAlignment(Qt::AlignCenter);
+      }
+        on_action_3_triggered();
 
 }
 
