@@ -5,7 +5,7 @@
 #include "somewindow.h"
 #include "deltawin.h"
 #include "mnk.h"
-#include "loadfile.h"
+//#include "loadfile.h"
 
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
@@ -58,10 +58,10 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
 }
 
 void MainWindow::TimerTick(){
-    if (this->t<this->mass_x.length()){
+    if (this->t < this->mass_x.length()){
     ui->textBrowser->append(QString("%1 %2").arg(mass_x[t]).arg(mass_y[t]));
     t++;
-    }
+    }else {timer.stop();}
 }
 
 MainWindow::~MainWindow()
@@ -114,22 +114,22 @@ void MainWindow::on_action_triggered()
     this->mass_x.clear();
     this->mass_y.clear();
     QProgressBar *progBar = new QProgressBar(this); //объявляем прогресс-бар
-        QListWidgetItem *it = new QListWidgetItem(ui->listWidget); //объявляем итем и связываем его со списком графиков
-        //btn->animateClick();
-        QWidget* wgt = new QWidget;
-        QLayout* l = new QHBoxLayout;
-        l->addWidget(progBar);
-        QPushButton *btn = new QPushButton("S");
-        btn->setStyleSheet("QPushButton {width:5px; height:5px;}");
-        //connect(btn, SIGNAL(clicked()), SLOT(onBtnClicked()));
-        l->addWidget(btn);
-        wgt->setLayout(l);
-        //it->setSizeHint(20);
-        QString fileName = QFileDialog::getOpenFileName(0,
+    QListWidgetItem *it = new QListWidgetItem(ui->listWidget); //объявляем итем и связываем его со списком графиков
+    //btn->animateClick();
+    QWidget* wgt = new QWidget;
+    QLayout* l = new QHBoxLayout;
+    l->addWidget(progBar);
+    QPushButton *btn = new QPushButton("S");
+    btn->setStyleSheet("QPushButton {width:5px; height:5px;}");
+    //connect(btn, SIGNAL(clicked()), SLOT(onBtnClicked()));
+    l->addWidget(btn);
+    wgt->setLayout(l);
+    //it->setSizeHint(20);
+    QString fileName = QFileDialog::getOpenFileName(0,
                         QString::fromUtf8("Открыть файл"),
                         QDir::currentPath(),
                         "(*.txt);;All files (*.*)");
-        if (fileName.length() > 0){
+    if (fileName.length() > 0){
             QFile file(fileName);
             setWindowTitle(file.fileName());
             ui->listWidget->insertItem(ui->listWidget->count()-1,it);//вставляем в список графиков тот итем
@@ -140,9 +140,7 @@ void MainWindow::on_action_triggered()
             progBar->setStyleSheet("QProgressBar {border: 1px solid grey;} QProgressBar::chunk {background-color: #05B8CC;}");
             progBar->setRange(0,100);//устанавливаем его диапазон до 100%
 
-            if(!file.open(QIODevice::ReadOnly)) {
-                QMessageBox::information(0, "Заголовок сообщения об ошибке", file.errorString());
-            }
+        if(!file.open(QIODevice::ReadOnly)) {QMessageBox::information(0, "Заголовок сообщения об ошибке", file.errorString());}
         QTextStream in(&file);
         while(!in.atEnd()) {
             QString line = in.readLine();
@@ -156,7 +154,7 @@ void MainWindow::on_action_triggered()
             this->mass_y.append(fields[1].toDouble());
             progBar->setValue((file.pos()*100)/file.size()); //двигаем значение бара по чтению текущей позиции из файла
         }
-        file.close(); timer.start(1);
+        file.close(); timer.start();
         delete it; delete progBar;  delete btn;  delete l; delete wgt;
         ui->listWidget->addItem("График "+QString::number(ui->listWidget->count()+1));//+1 потому что там еще ничего нет
         ui->listWidget->item(ui->listWidget->count()-1)->setTextAlignment(Qt::AlignCenter);
@@ -185,7 +183,6 @@ void MainWindow::on_action_3_triggered()
     ui->widget->legend->setVisible(true); ui->widget->replot();
 }
 
-//функция обработки нажатия кнопки мыши и считывание координат
   void MainWindow::mousePress(QMouseEvent *mouseEvent){
 
       if (mouseEvent->button() == Qt::LeftButton){

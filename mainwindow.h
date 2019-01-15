@@ -37,15 +37,11 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
-    void setMassX(double massX);
-    void setMassY(double massY);
-    bool Stop;
     ~MainWindow();
 
 public slots:
 
 signals:
-void sendNumberBoolStop(bool);
 
 private slots:
     void mousePress(QMouseEvent *event);
@@ -92,22 +88,19 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    double prdelfun(double x1,double x2,double y1,double y2);
-    double prfun(double px);
-    QPoint pozit(QPoint p);
-    QList<double> mass_x, mass_y;
-
-    QList <double> mass_minX, mass_maxX, mass_minY, mass_maxY, trendMin, trendMax;
-    double minx, miny, maxx, maxy, koef;
-    QPoint press;
-    QPoint release;
-    QVector<double> dirivate;
+    double prdelfun(double x1,double x2,double y1,double y2); //функция для поиска предела функции
+    double prfun(double px); //функции для поиска предела функции
+    QList<double> mass_x, mass_y; //массив x,y
+    QList <double> mass_minX, mass_maxX, mass_minY, mass_maxY, trendMin, trendMax; //массивы мин. и макс. x, y и и точки для линии тренда
+    double minx, miny, maxx, maxy, koef; //мин. и макс. x, y и коэффициент
+    QPoint press; //для обработки нажатия кнопки мыши и считывание координат
+    QVector<double> dirivate; //массив производных
     double x1, x2;
-    bool axis_max, axis_min, mnkMax, mnkMin, levelMin, levelMax;
-    QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax;
+    bool axis_max, axis_min; //координата макс. и мин. для осей
+    bool mnkMax, mnkMin, levelMin, levelMax; //для нахождения МНК мин. и макс. и вертикальная линия для этих точек
+    QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax; //все графики
     QList <QCPItemText*> textListMin, textListMax;//точки экстрем. для отображения координат
-    QTimer timer;
-    int t;
+    QTimer timer; int t; //таймер для добавления чисел в список на форму и переменная t для прохода по массиву
 };
 
 #endif // MAINWINDOW_H
