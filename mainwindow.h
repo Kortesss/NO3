@@ -85,18 +85,20 @@ private slots:
 
     void TimerTick();
 
+    void on_pushButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 
-    double prdelfun(double x1,double x2,double y1,double y2); //функция для поиска предела функции
+    double prdelfun(double x1,double x2,double y1,double y2); //процедура для поиска предела функции
     double prfun(double px); //функции для поиска предела функции
-    QList<double> mass_x, mass_y; //массив x,y
+    QList <double> mass_x, mass_y; //массив x,y
+    QList<QList<double> > mass_x_Gr, mass_y_Gr; //массив x и y каждого графика
     QList <double> mass_minX, mass_maxX, mass_minY, mass_maxY, trendMin, trendMax; //массивы мин. и макс. x, y и и точки для линии тренда
     double minx, miny, maxx, maxy, koef; //мин. и макс. x, y и коэффициент
     QPoint press; //для обработки нажатия кнопки мыши и считывание координат
     QVector<double> dirivate; //массив производных
     double x1, x2;
-    bool axis_max, axis_min; //координата макс. и мин. для осей
     bool mnkMax, mnkMin, levelMin, levelMax; //для нахождения МНК мин. и макс. и вертикальная линия для этих точек
     QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax; //все графики
     QList <QCPItemText*> textListMin, textListMax;//точки экстрем. для отображения координат

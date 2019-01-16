@@ -14,8 +14,7 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     connect(ui->widget, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(histogramMouseMoved(QMouseEvent*)));
     connect(&timer, SIGNAL(timeout()), SLOT(TimerTick()));  t = 0;
 
-    axis_max=false; axis_min=false; mnkMax=false; mnkMin=false;
-    levelMax=false; levelMin=false;
+    mnkMax=false; mnkMin=false;  levelMax=false; levelMin=false;
 
     ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
     ui->widget->xAxis->setLabel("x");
@@ -57,11 +56,13 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
 
 }
 
-void MainWindow::TimerTick(){
-    if (this->t < this->mass_x.length()){
-    ui->textBrowser->append(QString("%1 %2").arg(mass_x[t]).arg(mass_y[t]));
-    t++;
-    }else {timer.stop();}
+void MainWindow::TimerTick(){//процедура таймера для добавления в список textBrowser
+    if (t < mass_x_Gr[ui->listWidget->count()-1].length()){
+        //а здесь получаем значения по индексу выделенного графика
+        ui->textBrowser_X->append(QString("%1").arg(mass_x_Gr[ui->listWidget->count()-1][t]));
+        ui->textBrowser_Y->append(QString("%1").arg(mass_y_Gr[ui->listWidget->count()-1][t]));
+        t++;
+    }else {timer.stop(); t = 0;} //в конце останавливаем таймер
 }
 
 MainWindow::~MainWindow()
@@ -111,18 +112,18 @@ void MainWindow::on_action_4_triggered()
 //выбор файла и заполнение массива данных
 void MainWindow::on_action_triggered()
 {
-    this->mass_x.clear();
-    this->mass_y.clear();
+    //this->mass_x.clear();
+    //this->mass_y.clear();
     QProgressBar *progBar = new QProgressBar(this); //объявляем прогресс-бар
     QListWidgetItem *it = new QListWidgetItem(ui->listWidget); //объявляем итем и связываем его со списком графиков
     //btn->animateClick();
     QWidget* wgt = new QWidget;
     QLayout* l = new QHBoxLayout;
     l->addWidget(progBar);
-    QPushButton *btn = new QPushButton("S");
-    btn->setStyleSheet("QPushButton {width:5px; height:5px;}");
+    //QPushButton *btn = new QPushButton("S");
+    //btn->setStyleSheet("QPushButton {width:5px; height:5px;}");
     //connect(btn, SIGNAL(clicked()), SLOT(onBtnClicked()));
-    l->addWidget(btn);
+    //l->addWidget(btn);
     wgt->setLayout(l);
     //it->setSizeHint(20);
     QString fileName = QFileDialog::getOpenFileName(0,
@@ -142,6 +143,8 @@ void MainWindow::on_action_triggered()
 
         if(!file.open(QIODevice::ReadOnly)) {QMessageBox::information(0, "Заголовок сообщения об ошибке", file.errorString());}
         QTextStream in(&file);
+        mass_x_Gr.append(QList <double>());
+        mass_y_Gr.append(QList <double>());
         while(!in.atEnd()) {
             QString line = in.readLine();
             QRegExp rx("(\\ |\\t)"); //RegEx for ' ' or '\t'
@@ -149,13 +152,13 @@ void MainWindow::on_action_triggered()
             QStringList fields = line.split(rx);
             //ui->textBrowser->append(QString("%1 %2").arg(fields[0].toDouble()).arg(fields[1].toDouble()));
             //добавляем в список X
-            this->mass_x.append(fields[0].toDouble());
+            mass_x_Gr[ui->listWidget->count()-1].append(fields[0].toDouble()); //добавляем данные по последниему индексу списка графиков listwidget
             //добавляем в список Y
-            this->mass_y.append(fields[1].toDouble());
+            mass_y_Gr[ui->listWidget->count()-1].append(fields[1].toDouble());
             progBar->setValue((file.pos()*100)/file.size()); //двигаем значение бара по чтению текущей позиции из файла
         }
         file.close(); timer.start();
-        delete it; delete progBar;  delete btn;  delete l; delete wgt;
+        delete it; delete progBar;  /*delete btn;*/  delete l; delete wgt;
         ui->listWidget->addItem("График "+QString::number(ui->listWidget->count()+1));//+1 потому что там еще ничего нет
         ui->listWidget->item(ui->listWidget->count()-1)->setTextAlignment(Qt::AlignCenter);
       }
@@ -166,30 +169,29 @@ void MainWindow::on_action_triggered()
 //рисуем график из загруженного массива
 void MainWindow::on_action_3_triggered()
 {
-    this->minx = *std::min_element(this->mass_x.begin(), this->mass_x.end());
-    this->maxx = *std::max_element(this->mass_x.begin(), this->mass_x.end());
-    this->miny = *std::min_element(this->mass_y.begin(), this->mass_y.end());
-    this->maxy = *std::max_element(this->mass_y.begin(), this->mass_y.end());
-    this->koef=(this->maxx-this->minx)/(this->mass_x.count());//расчет коэф. плотности данных
-    ui->textBrowser_2->append(QString("%1").arg(this->maxx));
-    ui->textBrowser_3->append(QString("%1").arg(this->minx));
+    minx = *std::min_element(mass_x_Gr[ui->listWidget->count()-1].begin(), mass_x_Gr[ui->listWidget->count()-1].end());
+    maxx = *std::max_element(mass_x_Gr[ui->listWidget->count()-1].begin(), mass_x_Gr[ui->listWidget->count()-1].end());
+    miny = *std::min_element(mass_y_Gr[ui->listWidget->count()-1].begin(), mass_y_Gr[ui->listWidget->count()-1].end());
+    maxy = *std::max_element(mass_y_Gr[ui->listWidget->count()-1].begin(), mass_y_Gr[ui->listWidget->count()-1].end());
+    koef=(maxx - minx)/(mass_x_Gr[ui->listWidget->count()-1].count());//расчет коэф. плотности данных
+    ui->textBrowser_2->append(QString("%1").arg(maxx));
+    ui->textBrowser_3->append(QString("%1").arg(minx));
     //Рисуем точки
-    graphic1->setData(this->mass_x.toVector(), this->mass_y.toVector());
+    graphic1->setData(mass_x_Gr[ui->listWidget->count()-1].toVector(), mass_y_Gr[ui->listWidget->count()-1].toVector());
     //Установим область, которая будет показываться на графике
-    ui->widget->xAxis->setRange(this->minx, this->maxx);// Для оси Ox
-    ui->widget->yAxis->setRange(this->miny,this->maxy);//Для оси Oy
+    ui->widget->xAxis->setRange(minx, maxx);// Для оси Ox
+    ui->widget->yAxis->setRange(miny, maxy);//Для оси Oy
     graphic1->setName("График "+QString::number(ui->listWidget->count()));
     ui->widget->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);//устанавливаем легенду в правый верхний угол
     ui->widget->legend->setVisible(true); ui->widget->replot();
 }
 
-  void MainWindow::mousePress(QMouseEvent *mouseEvent){
-
+void MainWindow::mousePress(QMouseEvent *mouseEvent){
       if (mouseEvent->button() == Qt::LeftButton){
        QCPItemText *text = new QCPItemText(ui->widget);
       if(graphic1->dataCount()!=0){
           if (ui->action_9->isChecked()&& ui->checkMin->isChecked()){
-              textListMin.append(text);
+              textListMin.append(text); delete text;
               textListMin.last()->setVisible(true);
               this->mass_minX.append(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()));
               this->mass_minY.append(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
@@ -206,7 +208,7 @@ void MainWindow::on_action_3_triggered()
               this->mass_maxY.append(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
               graphMax->setData(this->mass_maxX.toVector(), this->mass_maxY.toVector());
               graphMax->setName("Максимумы"); graphMax->setVisible(true);
-              textListMax.append(text);
+              textListMax.append(text); delete text;
               textListMax.last()->setVisible(true);
               textListMax.last()->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',2)
                                 +"; "+QString::number(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()),'f',2)+")");
@@ -536,4 +538,17 @@ void MainWindow::on_action_16_triggered()
     for (int i = 0; i < this->textListMax.length(); i++) {this->textListMax[i]->setVisible(false);}
     this->textListMin.clear(); this->textListMax.clear();
     ui->widget->replot();
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    mass_x_Gr.append(QList <double>());
+    mass_x_Gr[0].append(0.233); //вместо нуля будет вставляться индекс ui->listWidget->count()-1;
+    mass_x_Gr[0].append(0.544);
+
+    qDebug() << "массив x: "; ui->listWidget->selectedItems();
+    qDebug() << mass_x_Gr[0][0]; //а здесь получаем значения по индексу выделенного графика
+    qDebug() << mass_x_Gr[0][1];
+    qDebug() << ui->listWidget->currentRow();
+
 }

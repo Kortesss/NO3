@@ -16,6 +16,7 @@
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QGridLayout>
+#include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
@@ -23,6 +24,7 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTextBrowser>
 #include <QtWidgets/QVBoxLayout>
@@ -54,26 +56,34 @@ public:
     QAction *action_17;
     QAction *action_19;
     QWidget *centralWidget;
+    QVBoxLayout *verticalLayout;
     QVBoxLayout *verticalLayout_2;
-    QHBoxLayout *horizontalLayout_3;
+    QHBoxLayout *horizontalLayout;
     QGridLayout *gridLayout;
-    QLabel *label_2;
-    QDoubleSpinBox *doubleSpinBox1;
-    QLabel *label;
-    QLabel *label_4;
     QDoubleSpinBox *spinLevel;
     QLabel *label_3;
-    QDoubleSpinBox *doubleSpinBox_x1;
     QDoubleSpinBox *doubleSpinBox_x2;
-    QCheckBox *checkMax;
+    QDoubleSpinBox *doubleSpinBox_x1;
     QCheckBox *checkMin;
+    QLabel *label_2;
+    QDoubleSpinBox *doubleSpinBox1;
+    QLabel *label_4;
+    QLabel *label;
+    QCheckBox *checkMax;
     QListWidget *listWidget;
+    QGridLayout *gridLayout_3;
     QTextBrowser *textBrowser_4;
-    QTextBrowser *textBrowser_3;
     QTextBrowser *textBrowser_2;
-    QHBoxLayout *horizontalLayout_4;
-    QTextBrowser *textBrowser;
+    QTextBrowser *textBrowser_3;
+    QPushButton *pushButton;
+    QGridLayout *gridLayout_2;
     QCustomPlot *widget;
+    QGroupBox *groupBox_2;
+    QVBoxLayout *verticalLayout_4;
+    QTextBrowser *textBrowser_Y;
+    QGroupBox *groupBox;
+    QVBoxLayout *verticalLayout_3;
+    QTextBrowser *textBrowser_X;
     QMenuBar *menuBar;
     QMenu *menu;
     QMenu *menu_2;
@@ -86,7 +96,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(586, 417);
+        MainWindow->resize(617, 424);
         action = new QAction(MainWindow);
         action->setObjectName(QStringLiteral("action"));
         QIcon icon;
@@ -138,18 +148,58 @@ public:
         action_19->setObjectName(QStringLiteral("action_19"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        verticalLayout_2 = new QVBoxLayout(centralWidget);
+        verticalLayout = new QVBoxLayout(centralWidget);
+        verticalLayout->setSpacing(6);
+        verticalLayout->setContentsMargins(11, 11, 11, 11);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setSpacing(6);
-        verticalLayout_2->setContentsMargins(11, 11, 11, 11);
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
-        horizontalLayout_3 = new QHBoxLayout();
-        horizontalLayout_3->setSpacing(6);
-        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
-        horizontalLayout_3->setSizeConstraint(QLayout::SetMinAndMaxSize);
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        horizontalLayout->setSizeConstraint(QLayout::SetFixedSize);
+        horizontalLayout->setContentsMargins(-1, -1, 0, -1);
         gridLayout = new QGridLayout();
         gridLayout->setSpacing(6);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
         gridLayout->setContentsMargins(-1, -1, 0, -1);
+        spinLevel = new QDoubleSpinBox(centralWidget);
+        spinLevel->setObjectName(QStringLiteral("spinLevel"));
+        spinLevel->setDecimals(1);
+        spinLevel->setValue(1);
+
+        gridLayout->addWidget(spinLevel, 1, 1, 1, 1);
+
+        label_3 = new QLabel(centralWidget);
+        label_3->setObjectName(QStringLiteral("label_3"));
+        label_3->setMaximumSize(QSize(153, 16777215));
+
+        gridLayout->addWidget(label_3, 5, 0, 1, 1);
+
+        doubleSpinBox_x2 = new QDoubleSpinBox(centralWidget);
+        doubleSpinBox_x2->setObjectName(QStringLiteral("doubleSpinBox_x2"));
+        doubleSpinBox_x2->setMaximumSize(QSize(80, 20));
+        doubleSpinBox_x2->setDecimals(3);
+        doubleSpinBox_x2->setMaximum(9999.99);
+
+        gridLayout->addWidget(doubleSpinBox_x2, 5, 1, 1, 1);
+
+        doubleSpinBox_x1 = new QDoubleSpinBox(centralWidget);
+        doubleSpinBox_x1->setObjectName(QStringLiteral("doubleSpinBox_x1"));
+        doubleSpinBox_x1->setMinimumSize(QSize(0, 0));
+        doubleSpinBox_x1->setMaximumSize(QSize(80, 20));
+        doubleSpinBox_x1->setDecimals(3);
+        doubleSpinBox_x1->setMaximum(9999.99);
+
+        gridLayout->addWidget(doubleSpinBox_x1, 3, 1, 1, 1);
+
+        checkMin = new QCheckBox(centralWidget);
+        checkMin->setObjectName(QStringLiteral("checkMin"));
+        checkMin->setLayoutDirection(Qt::RightToLeft);
+
+        gridLayout->addWidget(checkMin, 6, 0, 1, 1);
+
         label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QStringLiteral("label_2"));
 
@@ -164,117 +214,128 @@ public:
 
         gridLayout->addWidget(doubleSpinBox1, 0, 1, 1, 1);
 
+        label_4 = new QLabel(centralWidget);
+        label_4->setObjectName(QStringLiteral("label_4"));
+
+        gridLayout->addWidget(label_4, 1, 0, 1, 1);
+
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
         label->setMaximumSize(QSize(163, 16777215));
 
         gridLayout->addWidget(label, 3, 0, 1, 1);
 
-        label_4 = new QLabel(centralWidget);
-        label_4->setObjectName(QStringLiteral("label_4"));
-
-        gridLayout->addWidget(label_4, 1, 0, 1, 1);
-
-        spinLevel = new QDoubleSpinBox(centralWidget);
-        spinLevel->setObjectName(QStringLiteral("spinLevel"));
-        spinLevel->setDecimals(1);
-        spinLevel->setValue(1);
-
-        gridLayout->addWidget(spinLevel, 1, 1, 1, 1);
-
-        label_3 = new QLabel(centralWidget);
-        label_3->setObjectName(QStringLiteral("label_3"));
-        label_3->setMaximumSize(QSize(153, 16777215));
-
-        gridLayout->addWidget(label_3, 5, 0, 1, 1);
-
-        doubleSpinBox_x1 = new QDoubleSpinBox(centralWidget);
-        doubleSpinBox_x1->setObjectName(QStringLiteral("doubleSpinBox_x1"));
-        doubleSpinBox_x1->setMinimumSize(QSize(0, 0));
-        doubleSpinBox_x1->setMaximumSize(QSize(80, 20));
-        doubleSpinBox_x1->setDecimals(3);
-        doubleSpinBox_x1->setMaximum(9999.99);
-
-        gridLayout->addWidget(doubleSpinBox_x1, 3, 1, 1, 1);
-
-        doubleSpinBox_x2 = new QDoubleSpinBox(centralWidget);
-        doubleSpinBox_x2->setObjectName(QStringLiteral("doubleSpinBox_x2"));
-        doubleSpinBox_x2->setMaximumSize(QSize(80, 20));
-        doubleSpinBox_x2->setDecimals(3);
-        doubleSpinBox_x2->setMaximum(9999.99);
-
-        gridLayout->addWidget(doubleSpinBox_x2, 5, 1, 1, 1);
-
         checkMax = new QCheckBox(centralWidget);
         checkMax->setObjectName(QStringLiteral("checkMax"));
 
         gridLayout->addWidget(checkMax, 6, 1, 1, 1);
 
-        checkMin = new QCheckBox(centralWidget);
-        checkMin->setObjectName(QStringLiteral("checkMin"));
-        checkMin->setLayoutDirection(Qt::RightToLeft);
 
-        gridLayout->addWidget(checkMin, 6, 0, 1, 1);
-
-
-        horizontalLayout_3->addLayout(gridLayout);
+        horizontalLayout->addLayout(gridLayout);
 
         listWidget = new QListWidget(centralWidget);
         listWidget->setObjectName(QStringLiteral("listWidget"));
-        QSizePolicy sizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(listWidget->sizePolicy().hasHeightForWidth());
         listWidget->setSizePolicy(sizePolicy);
-        listWidget->setMaximumSize(QSize(132, 76));
+        listWidget->setMinimumSize(QSize(130, 0));
+        listWidget->setMaximumSize(QSize(140, 150));
 
-        horizontalLayout_3->addWidget(listWidget);
+        horizontalLayout->addWidget(listWidget);
 
+        gridLayout_3 = new QGridLayout();
+        gridLayout_3->setSpacing(6);
+        gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
         textBrowser_4 = new QTextBrowser(centralWidget);
         textBrowser_4->setObjectName(QStringLiteral("textBrowser_4"));
-        textBrowser_4->setMaximumSize(QSize(60, 40));
+        textBrowser_4->setMaximumSize(QSize(113, 60));
         textBrowser_4->setSizeIncrement(QSize(0, 0));
         textBrowser_4->setBaseSize(QSize(0, 0));
 
-        horizontalLayout_3->addWidget(textBrowser_4);
-
-        textBrowser_3 = new QTextBrowser(centralWidget);
-        textBrowser_3->setObjectName(QStringLiteral("textBrowser_3"));
-        textBrowser_3->setMaximumSize(QSize(60, 40));
-
-        horizontalLayout_3->addWidget(textBrowser_3);
+        gridLayout_3->addWidget(textBrowser_4, 0, 0, 1, 1);
 
         textBrowser_2 = new QTextBrowser(centralWidget);
         textBrowser_2->setObjectName(QStringLiteral("textBrowser_2"));
         textBrowser_2->setMinimumSize(QSize(20, 20));
-        textBrowser_2->setMaximumSize(QSize(60, 40));
+        textBrowser_2->setMaximumSize(QSize(113, 60));
 
-        horizontalLayout_3->addWidget(textBrowser_2);
+        gridLayout_3->addWidget(textBrowser_2, 1, 1, 1, 1);
+
+        textBrowser_3 = new QTextBrowser(centralWidget);
+        textBrowser_3->setObjectName(QStringLiteral("textBrowser_3"));
+        textBrowser_3->setMaximumSize(QSize(113, 60));
+
+        gridLayout_3->addWidget(textBrowser_3, 0, 1, 1, 1);
+
+        pushButton = new QPushButton(centralWidget);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+
+        gridLayout_3->addWidget(pushButton, 1, 0, 1, 1);
 
 
-        verticalLayout_2->addLayout(horizontalLayout_3);
+        horizontalLayout->addLayout(gridLayout_3);
 
-        horizontalLayout_4 = new QHBoxLayout();
-        horizontalLayout_4->setSpacing(6);
-        horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
-        textBrowser = new QTextBrowser(centralWidget);
-        textBrowser->setObjectName(QStringLiteral("textBrowser"));
-        textBrowser->setMaximumSize(QSize(180, 16777215));
 
-        horizontalLayout_4->addWidget(textBrowser);
+        verticalLayout_2->addLayout(horizontalLayout);
 
+        gridLayout_2 = new QGridLayout();
+        gridLayout_2->setSpacing(6);
+        gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
         widget = new QCustomPlot(centralWidget);
         widget->setObjectName(QStringLiteral("widget"));
+        sizePolicy.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
+        widget->setSizePolicy(sizePolicy);
+        widget->setMinimumSize(QSize(0, 230));
 
-        horizontalLayout_4->addWidget(widget);
+        gridLayout_2->addWidget(widget, 0, 1, 2, 1);
+
+        groupBox_2 = new QGroupBox(centralWidget);
+        groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
+        sizePolicy.setHeightForWidth(groupBox_2->sizePolicy().hasHeightForWidth());
+        groupBox_2->setSizePolicy(sizePolicy);
+        groupBox_2->setMaximumSize(QSize(150, 16777215));
+        verticalLayout_4 = new QVBoxLayout(groupBox_2);
+        verticalLayout_4->setSpacing(6);
+        verticalLayout_4->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_4->setObjectName(QStringLiteral("verticalLayout_4"));
+        textBrowser_Y = new QTextBrowser(groupBox_2);
+        textBrowser_Y->setObjectName(QStringLiteral("textBrowser_Y"));
+
+        verticalLayout_4->addWidget(textBrowser_Y);
+
+        textBrowser_Y->raise();
+
+        gridLayout_2->addWidget(groupBox_2, 1, 0, 1, 1);
+
+        groupBox = new QGroupBox(centralWidget);
+        groupBox->setObjectName(QStringLiteral("groupBox"));
+        sizePolicy.setHeightForWidth(groupBox->sizePolicy().hasHeightForWidth());
+        groupBox->setSizePolicy(sizePolicy);
+        groupBox->setMaximumSize(QSize(150, 16777215));
+        verticalLayout_3 = new QVBoxLayout(groupBox);
+        verticalLayout_3->setSpacing(6);
+        verticalLayout_3->setContentsMargins(11, 11, 11, 11);
+        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
+        textBrowser_X = new QTextBrowser(groupBox);
+        textBrowser_X->setObjectName(QStringLiteral("textBrowser_X"));
+
+        verticalLayout_3->addWidget(textBrowser_X);
 
 
-        verticalLayout_2->addLayout(horizontalLayout_4);
+        gridLayout_2->addWidget(groupBox, 0, 0, 1, 1);
+
+
+        verticalLayout_2->addLayout(gridLayout_2);
+
+
+        verticalLayout->addLayout(verticalLayout_2);
 
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 586, 21));
+        menuBar->setGeometry(QRect(0, 0, 617, 21));
         menu = new QMenu(menuBar);
         menu->setObjectName(QStringLiteral("menu"));
         menu_2 = new QMenu(menuBar);
@@ -340,27 +401,30 @@ public:
         action_13->setText(QApplication::translate("MainWindow", "\320\241\320\272\320\276\321\200\320\276\321\201\321\202\321\214 \320\270\320\267\320\274\320\265\320\275\320\265\320\275\320\270\321\217 \320\277\320\260\321\200\320\260\320\274\320\265\321\202\321\200\320\260", 0));
         action_17->setText(QApplication::translate("MainWindow", "\320\237\320\276\321\201\321\202\321\200\320\276\320\270\321\202\321\214", 0));
         action_19->setText(QApplication::translate("MainWindow", "\320\243\320\264\320\260\320\273\320\270\321\202\321\214", 0));
-        label_2->setText(QApplication::translate("MainWindow", "\320\244\320\270\320\273\321\214\321\202\321\200\320\260\321\206\320\270\321\217 \321\215\320\272\321\201\321\202\321\200\320\265\320\274\321\203\320\274\320\276\320\262", 0));
-        label->setText(QApplication::translate("MainWindow", "\320\235\320\260\321\207\320\260\320\273\321\214\320\275\320\276\320\265 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\265", 0));
-        label_4->setText(QApplication::translate("MainWindow", "\320\237\320\276\321\200\320\276\320\263 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\321\217 \321\202\321\200\320\265\320\275\320\264\320\260, %", 0));
         label_3->setText(QApplication::translate("MainWindow", "\320\232\320\276\320\275\320\265\321\207\320\275\320\276\320\265 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\265", 0));
-        checkMax->setText(QApplication::translate("MainWindow", "\320\234\320\260\320\272\321\201\320\270\320\274\321\203\320\274", 0));
         checkMin->setText(QApplication::translate("MainWindow", "\320\234\320\270\320\275\320\270\320\274\321\203\320\274", 0));
+        label_2->setText(QApplication::translate("MainWindow", "\320\244\320\270\320\273\321\214\321\202\321\200\320\260\321\206\320\270\321\217 \321\215\320\272\321\201\321\202\321\200\320\265\320\274\321\203\320\274\320\276\320\262", 0));
+        label_4->setText(QApplication::translate("MainWindow", "\320\237\320\276\321\200\320\276\320\263 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\321\217 \321\202\321\200\320\265\320\275\320\264\320\260, %", 0));
+        label->setText(QApplication::translate("MainWindow", "\320\235\320\260\321\207\320\260\320\273\321\214\320\275\320\276\320\265 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\265", 0));
+        checkMax->setText(QApplication::translate("MainWindow", "\320\234\320\260\320\272\321\201\320\270\320\274\321\203\320\274", 0));
         textBrowser_4->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Derivative</p></body></html>", 0));
-        textBrowser_3->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Minimum</p></body></html>", 0));
         textBrowser_2->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Maximum</p></body></html>", 0));
+        textBrowser_3->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Minimum</p></body></html>", 0));
+        pushButton->setText(QApplication::translate("MainWindow", "\320\242\320\265\321\201\321\202 \320\272\320\275\320\276\320\277\320\272\320\260", 0));
+        groupBox_2->setTitle(QApplication::translate("MainWindow", "\320\227\320\275\320\260\321\207\320\265\320\275\320\270\321\217 Y:", 0));
+        groupBox->setTitle(QApplication::translate("MainWindow", "\320\227\320\275\320\260\321\207\320\265\320\275\320\270\321\217 X:", 0));
         menu->setTitle(QApplication::translate("MainWindow", "\320\234\320\265\320\275\321\216", 0));
         menu_2->setTitle(QApplication::translate("MainWindow", "\320\255\320\272\321\201\321\202\321\200\320\265\320\274\321\203\320\274\321\213 \321\204\321\203\320\275\320\272\321\206\320\270\320\270", 0));
         menu_4->setTitle(QApplication::translate("MainWindow", "\320\242\320\265\321\205\320\275\320\270\321\207\320\265\321\201\320\272\320\270\320\271 \320\260\320\275\320\260\320\273\320\270\320\267", 0));
