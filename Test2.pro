@@ -18,8 +18,7 @@ SOURCES += main.cpp\
     derivative.cpp \
     somewindow.cpp \
     deltawin.cpp \
-    mnk.cpp \
-    loadfile.cpp
+    mnk.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
@@ -27,8 +26,7 @@ HEADERS  += mainwindow.h \
         ui_mainwindow.h \
     somewindow.h \
     deltawin.h \
-    mnk.h \
-    loadfile.h
+    mnk.h
 
 FORMS    += mainwindow.ui \
     somewindow.ui \

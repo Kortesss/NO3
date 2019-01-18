@@ -87,14 +87,20 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_listWidget_clicked();
+
+    void on_listWidget_doubleClicked();
+
+    void FalseVisibleAllGraph();
+
 private:
     Ui::MainWindow *ui;
 
     double prdelfun(double x1,double x2,double y1,double y2); //процедура для поиска предела функции
     double prfun(double px); //функции для поиска предела функции
-    QList <double> mass_x, mass_y; //массив x,y
+    //QList <double> mass_x, mass_y; //массив x,y
     QList<QList<double> > mass_x_Gr, mass_y_Gr; //массив x и y каждого графика
-    QList <double> mass_minX, mass_maxX, mass_minY, mass_maxY, trendMin, trendMax; //массивы мин. и макс. x, y и и точки для линии тренда
+    QList<QList<double> > mass_minX, mass_maxX, mass_minY, mass_maxY, trendMin, trendMax; //массивы мин. и макс. x, y и и точки для линии тренда для каждого графика
     double minx, miny, maxx, maxy, koef; //мин. и макс. x, y и коэффициент
     QPoint press; //для обработки нажатия кнопки мыши и считывание координат
     QVector<double> dirivate; //массив производных
@@ -102,7 +108,7 @@ private:
     bool mnkMax, mnkMin, levelMin, levelMax; //для нахождения МНК мин. и макс. и вертикальная линия для этих точек
     QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax; //все графики
     QList <QCPItemText*> textListMin, textListMax;//точки экстрем. для отображения координат
-    QTimer timer; int t; //таймер для добавления чисел в список на форму и переменная t для прохода по массиву
+    QTimer timer; int t, gr_index; //таймер для добавления чисел в список на форму и переменная t для прохода по массиву
 };
 
 #endif // MAINWINDOW_H

@@ -273,7 +273,6 @@ p, li { white-space: pre-wrap; }
             <height>230</height>
            </size>
           </property>
-          <zorder></zorder>
          </widget>
         </item>
         <item row="1" column="0">
@@ -298,8 +297,6 @@ p, li { white-space: pre-wrap; }
             <widget class="QTextBrowser" name="textBrowser_Y"/>
            </item>
           </layout>
-          <zorder>textBrowser_Y</zorder>
-          <zorder>groupBox</zorder>
          </widget>
         </item>
         <item row="0" column="0">
@@ -346,8 +343,8 @@ p, li { white-space: pre-wrap; }
      <string>Меню</string>
     </property>
     <addaction name="action"/>
-    <addaction name="action_3"/>
     <addaction name="action_16"/>
+    <addaction name="action_5"/>
     <addaction name="action_12"/>
     <addaction name="action_8"/>
     <addaction name="action_11"/>
@@ -393,7 +390,7 @@ p, li { white-space: pre-wrap; }
      <normaloff>:/img/img/open.png</normaloff>:/img/img/open.png</iconset>
    </property>
    <property name="text">
-    <string>Выбрать Файл</string>
+    <string>Выбрать файл</string>
    </property>
   </action>
   <action name="action_2">
@@ -404,14 +401,6 @@ p, li { white-space: pre-wrap; }
   <action name="action_3">
    <property name="text">
     <string>График функции</string>
-   </property>
-  </action>
-  <action name="action_4">
-   <property name="checkable">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Тестовый график</string>
    </property>
   </action>
   <action name="action_6">
@@ -447,7 +436,7 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="action_16">
    <property name="text">
-    <string>Очистить графики</string>
+    <string>Очистить графы</string>
    </property>
   </action>
   <action name="action_21">
@@ -501,6 +490,19 @@ p, li { white-space: pre-wrap; }
   <action name="action_19">
    <property name="text">
     <string>Удалить</string>
+   </property>
+  </action>
+  <action name="action_4">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Тестовый график</string>
+   </property>
+  </action>
+  <action name="action_5">
+   <property name="text">
+    <string>Удалить график</string>
    </property>
   </action>
  </widget>
