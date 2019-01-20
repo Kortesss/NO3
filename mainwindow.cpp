@@ -434,18 +434,6 @@ void MainWindow::on_action_13_triggered()
      // qDebug() << "sred="<<sred;
       ui->textBrowser_4->clear();
       ui->textBrowser_4->append(QString("dx/dy ")+QString::number(sred));
-      /*int i,j=100,k=200;
-      double sred=0, znpozit=0;
-      for (i=100; i<k; i++) {
-              qDebug() << ">mass_x="<<this->mass_x[i];
-              qDebug() << ">mass_y="<<this->mass_y[j];
-              znpozit=prdelfun(this->mass_x[i],this->mass_x[i+1],this->mass_y[j],this->mass_y[j+1]);
-              qDebug() << "znpozit="<<znpozit;
-              sred=sred+znpozit;
-              j++;
-      }
-      sred=sred/100;
-      qDebug() << "sred="<<sred;*/
       //delete derivative();
     }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных"));}
 }
@@ -469,6 +457,9 @@ void MainWindow::on_action_17_triggered()
             yLevel.append(yLevel[0]+yLevel[0]*0.1);
             yLevel.append(yLevel[0]-yLevel[0]*0.1);
             xLevel.append((yLevel[0]-b)/a);   xLevel.append((yLevel[0]-b)/a); xLevel.append((yLevel[0]-b)/a);
+//            qDebug()<< (yLevel[0]-b)/a;
+            ui->textBrowser5->clear();
+            ui->textBrowser5->append (QString::number((yLevel[0]-b)/a));
 
             graphMnkMin->setData(mass_minX[gr_index].toVector(), trendMin[gr_index].toVector());
             graphMnkMin->setVisible(true);
@@ -497,8 +488,10 @@ void MainWindow::on_action_17_triggered()
             yLevel.append(trendMax[gr_index][0] + trendMax[gr_index][0]*(ui->spinLevel->value()/100));
             yLevel.append(yLevel[0]+yLevel[0]*0.1);
             yLevel.append(yLevel[0]-yLevel[0]*0.1);
-
             xLevel.append((yLevel[0]-b)/a);   xLevel.append((yLevel[0]-b)/a); xLevel.append((yLevel[0]-b)/a);
+//            qDebug()<< (yLevel[0]-b)/a;
+            ui->textBrowser5->clear();
+            ui->textBrowser5->append (QString::number((yLevel[0]-b)/a));
             graphMnkMax->setData(mass_maxX[gr_index].toVector(), trendMax[gr_index].toVector());
             graphMnkMax->setVisible(true);
             graphMnkMax->setName(QString::number(a,'f',2)+"*x+"+QString::number(b,'f',2)+" R^2="+QString::number(Kdet,'f',2));
@@ -605,3 +598,5 @@ void MainWindow::on_listWidget_doubleClicked()
     if (timer.isActive() == true) {timer.stop(); t = 0;}
     gr_index = ui->listWidget->currentRow(); timer.start();
 }
+
+
