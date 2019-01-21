@@ -183,6 +183,7 @@ void MainWindow::on_action_triggered()
 void MainWindow::on_action_3_triggered()
 {
     graphic1->setData(mass_x_Gr[gr_index].toVector(), mass_y_Gr[gr_index].toVector());
+    graphic1->setVisible(true);
     //Установим область, которая будет показываться на графике
     ui->widget->xAxis->setRange(minx, maxx);// Для оси Ox
     ui->widget->yAxis->setRange(miny, maxy);//Для оси Oy
@@ -439,9 +440,9 @@ void MainWindow::on_action_13_triggered()
 }
 
 void MainWindow::on_action_17_triggered()
-{   //Метод наименьших квадратов (МНК) минимума
+{
     if (graphic1->dataCount() != 0){
-        if (ui->checkMin->isChecked()){
+        if (ui->checkMin->isChecked()){//Метод наименьших квадратов (МНК) минимума
             if (mass_minX[gr_index].count() != 0){
                 trendMin[gr_index].clear();  yLevelMin[gr_index].clear(); xLevelMin[gr_index].clear();
                 mnk *mnk1 = new mnk(mass_minX[gr_index], mass_minY[gr_index], mass_minX[gr_index].count());
@@ -466,8 +467,7 @@ void MainWindow::on_action_17_triggered()
                 delete mnk1; //деструктор
             }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки минимума не определены!"));}
         }
-        if (ui->checkMax->isChecked()){
-            //Метод наименьших квадратов (МНК)максимума
+        if (ui->checkMax->isChecked()){//Метод наименьших квадратов (МНК)максимума
             if (mass_maxX[gr_index].count() != 0){
                 trendMax[gr_index].clear(); yLevelMax[gr_index].clear(); xLevelMax[gr_index].clear();
                 mnk *mnk2 = new mnk(mass_maxX[gr_index], mass_maxY[gr_index], mass_maxX[gr_index].count());
@@ -512,9 +512,8 @@ void MainWindow::on_action_19_triggered()
 }
 
 void MainWindow::FalseVisibleAllGraph()
-{   //убираем видимость всех графов в интерфейсе текущего графика
-    //graphMin->setVisible(false); graphMax->setVisible(false); graphMin->setName(" ");graphMax->setName(" ");
-    if (mass_minX[gr_index].count() > 0){//если у графика есть граф, то показываем его
+{   //если для текущего графика есть какие то графы, то показываем их
+    if (mass_minX[gr_index].count() > 0){//если у графика есть граф min, то показываем его
         graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
         graphMin->setName("Минимумы");        graphMin->setVisible(true);
     } else {graphMin->setName(" ");        graphMin->setVisible(false);}
@@ -574,10 +573,11 @@ void MainWindow::on_listWidget_clicked()
 {   //для перехода по графику
     gr_index = ui->listWidget->currentRow();
     graphic1->setData(mass_x_Gr[gr_index].toVector(), mass_y_Gr[gr_index].toVector());
+    graphic1->setVisible(true);
     //Установим область, которая будет показываться на графике
     //ui->widget->xAxis->setRange(minx, maxx);// Для оси Ox
     //ui->widget->yAxis->setRange(miny, maxy);//Для оси Oy
-    graphic1->setName("График "+QString::number(gr_index+1));
+    graphic1->setName(ui->listWidget->item(gr_index)->text());
     FalseVisibleAllGraph();
 }
 
@@ -592,5 +592,17 @@ void MainWindow::on_listWidget_doubleClicked()
 
 void MainWindow::on_action_5_triggered()
 {   //удаление выделеного графика
+    on_action_16_triggered(); //сначала очистим всех графы из памяти и в интерфейсе текущего графика
+    graphic1->setVisible(false); graphic1->setName(" ");
+    mass_minX.removeAt(gr_index); mass_maxX.removeAt(gr_index); mass_minY.removeAt(gr_index); mass_maxY.removeAt(gr_index);
+    trendMin.removeAt(gr_index); trendMax.removeAt(gr_index);
 
+    //this->textListMin.clear(); this->textListMax.clear();
+    mass_x_Gr.removeAt(gr_index); mass_y_Gr.removeAt(gr_index);
+    mass_minY.removeAt(gr_index); mass_maxY.removeAt(gr_index);
+    ui->widget->replot();  ui->listWidget->takeItem(gr_index); //удаляем из списка строку
+    gr_index = 0; //передвигаем указатель графиков в начало
+    ui->textBrowser_X->clear(); ui->textBrowser_Y->clear();
+    //ui->textBrowser_2;  ui->textBrowser_3;   ui->textBrowser_4;
+    if (ui->listWidget->count() != 0)  ui->listWidget->setCurrentRow(gr_index);
 }
