@@ -47,6 +47,8 @@ private slots:
     void mousePress(QMouseEvent *event);
     void histogramMouseMoved(QMouseEvent *event);
 
+    void slotCustomMenuRequested(QPoint pos); //для вызова контекстного меню
+
     void on_action_triggered();
 
     void on_action_3_triggered();
@@ -94,6 +96,8 @@ private slots:
     void FalseVisibleAllGraph();
 
     void on_action_5_triggered();
+
+    void manualSetView();
 
 private:
     Ui::MainWindow *ui;

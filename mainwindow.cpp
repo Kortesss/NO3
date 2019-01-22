@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     connect(ui->widget,SIGNAL(mousePress(QMouseEvent*)),this,SLOT(mousePress(QMouseEvent*)));
     connect(ui->widget, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(histogramMouseMoved(QMouseEvent*)));
     connect(&timer, SIGNAL(timeout()), SLOT(TimerTick()));  t = 0; gr_index = 0;
+    ui->listWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->listWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotCustomMenuRequested(QPoint)));
 
     ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
     ui->widget->xAxis->setLabel("x");
@@ -50,7 +52,12 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     graphic1->setPen(QColor(50, 50, 50, 255));//задаем цвет точки
     //формируем вид точек
     graphic1->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
+}
 
+MainWindow::~MainWindow()
+{
+    qDebug() << "деструктор MainWindow";
+    delete ui;
 }
 
 void MainWindow::TimerTick(){//процедура таймера для добавления в список textBrowser
@@ -62,10 +69,43 @@ void MainWindow::TimerTick(){//процедура таймера для доба
     }else {timer.stop(); t = 0;} //в конце останавливаем таймер
 }
 
-MainWindow::~MainWindow()
+void MainWindow::slotCustomMenuRequested(QPoint pos) //контекстное меню
 {
-    qDebug() << "деструктор MainWindow";
-    delete ui;
+    gr_index = ui->listWidget->currentRow(); //чтобы не нажимать левую кнопку мыши, а потом правую, а сразу показать меню текущего графика
+    QMenu *qmenu = new QMenu(this);
+    //создаем действия для контекстного меню
+    QAction *clearGr = new QAction(trUtf8("Очистить графы"), this);
+    QAction *delGr = new QAction(trUtf8("Удалить график"), this);
+    QAction *saveGr = new QAction(trUtf8("Сохранить график"), this);
+    QAction *manualSet = new QAction(trUtf8("Скрыть точки установленне вручную"), this);
+    QAction *delMinMax = new QAction(trUtf8("Удалить точки экстремумов"), this);
+    QAction *deltaS = new QAction(trUtf8("Δ сигнала"), this);
+
+    //подключаем СЛОТы обработчики для действий контекстного меню
+    connect(clearGr, SIGNAL(triggered(bool)), this, SLOT(on_action_16_triggered()));
+    connect(delGr, SIGNAL(triggered(bool)), this, SLOT(on_action_5_triggered()));
+    connect(saveGr, SIGNAL(triggered(bool)), this, SLOT(on_action_12_triggered()));
+    connect(manualSet, SIGNAL(triggered(bool)), this, SLOT(manualSetView()));
+    connect(delMinMax, SIGNAL(triggered(bool)), this, SLOT(on_action_7_triggered()));
+    connect(deltaS, SIGNAL(triggered(bool)), this, SLOT(on_actionD_triggered()));
+    //устанавливаем действия в меню
+    qmenu->addAction(clearGr);
+    qmenu->addAction(delGr);
+    qmenu->addAction(saveGr);
+    qmenu->addSeparator(); //добавляем разделитель
+    qmenu->addAction(manualSet);
+    qmenu->addAction(delMinMax);
+    qmenu->addSeparator();
+    qmenu->addAction(deltaS);
+    //вызываем контекстное меню
+    qmenu->popup(ui->listWidget->viewport()->mapToGlobal(pos));
+}
+
+void MainWindow::manualSetView()
+{   //показать/скрыть координаты точек установленных вручную
+    for (int i = 0; i < textListMin[gr_index].length(); i++) {textListMin[gr_index][i]->setVisible(false);}
+    for (int i = 0; i < textListMax[gr_index].length(); i++) {textListMax[gr_index][i]->setVisible(false);}
+    ui->widget->replot();
 }
 
 //Рисуем график y=x*x
@@ -196,7 +236,6 @@ void MainWindow::on_action_3_triggered()
 
 void MainWindow::mousePress(QMouseEvent *mouseEvent){
       if (mouseEvent->button() == Qt::LeftButton){
-      //QCPItemText *text = new QCPItemText(ui->widget);
       if(graphic1->dataCount()!=0){
           if (ui->action_9->isChecked()&& ui->checkMin->isChecked()){//если ручная настройка.чекед и мин.чекед
               mass_minX[gr_index].append(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()));
@@ -356,15 +395,9 @@ void MainWindow::on_action_21_triggered()
     DXWindow->setAttribute(Qt::WA_DeleteOnClose); //деструктор
 }
 
-void MainWindow::on_checkMin_clicked()
-{
-    ui->checkMax->setChecked(false);
-}
+void MainWindow::on_checkMin_clicked(){ui->checkMax->setChecked(false);}
 
-void MainWindow::on_checkMax_clicked()
-{
-    ui->checkMin->setChecked(false);
-}
+void MainWindow::on_checkMax_clicked(){ui->checkMin->setChecked(false);}
 
 void MainWindow::on_action_10_triggered()
 {   //Экстремумы
