@@ -175,6 +175,8 @@ void MainWindow::on_action_triggered()
     mnkStrMin.append(" ");   mnkStrMax.append(" ");
     xLevelMin.append(QList <double>()); yLevelMin.append(QList <double>());
     xLevelMax.append(QList <double>()); yLevelMax.append(QList <double>());
+    textListMin.append(QList <QCPItemText*>()); textListMax.append(QList <QCPItemText*>()); //для подписи координат на графике
+    //textListMin[gr_index].last()->setVisible(false);
     ui->listWidget->setCurrentRow(gr_index); //устанавливаем выделение последнему загруженному графику
     FalseVisibleAllGraph(); //очищаем все графы предыдущего графика
 }
@@ -194,18 +196,19 @@ void MainWindow::on_action_3_triggered()
 
 void MainWindow::mousePress(QMouseEvent *mouseEvent){
       if (mouseEvent->button() == Qt::LeftButton){
-       QCPItemText *text = new QCPItemText(ui->widget);
+      //QCPItemText *text = new QCPItemText(ui->widget);
       if(graphic1->dataCount()!=0){
           if (ui->action_9->isChecked()&& ui->checkMin->isChecked()){//если ручная настройка.чекед и мин.чекед
-              textListMin.append(text);
-              textListMin.last()->setVisible(true);
               mass_minX[gr_index].append(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()));
               mass_minY[gr_index].append(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
-              textListMin.last()->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',2) //округление до 2-х знаков
-                            +"; "+QString::number(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()),'f',2)+")");
-              textListMin.last()->position->setCoords(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x())-5, ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())-2);
               graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
               graphMin->setName("Минимумы"); graphMin->setVisible(true);
+              textListMin[gr_index].append(new QCPItemText(ui->widget));
+              textListMin[gr_index].last()->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',2) //округление до 2-х знаков
+                            +"; "+QString::number(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()),'f',2)+")");
+              textListMin[gr_index].last()->position->setCoords(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x())-5, ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())-2);
+              textListMin[gr_index].last()->setVisible(true);
+              if (trendMin[gr_index].count() > 0) on_action_17_triggered(); //перестраиваем МНК мин
               ui->widget->replot();
           }
       //добавляем максимумы x, y
@@ -214,11 +217,12 @@ void MainWindow::mousePress(QMouseEvent *mouseEvent){
               mass_maxY[gr_index].append(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
               graphMax->setData(mass_maxX[gr_index].toVector(), mass_maxY[gr_index].toVector());
               graphMax->setName("Максимумы"); graphMax->setVisible(true);
-              textListMax.append(text);
-              textListMax.last()->setVisible(true);
-              textListMax.last()->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',2)
+              textListMax[gr_index].append(new QCPItemText(ui->widget));
+              textListMax[gr_index].last()->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',2)
                                 +"; "+QString::number(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()),'f',2)+")");
-              textListMax.last()->position->setCoords(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x())-5, ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())+2);
+              textListMax[gr_index].last()->position->setCoords(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x())-5, ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())+2);
+              textListMax[gr_index].last()->setVisible(true);
+              if (trendMax[gr_index].count() > 0) on_action_17_triggered(); //перестраиваем МНК макс
               ui->widget->replot();
           }
       }
@@ -229,8 +233,10 @@ void MainWindow::mousePress(QMouseEvent *mouseEvent){
                 if(QString::compare(QString::number(mass_minX[gr_index][i],'f',0), QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',0))==0){
                     mass_minX[gr_index].removeAt(i);   mass_minY[gr_index].removeAt(i);
                     graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
-                    if (this->textListMin.count()>0) this->textListMin[i]->setVisible(false); this->textListMin.removeAt(i);
-                    on_action_17_triggered();
+                    if (textListMin[gr_index].count()>0){
+                        textListMin[gr_index][i]->setVisible(false); textListMin[gr_index].removeAt(i);
+                    }
+                    if (trendMin[gr_index].count() > 0) on_action_17_triggered(); //перестраиваем МНК мин
                 }
             }
         }
@@ -239,8 +245,10 @@ void MainWindow::mousePress(QMouseEvent *mouseEvent){
                 if(QString::compare(QString::number(mass_maxX[gr_index][i],'f',0), QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',0))==0){
                     mass_maxX[gr_index].removeAt(i);   mass_maxY[gr_index].removeAt(i);
                     graphMax->setData(mass_maxX[gr_index].toVector(), mass_maxY[gr_index].toVector());
-                    if (this->textListMax.count()>0) this->textListMax[i]->setVisible(false); this->textListMax.removeAt(i);
-                    on_action_17_triggered();
+                    if (textListMax[gr_index].count()>0){
+                        textListMax[gr_index][i]->setVisible(false);  textListMax[gr_index].removeAt(i);
+                    }
+                    if (trendMax[gr_index].count() > 0) on_action_17_triggered(); //перестраиваем МНК макс
                 }
             }
         }
@@ -265,22 +273,25 @@ double MainWindow::prdelfun(double x1,double x2,double y1,double y2){
 void MainWindow::on_action_7_triggered()
 {
     //удаление экстремумов
-    if (ui->checkMin->isChecked()){mass_minX[gr_index].clear(); mass_minY[gr_index].clear();
-                graphMin->setVisible(false); graphMin->setName(" ");
-                for (int i = 0; i < this->textListMin.length(); i++) {this->textListMin[i]->setVisible(false);}
-                textListMin.clear();}
-    if (ui->checkMax->isChecked()){mass_maxY[gr_index].clear(); mass_maxX[gr_index].clear();
-                graphMax->setVisible(false); graphMax->setName(" ");
-                for (int i = 0; i < this->textListMax.length(); i++) {this->textListMax[i]->setVisible(false);}
-                textListMax.clear();}
+    if (ui->checkMin->isChecked()){
+        mass_minX[gr_index].clear(); mass_minY[gr_index].clear();
+        graphMin->setVisible(false); graphMin->setName(" ");
+        for (int i = 0; i < textListMin[gr_index].length(); i++) {textListMin[gr_index][i]->setVisible(false);}
+        textListMin[gr_index].clear();
+    }
+    if (ui->checkMax->isChecked()){
+        mass_maxY[gr_index].clear(); mass_maxX[gr_index].clear();
+        graphMax->setVisible(false); graphMax->setName(" ");
+        for (int i = 0; i < textListMax[gr_index].length(); i++) {textListMax[gr_index][i]->setVisible(false);}
+        textListMax[gr_index].clear();}
     if (!ui->checkMin->isChecked() && !ui->checkMax->isChecked()){
         mass_minX[gr_index].clear(); mass_minY[gr_index].clear(); graphMin->setVisible(false); graphMin->setName(" ");
         mass_maxY[gr_index].clear(); mass_maxX[gr_index].clear(); graphMax->setVisible(false); graphMax->setName(" ");
-        for (int i = 0; i < this->textListMin.length(); i++) {this->textListMin[i]->setVisible(false);}
-        for (int i = 0; i < this->textListMax.length(); i++) {this->textListMax[i]->setVisible(false);}
-        this->textListMin.clear(); this->textListMax.clear();
+        for (int i = 0; i < textListMin[gr_index].length(); i++) {textListMin[gr_index][i]->setVisible(false);}
+        for (int i = 0; i < textListMax[gr_index].length(); i++) {textListMax[gr_index][i]->setVisible(false);}
+        textListMin[gr_index].clear(); textListMax[gr_index].clear();
     }
-       ui->widget->replot();
+    ui->widget->replot();
 }
 
 void MainWindow::on_action_8_triggered()
@@ -538,9 +549,15 @@ void MainWindow::FalseVisibleAllGraph()
         graphLevelMax->setName("Линия перегиба max");
         graphLevelMax->setVisible(true);
     }else {graphMnkMax->setVisible(false); graphMnkMax->setName(" "); graphLevelMax->setVisible(false); graphLevelMax->setName(" ");}
-
-    for (int i = 0; i < this->textListMin.length(); i++) {this->textListMin[i]->setVisible(false);}
-    for (int i = 0; i < this->textListMax.length(); i++) {this->textListMax[i]->setVisible(false);}
+    for (int j = 0; j < ui->listWidget->count(); j++) {
+        if (gr_index == j){ //пройдемся по всем графикам и либо установим видимость, либо снимен его координаты, если не на текущем находимся
+            for (int i = 0; i < textListMin[j].length(); i++) textListMin[j][i]->setVisible(true);
+            for (int i = 0; i < textListMax[j].length(); i++) textListMax[j][i]->setVisible(true);
+        }else{
+            for (int i = 0; i < textListMin[j].length(); i++) textListMin[j][i]->setVisible(false);
+            for (int i = 0; i < textListMax[j].length(); i++) textListMax[j][i]->setVisible(false);
+        }
+    }
     ui->widget->replot();
 }
 
@@ -550,9 +567,9 @@ void MainWindow::on_action_16_triggered()
     graphMin->setVisible(false); graphMax->setVisible(false); graphMin->setName(" ");graphMax->setName(" ");
     trendMin[gr_index].clear(); graphMnkMin->setVisible(false); graphMnkMin->setName(" "); graphLevelMin->setVisible(false); graphLevelMin->setName(" ");
     trendMax[gr_index].clear(); graphMnkMax->setVisible(false); graphMnkMax->setName(" "); graphLevelMax->setVisible(false); graphLevelMax->setName(" ");
-    for (int i = 0; i < this->textListMin.length(); i++) {this->textListMin[i]->setVisible(false);}
-    for (int i = 0; i < this->textListMax.length(); i++) {this->textListMax[i]->setVisible(false);}
-    this->textListMin.clear(); this->textListMax.clear();
+    for (int i = 0; i < textListMin[gr_index].length(); i++) {textListMin[gr_index][i]->setVisible(false);}
+    for (int i = 0; i < textListMax[gr_index].length(); i++) {textListMax[gr_index][i]->setVisible(false);}
+    textListMin[gr_index].clear(); textListMax[gr_index].clear();
     ui->widget->replot();
 }
 
@@ -596,8 +613,8 @@ void MainWindow::on_action_5_triggered()
     graphic1->setVisible(false); graphic1->setName(" ");
     mass_minX.removeAt(gr_index); mass_maxX.removeAt(gr_index); mass_minY.removeAt(gr_index); mass_maxY.removeAt(gr_index);
     trendMin.removeAt(gr_index); trendMax.removeAt(gr_index);
-
-    //this->textListMin.clear(); this->textListMax.clear();
+    textListMin[gr_index].clear(); textListMax[gr_index].clear();
+    textListMin.removeAt(gr_index); textListMax.removeAt(gr_index);
     mass_x_Gr.removeAt(gr_index); mass_y_Gr.removeAt(gr_index);
     mass_minY.removeAt(gr_index); mass_maxY.removeAt(gr_index);
     ui->widget->replot();  ui->listWidget->takeItem(gr_index); //удаляем из списка строку
