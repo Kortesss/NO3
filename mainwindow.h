@@ -97,12 +97,18 @@ private slots:
 
     void on_action_5_triggered();
 
+    void menuRename();
+
+    void EnterPressedLineEditRename();
+
     void manualSetView();
 
     void on_action_manual_triggered();
 
 private:
     Ui::MainWindow *ui;
+    QLineEdit *lineEditRename;
+    QListWidgetItem *itRename;
 
     double prdelfun(double x1,double x2,double y1,double y2); //процедура для поиска предела функции
     double prfun(double px); //функции для поиска предела функции
@@ -110,7 +116,7 @@ private:
     QList<QList<double> > mass_minX, mass_maxX, mass_minY, mass_maxY, trendMin, trendMax; //массивы мин. и макс. x, y и и точки для линии тренда для каждого графика
     QList<QList<double> > xLevelMin, yLevelMin, xLevelMax, yLevelMax;
     QList <QString> mnkStrMin, mnkStrMax; //для сохраниения легенды мнк
-    double minx, miny, maxx, maxy, koef; //мин. и макс. x, y и коэффициент
+    QList <double> minx, miny, maxx, maxy, koef; //мин. и макс. x, y и коэффициент
     QVector<double> dirivate; //массив производных
     double x1, x2;
     QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax; //все графики

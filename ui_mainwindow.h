@@ -268,6 +268,7 @@ public:
         listWidget->setSizePolicy(sizePolicy);
         listWidget->setMinimumSize(QSize(130, 0));
         listWidget->setMaximumSize(QSize(140, 150));
+        listWidget->setSortingEnabled(false);
 
         horizontalLayout->addWidget(listWidget);
 

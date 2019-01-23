@@ -76,6 +76,7 @@ void MainWindow::slotCustomMenuRequested(QPoint pos) //контекстное м
         //gr_index = ui->listWidget->currentRow(); //чтобы не нажимать левую кнопку мыши, а потом правую, а сразу показать меню текущего графика
         QMenu *qmenu = new QMenu(this);
         //создаем действия для контекстного меню
+        QAction *rename = new QAction(trUtf8("Переименовать"), this);
         QAction *clearGr = new QAction(trUtf8("Очистить графы"), this);
         QAction *delGr = new QAction(trUtf8("Удалить график"), this);
         QAction *saveGr = new QAction(trUtf8("Сохранить график"), this);
@@ -84,6 +85,7 @@ void MainWindow::slotCustomMenuRequested(QPoint pos) //контекстное м
         QAction *deltaS = new QAction(trUtf8("Δ сигнала"), this);
 
         //подключаем СЛОТы обработчики для действий контекстного меню
+        connect(rename, SIGNAL(triggered(bool)), this, SLOT(menuRename()));
         connect(clearGr, SIGNAL(triggered(bool)), this, SLOT(on_action_16_triggered()));
         connect(delGr, SIGNAL(triggered(bool)), this, SLOT(on_action_5_triggered()));
         connect(saveGr, SIGNAL(triggered(bool)), this, SLOT(on_action_12_triggered()));
@@ -91,6 +93,7 @@ void MainWindow::slotCustomMenuRequested(QPoint pos) //контекстное м
         connect(delMinMax, SIGNAL(triggered(bool)), this, SLOT(on_action_7_triggered()));
         connect(deltaS, SIGNAL(triggered(bool)), this, SLOT(on_actionD_triggered()));
         //устанавливаем действия в меню
+        qmenu->addAction(rename);
         qmenu->addAction(clearGr);
         qmenu->addAction(delGr);
         qmenu->addAction(saveGr);
@@ -102,6 +105,32 @@ void MainWindow::slotCustomMenuRequested(QPoint pos) //контекстное м
         //вызываем контекстное меню
         qmenu->popup(ui->listWidget->viewport()->mapToGlobal(pos));
     }
+}
+
+void MainWindow::menuRename()
+{   //переименование графика
+    lineEditRename = new QLineEdit(this); //объявляем QLineEdit (текстовая строка)
+    lineEditRename->setAlignment(Qt::AlignCenter);
+    lineEditRename->setText(ui->listWidget->item(gr_index)->text());
+    lineEditRename->selectAll();    lineEditRename->setFocus();
+    itRename = new QListWidgetItem(ui->listWidget);
+    ui->listWidget->takeItem(gr_index); //удаляем строку, которую будем переименовывать
+    ui->listWidget->setItemWidget(itRename, lineEditRename);//связываем итем и текстовую строку
+    ui->listWidget->insertItem(gr_index, itRename);//вставляем в список графиков тот итем
+    connect(lineEditRename, SIGNAL(returnPressed()), SLOT(EnterPressedLineEditRename()));
+
+}
+
+void MainWindow::EnterPressedLineEditRename()
+{   //обработчик события нажатия Enter в текстовом поле
+    delete itRename;
+    //ui->listWidget->addItem(lineEditRename->text()); delete lineEditRename;
+    QStringList qstr; qstr << lineEditRename->text(); delete lineEditRename;
+    ui->listWidget->insertItems(gr_index, qstr);
+    ui->listWidget->item(gr_index)->setTextAlignment(Qt::AlignCenter);
+    ui->listWidget->setCurrentRow(gr_index);
+    graphic1->setName(ui->listWidget->item(gr_index)->text());
+    ui->widget->replot();
 }
 
 void MainWindow::manualSetView()
@@ -203,13 +232,13 @@ void MainWindow::on_action_triggered()
         ui->listWidget->addItem("График "+QString::number(gr_index+1));//+1 потому что там еще ничего нет
         ui->listWidget->item(gr_index)->setTextAlignment(Qt::AlignCenter);
       }
-    minx = *std::min_element(mass_x_Gr[gr_index].begin(), mass_x_Gr[gr_index].end());
-    maxx = *std::max_element(mass_x_Gr[gr_index].begin(), mass_x_Gr[gr_index].end());
-    miny = *std::min_element(mass_y_Gr[gr_index].begin(), mass_y_Gr[gr_index].end());
-    maxy = *std::max_element(mass_y_Gr[gr_index].begin(), mass_y_Gr[gr_index].end());
-    koef=(maxx - minx)/(mass_x_Gr[gr_index].count());//расчет коэф. плотности данных
-    ui->textBrowser_2->append(QString("%1").arg(maxx));
-    ui->textBrowser_3->append(QString("%1").arg(minx));
+    minx.append(*std::min_element(mass_x_Gr[gr_index].begin(), mass_x_Gr[gr_index].end()));
+    maxx.append(*std::max_element(mass_x_Gr[gr_index].begin(), mass_x_Gr[gr_index].end()));
+    miny.append(*std::min_element(mass_y_Gr[gr_index].begin(), mass_y_Gr[gr_index].end()));
+    maxy.append(*std::max_element(mass_y_Gr[gr_index].begin(), mass_y_Gr[gr_index].end()));
+    koef.append((maxx[gr_index] - minx[gr_index])/(mass_x_Gr[gr_index].count()));//расчет коэф. плотности данных
+    ui->textBrowser_2->append(QString("%1").arg(maxx[gr_index]));
+    ui->textBrowser_3->append(QString("%1").arg(minx[gr_index]));
     on_action_3_triggered();//рисуем график
     //для каждого графика задаем ему место под массив экстремумов, мнк, линии тренда и т.д.
     mass_minX.append(QList <double>()); mass_maxX.append(QList <double>());
@@ -230,8 +259,8 @@ void MainWindow::on_action_3_triggered()
     graphic1->setData(mass_x_Gr[gr_index].toVector(), mass_y_Gr[gr_index].toVector());
     graphic1->setVisible(true);
     //Установим область, которая будет показываться на графике
-    ui->widget->xAxis->setRange(minx, maxx);// Для оси Ox
-    ui->widget->yAxis->setRange(miny, maxy);//Для оси Oy
+    ui->widget->xAxis->setRange(minx[gr_index], maxx[gr_index]);// Для оси Ox
+    ui->widget->yAxis->setRange(miny[gr_index], maxy[gr_index]);//Для оси Oy
     graphic1->setName("График "+QString::number(gr_index+1));
     ui->widget->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);//устанавливаем легенду в правый верхний угол
     ui->widget->legend->setVisible(true); ui->widget->replot();
@@ -393,7 +422,7 @@ void MainWindow::on_action_21_triggered()
 {
     on_action_13_triggered(); //вызов вычисления производной кучочно-непрерывной функции
     //отрисовка графика производной
-    SomeWindow *DXWindow=new SomeWindow(dirivate,this->x1,this->x2,this->koef,this);
+    SomeWindow *DXWindow=new SomeWindow(dirivate,this->x1,this->x2, koef[gr_index], this);
     DXWindow->show();
     DXWindow->setAttribute(Qt::WA_DeleteOnClose); //деструктор
 }
@@ -456,8 +485,8 @@ void MainWindow::on_action_13_triggered()
       double sred=0, znpozit=0;
       dirivate.clear();
       //обработка введеных значений если они за пределами возможных
-      if (x1<this->minx) x1=this->minx;
-      if (x2>this->maxx) x2=this->maxx;
+      if (x1 < minx[gr_index]) x1 = minx[gr_index];
+      if (x2 > maxx[gr_index]) x2 = maxx[gr_index];
       //ищем ближайшее к введеному значение из массива данных
       int i=0;
       while (x1>mass_x_Gr[gr_index][i]) { i++;}
@@ -478,7 +507,7 @@ void MainWindow::on_action_13_triggered()
               sred=sred+znpozit;
               j++;
       }
-        this->x1=x1;this->x2=x2;
+        this->x1=x1; this->x2=x2;
      // qDebug() << "sred="<<sred;
       ui->textBrowser_4->clear();
       ui->textBrowser_4->append(QString("dx/dy ")+QString::number(sred));
@@ -631,8 +660,8 @@ void MainWindow::on_listWidget_clicked()
     graphic1->setData(mass_x_Gr[gr_index].toVector(), mass_y_Gr[gr_index].toVector());
     graphic1->setVisible(true);
     //Установим область, которая будет показываться на графике
-    //ui->widget->xAxis->setRange(minx, maxx);// Для оси Ox
-    //ui->widget->yAxis->setRange(miny, maxy);//Для оси Oy
+    ui->widget->xAxis->setRange(minx[gr_index], maxx[gr_index]);// Для оси Ox
+    ui->widget->yAxis->setRange(miny[gr_index], maxy[gr_index]);//Для оси Oy
     graphic1->setName(ui->listWidget->item(gr_index)->text());
     FalseVisibleAllGraph();
 }
