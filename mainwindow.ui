@@ -414,9 +414,17 @@ p, li { white-space: pre-wrap; }
     <addaction name="menu_5"/>
     <addaction name="actionD"/>
    </widget>
+   <widget class="QMenu" name="menu_6">
+    <property name="title">
+     <string>Помощь</string>
+    </property>
+    <addaction name="action_manual"/>
+    <addaction name="action_15"/>
+   </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
    <addaction name="menu_4"/>
+   <addaction name="menu_6"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action">
@@ -426,6 +434,9 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>Выбрать файл</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="action_2">
@@ -459,6 +470,9 @@ p, li { white-space: pre-wrap; }
    <property name="text">
     <string>Выход</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
   </action>
   <action name="action_12">
    <property name="icon">
@@ -467,6 +481,9 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>Сохранить график</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="action_16">
@@ -538,6 +555,22 @@ p, li { white-space: pre-wrap; }
   <action name="action_5">
    <property name="text">
     <string>Удалить график</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
+  </action>
+  <action name="action_manual">
+   <property name="text">
+    <string>Руководство пользователя</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="action_15">
+   <property name="text">
+    <string>О программе</string>
    </property>
   </action>
  </widget>

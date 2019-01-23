@@ -71,34 +71,37 @@ void MainWindow::TimerTick(){//процедура таймера для доба
 
 void MainWindow::slotCustomMenuRequested(QPoint pos) //контекстное меню
 {
-    gr_index = ui->listWidget->currentRow(); //чтобы не нажимать левую кнопку мыши, а потом правую, а сразу показать меню текущего графика
-    QMenu *qmenu = new QMenu(this);
-    //создаем действия для контекстного меню
-    QAction *clearGr = new QAction(trUtf8("Очистить графы"), this);
-    QAction *delGr = new QAction(trUtf8("Удалить график"), this);
-    QAction *saveGr = new QAction(trUtf8("Сохранить график"), this);
-    QAction *manualSet = new QAction(trUtf8("Скрыть точки установленне вручную"), this);
-    QAction *delMinMax = new QAction(trUtf8("Удалить точки экстремумов"), this);
-    QAction *deltaS = new QAction(trUtf8("Δ сигнала"), this);
+    if (ui->listWidget->count() > 0){
+        on_listWidget_clicked();
+        //gr_index = ui->listWidget->currentRow(); //чтобы не нажимать левую кнопку мыши, а потом правую, а сразу показать меню текущего графика
+        QMenu *qmenu = new QMenu(this);
+        //создаем действия для контекстного меню
+        QAction *clearGr = new QAction(trUtf8("Очистить графы"), this);
+        QAction *delGr = new QAction(trUtf8("Удалить график"), this);
+        QAction *saveGr = new QAction(trUtf8("Сохранить график"), this);
+        QAction *manualSet = new QAction(trUtf8("Скрыть точки установленне вручную"), this);
+        QAction *delMinMax = new QAction(trUtf8("Удалить точки экстремумов"), this);
+        QAction *deltaS = new QAction(trUtf8("Δ сигнала"), this);
 
-    //подключаем СЛОТы обработчики для действий контекстного меню
-    connect(clearGr, SIGNAL(triggered(bool)), this, SLOT(on_action_16_triggered()));
-    connect(delGr, SIGNAL(triggered(bool)), this, SLOT(on_action_5_triggered()));
-    connect(saveGr, SIGNAL(triggered(bool)), this, SLOT(on_action_12_triggered()));
-    connect(manualSet, SIGNAL(triggered(bool)), this, SLOT(manualSetView()));
-    connect(delMinMax, SIGNAL(triggered(bool)), this, SLOT(on_action_7_triggered()));
-    connect(deltaS, SIGNAL(triggered(bool)), this, SLOT(on_actionD_triggered()));
-    //устанавливаем действия в меню
-    qmenu->addAction(clearGr);
-    qmenu->addAction(delGr);
-    qmenu->addAction(saveGr);
-    qmenu->addSeparator(); //добавляем разделитель
-    qmenu->addAction(manualSet);
-    qmenu->addAction(delMinMax);
-    qmenu->addSeparator();
-    qmenu->addAction(deltaS);
-    //вызываем контекстное меню
-    qmenu->popup(ui->listWidget->viewport()->mapToGlobal(pos));
+        //подключаем СЛОТы обработчики для действий контекстного меню
+        connect(clearGr, SIGNAL(triggered(bool)), this, SLOT(on_action_16_triggered()));
+        connect(delGr, SIGNAL(triggered(bool)), this, SLOT(on_action_5_triggered()));
+        connect(saveGr, SIGNAL(triggered(bool)), this, SLOT(on_action_12_triggered()));
+        connect(manualSet, SIGNAL(triggered(bool)), this, SLOT(manualSetView()));
+        connect(delMinMax, SIGNAL(triggered(bool)), this, SLOT(on_action_7_triggered()));
+        connect(deltaS, SIGNAL(triggered(bool)), this, SLOT(on_actionD_triggered()));
+        //устанавливаем действия в меню
+        qmenu->addAction(clearGr);
+        qmenu->addAction(delGr);
+        qmenu->addAction(saveGr);
+        qmenu->addSeparator(); //добавляем разделитель
+        qmenu->addAction(manualSet);
+        qmenu->addAction(delMinMax);
+        qmenu->addSeparator();
+        qmenu->addAction(deltaS);
+        //вызываем контекстное меню
+        qmenu->popup(ui->listWidget->viewport()->mapToGlobal(pos));
+    }
 }
 
 void MainWindow::manualSetView()
@@ -596,6 +599,7 @@ void MainWindow::FalseVisibleAllGraph()
 
 void MainWindow::on_action_16_triggered()
 {   //очистка всех графов из памяти и в интерфейсе текущего графика
+    if (mass_y_Gr.count()>0) {
     mass_minX[gr_index].clear(); mass_maxX[gr_index].clear(); mass_minY[gr_index].clear(); mass_maxY[gr_index].clear();
     graphMin->setVisible(false); graphMax->setVisible(false); graphMin->setName(" ");graphMax->setName(" ");
     trendMin[gr_index].clear(); graphMnkMin->setVisible(false); graphMnkMin->setName(" "); graphLevelMin->setVisible(false); graphLevelMin->setName(" ");
@@ -604,6 +608,9 @@ void MainWindow::on_action_16_triggered()
     for (int i = 0; i < textListMax[gr_index].length(); i++) {textListMax[gr_index][i]->setVisible(false);}
     textListMin[gr_index].clear(); textListMax[gr_index].clear();
     ui->widget->replot();
+    }else{
+        QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Отсутствуют графики!"));
+    }
 }
 
 void MainWindow::on_pushButton_clicked()
@@ -611,7 +618,6 @@ void MainWindow::on_pushButton_clicked()
     mass_x_Gr.append(QList <double>());
     mass_x_Gr[0].append(0.233); //вместо нуля будет вставляться индекс ui->listWidget->count()-1;
     mass_x_Gr[0].append(0.544);
-
     qDebug() << "массив x: "; 
     qDebug() << mass_x_Gr[0][0]; //а здесь получаем значения по индексу выделенного графика
     qDebug() << mass_x_Gr[0][1];
@@ -642,17 +648,28 @@ void MainWindow::on_listWidget_doubleClicked()
 
 void MainWindow::on_action_5_triggered()
 {   //удаление выделеного графика
-    on_action_16_triggered(); //сначала очистим всех графы из памяти и в интерфейсе текущего графика
-    graphic1->setVisible(false); graphic1->setName(" ");
-    mass_minX.removeAt(gr_index); mass_maxX.removeAt(gr_index); mass_minY.removeAt(gr_index); mass_maxY.removeAt(gr_index);
-    trendMin.removeAt(gr_index); trendMax.removeAt(gr_index);
-    textListMin[gr_index].clear(); textListMax[gr_index].clear();
-    textListMin.removeAt(gr_index); textListMax.removeAt(gr_index);
-    mass_x_Gr.removeAt(gr_index); mass_y_Gr.removeAt(gr_index);
-    mass_minY.removeAt(gr_index); mass_maxY.removeAt(gr_index);
-    ui->widget->replot();  ui->listWidget->takeItem(gr_index); //удаляем из списка строку
-    gr_index = 0; //передвигаем указатель графиков в начало
-    ui->textBrowser_X->clear(); ui->textBrowser_Y->clear();
-    //ui->textBrowser_2;  ui->textBrowser_3;   ui->textBrowser_4;
-    if (ui->listWidget->count() != 0)  ui->listWidget->setCurrentRow(gr_index);
+    if (mass_y_Gr.count()>0) {
+        on_action_16_triggered(); //сначала очистим всех графы из памяти и в интерфейсе текущего графика
+        graphic1->setVisible(false); graphic1->setName(" ");
+        mass_minX.removeAt(gr_index); mass_maxX.removeAt(gr_index); mass_minY.removeAt(gr_index); mass_maxY.removeAt(gr_index);
+        trendMin.removeAt(gr_index); trendMax.removeAt(gr_index);
+        textListMin[gr_index].clear(); textListMax[gr_index].clear();
+        textListMin.removeAt(gr_index); textListMax.removeAt(gr_index);
+        mass_x_Gr.removeAt(gr_index); mass_y_Gr.removeAt(gr_index);
+        mass_minY.removeAt(gr_index); mass_maxY.removeAt(gr_index);
+        ui->widget->replot();  ui->listWidget->takeItem(gr_index); //удаляем из списка строку
+        gr_index = 0; //передвигаем указатель графиков в начало
+        ui->textBrowser_X->clear(); ui->textBrowser_Y->clear();
+        //ui->textBrowser_2;  ui->textBrowser_3;   ui->textBrowser_4;
+        if (ui->listWidget->count() != 0)  ui->listWidget->setCurrentRow(gr_index);
+    }else{
+        QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Отсутствуют графики!"));
+    }
+
+}
+
+void MainWindow::on_action_manual_triggered()
+{   //запуск руководства пользователя
+    QString path = qApp->applicationDirPath();
+    QProcess::execute("hh.exe "+path+"/manual1.chm");
 }

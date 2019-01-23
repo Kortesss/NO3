@@ -99,6 +99,8 @@ private slots:
 
     void manualSetView();
 
+    void on_action_manual_triggered();
+
 private:
     Ui::MainWindow *ui;
 
