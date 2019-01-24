@@ -236,7 +236,7 @@ void MainWindow::on_action_triggered() //выбор файла и заполне
     miny.append(*std::min_element(mass_y_Gr[gr_index].begin(), mass_y_Gr[gr_index].end()));
     maxy.append(*std::max_element(mass_y_Gr[gr_index].begin(), mass_y_Gr[gr_index].end()));
     koef.append((maxx[gr_index] - minx[gr_index])/(mass_x_Gr[gr_index].count()));//расчет коэф. плотности данных
-    ui->Browser_Max->clear(); ui->Browser_Min->clear();
+    ui->Browser_Max->clear(); ui->Browser_Min->clear(); ui->BrowserTime->clear();
     ui->Browser_Max->append("Мин. X:\n" + QString("%1").arg(maxx[gr_index]));
     ui->Browser_Min->append("Макс. X:\n" + QString("%1").arg(minx[gr_index]));
     on_action_3_triggered();//рисуем график
@@ -530,6 +530,8 @@ void MainWindow::on_action_17_triggered() //МНК
                 xLevelMin[gr_index].append((yLevelMin[gr_index][0]- mnk1->get_b()) / mnk1->get_a());
                 xLevelMin[gr_index].append((yLevelMin[gr_index][0]- mnk1->get_b()) / mnk1->get_a());
                 xLevelMin[gr_index].append((yLevelMin[gr_index][0]- mnk1->get_b()) / mnk1->get_a());
+                ui->BrowserTime->clear();
+                ui->BrowserTime->append(QString::number((yLevelMin[gr_index][0] - mnk1->get_b()) / mnk1->get_a()));
                 graphMnkMin->setData(mass_minX[gr_index].toVector(), trendMin[gr_index].toVector());
                 graphMnkMin->setVisible(true);
                 mnkStrMin[gr_index] = QString::number(mnk1->get_a(),'f',2)+"*x+"+QString::number(mnk1->get_b(),'f',2)+" R^2="+QString::number(mnk1->get_Kdet(),'f',2);
@@ -555,6 +557,8 @@ void MainWindow::on_action_17_triggered() //МНК
                 xLevelMax[gr_index].append((yLevelMax[gr_index][0]-mnk2->get_b()) / mnk2->get_a());
                 xLevelMax[gr_index].append((yLevelMax[gr_index][0]-mnk2->get_b()) / mnk2->get_a());
                 xLevelMax[gr_index].append((yLevelMax[gr_index][0]-mnk2->get_b()) / mnk2->get_a());
+                ui->BrowserTime->clear();
+                ui->BrowserTime->append(QString::number((yLevelMax[gr_index][0] - mnk2->get_b()) / mnk2->get_a()));
                 graphMnkMax->setData(mass_maxX[gr_index].toVector(), trendMax[gr_index].toVector());
                 graphMnkMax->setVisible(true);
                 mnkStrMax[gr_index] = QString::number(mnk2->get_a(),'f',2)+"*x+"+QString::number(mnk2->get_b(),'f',2)+" R^2="+QString::number(mnk2->get_Kdet(),'f',2);
@@ -681,7 +685,7 @@ void MainWindow::on_action_5_triggered() //удаление выделеного
         ui->widget->replot();  ui->listWidget->takeItem(gr_index); //удаляем из списка строку
         gr_index = 0; //передвигаем указатель графиков в начало
         ui->textBrowser_X->clear(); ui->textBrowser_Y->clear();
-        ui->Browser_Max->clear(); ui->Browser_Min->clear();
+        ui->Browser_Max->clear(); ui->Browser_Min->clear(); ui->BrowserTime->clear();
         ui->Browser_Max->append("Мин. X:");  ui->Browser_Min->append("Макс. X:");
         ui->Browser_Derivative->clear(); ui->Browser_Derivative->append(QString("Производная:"));
 

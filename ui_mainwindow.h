@@ -72,7 +72,7 @@ public:
     QCheckBox *checkMax;
     QLabel *label_4;
     QDoubleSpinBox *doubleSpinBox1;
-    QTextBrowser *textBrowser5;
+    QTextBrowser *BrowserTime;
     QListWidget *listWidget;
     QGridLayout *gridLayout_3;
     QTextBrowser *Browser_Min;
@@ -246,11 +246,12 @@ public:
 
         gridLayout->addWidget(doubleSpinBox1, 0, 1, 1, 1);
 
-        textBrowser5 = new QTextBrowser(centralWidget);
-        textBrowser5->setObjectName(QStringLiteral("textBrowser5"));
-        textBrowser5->setMaximumSize(QSize(80, 20));
+        BrowserTime = new QTextBrowser(centralWidget);
+        BrowserTime->setObjectName(QStringLiteral("BrowserTime"));
+        BrowserTime->setMaximumSize(QSize(80, 20));
+        BrowserTime->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-        gridLayout->addWidget(textBrowser5, 2, 1, 1, 1);
+        gridLayout->addWidget(BrowserTime, 2, 1, 1, 1);
 
 
         horizontalLayout->addLayout(gridLayout);
@@ -370,8 +371,8 @@ public:
         statusBar->setObjectName(QStringLiteral("statusBar"));
         MainWindow->setStatusBar(statusBar);
         QWidget::setTabOrder(doubleSpinBox1, spinLevel);
-        QWidget::setTabOrder(spinLevel, textBrowser5);
-        QWidget::setTabOrder(textBrowser5, doubleSpinBox_x1);
+        QWidget::setTabOrder(spinLevel, BrowserTime);
+        QWidget::setTabOrder(BrowserTime, doubleSpinBox_x1);
         QWidget::setTabOrder(doubleSpinBox_x1, doubleSpinBox_x2);
         QWidget::setTabOrder(doubleSpinBox_x2, checkMin);
         QWidget::setTabOrder(checkMin, checkMax);
