@@ -15,22 +15,6 @@ namespace Ui {
 class MainWindow;
 }
 
-/*class NewWindow :public QWidget
-{
-    public:
-      QPushButton* button2;
-      NewWindow(): QWidget()     {
-//     ОЧЕНЬ ВАЖНО = чтобы виджеты отображались на дополнительном окне
-//     на хранить указатели на них в виде полей данного окна (его класса)
-//     как это сделано в данном примере,скажем, для кнопки  button2
-     this->setWindowTitle("дополнительное окно");
-     button2 = new QPushButton("HEllo WOrld =) !!!)))", this);
-     this->show();
-            //  widget.show();
-     }
-
-};*/
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -57,9 +41,7 @@ private slots:
 
     void on_action_7_triggered();
 
-    void on_action_8_triggered();
-
-    void on_action_11_triggered();
+    void on_action_exit_triggered();
 
     void on_action_12_triggered();
 
@@ -87,8 +69,6 @@ private slots:
 
     void TimerTick();
 
-    void on_pushButton_clicked();
-
     void on_listWidget_clicked();
 
     void on_listWidget_doubleClicked();
@@ -104,6 +84,12 @@ private slots:
     void manualSetView();
 
     void on_action_manual_triggered();
+
+    void on_action_about_triggered();
+
+    void on_doubleSpinBox_x1_valueChanged();
+
+    void on_doubleSpinBox_x2_valueChanged();
 
 private:
     Ui::MainWindow *ui;

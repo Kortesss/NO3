@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[36];
-    char stringdata0[704];
+    QByteArrayData data[37];
+    char stringdata0[754];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -41,30 +41,31 @@ QT_MOC_LITERAL(8, 90, 19), // "on_action_triggered"
 QT_MOC_LITERAL(9, 110, 21), // "on_action_3_triggered"
 QT_MOC_LITERAL(10, 132, 21), // "on_action_4_triggered"
 QT_MOC_LITERAL(11, 154, 21), // "on_action_7_triggered"
-QT_MOC_LITERAL(12, 176, 21), // "on_action_8_triggered"
-QT_MOC_LITERAL(13, 198, 22), // "on_action_11_triggered"
-QT_MOC_LITERAL(14, 221, 22), // "on_action_12_triggered"
-QT_MOC_LITERAL(15, 244, 22), // "on_action_16_triggered"
-QT_MOC_LITERAL(16, 267, 25), // "on_spinLevel_valueChanged"
-QT_MOC_LITERAL(17, 293, 30), // "on_doubleSpinBox1_valueChanged"
-QT_MOC_LITERAL(18, 324, 20), // "on_actionD_triggered"
-QT_MOC_LITERAL(19, 345, 22), // "on_action_21_triggered"
-QT_MOC_LITERAL(20, 368, 19), // "on_checkMin_clicked"
-QT_MOC_LITERAL(21, 388, 19), // "on_checkMax_clicked"
-QT_MOC_LITERAL(22, 408, 22), // "on_action_10_triggered"
-QT_MOC_LITERAL(23, 431, 22), // "on_action_13_triggered"
-QT_MOC_LITERAL(24, 454, 22), // "on_action_17_triggered"
-QT_MOC_LITERAL(25, 477, 22), // "on_action_19_triggered"
-QT_MOC_LITERAL(26, 500, 9), // "TimerTick"
-QT_MOC_LITERAL(27, 510, 21), // "on_pushButton_clicked"
-QT_MOC_LITERAL(28, 532, 21), // "on_listWidget_clicked"
-QT_MOC_LITERAL(29, 554, 27), // "on_listWidget_doubleClicked"
-QT_MOC_LITERAL(30, 582, 20), // "FalseVisibleAllGraph"
-QT_MOC_LITERAL(31, 603, 21), // "on_action_5_triggered"
-QT_MOC_LITERAL(32, 625, 10), // "menuRename"
-QT_MOC_LITERAL(33, 636, 26), // "EnterPressedLineEditRename"
-QT_MOC_LITERAL(34, 663, 13), // "manualSetView"
-QT_MOC_LITERAL(35, 677, 26) // "on_action_manual_triggered"
+QT_MOC_LITERAL(12, 176, 24), // "on_action_exit_triggered"
+QT_MOC_LITERAL(13, 201, 22), // "on_action_12_triggered"
+QT_MOC_LITERAL(14, 224, 22), // "on_action_16_triggered"
+QT_MOC_LITERAL(15, 247, 25), // "on_spinLevel_valueChanged"
+QT_MOC_LITERAL(16, 273, 30), // "on_doubleSpinBox1_valueChanged"
+QT_MOC_LITERAL(17, 304, 20), // "on_actionD_triggered"
+QT_MOC_LITERAL(18, 325, 22), // "on_action_21_triggered"
+QT_MOC_LITERAL(19, 348, 19), // "on_checkMin_clicked"
+QT_MOC_LITERAL(20, 368, 19), // "on_checkMax_clicked"
+QT_MOC_LITERAL(21, 388, 22), // "on_action_10_triggered"
+QT_MOC_LITERAL(22, 411, 22), // "on_action_13_triggered"
+QT_MOC_LITERAL(23, 434, 22), // "on_action_17_triggered"
+QT_MOC_LITERAL(24, 457, 22), // "on_action_19_triggered"
+QT_MOC_LITERAL(25, 480, 9), // "TimerTick"
+QT_MOC_LITERAL(26, 490, 21), // "on_listWidget_clicked"
+QT_MOC_LITERAL(27, 512, 27), // "on_listWidget_doubleClicked"
+QT_MOC_LITERAL(28, 540, 20), // "FalseVisibleAllGraph"
+QT_MOC_LITERAL(29, 561, 21), // "on_action_5_triggered"
+QT_MOC_LITERAL(30, 583, 10), // "menuRename"
+QT_MOC_LITERAL(31, 594, 26), // "EnterPressedLineEditRename"
+QT_MOC_LITERAL(32, 621, 13), // "manualSetView"
+QT_MOC_LITERAL(33, 635, 26), // "on_action_manual_triggered"
+QT_MOC_LITERAL(34, 662, 25), // "on_action_about_triggered"
+QT_MOC_LITERAL(35, 688, 32), // "on_doubleSpinBox_x1_valueChanged"
+QT_MOC_LITERAL(36, 721, 32) // "on_doubleSpinBox_x2_valueChanged"
 
     },
     "MainWindow\0mousePress\0\0QMouseEvent*\0"
@@ -72,7 +73,7 @@ QT_MOC_LITERAL(35, 677, 26) // "on_action_manual_triggered"
     "slotCustomMenuRequested\0pos\0"
     "on_action_triggered\0on_action_3_triggered\0"
     "on_action_4_triggered\0on_action_7_triggered\0"
-    "on_action_8_triggered\0on_action_11_triggered\0"
+    "on_action_exit_triggered\0"
     "on_action_12_triggered\0on_action_16_triggered\0"
     "on_spinLevel_valueChanged\0"
     "on_doubleSpinBox1_valueChanged\0"
@@ -80,11 +81,14 @@ QT_MOC_LITERAL(35, 677, 26) // "on_action_manual_triggered"
     "on_checkMin_clicked\0on_checkMax_clicked\0"
     "on_action_10_triggered\0on_action_13_triggered\0"
     "on_action_17_triggered\0on_action_19_triggered\0"
-    "TimerTick\0on_pushButton_clicked\0"
-    "on_listWidget_clicked\0on_listWidget_doubleClicked\0"
+    "TimerTick\0on_listWidget_clicked\0"
+    "on_listWidget_doubleClicked\0"
     "FalseVisibleAllGraph\0on_action_5_triggered\0"
     "menuRename\0EnterPressedLineEditRename\0"
-    "manualSetView\0on_action_manual_triggered"
+    "manualSetView\0on_action_manual_triggered\0"
+    "on_action_about_triggered\0"
+    "on_doubleSpinBox_x1_valueChanged\0"
+    "on_doubleSpinBox_x2_valueChanged"
 };
 #undef QT_MOC_LITERAL
 
@@ -94,7 +98,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      31,   14, // methods
+      32,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -102,42 +106,44 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,  169,    2, 0x08 /* Private */,
-       5,    1,  172,    2, 0x08 /* Private */,
-       6,    1,  175,    2, 0x08 /* Private */,
-       8,    0,  178,    2, 0x08 /* Private */,
-       9,    0,  179,    2, 0x08 /* Private */,
-      10,    0,  180,    2, 0x08 /* Private */,
-      11,    0,  181,    2, 0x08 /* Private */,
-      12,    0,  182,    2, 0x08 /* Private */,
-      13,    0,  183,    2, 0x08 /* Private */,
-      14,    0,  184,    2, 0x08 /* Private */,
-      15,    0,  185,    2, 0x08 /* Private */,
-      16,    0,  186,    2, 0x08 /* Private */,
-      17,    0,  187,    2, 0x08 /* Private */,
-      18,    0,  188,    2, 0x08 /* Private */,
-      19,    0,  189,    2, 0x08 /* Private */,
-      20,    0,  190,    2, 0x08 /* Private */,
-      21,    0,  191,    2, 0x08 /* Private */,
-      22,    0,  192,    2, 0x08 /* Private */,
-      23,    0,  193,    2, 0x08 /* Private */,
-      24,    0,  194,    2, 0x08 /* Private */,
-      25,    0,  195,    2, 0x08 /* Private */,
-      26,    0,  196,    2, 0x08 /* Private */,
-      27,    0,  197,    2, 0x08 /* Private */,
-      28,    0,  198,    2, 0x08 /* Private */,
-      29,    0,  199,    2, 0x08 /* Private */,
-      30,    0,  200,    2, 0x08 /* Private */,
-      31,    0,  201,    2, 0x08 /* Private */,
-      32,    0,  202,    2, 0x08 /* Private */,
-      33,    0,  203,    2, 0x08 /* Private */,
-      34,    0,  204,    2, 0x08 /* Private */,
-      35,    0,  205,    2, 0x08 /* Private */,
+       1,    1,  174,    2, 0x08 /* Private */,
+       5,    1,  177,    2, 0x08 /* Private */,
+       6,    1,  180,    2, 0x08 /* Private */,
+       8,    0,  183,    2, 0x08 /* Private */,
+       9,    0,  184,    2, 0x08 /* Private */,
+      10,    0,  185,    2, 0x08 /* Private */,
+      11,    0,  186,    2, 0x08 /* Private */,
+      12,    0,  187,    2, 0x08 /* Private */,
+      13,    0,  188,    2, 0x08 /* Private */,
+      14,    0,  189,    2, 0x08 /* Private */,
+      15,    0,  190,    2, 0x08 /* Private */,
+      16,    0,  191,    2, 0x08 /* Private */,
+      17,    0,  192,    2, 0x08 /* Private */,
+      18,    0,  193,    2, 0x08 /* Private */,
+      19,    0,  194,    2, 0x08 /* Private */,
+      20,    0,  195,    2, 0x08 /* Private */,
+      21,    0,  196,    2, 0x08 /* Private */,
+      22,    0,  197,    2, 0x08 /* Private */,
+      23,    0,  198,    2, 0x08 /* Private */,
+      24,    0,  199,    2, 0x08 /* Private */,
+      25,    0,  200,    2, 0x08 /* Private */,
+      26,    0,  201,    2, 0x08 /* Private */,
+      27,    0,  202,    2, 0x08 /* Private */,
+      28,    0,  203,    2, 0x08 /* Private */,
+      29,    0,  204,    2, 0x08 /* Private */,
+      30,    0,  205,    2, 0x08 /* Private */,
+      31,    0,  206,    2, 0x08 /* Private */,
+      32,    0,  207,    2, 0x08 /* Private */,
+      33,    0,  208,    2, 0x08 /* Private */,
+      34,    0,  209,    2, 0x08 /* Private */,
+      35,    0,  210,    2, 0x08 /* Private */,
+      36,    0,  211,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void, 0x80000000 | 3,    4,
     QMetaType::Void, 0x80000000 | 3,    4,
     QMetaType::Void, QMetaType::QPoint,    7,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -183,30 +189,31 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 4: _t->on_action_3_triggered(); break;
         case 5: _t->on_action_4_triggered(); break;
         case 6: _t->on_action_7_triggered(); break;
-        case 7: _t->on_action_8_triggered(); break;
-        case 8: _t->on_action_11_triggered(); break;
-        case 9: _t->on_action_12_triggered(); break;
-        case 10: _t->on_action_16_triggered(); break;
-        case 11: _t->on_spinLevel_valueChanged(); break;
-        case 12: _t->on_doubleSpinBox1_valueChanged(); break;
-        case 13: _t->on_actionD_triggered(); break;
-        case 14: _t->on_action_21_triggered(); break;
-        case 15: _t->on_checkMin_clicked(); break;
-        case 16: _t->on_checkMax_clicked(); break;
-        case 17: _t->on_action_10_triggered(); break;
-        case 18: _t->on_action_13_triggered(); break;
-        case 19: _t->on_action_17_triggered(); break;
-        case 20: _t->on_action_19_triggered(); break;
-        case 21: _t->TimerTick(); break;
-        case 22: _t->on_pushButton_clicked(); break;
-        case 23: _t->on_listWidget_clicked(); break;
-        case 24: _t->on_listWidget_doubleClicked(); break;
-        case 25: _t->FalseVisibleAllGraph(); break;
-        case 26: _t->on_action_5_triggered(); break;
-        case 27: _t->menuRename(); break;
-        case 28: _t->EnterPressedLineEditRename(); break;
-        case 29: _t->manualSetView(); break;
-        case 30: _t->on_action_manual_triggered(); break;
+        case 7: _t->on_action_exit_triggered(); break;
+        case 8: _t->on_action_12_triggered(); break;
+        case 9: _t->on_action_16_triggered(); break;
+        case 10: _t->on_spinLevel_valueChanged(); break;
+        case 11: _t->on_doubleSpinBox1_valueChanged(); break;
+        case 12: _t->on_actionD_triggered(); break;
+        case 13: _t->on_action_21_triggered(); break;
+        case 14: _t->on_checkMin_clicked(); break;
+        case 15: _t->on_checkMax_clicked(); break;
+        case 16: _t->on_action_10_triggered(); break;
+        case 17: _t->on_action_13_triggered(); break;
+        case 18: _t->on_action_17_triggered(); break;
+        case 19: _t->on_action_19_triggered(); break;
+        case 20: _t->TimerTick(); break;
+        case 21: _t->on_listWidget_clicked(); break;
+        case 22: _t->on_listWidget_doubleClicked(); break;
+        case 23: _t->FalseVisibleAllGraph(); break;
+        case 24: _t->on_action_5_triggered(); break;
+        case 25: _t->menuRename(); break;
+        case 26: _t->EnterPressedLineEditRename(); break;
+        case 27: _t->manualSetView(); break;
+        case 28: _t->on_action_manual_triggered(); break;
+        case 29: _t->on_action_about_triggered(); break;
+        case 30: _t->on_doubleSpinBox_x1_valueChanged(); break;
+        case 31: _t->on_doubleSpinBox_x2_valueChanged(); break;
         default: ;
         }
     }
@@ -237,13 +244,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 31)
+        if (_id < 32)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 31;
+        _id -= 32;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 31)
+        if (_id < 32)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 31;
+        _id -= 32;
     }
     return _id;
 }

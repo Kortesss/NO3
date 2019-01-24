@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     derivative.cpp \
     somewindow.cpp \
     deltawin.cpp \
-    mnk.cpp
+    mnk.cpp \
+    about.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
@@ -26,11 +27,13 @@ HEADERS  += mainwindow.h \
         ui_mainwindow.h \
     somewindow.h \
     deltawin.h \
-    mnk.h
+    mnk.h \
+    about.h
 
 FORMS    += mainwindow.ui \
     somewindow.ui \
-    deltawin.ui
+    deltawin.ui \
+    about.ui
 
 RESOURCES += \
     source.qrc

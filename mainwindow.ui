@@ -162,6 +162,9 @@
           </item>
           <item row="0" column="1">
            <widget class="QDoubleSpinBox" name="doubleSpinBox1">
+            <property name="focusPolicy">
+             <enum>Qt::WheelFocus</enum>
+            </property>
             <property name="decimals">
              <number>2</number>
             </property>
@@ -215,12 +218,29 @@
         </item>
         <item>
          <layout class="QGridLayout" name="gridLayout_3">
-          <item row="0" column="0">
-           <widget class="QTextBrowser" name="textBrowser_4">
+          <item row="1" column="0">
+           <widget class="QTextBrowser" name="Browser_Min">
             <property name="maximumSize">
              <size>
               <width>113</width>
-              <height>60</height>
+              <height>40</height>
+             </size>
+            </property>
+            <property name="html">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Мин. X: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QTextBrowser" name="Browser_Derivative">
+            <property name="maximumSize">
+             <size>
+              <width>113</width>
+              <height>40</height>
              </size>
             </property>
             <property name="sizeIncrement">
@@ -240,36 +260,12 @@
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Derivative&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Производная: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QTextBrowser" name="textBrowser_3">
-            <property name="maximumSize">
-             <size>
-              <width>113</width>
-              <height>60</height>
-             </size>
-            </property>
-            <property name="html">
-             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Minimum&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QPushButton" name="pushButton">
-            <property name="text">
-             <string>Тест кнопка</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="1">
-           <widget class="QTextBrowser" name="textBrowser_2">
+          <item row="2" column="0">
+           <widget class="QTextBrowser" name="Browser_Max">
             <property name="minimumSize">
              <size>
               <width>20</width>
@@ -279,7 +275,7 @@ p, li { white-space: pre-wrap; }
             <property name="maximumSize">
              <size>
               <width>113</width>
-              <height>60</height>
+              <height>40</height>
              </size>
             </property>
             <property name="html">
@@ -287,7 +283,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Maximum&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Макс. X: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
@@ -384,8 +380,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="action_16"/>
     <addaction name="action_5"/>
     <addaction name="action_12"/>
-    <addaction name="action_8"/>
-    <addaction name="action_11"/>
+    <addaction name="action_exit"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -419,10 +414,10 @@ p, li { white-space: pre-wrap; }
    </widget>
    <widget class="QMenu" name="menu_6">
     <property name="title">
-     <string>Помощь</string>
+     <string>Справка</string>
     </property>
     <addaction name="action_manual"/>
-    <addaction name="action_15"/>
+    <addaction name="action_about"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -460,12 +455,7 @@ p, li { white-space: pre-wrap; }
     <string>выбор фильтра или значения</string>
    </property>
   </action>
-  <action name="action_8">
-   <property name="text">
-    <string>Новый эксперимент</string>
-   </property>
-  </action>
-  <action name="action_11">
+  <action name="action_exit">
    <property name="icon">
     <iconset resource="source.qrc">
      <normaloff>:/img/img/exit.png</normaloff>:/img/img/exit.png</iconset>
@@ -571,7 +561,7 @@ p, li { white-space: pre-wrap; }
     <string>F1</string>
    </property>
   </action>
-  <action name="action_15">
+  <action name="action_about">
    <property name="text">
     <string>О программе</string>
    </property>
@@ -586,6 +576,21 @@ p, li { white-space: pre-wrap; }
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>doubleSpinBox1</tabstop>
+  <tabstop>spinLevel</tabstop>
+  <tabstop>textBrowser5</tabstop>
+  <tabstop>doubleSpinBox_x1</tabstop>
+  <tabstop>doubleSpinBox_x2</tabstop>
+  <tabstop>checkMin</tabstop>
+  <tabstop>checkMax</tabstop>
+  <tabstop>listWidget</tabstop>
+  <tabstop>Browser_Derivative</tabstop>
+  <tabstop>Browser_Min</tabstop>
+  <tabstop>Browser_Max</tabstop>
+  <tabstop>textBrowser_X</tabstop>
+  <tabstop>textBrowser_Y</tabstop>
+ </tabstops>
  <resources>
   <include location="source.qrc"/>
  </resources>

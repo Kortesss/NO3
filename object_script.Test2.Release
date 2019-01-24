@@ -6,9 +6,11 @@ INPUT(
 ./release\somewindow.o
 ./release\deltawin.o
 ./release\mnk.o
+./release\about.o
 ./release\qrc_source.o
 ./release\moc_mainwindow.o
 ./release\moc_qcustomplot.o
 ./release\moc_somewindow.o
 ./release\moc_deltawin.o
+./release\moc_about.o
 );
