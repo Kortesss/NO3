@@ -78,6 +78,6 @@ double mnk::get_b()
 
 mnk::~mnk()
 {
-    qDebug() << "Деструктор МНК";
+
 }
 

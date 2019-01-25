@@ -107,6 +107,7 @@ private:
     double x1, x2;
     QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax; //все графики
     QList<QList<QCPItemText*> > textListMin, textListMax;//точки экстрем. для отображения координат
+    QList<QList<QCPItemText*> > textListMNK; //для подписи точки МНК на нулевом месте будет min, а на 1 max
     QTimer timer; int t, gr_index; //таймер для добавления чисел в список на форму и переменная t для прохода по массиву
 };
 

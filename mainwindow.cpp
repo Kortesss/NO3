@@ -230,26 +230,29 @@ void MainWindow::on_action_triggered() //выбор файла и заполне
         delete it; delete progBar;  /*delete btn;*/  delete l; delete wgt;
         ui->listWidget->addItem("График "+QString::number(gr_index+1));//+1 потому что там еще ничего нет
         ui->listWidget->item(gr_index)->setTextAlignment(Qt::AlignCenter);
-      }
-    minx.append(*std::min_element(mass_x_Gr[gr_index].begin(), mass_x_Gr[gr_index].end()));
-    maxx.append(*std::max_element(mass_x_Gr[gr_index].begin(), mass_x_Gr[gr_index].end()));
-    miny.append(*std::min_element(mass_y_Gr[gr_index].begin(), mass_y_Gr[gr_index].end()));
-    maxy.append(*std::max_element(mass_y_Gr[gr_index].begin(), mass_y_Gr[gr_index].end()));
-    koef.append((maxx[gr_index] - minx[gr_index])/(mass_x_Gr[gr_index].count()));//расчет коэф. плотности данных
-    ui->Browser_Max->clear(); ui->Browser_Min->clear(); ui->BrowserTime->clear();
-    ui->Browser_Max->append("Мин. X:\n" + QString("%1").arg(maxx[gr_index]));
-    ui->Browser_Min->append("Макс. X:\n" + QString("%1").arg(minx[gr_index]));
-    on_action_3_triggered();//рисуем график
-    //для каждого графика задаем ему место под массив экстремумов, мнк, линии тренда и т.д.
-    mass_minX.append(QList <double>()); mass_maxX.append(QList <double>());
-    mass_minY.append(QList <double>()); mass_maxY.append(QList <double>());
-    trendMin.append(QList <double>()); trendMax.append(QList <double>());
-    mnkStrMin.append(" ");   mnkStrMax.append(" ");
-    xLevelMin.append(QList <double>()); yLevelMin.append(QList <double>());
-    xLevelMax.append(QList <double>()); yLevelMax.append(QList <double>());
-    textListMin.append(QList <QCPItemText*>()); textListMax.append(QList <QCPItemText*>()); //для подписи координат на графике
-    ui->listWidget->setCurrentRow(gr_index); //устанавливаем выделение последнему загруженному графику
-    FalseVisibleAllGraph(); //очищаем все графы предыдущего графика
+
+        minx.append(*std::min_element(mass_x_Gr[gr_index].begin(), mass_x_Gr[gr_index].end()));
+        maxx.append(*std::max_element(mass_x_Gr[gr_index].begin(), mass_x_Gr[gr_index].end()));
+        miny.append(*std::min_element(mass_y_Gr[gr_index].begin(), mass_y_Gr[gr_index].end()));
+        maxy.append(*std::max_element(mass_y_Gr[gr_index].begin(), mass_y_Gr[gr_index].end()));
+        koef.append((maxx[gr_index] - minx[gr_index])/(mass_x_Gr[gr_index].count()));//расчет коэф. плотности данных
+        ui->Browser_Max->clear(); ui->Browser_Min->clear(); ui->BrowserTime->clear();
+        ui->Browser_Max->append("Мин. X:\n" + QString("%1").arg(maxx[gr_index]));
+        ui->Browser_Min->append("Макс. X:\n" + QString("%1").arg(minx[gr_index]));
+        on_action_3_triggered();//рисуем график
+        //для каждого графика задаем ему место под массив экстремумов, мнк, линии тренда и т.д.
+        mass_minX.append(QList <double>()); mass_maxX.append(QList <double>());
+        mass_minY.append(QList <double>()); mass_maxY.append(QList <double>());
+        trendMin.append(QList <double>()); trendMax.append(QList <double>());
+        mnkStrMin.append(" ");   mnkStrMax.append(" ");
+        xLevelMin.append(QList <double>()); yLevelMin.append(QList <double>());
+        xLevelMax.append(QList <double>()); yLevelMax.append(QList <double>());
+        textListMin.append(QList <QCPItemText*>()); textListMax.append(QList <QCPItemText*>()); //для подписи координат на графике
+        textListMNK.append(QList <QCPItemText*>()); //для отображения значения МНК на графике
+        textListMNK[gr_index].append(new QCPItemText(ui->widget)); textListMNK[gr_index].append(new QCPItemText(ui->widget));
+        ui->listWidget->setCurrentRow(gr_index); //устанавливаем выделение последнему загруженному графику
+        FalseVisibleAllGraph(); //очищаем все графы предыдущего графика
+    }else {delete it; delete progBar;  /*delete btn;*/  delete l; delete wgt;}
 }
 
 void MainWindow::on_action_3_triggered() //рисуем график из загруженного массива
@@ -442,6 +445,7 @@ void MainWindow::on_checkMax_clicked(){ui->checkMin->setChecked(false);}
 void MainWindow::on_action_10_triggered() //Экстремумы
 {
     if (ui->listWidget->count() > 0){
+        gr_index = ui->listWidget->currentRow();
         mass_minX[gr_index].clear(); mass_maxX[gr_index].clear();
         mass_minY[gr_index].clear(); mass_maxY[gr_index].clear();//чтобы память не засорять
         bool up; //переменная отвечающая за возрастание
@@ -516,6 +520,7 @@ void MainWindow::on_action_13_triggered() //вызов вычисления пр
 void MainWindow::on_action_17_triggered() //МНК
 {
     if (ui->listWidget->count() > 0){
+        double xLevel = 0, yLevel = 0;
         if (ui->checkMin->isChecked()){//Метод наименьших квадратов (МНК) минимума
             if (mass_minX[gr_index].count() != 0){
                 trendMin[gr_index].clear();  yLevelMin[gr_index].clear(); xLevelMin[gr_index].clear();
@@ -531,7 +536,12 @@ void MainWindow::on_action_17_triggered() //МНК
                 xLevelMin[gr_index].append((yLevelMin[gr_index][0]- mnk1->get_b()) / mnk1->get_a());
                 xLevelMin[gr_index].append((yLevelMin[gr_index][0]- mnk1->get_b()) / mnk1->get_a());
                 ui->BrowserTime->clear();
-                ui->BrowserTime->append(QString::number((yLevelMin[gr_index][0] - mnk1->get_b()) / mnk1->get_a()));
+                xLevel = (yLevelMin[gr_index][0] - mnk1->get_b()) / mnk1->get_a();
+                yLevel = yLevelMin[gr_index][0];
+                ui->BrowserTime->append(QString::number(xLevel));
+                textListMNK[gr_index][0]->setText("("+QString::number(xLevel) + ")");
+                textListMNK[gr_index][0]->position->setCoords(xLevel+5, yLevel-2);
+                textListMNK[gr_index][0]->setVisible(true);
                 graphMnkMin->setData(mass_minX[gr_index].toVector(), trendMin[gr_index].toVector());
                 graphMnkMin->setVisible(true);
                 mnkStrMin[gr_index] = QString::number(mnk1->get_a(),'f',2)+"*x+"+QString::number(mnk1->get_b(),'f',2)+" R^2="+QString::number(mnk1->get_Kdet(),'f',2);
@@ -558,7 +568,12 @@ void MainWindow::on_action_17_triggered() //МНК
                 xLevelMax[gr_index].append((yLevelMax[gr_index][0]-mnk2->get_b()) / mnk2->get_a());
                 xLevelMax[gr_index].append((yLevelMax[gr_index][0]-mnk2->get_b()) / mnk2->get_a());
                 ui->BrowserTime->clear();
-                ui->BrowserTime->append(QString::number((yLevelMax[gr_index][0] - mnk2->get_b()) / mnk2->get_a()));
+                xLevel = (yLevelMax[gr_index][0] - mnk2->get_b()) / mnk2->get_a();
+                yLevel = yLevelMax[gr_index][0];
+                ui->BrowserTime->append(QString::number(xLevel));
+                textListMNK[gr_index][1]->setText("("+QString::number(xLevel) + ")");
+                textListMNK[gr_index][1]->position->setCoords(xLevel+5, yLevel-2);
+                textListMNK[gr_index][1]->setVisible(true);
                 graphMnkMax->setData(mass_maxX[gr_index].toVector(), trendMax[gr_index].toVector());
                 graphMnkMax->setVisible(true);
                 mnkStrMax[gr_index] = QString::number(mnk2->get_a(),'f',2)+"*x+"+QString::number(mnk2->get_b(),'f',2)+" R^2="+QString::number(mnk2->get_Kdet(),'f',2);
@@ -578,14 +593,15 @@ void MainWindow::on_action_19_triggered() //удаление МНК
 {
     if (ui->listWidget->count() > 0){
         if (ui->checkMin->isChecked()){ trendMin[gr_index].clear(); graphMnkMin->setVisible(false); graphMnkMin->setName(" ");
-        graphLevelMin->setVisible(false); graphLevelMin->setName(" ");}
+        graphLevelMin->setVisible(false); graphLevelMin->setName(" ");   textListMNK[gr_index][0]->setVisible(false);}
         if (ui->checkMax->isChecked()){ trendMax[gr_index].clear(); graphMnkMax->setVisible(false); graphMnkMax->setName(" ");
-        graphLevelMax->setVisible(false); graphLevelMax->setName(" ");}
+        graphLevelMax->setVisible(false); graphLevelMax->setName(" ");   textListMNK[gr_index][1]->setVisible(false);}
         if (!ui->checkMin->isChecked() && !ui->checkMax->isChecked()){
         trendMin[gr_index].clear(); graphMnkMin->setVisible(false); graphMnkMin->setName(" ");
         graphLevelMin->setVisible(false);  graphLevelMin->setName(" ");
         trendMax[gr_index].clear(); graphMnkMax->setVisible(false); graphMnkMax->setName(" ");
         graphLevelMax->setVisible(false); graphLevelMax->setName(" ");
+        textListMNK[gr_index][0]->setVisible(false);  textListMNK[gr_index][1]->setVisible(false);
     }
         ui->widget->replot();
     }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
@@ -618,13 +634,16 @@ void MainWindow::FalseVisibleAllGraph() //скрытие графов
         graphLevelMax->setName("Линия перегиба max");
         graphLevelMax->setVisible(true);
     }else {graphMnkMax->setVisible(false); graphMnkMax->setName(" "); graphLevelMax->setVisible(false); graphLevelMax->setName(" ");}
+
     for (int j = 0; j < ui->listWidget->count(); j++) {
         if (gr_index == j){ //пройдемся по всем графикам и либо установим видимость, либо снимен его координаты, если не на текущем находимся
             for (int i = 0; i < textListMin[j].length(); i++) textListMin[j][i]->setVisible(true);
             for (int i = 0; i < textListMax[j].length(); i++) textListMax[j][i]->setVisible(true);
+            textListMNK[j][0]->setVisible(true);  textListMNK[j][1]->setVisible(true);
         }else{
             for (int i = 0; i < textListMin[j].length(); i++) textListMin[j][i]->setVisible(false);
             for (int i = 0; i < textListMax[j].length(); i++) textListMax[j][i]->setVisible(false);
+            textListMNK[j][0]->setVisible(false);  textListMNK[j][1]->setVisible(false);
         }
     }
     ui->widget->replot();
@@ -632,16 +651,18 @@ void MainWindow::FalseVisibleAllGraph() //скрытие графов
 
 void MainWindow::on_action_16_triggered() //очистка всех графов из памяти и в интерфейсе текущего графика
 {
-    if (mass_y_Gr.count()>0) {
-    mass_minX[gr_index].clear(); mass_maxX[gr_index].clear(); mass_minY[gr_index].clear(); mass_maxY[gr_index].clear();
-    graphMin->setVisible(false); graphMax->setVisible(false); graphMin->setName(" ");graphMax->setName(" ");
-    trendMin[gr_index].clear(); graphMnkMin->setVisible(false); graphMnkMin->setName(" "); graphLevelMin->setVisible(false); graphLevelMin->setName(" ");
-    trendMax[gr_index].clear(); graphMnkMax->setVisible(false); graphMnkMax->setName(" "); graphLevelMax->setVisible(false); graphLevelMax->setName(" ");
-    for (int i = 0; i < textListMin[gr_index].length(); i++) {textListMin[gr_index][i]->setVisible(false);}
-    for (int i = 0; i < textListMax[gr_index].length(); i++) {textListMax[gr_index][i]->setVisible(false);}
-    textListMin[gr_index].clear(); textListMax[gr_index].clear();
-    ui->widget->replot();
-    }else{
+    if (ui->listWidget->count() > 0) {
+        mass_minX[gr_index].clear(); mass_maxX[gr_index].clear(); mass_minY[gr_index].clear(); mass_maxY[gr_index].clear();
+        graphMin->setVisible(false); graphMax->setVisible(false); graphMin->setName(" ");graphMax->setName(" ");
+        trendMin[gr_index].clear(); graphMnkMin->setVisible(false); graphMnkMin->setName(" "); graphLevelMin->setVisible(false); graphLevelMin->setName(" ");
+        trendMax[gr_index].clear(); graphMnkMax->setVisible(false); graphMnkMax->setName(" "); graphLevelMax->setVisible(false); graphLevelMax->setName(" ");
+        for (int i = 0; i < textListMin[gr_index].length(); i++) {textListMin[gr_index][i]->setVisible(false);}
+        for (int i = 0; i < textListMax[gr_index].length(); i++) {textListMax[gr_index][i]->setVisible(false);}
+        textListMNK[gr_index][0]->setVisible(false);  textListMNK[gr_index][1]->setVisible(false);
+        textListMNK[gr_index][0]->setText("");  textListMNK[gr_index][1]->setText("");
+        textListMin[gr_index].clear(); textListMax[gr_index].clear();
+        ui->widget->replot();
+        }else{
         QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Отсутствуют графики!"));
     }
 }
@@ -673,23 +694,27 @@ void MainWindow::on_listWidget_doubleClicked() //для отображения �
 void MainWindow::on_action_5_triggered() //удаление выделеного графика
 {
     if (ui->listWidget->count() > 0){
+        if (timer.isActive() == true) {timer.stop(); t = 0;}
         on_action_16_triggered(); //сначала очистим всех графы из памяти и в интерфейсе текущего графика
         graphic1->setVisible(false); graphic1->setName(" ");
-        mass_minX.removeAt(gr_index); mass_maxX.removeAt(gr_index); mass_minY.removeAt(gr_index); mass_maxY.removeAt(gr_index);
-        minx.removeAt(gr_index); miny.removeAt(gr_index); maxx.removeAt(gr_index); maxy.removeAt(gr_index); koef.removeAt(gr_index);
+        mass_minX.removeAt(gr_index); mass_maxX.removeAt(gr_index);
+        mass_minY.removeAt(gr_index); mass_maxY.removeAt(gr_index);
+        minx.removeAt(gr_index); miny.removeAt(gr_index);
+        maxx.removeAt(gr_index); maxy.removeAt(gr_index); koef.removeAt(gr_index);
         trendMin.removeAt(gr_index); trendMax.removeAt(gr_index);
         textListMin[gr_index].clear(); textListMax[gr_index].clear();
         textListMin.removeAt(gr_index); textListMax.removeAt(gr_index);
+        textListMNK[gr_index].clear();  textListMNK.removeAt(gr_index);
+        xLevelMin.removeAt(gr_index), yLevelMin.removeAt(gr_index),
+        xLevelMax.removeAt(gr_index), yLevelMax.removeAt(gr_index);
         mass_x_Gr.removeAt(gr_index); mass_y_Gr.removeAt(gr_index);
-        mass_minY.removeAt(gr_index); mass_maxY.removeAt(gr_index);
-        ui->widget->replot();  ui->listWidget->takeItem(gr_index); //удаляем из списка строку
+        ui->widget->replot();
+        ui->listWidget->takeItem(gr_index); //удаляем из списка строку
         gr_index = 0; //передвигаем указатель графиков в начало
         ui->textBrowser_X->clear(); ui->textBrowser_Y->clear();
         ui->Browser_Max->clear(); ui->Browser_Min->clear(); ui->BrowserTime->clear();
         ui->Browser_Max->append("Мин. X:");  ui->Browser_Min->append("Макс. X:");
         ui->Browser_Derivative->clear(); ui->Browser_Derivative->append(QString("Производная:"));
-
-        ui->listWidget->setCurrentRow(gr_index);
     }else{
         QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Отсутствуют графики!"));
     }
