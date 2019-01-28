@@ -56,6 +56,7 @@ public:
     QAction *action_5;
     QAction *action_manual;
     QAction *action_about;
+    QAction *action_filter;
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout;
     QVBoxLayout *verticalLayout_2;
@@ -146,13 +147,14 @@ public:
         action_19->setObjectName(QStringLiteral("action_19"));
         action_4 = new QAction(MainWindow);
         action_4->setObjectName(QStringLiteral("action_4"));
-        action_4->setCheckable(false);
         action_5 = new QAction(MainWindow);
         action_5->setObjectName(QStringLiteral("action_5"));
         action_manual = new QAction(MainWindow);
         action_manual->setObjectName(QStringLiteral("action_manual"));
         action_about = new QAction(MainWindow);
         action_about->setObjectName(QStringLiteral("action_about"));
+        action_filter = new QAction(MainWindow);
+        action_filter->setObjectName(QStringLiteral("action_filter"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         verticalLayout = new QVBoxLayout(centralWidget);
@@ -399,6 +401,8 @@ public:
         menu_2->addAction(action_21);
         menu_4->addAction(menu_5->menuAction());
         menu_4->addAction(actionD);
+        menu_4->addAction(action_4);
+        menu_4->addAction(action_filter);
         menu_5->addAction(menu_3->menuAction());
         menu_3->addAction(action_17);
         menu_3->addAction(action_19);
@@ -442,6 +446,7 @@ public:
         action_manual->setText(QApplication::translate("MainWindow", "\320\240\321\203\320\272\320\276\320\262\320\276\320\264\321\201\321\202\320\262\320\276 \320\277\320\276\320\273\321\214\320\267\320\276\320\262\320\260\321\202\320\265\320\273\321\217", 0));
         action_manual->setShortcut(QApplication::translate("MainWindow", "F1", 0));
         action_about->setText(QApplication::translate("MainWindow", "\320\236 \320\277\321\200\320\276\320\263\321\200\320\260\320\274\320\274\320\265", 0));
+        action_filter->setText(QApplication::translate("MainWindow", "\320\244\320\270\320\273\321\214\321\202\321\200\320\260\321\206\320\270\321\217 \321\201\320\270\320\263\320\275\320\260\320\273\320\260", 0));
         label_5->setText(QApplication::translate("MainWindow", "\320\222\321\200\320\265\320\274\321\217 \320\277\321\200\320\270 \321\203\321\201\321\202\320\260\320\275\320\276\320\262\320\273\320\265\320\275\320\276\320\274 %", 0));
         label_3->setText(QApplication::translate("MainWindow", "\320\232\320\276\320\275\320\265\321\207\320\275\320\276\320\265 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\265", 0));
         checkMin->setText(QApplication::translate("MainWindow", "\320\234\320\270\320\275\320\270\320\274\321\203\320\274", 0));

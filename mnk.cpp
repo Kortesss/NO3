@@ -51,7 +51,7 @@ mnk::mnk(QList <double> x, QList <double> y, int n)
     //Коэффициент корреляции
     Kcor = (xyAVG-xAVG*yAVG)/(sigX*sigY);
     //Коэффициент детерминации
-    Kdet = Kcor * Kcor;
+    Kdet = Kcor*Kcor;
 }
 
 double mnk::get_yy(double x)

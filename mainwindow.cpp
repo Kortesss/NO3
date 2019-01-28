@@ -57,7 +57,6 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
 
 MainWindow::~MainWindow()
 {
-    qDebug() << "деструктор MainWindow";
     delete ui;
 }
 
@@ -74,7 +73,6 @@ void MainWindow::slotCustomMenuRequested(QPoint pos) //контекстное м
 {
     if (ui->listWidget->count() > 0){
         on_listWidget_clicked();
-        //gr_index = ui->listWidget->currentRow(); //чтобы не нажимать левую кнопку мыши, а потом правую, а сразу показать меню текущего графика
         QMenu *qmenu = new QMenu(this);
         //создаем действия для контекстного меню
         QAction *rename = new QAction(trUtf8("Переименовать"), this);
@@ -141,22 +139,38 @@ void MainWindow::manualSetView() //показать/скрыть координ�
     ui->widget->replot();
 }
 
+#include <qmath.h>
 void MainWindow::on_action_4_triggered() //Рисуем график y=x*x
 {
-        double a = -1; //Начало интервала, где рисуем график по оси Ox
-        double b =  1; //Конец интервала, где рисуем график по оси Ox
-        double h = 0.01; //Шаг, с которым будем пробегать по оси Ox
+        double a = 0; //Начало интервала, где рисуем график по оси Ox
+        double b =  0.5; //Конец интервала, где рисуем график по оси Ox
+        double h = 0.001; //Шаг, с которым будем пробегать по оси Ox
 
-        int N=(b-a)/h + 2; //Вычисляем количество точек, которые будем отрисовывать
+        int N=((b-a)/h + 2)*2; //Вычисляем количество точек, которые будем отрисовывать (в 2 раза больше, т.к.+помеха)
         QVector<double> x(N), y(N); //Массивы координат точек
-        //Вычисляем наши данные
-        int i=0;
-        for (double X=a; X<=b; X+=h)//Пробегаем по всем точкам
-        {
-            x[i] = X;
-            y[i] = X*X;//Формула нашей функции
-            i++;
-        }
+        QFile fileOut("Зашумленный_сигнал.txt");
+            if(fileOut.open(QIODevice::WriteOnly | QIODevice::Text)){
+                QTextStream writeStream(&fileOut); // Создаем объект класса QTextStream
+                //Вычисляем наши данные
+                int i=0; double rand;
+                for (double X=a; X<=b; X+=h)//Пробегаем по всем точкам
+                {
+                    x[i] = X;
+                    if (i%2==0){ //на четном месте идет сигнал
+                        //y[i] = X*X;//Формула нашей функции
+                        y[i] = 15*qSin(2*M_PI*30*X)+15*qSin(2*M_PI*40*X)+15*qSin(2*M_PI*50*X)+15*qSin(2*M_PI*60*X);
+                        writeStream << x[i] << "\t" << y[i] << "\n";
+                        i++;
+                    }else{//а здесь бобавляется помеха
+                        rand = (qrand() % ((1000 + 1) + 1000) - 1000); //рандом от -1000 до 1000
+                        rand /=100; //для получения дробного числа и создания шума
+                        y[i] = y[i-1]+rand;
+                        writeStream << x[i] << "\t" << y[i] << "\n";
+                        i++;
+                    }
+                }
+                fileOut.close(); // Закрываем файл
+            }
         ui->widget->clearGraphs();
         ui->widget->addGraph();
         //Говорим, что отрисовать нужно график по нашим двум массивам x и y
@@ -176,6 +190,37 @@ void MainWindow::on_action_4_triggered() //Рисуем график y=x*x
         }
         ui->widget->yAxis->setRange(minY, maxY);//Для оси Oy
         ui->widget->replot();
+}
+
+void MainWindow::on_action_filter_triggered()
+{
+    QVector<double> y(mass_y_Gr[gr_index].count());
+    int N = mass_y_Gr[gr_index].count(), n = 0;
+    double sum = 0;
+    QFile fileOut("Преобразование Фурье.txt");
+        if(fileOut.open(QIODevice::WriteOnly | QIODevice::Text)){
+            QTextStream writeStream(&fileOut);
+            for(int i = 0; i < N; i++){
+                while (n<N){
+                    sum+= mass_y_Gr[gr_index][i] * exp(-(2*M_PI*mass_x_Gr[gr_index][i]*n)/N);
+                    n+=1;
+                }
+                y[i] = sum;
+                writeStream << mass_x_Gr[gr_index][i] << "\t" << y[i] << "\n";
+                sum = 0; n = 0;
+            }
+            fileOut.close();
+        }
+    QFile file2("Обратное преобраз-е Фурье.txt");
+        if(file2.open(QIODevice::WriteOnly | QIODevice::Text)){
+            QTextStream write2(&file2);
+            for(int i = 0; i < mass_y_Gr[gr_index].count(); i++){
+                y[i]/=N;
+                write2 << mass_x_Gr[gr_index][i] << "\t" << y[i] << "\n";
+            }
+            file2.close();
+        }
+        on_action_triggered();
 }
 
 void MainWindow::on_action_triggered() //выбор файла и заполнение массива данных
@@ -733,4 +778,3 @@ void MainWindow::on_action_about_triggered() //окно О программе
     WinAbout->show();
     WinAbout->setAttribute(Qt::WA_DeleteOnClose); //деструктор
 }
-

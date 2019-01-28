@@ -91,6 +91,8 @@ private slots:
 
     void on_doubleSpinBox_x2_valueChanged();
 
+    void on_action_filter_triggered();
+
 private:
     Ui::MainWindow *ui;
     QLineEdit *lineEditRename;

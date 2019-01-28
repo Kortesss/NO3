@@ -414,6 +414,8 @@ p, li { white-space: pre-wrap; }
     </widget>
     <addaction name="menu_5"/>
     <addaction name="actionD"/>
+    <addaction name="action_4"/>
+    <addaction name="action_filter"/>
    </widget>
    <widget class="QMenu" name="menu_6">
     <property name="title">
@@ -541,9 +543,6 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="action_4">
-   <property name="checkable">
-    <bool>false</bool>
-   </property>
    <property name="text">
     <string>Тестовый график</string>
    </property>
@@ -567,6 +566,11 @@ p, li { white-space: pre-wrap; }
   <action name="action_about">
    <property name="text">
     <string>О программе</string>
+   </property>
+  </action>
+  <action name="action_filter">
+   <property name="text">
+    <string>Фильтрация сигнала</string>
    </property>
   </action>
  </widget>
