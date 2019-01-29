@@ -6,6 +6,7 @@
 #include "about.h"
 #include "deltawin.h"
 #include "mnk.h"
+#include "fft.h"
 
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
@@ -195,11 +196,28 @@ void MainWindow::on_action_4_triggered() //Рисуем график y=x*x
 void MainWindow::on_action_filter_triggered()
 {
     QVector<double> y(mass_y_Gr[gr_index].count());
-    int N = mass_y_Gr[gr_index].count(), n = 0;
+    int N = 10;//mass_y_Gr[gr_index].count()-1, n = 0;
     double sum = 0;
     QFile fileOut("Преобразование Фурье.txt");
         if(fileOut.open(QIODevice::WriteOnly | QIODevice::Text)){
             QTextStream writeStream(&fileOut);
+            fft *fft1 = new fft(N);
+            //fft1->fH = 2; fft1->fT = 4; //параметры сглаживающего фильтра
+            fft1->Otsechka = false;
+            fft1->CFreq = 1000;  // CFreq - минимальна¤ частота сигнала на входе, при которой не происходит отсечка
+            fft1->Prepare();
+
+            //fft1->PutVal(true);
+            //fft1->Spectrum();
+            for(int i = 0; i < N; i++){
+                //fft1->X0 = mass_y_Gr[gr_index][i];
+                fft1->Xre[0][i] = mass_y_Gr[gr_index][i];
+                fft1->tm[i] = mass_x_Gr[gr_index][i];
+                fft1->PutVal(true);
+                fft1->Spectrum();
+                writeStream << fft1->freq[i] << "\t" << fft1->A[i] << "\n";
+            }
+                  /*
             for(int i = 0; i < N; i++){
                 while (n<N){
                     sum+= mass_y_Gr[gr_index][i] * exp(-(2*M_PI*mass_x_Gr[gr_index][i]*n)/N);
@@ -208,10 +226,11 @@ void MainWindow::on_action_filter_triggered()
                 y[i] = sum;
                 writeStream << mass_x_Gr[gr_index][i] << "\t" << y[i] << "\n";
                 sum = 0; n = 0;
-            }
+            }*/
+            delete fft1;
             fileOut.close();
         }
-    QFile file2("Обратное преобраз-е Фурье.txt");
+    /*QFile file2("Обратное преобраз-е Фурье.txt");
         if(file2.open(QIODevice::WriteOnly | QIODevice::Text)){
             QTextStream write2(&file2);
             for(int i = 0; i < mass_y_Gr[gr_index].count(); i++){
@@ -219,7 +238,7 @@ void MainWindow::on_action_filter_triggered()
                 write2 << mass_x_Gr[gr_index][i] << "\t" << y[i] << "\n";
             }
             file2.close();
-        }
+        }*/
         on_action_triggered();
 }
 

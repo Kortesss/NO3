@@ -1,7 +1,6 @@
 #include "mnk.h"
 #include <qmath.h>
 #include <QMessageBox>
-#include <QDebug>
 
 double sumXY(QList <double> x, QList <double> y)
 {

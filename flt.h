@@ -10,9 +10,10 @@ public:
         void	Ini(float H,float T);
         float	Go(float val);
         void	Reset(void);
-private:
         float	V, W, last, lastf;
         int	Enter, Ready;
+private:
+
 };
 
 #endif // FILTER_H

@@ -2,7 +2,7 @@
 #define FFT_H
 
 #include <QMainWindow>
-#include <flt.h>
+//#include <flt.h>
 
 class fft
 {
@@ -13,8 +13,6 @@ public:
     void Prepare();
     bool PutVal(bool c);
     float Spectrum();               // Возвращает погрешность зеркального эффекта
-
-private:
     long       N;                                    // Размер блока данных
     long       T;                                    // N = 2 ^ T
     long       No;
@@ -33,8 +31,11 @@ private:
     double     *EVENre, *ODDre, *EVENim, *ODDim;     // Буфера для отображений Фурье четных и нечетных наборов
 
 
-    Filter     Flt;
-    double     fH, fT;                               // Параметры фильтра
+    //Filter     Flt;
+    //double     fH, fT;                               // Параметры фильтра
+
+private:
+
 
 };
 

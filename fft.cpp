@@ -1,5 +1,6 @@
 #include "fft.h"
 #include <qmath.h>
+#include <QDebug>
 
 fft::fft(int t)
 {
@@ -57,41 +58,7 @@ fft::fft(int t)
 
 fft::~fft()
 {
-    int  i;
-
-      for(i = 0; i < T+1; i++)
-      {
-        if(Xre[i])  { delete[] Xre[i];  Xre[i] = NULL; }
-        if(Xim[i])  { delete[] Xim[i];  Xim[i] = NULL; }
-      }
-      if(Xre)  { delete[] Xre;  Xre = NULL; }
-      if(Xim)  { delete[] Xim;  Xim = NULL; }
-
-      if(EVENre)  { delete[] EVENre;  EVENre = NULL; }
-      if(ODDre)   { delete[] ODDre;   ODDre = NULL; }
-      if(EVENim)  { delete[] EVENim;  EVENim = NULL; }
-      if(ODDim)   { delete[] ODDim;   ODDim = NULL; }
-
-      for(i = 0; i < T+1; i++)
-      {
-        if(ind[i])  { delete[] ind[i];  ind[i] = NULL; }
-      }
-      if(ind)  { delete[] ind;  ind = NULL; }
-
-
-      if(A)       { delete[] A;  A = NULL; }
-      if(freq)    { delete[] freq;  freq = NULL; }
-
-
-      for(i = 0; i < T+2; i++)
-      {
-        if(Wre[i])  { delete[] Wre[i];  Wre[i] = NULL; }
-        if(Wim[i])  { delete[] Wim[i];  Wim[i] = NULL; }
-      }
-      if(Wre)  { delete[] Wre;  Wre = NULL; }
-      if(Wim)  { delete[] Wim;  Wim = NULL; }
-
-      if(tm)    { delete[] tm;  tm = NULL; }
+qDebug() << "деструктор fft";
 }
 
 void fft::Prepare()
@@ -158,7 +125,8 @@ bool ret = false;
 
   if(ReadyToBegin && inversed)
   {
-    dT = Flt.Go(tm[N - 1] - tm[0] + 2 * dt);   // "2 *" - т.к. время подается через раз
+    //dT = Flt.Go(tm[N - 1] - tm[0] + 2 * dt);
+    dT = tm[N - 1] - tm[0] + 2 * dt; // "2 *" - т.к. время подается через раз
     if(dT <= 0)  Fault = true;
     if(Otsechka && dT > (N / CFreq))  Fault = true;   // "dT < N / fr" - отсекаем случаи, когда происходит скачек по времени
 
