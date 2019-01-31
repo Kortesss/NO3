@@ -16,7 +16,7 @@ FilterFFT::FilterFFT(double xLast, QList <double> y, QWidget *parent) :
     ui->widget_fft->xAxis->setLabel("x");
     ui->widget_fft->yAxis->setLabel("y");
     FFTgraph = ui->widget_fft->addGraph();	//Добавление графика БПФ
-    FFTgraph->setName("БПФ");
+    FFTgraph->setName("Быстрое преоразование Фурье (БПФ)");
     FFTgraph->setPen(QColor(50, 50, 50, 255));//задаем цвет точки
     FFTgraph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
 /*
@@ -67,7 +67,7 @@ void FilterFFT::iFFT()
     for(int i = 0; i < N; i++){
         iF[i] = std::complex<double>(0.0, 0.0);
         for(int k = 0; k < N; k++){
-            iF[i] += F[k] * std::polar<double>(1.0, -2 * M_PI * i * k / N);
+            iF[i] += F[k] * (std::polar<double>(1.0, -2 * M_PI * i * k / N));
         }
         //iF[i] = (1/sqrt(N))*iF[i];
         //writeStream << mass_x_Gr[gr_index][i] << "\t" << abs(iF[i]) << "\n";

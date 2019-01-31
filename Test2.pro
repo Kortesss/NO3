@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     somewindow.cpp \
     deltawin.cpp \
     mnk.cpp \
-    about.cpp
+    about.cpp \
+    filterfft.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
@@ -28,12 +29,14 @@ HEADERS  += mainwindow.h \
     somewindow.h \
     deltawin.h \
     mnk.h \
-    about.h
+    about.h \
+    filterfft.h
 
 FORMS    += mainwindow.ui \
     somewindow.ui \
     deltawin.ui \
-    about.ui
+    about.ui \
+    filterfft.ui
 
 RESOURCES += \
     source.qrc

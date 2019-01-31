@@ -6,6 +6,7 @@
 #include "about.h"
 #include "deltawin.h"
 #include "mnk.h"
+#include "filterfft.h"
 
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
@@ -139,7 +140,6 @@ void MainWindow::manualSetView() //показать/скрыть координ�
     ui->widget->replot();
 }
 
-#include <qmath.h>
 void MainWindow::on_action_4_triggered() //Рисуем график y=x*x
 {
         double a = 0; //Начало интервала, где рисуем график по оси Ox
@@ -191,41 +191,15 @@ void MainWindow::on_action_4_triggered() //Рисуем график y=x*x
         ui->widget->yAxis->setRange(minY, maxY);//Для оси Oy
         ui->widget->replot();
 }
-#include <complex>
-void MainWindow::on_action_filter_triggered()
+
+void MainWindow::on_action_filter_triggered() //Фильрация сигнала
 {
-    int N = mass_y_Gr[gr_index].count();
-    QVector<double> alf(N);
-    double L = mass_x_Gr[gr_index].last(); //L-длина функции на графике;
-    QVector< complex <double> > F(N, 0), iF(N, 0);
-    for (int i=0; i<N; i++) alf[i] = i/L; //определяем новый масштаб для точек X после преобразования
-
-    QFile fileOut("Преобразование Фурье.txt");
-        if(fileOut.open(QIODevice::WriteOnly | QIODevice::Text)){
-            QTextStream writeStream(&fileOut);
-            for(int i = 0; i < N/2; i++){ //сокращаем вдвое для избавления зеркального эффекта
-                F[i] = complex<double>(0.0, 0.0);
-                for(int k = 0; k < N; k++){ //Показательная форма комплексного числа (e^i*fi) пишется при помощи polar()
-                    F[i] += mass_y_Gr[gr_index][k] * polar<double>(1.0, 2 * M_PI * i * k / N); //коэффициент нормализации = 1.0
-                }
-                writeStream << alf[i] << "\t" << abs(F[i]) << "\n";
-            }
-            fileOut.close();
-        }
-
-    QFile file2("Обратное преобраз-е Фурье.txt");
-        if(file2.open(QIODevice::WriteOnly | QIODevice::Text)){
-            QTextStream write2(&file2);
-            for(int i = 0; i < N; i++){
-                iF[i] = complex<double>(0.0, 0.0);
-                for(int k = 0; k < N; k++){
-                    iF[i] += F[k] * polar<double>(1.0, -2 * M_PI * i * k / N);
-                }
-                //iF[i] = (1/sqrt(N))*iF[i];
-                write2 << mass_x_Gr[gr_index][i] << "\t" << abs(iF[i]) << "\n";
-            }
-            file2.close();
-        }
+    if (ui->listWidget->count() > 0){
+        FilterFFT *FFTWindow=new FilterFFT(mass_x_Gr[gr_index].last(), mass_y_Gr[gr_index], this);
+        FFTWindow->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - фильтрация сигнала");
+        FFTWindow->show();
+        FFTWindow->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
 
 void MainWindow::on_action_triggered() //выбор файла и заполнение массива данных
