@@ -401,7 +401,6 @@ public:
         menu_2->addAction(action_21);
         menu_4->addAction(menu_5->menuAction());
         menu_4->addAction(actionD);
-        menu_4->addAction(action_4);
         menu_4->addAction(action_filter);
         menu_5->addAction(menu_3->menuAction());
         menu_3->addAction(action_17);

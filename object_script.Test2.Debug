@@ -7,8 +7,6 @@ INPUT(
 ./debug\deltawin.o
 ./debug\mnk.o
 ./debug\about.o
-./debug\fft.o
-./debug\flt.o
 ./debug\qrc_source.o
 ./debug\moc_mainwindow.o
 ./debug\moc_qcustomplot.o

@@ -7,8 +7,6 @@ INPUT(
 ./release\deltawin.o
 ./release\mnk.o
 ./release\about.o
-./release\fft.o
-./release\flt.o
 ./release\qrc_source.o
 ./release\moc_mainwindow.o
 ./release\moc_qcustomplot.o

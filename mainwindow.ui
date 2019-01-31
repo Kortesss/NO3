@@ -414,7 +414,6 @@ p, li { white-space: pre-wrap; }
     </widget>
     <addaction name="menu_5"/>
     <addaction name="actionD"/>
-    <addaction name="action_4"/>
     <addaction name="action_filter"/>
    </widget>
    <widget class="QMenu" name="menu_6">

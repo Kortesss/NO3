@@ -6,7 +6,6 @@
 #include "about.h"
 #include "deltawin.h"
 #include "mnk.h"
-#include "fft.h"
 
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
@@ -192,54 +191,41 @@ void MainWindow::on_action_4_triggered() //Рисуем график y=x*x
         ui->widget->yAxis->setRange(minY, maxY);//Для оси Oy
         ui->widget->replot();
 }
-
+#include <complex>
 void MainWindow::on_action_filter_triggered()
 {
-    QVector<double> y(mass_y_Gr[gr_index].count());
-    int N = 10;//mass_y_Gr[gr_index].count()-1, n = 0;
-    double sum = 0;
+    int N = mass_y_Gr[gr_index].count();
+    QVector<double> alf(N);
+    double L = mass_x_Gr[gr_index].last(); //L-длина функции на графике;
+    QVector< complex <double> > F(N, 0), iF(N, 0);
+    for (int i=0; i<N; i++) alf[i] = i/L; //определяем новый масштаб для точек X после преобразования
+
     QFile fileOut("Преобразование Фурье.txt");
         if(fileOut.open(QIODevice::WriteOnly | QIODevice::Text)){
             QTextStream writeStream(&fileOut);
-            fft *fft1 = new fft(N);
-            //fft1->fH = 2; fft1->fT = 4; //параметры сглаживающего фильтра
-            fft1->Otsechka = false;
-            fft1->CFreq = 1000;  // CFreq - минимальна¤ частота сигнала на входе, при которой не происходит отсечка
-            fft1->Prepare();
-
-            //fft1->PutVal(true);
-            //fft1->Spectrum();
-            for(int i = 0; i < N; i++){
-                //fft1->X0 = mass_y_Gr[gr_index][i];
-                fft1->Xre[0][i] = mass_y_Gr[gr_index][i];
-                fft1->tm[i] = mass_x_Gr[gr_index][i];
-                fft1->PutVal(true);
-                fft1->Spectrum();
-                writeStream << fft1->freq[i] << "\t" << fft1->A[i] << "\n";
-            }
-                  /*
-            for(int i = 0; i < N; i++){
-                while (n<N){
-                    sum+= mass_y_Gr[gr_index][i] * exp(-(2*M_PI*mass_x_Gr[gr_index][i]*n)/N);
-                    n+=1;
+            for(int i = 0; i < N/2; i++){ //сокращаем вдвое для избавления зеркального эффекта
+                F[i] = complex<double>(0.0, 0.0);
+                for(int k = 0; k < N; k++){ //Показательная форма комплексного числа (e^i*fi) пишется при помощи polar()
+                    F[i] += mass_y_Gr[gr_index][k] * polar<double>(1.0, 2 * M_PI * i * k / N); //коэффициент нормализации = 1.0
                 }
-                y[i] = sum;
-                writeStream << mass_x_Gr[gr_index][i] << "\t" << y[i] << "\n";
-                sum = 0; n = 0;
-            }*/
-            delete fft1;
+                writeStream << alf[i] << "\t" << abs(F[i]) << "\n";
+            }
             fileOut.close();
         }
-    /*QFile file2("Обратное преобраз-е Фурье.txt");
+
+    QFile file2("Обратное преобраз-е Фурье.txt");
         if(file2.open(QIODevice::WriteOnly | QIODevice::Text)){
             QTextStream write2(&file2);
-            for(int i = 0; i < mass_y_Gr[gr_index].count(); i++){
-                y[i]/=N;
-                write2 << mass_x_Gr[gr_index][i] << "\t" << y[i] << "\n";
+            for(int i = 0; i < N; i++){
+                iF[i] = complex<double>(0.0, 0.0);
+                for(int k = 0; k < N; k++){
+                    iF[i] += F[k] * polar<double>(1.0, -2 * M_PI * i * k / N);
+                }
+                //iF[i] = (1/sqrt(N))*iF[i];
+                write2 << mass_x_Gr[gr_index][i] << "\t" << abs(iF[i]) << "\n";
             }
             file2.close();
-        }*/
-        on_action_triggered();
+        }
 }
 
 void MainWindow::on_action_triggered() //выбор файла и заполнение массива данных
@@ -294,7 +280,6 @@ void MainWindow::on_action_triggered() //выбор файла и заполне
         delete it; delete progBar;  /*delete btn;*/  delete l; delete wgt;
         ui->listWidget->addItem("График "+QString::number(gr_index+1));//+1 потому что там еще ничего нет
         ui->listWidget->item(gr_index)->setTextAlignment(Qt::AlignCenter);
-
         minx.append(*std::min_element(mass_x_Gr[gr_index].begin(), mass_x_Gr[gr_index].end()));
         maxx.append(*std::max_element(mass_x_Gr[gr_index].begin(), mass_x_Gr[gr_index].end()));
         miny.append(*std::min_element(mass_y_Gr[gr_index].begin(), mass_y_Gr[gr_index].end()));

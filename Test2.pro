@@ -19,9 +19,7 @@ SOURCES += main.cpp\
     somewindow.cpp \
     deltawin.cpp \
     mnk.cpp \
-    about.cpp \
-    fft.cpp \
-    flt.cpp
+    about.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
@@ -30,9 +28,7 @@ HEADERS  += mainwindow.h \
     somewindow.h \
     deltawin.h \
     mnk.h \
-    about.h \
-    fft.h \
-    flt.h
+    about.h
 
 FORMS    += mainwindow.ui \
     somewindow.ui \
