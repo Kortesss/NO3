@@ -14,6 +14,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
@@ -34,14 +35,20 @@ public:
     QWidget *centralwidget;
     QVBoxLayout *verticalLayout_2;
     QGridLayout *gridLayout;
+    QCustomPlot *widget_ifft;
+    QCustomPlot *widget_fft;
     QVBoxLayout *verticalLayout;
     QLabel *label_2;
-    QSlider *horizontalSlider;
+    QSlider *Slider_level;
+    QSpacerItem *verticalSpacer_2;
+    QLabel *label;
+    QSlider *Slider_sens;
+    QHBoxLayout *horizontalLayout;
+    QLabel *label_3;
+    QLabel *label_4;
     QSpacerItem *verticalSpacer;
     QPushButton *pushButton_saveTxt;
     QPushButton *pushButton_close;
-    QCustomPlot *widget_ifft;
-    QCustomPlot *widget_fft;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -56,6 +63,17 @@ public:
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         gridLayout = new QGridLayout();
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
+        widget_ifft = new QCustomPlot(centralwidget);
+        widget_ifft->setObjectName(QStringLiteral("widget_ifft"));
+
+        gridLayout->addWidget(widget_ifft, 1, 0, 1, 1);
+
+        widget_fft = new QCustomPlot(centralwidget);
+        widget_fft->setObjectName(QStringLiteral("widget_fft"));
+        widget_fft->setMinimumSize(QSize(600, 0));
+
+        gridLayout->addWidget(widget_fft, 0, 0, 1, 1);
+
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         label_2 = new QLabel(centralwidget);
@@ -67,15 +85,64 @@ public:
 
         verticalLayout->addWidget(label_2);
 
-        horizontalSlider = new QSlider(centralwidget);
-        horizontalSlider->setObjectName(QStringLiteral("horizontalSlider"));
-        horizontalSlider->setMinimumSize(QSize(185, 0));
-        horizontalSlider->setMaximumSize(QSize(185, 16777215));
-        horizontalSlider->setOrientation(Qt::Horizontal);
+        Slider_level = new QSlider(centralwidget);
+        Slider_level->setObjectName(QStringLiteral("Slider_level"));
+        Slider_level->setMinimumSize(QSize(185, 0));
+        Slider_level->setMaximumSize(QSize(185, 16777215));
+        Slider_level->setPageStep(1);
+        Slider_level->setOrientation(Qt::Horizontal);
+        Slider_level->setTickPosition(QSlider::NoTicks);
+        Slider_level->setTickInterval(1);
 
-        verticalLayout->addWidget(horizontalSlider);
+        verticalLayout->addWidget(Slider_level);
 
-        verticalSpacer = new QSpacerItem(20, 150, QSizePolicy::Minimum, QSizePolicy::Preferred);
+        verticalSpacer_2 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Preferred);
+
+        verticalLayout->addItem(verticalSpacer_2);
+
+        label = new QLabel(centralwidget);
+        label->setObjectName(QStringLiteral("label"));
+        label->setMaximumSize(QSize(185, 20));
+        label->setFont(font);
+
+        verticalLayout->addWidget(label);
+
+        Slider_sens = new QSlider(centralwidget);
+        Slider_sens->setObjectName(QStringLiteral("Slider_sens"));
+        Slider_sens->setMinimumSize(QSize(185, 0));
+        Slider_sens->setMaximumSize(QSize(185, 16777215));
+        Slider_sens->setMinimum(1);
+        Slider_sens->setMaximum(8);
+        Slider_sens->setSingleStep(1);
+        Slider_sens->setPageStep(1);
+        Slider_sens->setValue(1);
+        Slider_sens->setSliderPosition(1);
+        Slider_sens->setTracking(true);
+        Slider_sens->setOrientation(Qt::Horizontal);
+        Slider_sens->setTickPosition(QSlider::TicksBelow);
+        Slider_sens->setTickInterval(1);
+
+        verticalLayout->addWidget(Slider_sens);
+
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        label_3 = new QLabel(centralwidget);
+        label_3->setObjectName(QStringLiteral("label_3"));
+        label_3->setMaximumSize(QSize(90, 15));
+
+        horizontalLayout->addWidget(label_3);
+
+        label_4 = new QLabel(centralwidget);
+        label_4->setObjectName(QStringLiteral("label_4"));
+        label_4->setMaximumSize(QSize(90, 15));
+        label_4->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
+
+        horizontalLayout->addWidget(label_4);
+
+
+        verticalLayout->addLayout(horizontalLayout);
+
+        verticalSpacer = new QSpacerItem(20, 140, QSizePolicy::Minimum, QSizePolicy::Preferred);
 
         verticalLayout->addItem(verticalSpacer);
 
@@ -118,17 +185,6 @@ public:
 
         gridLayout->addLayout(verticalLayout, 0, 1, 1, 1);
 
-        widget_ifft = new QCustomPlot(centralwidget);
-        widget_ifft->setObjectName(QStringLiteral("widget_ifft"));
-
-        gridLayout->addWidget(widget_ifft, 1, 0, 1, 1);
-
-        widget_fft = new QCustomPlot(centralwidget);
-        widget_fft->setObjectName(QStringLiteral("widget_fft"));
-        widget_fft->setMinimumSize(QSize(600, 0));
-
-        gridLayout->addWidget(widget_fft, 0, 0, 1, 1);
-
 
         verticalLayout_2->addLayout(gridLayout);
 
@@ -150,6 +206,9 @@ public:
     {
         FilterFFT->setWindowTitle(QApplication::translate("FilterFFT", "MainWindow", 0));
         label_2->setText(QApplication::translate("FilterFFT", "\320\243\321\200\320\276\320\262\320\265\320\275\321\214 \321\210\321\203\320\274\320\260:", 0));
+        label->setText(QApplication::translate("FilterFFT", "\320\247\321\203\320\262\321\201\321\202\320\262\320\270\321\202\320\265\320\273\321\214\320\275\320\276\321\201\321\202\321\214:", 0));
+        label_3->setText(QApplication::translate("FilterFFT", "\320\235\320\276\321\200\320\274.", 0));
+        label_4->setText(QApplication::translate("FilterFFT", "\320\222\321\213\321\201.", 0));
         pushButton_saveTxt->setText(QApplication::translate("FilterFFT", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\262 \321\204\320\260\320\271\320\273...", 0));
         pushButton_close->setText(QApplication::translate("FilterFFT", "\320\227\320\260\320\272\321\200\321\213\321\202\321\214", 0));
     } // retranslateUi

@@ -25,14 +25,18 @@ private slots:
 
     void on_pushButton_saveTxt_clicked();
 
+    void on_Slider_level_valueChanged(int value);
+
+    void on_Slider_sens_valueChanged(int value);
+
 private:
     Ui::FilterFFT *ui;
     QShortcut *CtrlQ;
     int N;
-    QList <double> alf, absF;
+    QList <double> alf, absF, iabsF, xL, yL;
     double minx, miny, maxx, maxy;
-    QList< std::complex <double> > F, iF;
-    QCPGraph *FFTgraph, *iFFTgraph;
+    QList< std::complex <double> > F,iF;
+    QCPGraph *FFTgraph, *iFFTgraph, *horizLevel;
 };
 
 #endif // FILTERFFT_H

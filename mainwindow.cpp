@@ -58,6 +58,7 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
 
 MainWindow::~MainWindow()
 {
+    qDebug() << "деструктор MainWindow";
     delete ui;
 }
 
