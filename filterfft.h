@@ -33,9 +33,9 @@ private:
     Ui::FilterFFT *ui;
     QShortcut *CtrlQ;
     int N;
-    QList <double> xF, yF, ixF, iyF, xL, yL;
+    QList <double> xF, yF, yFcopy, ixF, iyF, xL, yL;
     double minX, minY, maxX, maxY, iMinX, iMinY, iMaxX, iMaxY;
-    QList< std::complex <double> > F,iF;
+    QList< std::complex <double> > F, Fcopy, iF;
     QCPGraph *DFTgraph, *iDFTgraph, *horizLevel;
 };
 

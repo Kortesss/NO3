@@ -47,7 +47,7 @@ FilterFFT::~FilterFFT()
 void FilterFFT::DFT(QList <double> &x, QList <double> &y) //Дискретное преобразование Фурье
 {
     N = y.count();
-    xF.clear(); yF.clear(); F.clear();
+    //xF.clear(); yF.clear(); F.clear();
     for (int i=0; i<N; i++) xF.append(i/x.last()); //определяем новый масштаб для точек X после преобразования
     for(int i = 0; i < N; i++){ //сокращаем вдвое для избавления зеркального эффекта
         F.append(std::complex<double>(0.0, 0.0));
@@ -55,6 +55,7 @@ void FilterFFT::DFT(QList <double> &x, QList <double> &y) //Дискретное
             F[i] += y[k] * (std::polar<double>(1.0, -(2 * M_PI * i * k / N))); //коэффициент нормализации = 1.0
         } //БПФ отличается от дискретного тем, что сумму не надо делить на N и в степени -
         yF.append(abs(F[i])); //сохраняем модуль комплексного числа
+        yFcopy.append(yF[i]); Fcopy.append(F[i]);
     }
 
     xL.append(0.0); xL.append(xF.last()); //x, y уровня(Level)
@@ -92,15 +93,17 @@ void FilterFFT::iDFT(QList<double> &x) //Обратное преобразова
         if (iF[i].real()>0) iyF.append(abs(iF[i]));
         else  iyF.append(-abs(iF[i]));
     }
-    iMinX = *std::min_element(x.begin(), x.end());
-    iMaxX = *std::max_element(x.begin(), x.end());
-    iMinY = *std::min_element(iyF.begin(), iyF.end());
-    iMaxY = *std::max_element(iyF.begin(), iyF.end());
-    //Установим область, которая будет показываться на графике
-    ui->widget_idft->xAxis->setRange(iMinX, iMaxX);// Для оси Ox
-    ui->widget_idft->yAxis->setRange(iMinY, iMaxY);//Для оси Oy
-    ui->widget_idft->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);
-    ui->widget_idft->legend->setVisible(true);
+    if (!ui->widget_idft->legend->visible()){//чтобы постоянно не считать
+        iMinX = *std::min_element(x.begin(), x.end());
+        iMaxX = *std::max_element(x.begin(), x.end());
+        iMinY = *std::min_element(iyF.begin(), iyF.end());
+        iMaxY = *std::max_element(iyF.begin(), iyF.end());
+        //Установим область, которая будет показываться на графике
+        ui->widget_idft->xAxis->setRange(iMinX, iMaxX);// Для оси Ox
+        ui->widget_idft->yAxis->setRange(iMinY, iMaxY);//Для оси Oy
+        ui->widget_idft->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);
+        ui->widget_idft->legend->setVisible(true);
+    }
     iDFTgraph->setData(x.toVector(), iyF.toVector());
     iDFTgraph->setVisible(true);
     ui->widget_idft->replot();
@@ -126,28 +129,20 @@ void FilterFFT::on_pushButton_close_clicked()
     this->close();
 }
 
-void FilterFFT::on_Slider_level_valueChanged(int value) //изменение слайдера уровня шумов
+void FilterFFT::on_Slider_level_valueChanged(int value) //изменение слайдера уровня шумов и фильтрация
 {
     yL[0] = yL[1] = value;
     horizLevel->setData(xL.toVector(), yL.toVector());  
     for (int i = 0; i < N; i++){
-        if (value >= yF[i]) {yF[i] = 0.0; F[i] = 0.0;}
+        if (value >= yFcopy[i]) {
+            yF[i] = 0.0; F[i] = 0.0;
+        }else{//восстанавливаем из копии
+            yF[i] = yFcopy[i]; F[i] = Fcopy[i];
+        }
     }
     DFTgraph->setData(xF.toVector(), yF.toVector());
     ui->widget_dft->replot();
-
-    iF.clear(); iyF.clear();
-    for(int i = 0; i < N; i++){
-        iF.append(std::complex<double>(0.0, 0.0));
-        for(int k = 0; k < N; k++){
-            iF[i] += F[k] * (std::polar<double>(1.0, 2 * M_PI * i * k / N));
-        }
-        iF[i]/= (double) N;
-        if (iF[i].real()>0) iyF.append(abs(iF[i]));
-        else  iyF.append(-abs(iF[i]));
-    }
-    iDFTgraph->setData(ixF.toVector(), iyF.toVector());
-    ui->widget_idft->replot();
+    iDFT(ixF);
 }
 
 void FilterFFT::on_Slider_sens_valueChanged(int value) //изменение чувствительности уровня шумов

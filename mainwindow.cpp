@@ -455,7 +455,7 @@ void MainWindow::on_action_21_triggered() //отрисовка графика п
 {
     if (ui->listWidget->count() > 0){
         on_action_13_triggered(); //вызов вычисления производной кучочно-непрерывной функции
-        SomeWindow *DXWindow=new SomeWindow(dirivate,this->x1,this->x2, koef[gr_index], this);
+        SomeWindow *DXWindow=new SomeWindow(dirivate, x1, x2, koef[gr_index], this);
         DXWindow->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - скорость изменения параметра");
         DXWindow->show();
         DXWindow->setAttribute(Qt::WA_DeleteOnClose); //деструктор

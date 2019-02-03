@@ -2,7 +2,7 @@
 #include "ui_somewindow.h"
 #include <QDebug>
 
-SomeWindow::SomeWindow(QVector<double> dirivate,double x1, double x2, double koef, QWidget *parent) :
+SomeWindow::SomeWindow(QVector<double> &dirivate, double &x1, double &x2, double &koef, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SomeWindow)
 {
@@ -17,7 +17,7 @@ SomeWindow::SomeWindow(QVector<double> dirivate,double x1, double x2, double koe
     graphDirivate(dirivate, x1, x2,koef);
 
 }
-void SomeWindow::graphDirivate(QVector<double> dirivate, double x1,double x2,double koef){
+void SomeWindow::graphDirivate(QVector<double> &dirivate, double &x1,double &x2,double &koef){
     ui->widget_dir->clearGraphs();//Если нужно, о очищаем все графики
     ui->widget_dir->addGraph();
     QVector<double> x1vector;

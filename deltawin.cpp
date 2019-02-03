@@ -3,7 +3,7 @@
 #include <qmath.h>
 #include <QDebug>
 
-deltaWin::deltaWin(QList <double> mass_minX, QList <double> mass_maxX, QList <double> mass_minY, QList <double> mass_maxY, QWidget *parent) :
+deltaWin::deltaWin(QList <double> &mass_minX, QList <double> &mass_maxX, QList <double> &mass_minY, QList <double> &mass_maxY, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::deltaWin)
 {
@@ -11,7 +11,7 @@ deltaWin::deltaWin(QList <double> mass_minX, QList <double> mass_maxX, QList <do
     deltaList(mass_minX, mass_maxX, mass_minY, mass_maxY);
 }
 
-void deltaWin::deltaList(QList <double> mass_minX, QList <double> mass_maxX, QList <double> mass_minY, QList <double> mass_maxY){
+void deltaWin::deltaList(QList <double> &mass_minX, QList <double> &mass_maxX, QList <double> &mass_minY, QList <double> &mass_maxY){
     if (mass_maxX[0] > mass_minX[0]){//если график в начале возрастает
         for(int i = 0; i < mass_maxX.count(); i ++){
             this->deltaT1.append(mass_maxX[i] - mass_minX[i]);
