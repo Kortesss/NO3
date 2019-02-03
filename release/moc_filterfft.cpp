@@ -21,7 +21,7 @@
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_FilterFFT_t {
     QByteArrayData data[12];
-    char stringdata0[163];
+    char stringdata0[160];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -33,19 +33,19 @@ static const qt_meta_stringdata_FilterFFT_t qt_meta_stringdata_FilterFFT = {
 QT_MOC_LITERAL(0, 0, 9), // "FilterFFT"
 QT_MOC_LITERAL(1, 10, 27), // "on_pushButton_close_clicked"
 QT_MOC_LITERAL(2, 38, 0), // ""
-QT_MOC_LITERAL(3, 39, 3), // "FFT"
-QT_MOC_LITERAL(4, 43, 5), // "xLast"
-QT_MOC_LITERAL(5, 49, 13), // "QList<double>"
-QT_MOC_LITERAL(6, 63, 1), // "y"
-QT_MOC_LITERAL(7, 65, 4), // "iFFT"
-QT_MOC_LITERAL(8, 70, 29), // "on_pushButton_saveTxt_clicked"
-QT_MOC_LITERAL(9, 100, 28), // "on_Slider_level_valueChanged"
-QT_MOC_LITERAL(10, 129, 5), // "value"
-QT_MOC_LITERAL(11, 135, 27) // "on_Slider_sens_valueChanged"
+QT_MOC_LITERAL(3, 39, 3), // "DFT"
+QT_MOC_LITERAL(4, 43, 14), // "QList<double>&"
+QT_MOC_LITERAL(5, 58, 1), // "x"
+QT_MOC_LITERAL(6, 60, 1), // "y"
+QT_MOC_LITERAL(7, 62, 4), // "iDFT"
+QT_MOC_LITERAL(8, 67, 29), // "on_pushButton_saveTxt_clicked"
+QT_MOC_LITERAL(9, 97, 28), // "on_Slider_level_valueChanged"
+QT_MOC_LITERAL(10, 126, 5), // "value"
+QT_MOC_LITERAL(11, 132, 27) // "on_Slider_sens_valueChanged"
 
     },
     "FilterFFT\0on_pushButton_close_clicked\0"
-    "\0FFT\0xLast\0QList<double>\0y\0iFFT\0"
+    "\0DFT\0QList<double>&\0x\0y\0iDFT\0"
     "on_pushButton_saveTxt_clicked\0"
     "on_Slider_level_valueChanged\0value\0"
     "on_Slider_sens_valueChanged"
@@ -68,15 +68,15 @@ static const uint qt_meta_data_FilterFFT[] = {
  // slots: name, argc, parameters, tag, flags
        1,    0,   44,    2, 0x08 /* Private */,
        3,    2,   45,    2, 0x08 /* Private */,
-       7,    0,   50,    2, 0x08 /* Private */,
-       8,    0,   51,    2, 0x08 /* Private */,
-       9,    1,   52,    2, 0x08 /* Private */,
-      11,    1,   55,    2, 0x08 /* Private */,
+       7,    1,   50,    2, 0x08 /* Private */,
+       8,    0,   53,    2, 0x08 /* Private */,
+       9,    1,   54,    2, 0x08 /* Private */,
+      11,    1,   57,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Double, 0x80000000 | 5,    4,    6,
-    QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 4, 0x80000000 | 4,    5,    6,
+    QMetaType::Void, 0x80000000 | 4,    5,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,   10,
     QMetaType::Void, QMetaType::Int,   10,
@@ -91,23 +91,12 @@ void FilterFFT::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->on_pushButton_close_clicked(); break;
-        case 1: _t->FFT((*reinterpret_cast< double(*)>(_a[1])),(*reinterpret_cast< QList<double>(*)>(_a[2]))); break;
-        case 2: _t->iFFT(); break;
+        case 1: _t->DFT((*reinterpret_cast< QList<double>(*)>(_a[1])),(*reinterpret_cast< QList<double>(*)>(_a[2]))); break;
+        case 2: _t->iDFT((*reinterpret_cast< QList<double>(*)>(_a[1]))); break;
         case 3: _t->on_pushButton_saveTxt_clicked(); break;
         case 4: _t->on_Slider_level_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 5: _t->on_Slider_sens_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
-        }
-    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        switch (_id) {
-        default: *reinterpret_cast<int*>(_a[0]) = -1; break;
-        case 1:
-            switch (*reinterpret_cast<int*>(_a[1])) {
-            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
-            case 1:
-                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QList<double> >(); break;
-            }
-            break;
         }
     }
 }
@@ -142,7 +131,7 @@ int FilterFFT::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         _id -= 6;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         if (_id < 6)
-            qt_static_metacall(this, _c, _id, _a);
+            *reinterpret_cast<int*>(_a[0]) = -1;
         _id -= 6;
     }
     return _id;

@@ -196,7 +196,7 @@ void MainWindow::on_action_4_triggered() //Рисуем график y=x*x
 void MainWindow::on_action_filter_triggered() //Фильрация сигнала
 {
     if (ui->listWidget->count() > 0){
-        FilterFFT *FFTWindow=new FilterFFT(mass_x_Gr[gr_index].last(), mass_y_Gr[gr_index], this);
+        FilterFFT *FFTWindow=new FilterFFT(mass_x_Gr[gr_index], mass_y_Gr[gr_index], this);
         FFTWindow->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - фильтрация сигнала");
         FFTWindow->show();
         FFTWindow->setAttribute(Qt::WA_DeleteOnClose); //деструктор

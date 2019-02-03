@@ -15,13 +15,13 @@ class FilterFFT : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit FilterFFT(double xLast, QList <double> y, QWidget *parent = 0);
-    ~FilterFFT();
+    explicit FilterFFT(QList <double> &x, QList <double> &y, QWidget *parent = 0);
+    ~FilterFFT(); //принимаем ссылки на объект, чтобы не копировать в памяти его же
 
 private slots:
     void on_pushButton_close_clicked();
-    void FFT(double xLast, QList <double> y);
-    void iFFT();
+    void DFT(QList<double> &x, QList<double> &y);
+    void iDFT(QList<double> &x);
 
     void on_pushButton_saveTxt_clicked();
 
@@ -33,10 +33,10 @@ private:
     Ui::FilterFFT *ui;
     QShortcut *CtrlQ;
     int N;
-    QList <double> alf, absF, iabsF, xL, yL;
-    double minx, miny, maxx, maxy;
+    QList <double> xF, yF, ixF, iyF, xL, yL;
+    double minX, minY, maxX, maxY, iMinX, iMinY, iMaxX, iMaxY;
     QList< std::complex <double> > F,iF;
-    QCPGraph *FFTgraph, *iFFTgraph, *horizLevel;
+    QCPGraph *DFTgraph, *iDFTgraph, *horizLevel;
 };
 
 #endif // FILTERFFT_H
