@@ -35,8 +35,8 @@ public:
     QWidget *centralwidget;
     QVBoxLayout *verticalLayout_2;
     QGridLayout *gridLayout;
-    QCustomPlot *widget_ifft;
-    QCustomPlot *widget_fft;
+    QCustomPlot *widget_idft;
+    QCustomPlot *widget_dft;
     QVBoxLayout *verticalLayout;
     QLabel *label_2;
     QSlider *Slider_level;
@@ -63,16 +63,16 @@ public:
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         gridLayout = new QGridLayout();
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
-        widget_ifft = new QCustomPlot(centralwidget);
-        widget_ifft->setObjectName(QStringLiteral("widget_ifft"));
+        widget_idft = new QCustomPlot(centralwidget);
+        widget_idft->setObjectName(QStringLiteral("widget_idft"));
 
-        gridLayout->addWidget(widget_ifft, 1, 0, 1, 1);
+        gridLayout->addWidget(widget_idft, 1, 0, 1, 1);
 
-        widget_fft = new QCustomPlot(centralwidget);
-        widget_fft->setObjectName(QStringLiteral("widget_fft"));
-        widget_fft->setMinimumSize(QSize(600, 0));
+        widget_dft = new QCustomPlot(centralwidget);
+        widget_dft->setObjectName(QStringLiteral("widget_dft"));
+        widget_dft->setMinimumSize(QSize(600, 0));
 
-        gridLayout->addWidget(widget_fft, 0, 0, 1, 1);
+        gridLayout->addWidget(widget_dft, 0, 0, 1, 1);
 
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));

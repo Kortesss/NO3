@@ -3,7 +3,7 @@
 #include <qmath.h>
 #include <QDebug>
 
-FilterFFT::FilterFFT(QList <double> &x, QList <double> &y, QWidget *parent) :
+FilterFFT::FilterFFT(QList <double> x, QList <double> &y, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::FilterFFT)
 {
@@ -12,29 +12,30 @@ FilterFFT::FilterFFT(QList <double> &x, QList <double> &y, QWidget *parent) :
     CtrlQ->setKey(Qt::CTRL + Qt::Key_Q);
     connect(CtrlQ, SIGNAL(activated()), this, SLOT(on_pushButton_close_clicked()));
 
-    ui->widget_fft->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
-    ui->widget_fft->xAxis->setLabel("x");
-    ui->widget_fft->yAxis->setLabel("y");
-    DFTgraph = ui->widget_fft->addGraph();	//Добавление графика Фурье
+    ui->widget_dft->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+    ui->widget_dft->xAxis->setLabel("x");
+    ui->widget_dft->yAxis->setLabel("y");
+    DFTgraph = ui->widget_dft->addGraph();	//Добавление графика Фурье
     DFTgraph->setName("Дискретное преоразование Фурье");
     DFTgraph->setPen(QColor(50, 50, 50, 255));//задаем цвет точки
-    DFTgraph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
+    DFTgraph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
 
-    ui->widget_ifft->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
-    ui->widget_ifft->xAxis->setLabel("x");
-    ui->widget_ifft->yAxis->setLabel("y");
-    iDFTgraph = ui->widget_ifft->addGraph();	//Добавление графика Обратного Фурье
+    ui->widget_idft->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+    ui->widget_idft->xAxis->setLabel("x");
+    ui->widget_idft->yAxis->setLabel("y");
+    iDFTgraph = ui->widget_idft->addGraph();	//Добавление графика Обратного Фурье
     iDFTgraph->setName("Обратное преобразование Фурье");
     iDFTgraph->setPen(QColor(50, 50, 50, 255));//задаем цвет точки
     iDFTgraph->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
 
-    horizLevel = ui->widget_fft->addGraph();	//Добавление горизонтальной линии
+    horizLevel = ui->widget_dft->addGraph();	//Добавление горизонтальной линии
     horizLevel->setName("Уровень шума");
     horizLevel->setPen(QColor(255, 0, 0, 255));//задаем цвет точки красный
     horizLevel->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
     horizLevel->setVisible(true);
-    DFT(x, y);
-    iDFT(x);
+    ixF = x;
+    DFT(ixF, y);
+    iDFT(ixF);
 }
 
 FilterFFT::~FilterFFT()
@@ -46,7 +47,7 @@ FilterFFT::~FilterFFT()
 void FilterFFT::DFT(QList <double> &x, QList <double> &y) //Дискретное преобразование Фурье
 {
     N = y.count();
-    xF.clear(); yF.clear();
+    xF.clear(); yF.clear(); F.clear();
     for (int i=0; i<N; i++) xF.append(i/x.last()); //определяем новый масштаб для точек X после преобразования
     for(int i = 0; i < N; i++){ //сокращаем вдвое для избавления зеркального эффекта
         F.append(std::complex<double>(0.0, 0.0));
@@ -55,6 +56,7 @@ void FilterFFT::DFT(QList <double> &x, QList <double> &y) //Дискретное
         } //БПФ отличается от дискретного тем, что сумму не надо делить на N и в степени -
         yF.append(abs(F[i])); //сохраняем модуль комплексного числа
     }
+
     xL.append(0.0); xL.append(xF.last()); //x, y уровня(Level)
     yL.append(0.0); yL.append(0.0);
     horizLevel->setData(xL.toVector(), yL.toVector());
@@ -65,21 +67,22 @@ void FilterFFT::DFT(QList <double> &x, QList <double> &y) //Дискретное
     minY = *std::min_element(yF.begin(), yF.end());
     maxY = *std::max_element(yF.begin(), yF.end());
     //Установим область, которая будет показываться на графике
-    ui->widget_fft->xAxis->setRange(minX, maxX);// Для оси Ox
-    ui->widget_fft->yAxis->setRange(minY, maxY);//Для оси Oy
+    ui->widget_dft->xAxis->setRange(minX, maxX);// Для оси Ox
+    ui->widget_dft->yAxis->setRange(minY, maxY);//Для оси Oy
 
     ui->Slider_level->setMaximum(maxY);
     on_Slider_sens_valueChanged(1);
 
-    ui->widget_fft->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);
-    ui->widget_fft->legend->setVisible(true);
+    ui->widget_dft->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);
+    ui->widget_dft->legend->setVisible(true);
     DFTgraph->setData(xF.toVector(), yF.toVector());
     DFTgraph->setVisible(true);
-    ui->widget_fft->replot();
+    ui->widget_dft->replot();
 }
 
-void FilterFFT::iDFT(QList<double> &x) //Обратное Фурье
+void FilterFFT::iDFT(QList<double> &x) //Обратное преобразование Фурье
 {
+    iF.clear(); iyF.clear();
     for(int i = 0; i < N; i++){
         iF.append(std::complex<double>(0.0, 0.0));
         for(int k = 0; k < N; k++){
@@ -94,27 +97,25 @@ void FilterFFT::iDFT(QList<double> &x) //Обратное Фурье
     iMinY = *std::min_element(iyF.begin(), iyF.end());
     iMaxY = *std::max_element(iyF.begin(), iyF.end());
     //Установим область, которая будет показываться на графике
-    ui->widget_ifft->xAxis->setRange(iMinX, iMaxX);// Для оси Ox
-    ui->widget_ifft->yAxis->setRange(iMinY, iMaxY);//Для оси Oy
-    ui->widget_ifft->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);
-    ui->widget_ifft->legend->setVisible(true);
+    ui->widget_idft->xAxis->setRange(iMinX, iMaxX);// Для оси Ox
+    ui->widget_idft->yAxis->setRange(iMinY, iMaxY);//Для оси Oy
+    ui->widget_idft->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);
+    ui->widget_idft->legend->setVisible(true);
     iDFTgraph->setData(x.toVector(), iyF.toVector());
     iDFTgraph->setVisible(true);
-    ui->widget_ifft->replot();
+    ui->widget_idft->replot();
 }
 
 void FilterFFT::on_pushButton_saveTxt_clicked() //сохранение в текстовый файл
 {
-    QFile fileOut("Обратное преобраз-е Фурье.txt");
+    QString nameGr = "Обратное преобраз-е Фурье";
+    QString fileName = QFileDialog::getSaveFileName(0, QString::fromUtf8("Сохранение преобразованного сигнала"),
+                  nameGr, "Файл txt (*.txt)");
+    QFile fileOut(fileName);
         if(fileOut.open(QIODevice::WriteOnly | QIODevice::Text)){
-            QTextStream writeStream(&fileOut);
+            QTextStream writeStream(&fileOut); // Создаем объект класса QTextStream
             for(int i = 0; i < N; i++){
-                //iF.append(std::complex<double>(0.0, 0.0));
-                for(int k = 0; k < N; k++){
-                    //iF[i] += F[k] * std::polar<double>(1.0, -2 * M_PI * i * k / N);
-                }
-                //iF[i] = (1/sqrt(N))*iF[i];
-                //writeStream << mass_x_Gr[gr_index][i] << "\t" << abs(iF[i]) << "\n";
+                writeStream << ixF[i] << "\t" << iyF[i] << "\n";
             }
             fileOut.close();
         }
@@ -129,7 +130,24 @@ void FilterFFT::on_Slider_level_valueChanged(int value) //изменение с�
 {
     yL[0] = yL[1] = value;
     horizLevel->setData(xL.toVector(), yL.toVector());  
-    ui->widget_fft->replot();
+    for (int i = 0; i < N; i++){
+        if (value >= yF[i]) {yF[i] = 0.0; F[i] = 0.0;}
+    }
+    DFTgraph->setData(xF.toVector(), yF.toVector());
+    ui->widget_dft->replot();
+
+    iF.clear(); iyF.clear();
+    for(int i = 0; i < N; i++){
+        iF.append(std::complex<double>(0.0, 0.0));
+        for(int k = 0; k < N; k++){
+            iF[i] += F[k] * (std::polar<double>(1.0, 2 * M_PI * i * k / N));
+        }
+        iF[i]/= (double) N;
+        if (iF[i].real()>0) iyF.append(abs(iF[i]));
+        else  iyF.append(-abs(iF[i]));
+    }
+    iDFTgraph->setData(ixF.toVector(), iyF.toVector());
+    ui->widget_idft->replot();
 }
 
 void FilterFFT::on_Slider_sens_valueChanged(int value) //изменение чувствительности уровня шумов
@@ -138,3 +156,4 @@ void FilterFFT::on_Slider_sens_valueChanged(int value) //изменение чу
     ui->Slider_level->setTickInterval(maxY /(yF.count()*value));
     ui->Slider_level->setSingleStep(maxY /(yF.count()*value));
 }
+

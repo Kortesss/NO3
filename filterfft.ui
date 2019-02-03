@@ -18,10 +18,10 @@
     <item>
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="0">
-       <widget class="QCustomPlot" name="widget_ifft" native="true"/>
+       <widget class="QCustomPlot" name="widget_idft" native="true"/>
       </item>
       <item row="0" column="0">
-       <widget class="QCustomPlot" name="widget_fft" native="true">
+       <widget class="QCustomPlot" name="widget_dft" native="true">
         <property name="minimumSize">
          <size>
           <width>600</width>
