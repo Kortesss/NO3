@@ -152,3 +152,20 @@ void FilterFFT::on_Slider_sens_valueChanged(int value) //изменение чу
     ui->Slider_level->setSingleStep(maxY /(yF.count()*value));
 }
 
+void FilterFFT::on_pushButton_clicked()
+{
+    //std::complex <double> sum2(0.0, 0.0);
+
+    for (int i = 0; i < N; i++){
+        if (ui->Slider_level->value() >= yFcopy[i]) {
+            yF[i] = exp(-((qPow(M_PI,2)*qPow(ui->sigma->value(),2))/yF[i]));
+            //F[i] = (1/((sqrt(2*M_PI))*res2)) * exp(-((F[i]*F[i])/(2*res2*res2)));
+        }
+    }
+    DFTgraph->setData(xF.toVector(), yF.toVector());
+    ui->widget_dft->replot();
+    iDFT(ixF);
+
+    DFTgraph->setData(xF.toVector(), yF.toVector());
+    ui->widget_dft->replot();
+}

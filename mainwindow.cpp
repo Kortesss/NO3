@@ -512,8 +512,8 @@ void MainWindow::on_action_13_triggered() //вызов вычисления пр
       double sred=0, znpozit=0;
       dirivate.clear();
       //обработка введеных значений если они за пределами возможных
-      if (x1 < minx[gr_index]) x1 = minx[gr_index];
-      if (x2 > maxx[gr_index]) x2 = maxx[gr_index];
+      if (x1 < minx[gr_index] || x1 > maxx[gr_index]) x1 = minx[gr_index];
+      if (x2 > maxx[gr_index] || x2 < minx[gr_index]) x2 = maxx[gr_index];
       //ищем ближайшее к введеному значение из массива данных
       int i=0;
       while (x1>mass_x_Gr[gr_index][i]) { i++;}

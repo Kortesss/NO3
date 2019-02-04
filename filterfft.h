@@ -29,6 +29,8 @@ private slots:
 
     void on_Slider_sens_valueChanged(int value);
 
+    void on_pushButton_clicked();
+
 private:
     Ui::FilterFFT *ui;
     QShortcut *CtrlQ;

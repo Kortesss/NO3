@@ -276,13 +276,13 @@ public:
         gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
         Browser_Min = new QTextBrowser(centralWidget);
         Browser_Min->setObjectName(QStringLiteral("Browser_Min"));
-        Browser_Min->setMaximumSize(QSize(113, 40));
+        Browser_Min->setMaximumSize(QSize(113, 38));
 
         gridLayout_3->addWidget(Browser_Min, 1, 0, 1, 1);
 
         Browser_Derivative = new QTextBrowser(centralWidget);
         Browser_Derivative->setObjectName(QStringLiteral("Browser_Derivative"));
-        Browser_Derivative->setMaximumSize(QSize(113, 40));
+        Browser_Derivative->setMaximumSize(QSize(113, 50));
         Browser_Derivative->setSizeIncrement(QSize(0, 0));
         Browser_Derivative->setBaseSize(QSize(0, 0));
 
@@ -291,7 +291,7 @@ public:
         Browser_Max = new QTextBrowser(centralWidget);
         Browser_Max->setObjectName(QStringLiteral("Browser_Max"));
         Browser_Max->setMinimumSize(QSize(20, 20));
-        Browser_Max->setMaximumSize(QSize(113, 40));
+        Browser_Max->setMaximumSize(QSize(113, 38));
 
         gridLayout_3->addWidget(Browser_Max, 2, 0, 1, 1);
 
