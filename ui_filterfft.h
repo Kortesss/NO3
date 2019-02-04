@@ -230,7 +230,7 @@ public:
         label->setText(QApplication::translate("FilterFFT", "\320\247\321\203\320\262\321\201\321\202\320\262\320\270\321\202\320\265\320\273\321\214\320\275\320\276\321\201\321\202\321\214:", 0));
         label_3->setText(QApplication::translate("FilterFFT", "\320\235\320\276\321\200\320\274.", 0));
         label_4->setText(QApplication::translate("FilterFFT", "\320\222\321\213\321\201.", 0));
-        pushButton->setText(QApplication::translate("FilterFFT", "\320\244\320\270\320\273\321\214\321\202\321\200 \320\223\320\260\321\203\321\201\321\201\320\260", 0));
+        pushButton->setText(QApplication::translate("FilterFFT", "\320\241\320\272\320\276\320\273\321\214\320\267\321\217\321\211\320\260\321\217 \321\201\321\200\320\265\320\264\320\275\321\217\321\217", 0));
         pushButton_saveTxt->setText(QApplication::translate("FilterFFT", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\262 \321\204\320\260\320\271\320\273...", 0));
         pushButton_close->setText(QApplication::translate("FilterFFT", "\320\227\320\260\320\272\321\200\321\213\321\202\321\214", 0));
     } // retranslateUi

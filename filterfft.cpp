@@ -133,13 +133,13 @@ void FilterFFT::on_Slider_level_valueChanged(int value) //изменение с�
 {
     yL[0] = yL[1] = value;
     horizLevel->setData(xL.toVector(), yL.toVector());  
-    for (int i = 0; i < N; i++){
+    /*for (int i = 0; i < N; i++){
         if (value >= yFcopy[i]) {
             yF[i] = 0.0; F[i] = 0.0;
         }else{//восстанавливаем из копии
             yF[i] = yFcopy[i]; F[i] = Fcopy[i];
         }
-    }
+    }*/
     DFTgraph->setData(xF.toVector(), yF.toVector());
     ui->widget_dft->replot();
     iDFT(ixF);
@@ -154,18 +154,26 @@ void FilterFFT::on_Slider_sens_valueChanged(int value) //изменение чу
 
 void FilterFFT::on_pushButton_clicked()
 {
-    //std::complex <double> sum2(0.0, 0.0);
-
+    double sum1 = 0.0;
+    int count = 0;
+    std::complex <double> sum2(0.0, 0.0);
     for (int i = 0; i < N; i++){
-        if (ui->Slider_level->value() >= yFcopy[i]) {
-            yF[i] = exp(-((qPow(M_PI,2)*qPow(ui->sigma->value(),2))/yF[i]));
-            //F[i] = (1/((sqrt(2*M_PI))*res2)) * exp(-((F[i]*F[i])/(2*res2*res2)));
+        if (ui->Slider_level->value() >= yFcopy[i]) { //не выходим за уровень
+            for (int j = 0; j <=i; j++){ //расчет скользящее среднее
+                if (ui->Slider_level->value() >= yFcopy[j]){
+                    sum1 += yF[j];
+                    sum2 += F[j];
+                    count += 1;
+                }
+            }
+            sum1/= (double) count;
+            sum2/= (double) count;
+            yF[i] = sum1;
+            F[i] = sum2;
+            sum1 = 0.0; count = 0; sum2 = (0.0, 0.0);
         }
     }
     DFTgraph->setData(xF.toVector(), yF.toVector());
     ui->widget_dft->replot();
     iDFT(ixF);
-
-    DFTgraph->setData(xF.toVector(), yF.toVector());
-    ui->widget_dft->replot();
 }
