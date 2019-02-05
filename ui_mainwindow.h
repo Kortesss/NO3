@@ -66,9 +66,9 @@ public:
     QDoubleSpinBox *spinLevel;
     QLabel *label_3;
     QCheckBox *checkMin;
-    QDoubleSpinBox *doubleSpinBox_x2;
+    QDoubleSpinBox *Spin_x2;
     QLabel *label_2;
-    QDoubleSpinBox *doubleSpinBox_x1;
+    QDoubleSpinBox *Spin_x1;
     QLabel *label;
     QCheckBox *checkMax;
     QLabel *label_4;
@@ -198,13 +198,13 @@ public:
 
         gridLayout->addWidget(checkMin, 6, 0, 1, 1);
 
-        doubleSpinBox_x2 = new QDoubleSpinBox(centralWidget);
-        doubleSpinBox_x2->setObjectName(QStringLiteral("doubleSpinBox_x2"));
-        doubleSpinBox_x2->setMaximumSize(QSize(80, 20));
-        doubleSpinBox_x2->setDecimals(3);
-        doubleSpinBox_x2->setMaximum(9999.99);
+        Spin_x2 = new QDoubleSpinBox(centralWidget);
+        Spin_x2->setObjectName(QStringLiteral("Spin_x2"));
+        Spin_x2->setMaximumSize(QSize(80, 20));
+        Spin_x2->setDecimals(3);
+        Spin_x2->setMaximum(9999.99);
 
-        gridLayout->addWidget(doubleSpinBox_x2, 5, 1, 1, 1);
+        gridLayout->addWidget(Spin_x2, 5, 1, 1, 1);
 
         label_2 = new QLabel(centralWidget);
         label_2->setObjectName(QStringLiteral("label_2"));
@@ -212,14 +212,14 @@ public:
 
         gridLayout->addWidget(label_2, 0, 0, 1, 1);
 
-        doubleSpinBox_x1 = new QDoubleSpinBox(centralWidget);
-        doubleSpinBox_x1->setObjectName(QStringLiteral("doubleSpinBox_x1"));
-        doubleSpinBox_x1->setMinimumSize(QSize(0, 0));
-        doubleSpinBox_x1->setMaximumSize(QSize(80, 20));
-        doubleSpinBox_x1->setDecimals(3);
-        doubleSpinBox_x1->setMaximum(9999.99);
+        Spin_x1 = new QDoubleSpinBox(centralWidget);
+        Spin_x1->setObjectName(QStringLiteral("Spin_x1"));
+        Spin_x1->setMinimumSize(QSize(0, 0));
+        Spin_x1->setMaximumSize(QSize(80, 20));
+        Spin_x1->setDecimals(3);
+        Spin_x1->setMaximum(9999.99);
 
-        gridLayout->addWidget(doubleSpinBox_x1, 3, 1, 1, 1);
+        gridLayout->addWidget(Spin_x1, 3, 1, 1, 1);
 
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
@@ -309,6 +309,7 @@ public:
         sizePolicy.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
         widget->setSizePolicy(sizePolicy);
         widget->setMinimumSize(QSize(0, 230));
+        widget->setMouseTracking(true);
 
         gridLayout_2->addWidget(widget, 0, 1, 2, 1);
 
@@ -374,9 +375,9 @@ public:
         MainWindow->setStatusBar(statusBar);
         QWidget::setTabOrder(doubleSpinBox1, spinLevel);
         QWidget::setTabOrder(spinLevel, BrowserTime);
-        QWidget::setTabOrder(BrowserTime, doubleSpinBox_x1);
-        QWidget::setTabOrder(doubleSpinBox_x1, doubleSpinBox_x2);
-        QWidget::setTabOrder(doubleSpinBox_x2, checkMin);
+        QWidget::setTabOrder(BrowserTime, Spin_x1);
+        QWidget::setTabOrder(Spin_x1, Spin_x2);
+        QWidget::setTabOrder(Spin_x2, checkMin);
         QWidget::setTabOrder(checkMin, checkMax);
         QWidget::setTabOrder(checkMax, listWidget);
         QWidget::setTabOrder(listWidget, Browser_Derivative);

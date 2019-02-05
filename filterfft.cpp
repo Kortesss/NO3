@@ -170,7 +170,7 @@ void FilterFFT::on_pushButton_clicked()
             sum2/= (double) count;
             yF[i] = sum1;
             F[i] = sum2;
-            sum1 = 0.0; count = 0; sum2 = (0.0, 0.0);
+            sum1 = 0.0; count = 0; sum2 = (0.0);
         }
     }
     DFTgraph->setData(xF.toVector(), yF.toVector());

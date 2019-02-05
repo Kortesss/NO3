@@ -77,7 +77,7 @@
            </widget>
           </item>
           <item row="5" column="1">
-           <widget class="QDoubleSpinBox" name="doubleSpinBox_x2">
+           <widget class="QDoubleSpinBox" name="Spin_x2">
             <property name="maximumSize">
              <size>
               <width>80</width>
@@ -106,7 +106,7 @@
            </widget>
           </item>
           <item row="3" column="1">
-           <widget class="QDoubleSpinBox" name="doubleSpinBox_x1">
+           <widget class="QDoubleSpinBox" name="Spin_x1">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -309,6 +309,9 @@ p, li { white-space: pre-wrap; }
             <width>0</width>
             <height>230</height>
            </size>
+          </property>
+          <property name="mouseTracking">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -586,8 +589,8 @@ p, li { white-space: pre-wrap; }
   <tabstop>doubleSpinBox1</tabstop>
   <tabstop>spinLevel</tabstop>
   <tabstop>BrowserTime</tabstop>
-  <tabstop>doubleSpinBox_x1</tabstop>
-  <tabstop>doubleSpinBox_x2</tabstop>
+  <tabstop>Spin_x1</tabstop>
+  <tabstop>Spin_x2</tabstop>
   <tabstop>checkMin</tabstop>
   <tabstop>checkMax</tabstop>
   <tabstop>listWidget</tabstop>
