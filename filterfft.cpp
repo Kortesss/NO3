@@ -133,13 +133,13 @@ void FilterFFT::on_Slider_level_valueChanged(int value) //изменение с�
 {
     yL[0] = yL[1] = value;
     horizLevel->setData(xL.toVector(), yL.toVector());  
-    /*for (int i = 0; i < N; i++){
+    for (int i = 0; i < N; i++){
         if (value >= yFcopy[i]) {
             yF[i] = 0.0; F[i] = 0.0;
         }else{//восстанавливаем из копии
             yF[i] = yFcopy[i]; F[i] = Fcopy[i];
         }
-    }*/
+    }
     DFTgraph->setData(xF.toVector(), yF.toVector());
     ui->widget_dft->replot();
     iDFT(ixF);

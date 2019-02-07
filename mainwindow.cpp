@@ -304,42 +304,42 @@ void MainWindow::on_action_3_triggered() //рисуем график из заг
     ui->widget->legend->setVisible(true); ui->widget->replot();
 }
 
-void MainWindow::mousePress(QMouseEvent *mouseEvent) //ручная установка экстремумов
+void MainWindow::mousePress(QMouseEvent *event) //ручная установка экстремумов
 {
     if (ui->listWidget->count() > 0){
-        if (mouseEvent->button() == Qt::LeftButton){
+        if (event->button() == Qt::LeftButton){
             if (ui->action_9->isChecked()&& ui->checkMin->isChecked()){//если ручная настройка.чекед и мин.чекед
-                mass_minX[gr_index].append(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()));
-                mass_minY[gr_index].append(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
+                mass_minX[gr_index].append(ui->widget->xAxis->pixelToCoord(event->pos().x()));
+                mass_minY[gr_index].append(ui->widget->yAxis->pixelToCoord(event->pos().y()));
                 graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
                 graphMin->setName("Минимумы"); graphMin->setVisible(true);
                 textListMin[gr_index].append(new QCPItemText(ui->widget));
-                textListMin[gr_index].last()->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',2) //округление до 2-х знаков
-                            +"; "+QString::number(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()),'f',2)+")");
-                textListMin[gr_index].last()->position->setCoords(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x())-5, ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())-2);
+                textListMin[gr_index].last()->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(event->pos().x()),'f',2) //округление до 2-х знаков
+                            +"; "+QString::number(ui->widget->yAxis->pixelToCoord(event->pos().y()),'f',2)+")");
+                textListMin[gr_index].last()->position->setCoords(ui->widget->xAxis->pixelToCoord(event->pos().x())-5, ui->widget->yAxis->pixelToCoord(event->pos().y())-2);
                 textListMin[gr_index].last()->setVisible(true);
                 if (trendMin[gr_index].count() > 0) on_action_17_triggered(); //перестраиваем МНК мин
                 ui->widget->replot();
             }
             //добавляем максимумы x, y
             if (ui->action_9->isChecked() && ui->checkMax->isChecked()){
-                mass_maxX[gr_index].append(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()));
-                mass_maxY[gr_index].append(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
+                mass_maxX[gr_index].append(ui->widget->xAxis->pixelToCoord(event->pos().x()));
+                mass_maxY[gr_index].append(ui->widget->yAxis->pixelToCoord(event->pos().y()));
                 graphMax->setData(mass_maxX[gr_index].toVector(), mass_maxY[gr_index].toVector());
                 graphMax->setName("Максимумы"); graphMax->setVisible(true);
                 textListMax[gr_index].append(new QCPItemText(ui->widget));
-                textListMax[gr_index].last()->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',2)
-                                +"; "+QString::number(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()),'f',2)+")");
-                textListMax[gr_index].last()->position->setCoords(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x())-5, ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())+2);
+                textListMax[gr_index].last()->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(event->pos().x()),'f',2)
+                                +"; "+QString::number(ui->widget->yAxis->pixelToCoord(event->pos().y()),'f',2)+")");
+                textListMax[gr_index].last()->position->setCoords(ui->widget->xAxis->pixelToCoord(event->pos().x())-5, ui->widget->yAxis->pixelToCoord(event->pos().y())+2);
                 textListMax[gr_index].last()->setVisible(true);
                 if (trendMax[gr_index].count() > 0) on_action_17_triggered(); //перестраиваем МНК макс
                 ui->widget->replot();
             }
         }
-        if (mouseEvent->button() == Qt::RightButton){//удаление точек
+        if (event->button() == Qt::RightButton){//удаление точек
             if (ui->action_9->isChecked()&& ui->checkMin->isChecked()){
                 for(int i = 0; i < mass_minX[gr_index].count(); i ++){
-                    if(QString::compare(QString::number(mass_minX[gr_index][i],'f',0), QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',0))==0){
+                    if(QString::compare(QString::number(mass_minX[gr_index][i],'f',0), QString::number(ui->widget->xAxis->pixelToCoord(event->pos().x()),'f',0))==0){
                         mass_minX[gr_index].removeAt(i);   mass_minY[gr_index].removeAt(i);
                         graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
                     if (textListMin[gr_index].count()>0){
@@ -351,7 +351,7 @@ void MainWindow::mousePress(QMouseEvent *mouseEvent) //ручная устано
             }
             if (ui->action_9->isChecked() && ui->checkMax->isChecked()){
                 for(int i = 0; i < mass_maxX[gr_index].count(); i ++){
-                    if(QString::compare(QString::number(mass_maxX[gr_index][i],'f',0), QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',0))==0){
+                    if(QString::compare(QString::number(mass_maxX[gr_index][i],'f',0), QString::number(ui->widget->xAxis->pixelToCoord(event->pos().x()),'f',0))==0){
                         mass_maxX[gr_index].removeAt(i);   mass_maxY[gr_index].removeAt(i);
                         graphMax->setData(mass_maxX[gr_index].toVector(), mass_maxY[gr_index].toVector());
                     if (textListMax[gr_index].count()>0){
@@ -365,7 +365,7 @@ void MainWindow::mousePress(QMouseEvent *mouseEvent) //ручная устано
                 spanY.clear();
                 spanY.append(maxy[gr_index]); spanY.append(miny[gr_index]);
                 spanY.append(miny[gr_index]); spanY.append(maxy[gr_index]);
-                double currentX = ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x());
+                double currentX = ui->widget->xAxis->pixelToCoord(event->pos().x());
                 if ((currentX < minx[gr_index]) || (currentX > maxx[gr_index])){
                     graphSpan->setVisible(false); ui->widget->replot();
                     ui->Spin_x1->setValue(0.0);
@@ -423,9 +423,9 @@ void MainWindow::histogramMouseMoved(QMouseEvent *event) //отображени�
     ui->statusBar->showMessage("x="+QString::number(currentX,'f',2)+"; y="+QString::number(currentX,'f',2));//округление до 2-х знаков
 }
 
-void MainWindow::spanMouseUp(QMouseEvent *mouseEvent)
+void MainWindow::spanMouseUp(QMouseEvent *event)
 {
-    if (mouseEvent->button() == Qt::RightButton){
+    if (event->button() == Qt::RightButton){
         if (!ui->action_9->isChecked())  mouseDown = false;
     }
 }
