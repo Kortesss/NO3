@@ -23,6 +23,10 @@ private slots:
     void DFT(QList<double> &x, QList<double> &y);
     void iDFT(QList<double> &x);
 
+    void mousePress(QMouseEvent *event);
+    void histogramMouseMoved(QMouseEvent *event);
+    void spanMouseUp(QMouseEvent *mouseEvent);
+
     void on_pushButton_saveTxt_clicked();
 
     void on_Slider_level_valueChanged(int value);
@@ -35,10 +39,13 @@ private:
     Ui::FilterFFT *ui;
     QShortcut *CtrlQ;
     int N;
+    double x1, x2; //для диапазонов на DFT
+    bool mouseDown, left; //mauseDown - при движении мыши, проверяем была ли нажата правая кнопка, left - переключатель
     QList <double> xF, yF, yFcopy, ixF, iyF, xL, yL;
     double minX, minY, maxX, maxY, iMinX, iMinY, iMaxX, iMaxY;
+    QVector<double> spanX, spanY; //данные для диапазона иксов
     QList< std::complex <double> > F, Fcopy, iF;
-    QCPGraph *DFTgraph, *iDFTgraph, *horizLevel;
+    QCPGraph *DFTgraph, *iDFTgraph, *horizLevel, *graphSpan;
 };
 
 #endif // FILTERFFT_H
