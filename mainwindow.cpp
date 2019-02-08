@@ -420,7 +420,7 @@ void MainWindow::histogramMouseMoved(QMouseEvent *event) //отображени�
             }
         }
     }
-    ui->statusBar->showMessage("x="+QString::number(currentX,'f',2)+"; y="+QString::number(currentX,'f',2));//округление до 2-х знаков
+    ui->statusBar->showMessage("x="+QString::number(currentX,'f',2)+"; y="+QString::number(ui->widget->yAxis->pixelToCoord(event->pos().y()),'f',2));//округление до 2-х знаков
 }
 
 void MainWindow::spanMouseUp(QMouseEvent *event)
