@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
 <<<<<<< HEAD
+<<<<<<< HEAD
 <!-- Written by QtCreator 3.5.1, 2019-02-07T17:45:53. -->
 =======
 <!-- Written by QtCreator 3.5.1, 2019-02-10T17:21:49. -->
 >>>>>>> origin/master
+=======
+<!-- Written by QtCreator 3.5.1, 2019-02-10T23:04:11. -->
+>>>>>>> feature/Pasha
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
