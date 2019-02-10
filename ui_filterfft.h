@@ -36,8 +36,6 @@ public:
     QWidget *centralwidget;
     QVBoxLayout *verticalLayout_2;
     QGridLayout *gridLayout;
-    QCustomPlot *widget_idft;
-    QCustomPlot *widget_dft;
     QVBoxLayout *verticalLayout;
     QLabel *label_2;
     QSlider *Slider_level;
@@ -49,9 +47,12 @@ public:
     QLabel *label_4;
     QDoubleSpinBox *sigma;
     QPushButton *pushButton;
+    QPushButton *pushButton_2;
     QSpacerItem *verticalSpacer;
     QPushButton *pushButton_saveTxt;
     QPushButton *pushButton_close;
+    QCustomPlot *widget_idft;
+    QCustomPlot *widget_dft;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -66,17 +67,6 @@ public:
         verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
         gridLayout = new QGridLayout();
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
-        widget_idft = new QCustomPlot(centralwidget);
-        widget_idft->setObjectName(QStringLiteral("widget_idft"));
-
-        gridLayout->addWidget(widget_idft, 1, 0, 1, 1);
-
-        widget_dft = new QCustomPlot(centralwidget);
-        widget_dft->setObjectName(QStringLiteral("widget_dft"));
-        widget_dft->setMinimumSize(QSize(600, 0));
-
-        gridLayout->addWidget(widget_dft, 0, 0, 1, 1);
-
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         label_2 = new QLabel(centralwidget);
@@ -163,6 +153,15 @@ public:
 
         verticalLayout->addWidget(pushButton);
 
+        pushButton_2 = new QPushButton(centralwidget);
+        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
+        pushButton_2->setCheckable(true);
+        pushButton_2->setChecked(false);
+        pushButton_2->setAutoRepeat(false);
+        pushButton_2->setAutoExclusive(true);
+
+        verticalLayout->addWidget(pushButton_2);
+
         verticalSpacer = new QSpacerItem(20, 140, QSizePolicy::Minimum, QSizePolicy::Preferred);
 
         verticalLayout->addItem(verticalSpacer);
@@ -206,6 +205,17 @@ public:
 
         gridLayout->addLayout(verticalLayout, 0, 1, 1, 1);
 
+        widget_idft = new QCustomPlot(centralwidget);
+        widget_idft->setObjectName(QStringLiteral("widget_idft"));
+
+        gridLayout->addWidget(widget_idft, 1, 0, 1, 1);
+
+        widget_dft = new QCustomPlot(centralwidget);
+        widget_dft->setObjectName(QStringLiteral("widget_dft"));
+        widget_dft->setMinimumSize(QSize(600, 0));
+
+        gridLayout->addWidget(widget_dft, 0, 0, 1, 1);
+
 
         verticalLayout_2->addLayout(gridLayout);
 
@@ -231,6 +241,7 @@ public:
         label_3->setText(QApplication::translate("FilterFFT", "\320\235\320\276\321\200\320\274.", 0));
         label_4->setText(QApplication::translate("FilterFFT", "\320\222\321\213\321\201.", 0));
         pushButton->setText(QApplication::translate("FilterFFT", "\320\241\320\272\320\276\320\273\321\214\320\267\321\217\321\211\320\260\321\217 \321\201\321\200\320\265\320\264\320\275\321\217\321\217", 0));
+        pushButton_2->setText(QApplication::translate("FilterFFT", "PushButton", 0));
         pushButton_saveTxt->setText(QApplication::translate("FilterFFT", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\262 \321\204\320\260\320\271\320\273...", 0));
         pushButton_close->setText(QApplication::translate("FilterFFT", "\320\227\320\260\320\272\321\200\321\213\321\202\321\214", 0));
     } // retranslateUi
