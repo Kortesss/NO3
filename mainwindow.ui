@@ -53,32 +53,6 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="maximumSize">
-             <size>
-              <width>153</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Фильтрация экстремумов</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_3">
-            <property name="maximumSize">
-             <size>
-              <width>153</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Конечное значение</string>
-            </property>
-           </widget>
-          </item>
           <item row="5" column="1">
            <widget class="QDoubleSpinBox" name="Spin_x2">
             <property name="maximumSize">
@@ -95,6 +69,32 @@
             </property>
            </widget>
           </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="maximumSize">
+             <size>
+              <width>153</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Конечное значение</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="maximumSize">
+             <size>
+              <width>153</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Фильтрация экстремумов</string>
+            </property>
+           </widget>
+          </item>
           <item row="6" column="0">
            <widget class="QCheckBox" name="checkMin">
             <property name="layoutDirection">
@@ -105,22 +105,16 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QDoubleSpinBox" name="doubleSpinBox1">
-            <property name="focusPolicy">
-             <enum>Qt::WheelFocus</enum>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_4">
+            <property name="maximumSize">
+             <size>
+              <width>153</width>
+              <height>16777215</height>
+             </size>
             </property>
-            <property name="decimals">
-             <number>2</number>
-            </property>
-            <property name="maximum">
-             <double>99.989999999999995</double>
-            </property>
-            <property name="singleStep">
-             <double>0.010000000000000</double>
-            </property>
-            <property name="value">
-             <double>0.050000000000000</double>
+            <property name="text">
+             <string>Порог значения тренда, %</string>
             </property>
            </widget>
           </item>
@@ -159,23 +153,32 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_4">
-            <property name="maximumSize">
-             <size>
-              <width>153</width>
-              <height>16777215</height>
-             </size>
+          <item row="0" column="1">
+           <widget class="QDoubleSpinBox" name="doubleSpinBox1">
+            <property name="focusPolicy">
+             <enum>Qt::WheelFocus</enum>
             </property>
-            <property name="text">
-             <string>Порог значения тренда, %</string>
+            <property name="decimals">
+             <number>2</number>
+            </property>
+            <property name="maximum">
+             <double>99.989999999999995</double>
+            </property>
+            <property name="singleStep">
+             <double>0.010000000000000</double>
+            </property>
+            <property name="value">
+             <double>0.050000000000000</double>
             </property>
            </widget>
           </item>
-          <item row="6" column="1">
-           <widget class="QCheckBox" name="checkMax">
+          <item row="7" column="0">
+           <widget class="QLabel" name="label_6">
             <property name="text">
-             <string>Максимум</string>
+             <string>Диапазон значений:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
@@ -192,16 +195,6 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>Диапазон значений:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
           <item row="7" column="1">
            <widget class="Switch" name="switchSpan" native="true">
             <property name="maximumSize">
@@ -209,6 +202,13 @@
               <width>50</width>
               <height>16777215</height>
              </size>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QCheckBox" name="checkMax">
+            <property name="text">
+             <string>Максимум</string>
             </property>
            </widget>
           </item>
