@@ -17,19 +17,6 @@
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="0">
-       <widget class="QCustomPlot" name="widget_idft" native="true"/>
-      </item>
-      <item row="0" column="0">
-       <widget class="QCustomPlot" name="widget_dft" native="true">
-        <property name="minimumSize">
-         <size>
-          <width>600</width>
-          <height>0</height>
-         </size>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="1">
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
@@ -239,6 +226,25 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="text">
+           <string>PushButton</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <property name="autoRepeat">
+           <bool>false</bool>
+          </property>
+          <property name="autoExclusive">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="verticalSpacer">
           <property name="orientation">
            <enum>Qt::Vertical</enum>
@@ -319,6 +325,19 @@ QPushButton:pressed {
          </widget>
         </item>
        </layout>
+      </item>
+      <item row="1" column="0">
+       <widget class="QCustomPlot" name="widget_idft" native="true"/>
+      </item>
+      <item row="0" column="0">
+       <widget class="QCustomPlot" name="widget_dft" native="true">
+        <property name="minimumSize">
+         <size>
+          <width>600</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>

@@ -11,6 +11,10 @@ FilterFFT::FilterFFT(QList <double> x, QList <double> &y, QWidget *parent) :
     CtrlQ = new QShortcut(this);
     CtrlQ->setKey(Qt::CTRL + Qt::Key_Q);
     connect(CtrlQ, SIGNAL(activated()), this, SLOT(on_pushButton_close_clicked()));
+    connect(ui->widget_dft,SIGNAL(mousePress(QMouseEvent*)),this,SLOT(mousePress(QMouseEvent*)));
+    connect(ui->widget_dft, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(histogramMouseMoved(QMouseEvent*)));
+    connect(ui->widget_dft, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(spanMouseUp(QMouseEvent*)));
+    mouseDown = false; left = false;
 
     ui->widget_dft->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
     ui->widget_dft->xAxis->setLabel("x");
@@ -33,6 +37,14 @@ FilterFFT::FilterFFT(QList <double> x, QList <double> &y, QWidget *parent) :
     horizLevel->setPen(QColor(255, 0, 0, 255));//задаем цвет точки красный
     horizLevel->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
     horizLevel->setVisible(true);
+
+    graphSpan = ui->widget_dft->addGraph(); //Добавление диапазона значений
+    QPen Pen1; Pen1.setWidthF(2); Pen1.setColor(QColor(192,192,192, 200)); //серый цвет с непрозрачностью 200
+    graphSpan->setPen(Pen1);
+    graphSpan->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
+    graphSpan->setName("Диапазон значений");
+    for (int i = 0; i < 4 ; i++) spanX.append(0.0);
+
     ixF = x;
     DFT(ixF, y);
     iDFT(ixF);
@@ -70,7 +82,7 @@ void FilterFFT::DFT(QList <double> &x, QList <double> &y) //Дискретное
     //Установим область, которая будет показываться на графике
     ui->widget_dft->xAxis->setRange(minX, maxX);// Для оси Ox
     ui->widget_dft->yAxis->setRange(minY, maxY);//Для оси Oy
-
+    x1 = minX; x2 = maxX;
     ui->Slider_level->setMaximum(maxY);
     on_Slider_sens_valueChanged(1);
 
@@ -109,6 +121,70 @@ void FilterFFT::iDFT(QList<double> &x) //Обратное преобразова
     ui->widget_idft->replot();
 }
 
+void FilterFFT::mousePress(QMouseEvent *event) //событие для нажатия правой конпки мыши и установки границы иксов
+{
+    if (event->button() == Qt::RightButton){
+        spanY.clear();
+        spanY.append(maxY); spanY.append(minY);
+        spanY.append(minY); spanY.append(maxY);
+        double currentX = ui->widget_dft->xAxis->pixelToCoord(event->pos().x());
+        if ((currentX < minX) || (currentX > maxX)){
+            graphSpan->setVisible(false); ui->widget_dft->replot();
+            x1 = minX; x2 = maxX;
+            spanX[0] = spanX[1] = 0.0;
+            mouseDown = true;
+        }else{//В пределах границ графика
+            x1 = currentX;
+            spanX[0] = spanX[1] = x1;
+            mouseDown = true;
+        }
+    }
+    ui->widget_dft->replot();
+}
+
+void FilterFFT::histogramMouseMoved(QMouseEvent *event) //отображение координат в статус-баре
+{
+    double currentX = ui->widget_dft->xAxis->pixelToCoord(event->pos().x());
+    if (mouseDown){
+        if (currentX < minX){//перед графиком
+            graphSpan->setVisible(false); ui->widget_dft->replot();
+            }else if (currentX > maxX){//после графика
+                spanX[2] = spanX[3] = maxX;
+                graphSpan->setData(spanX, spanY);
+                graphSpan->setVisible(true);
+                ui->widget_dft->replot();
+            }
+            else{//иначе координаты мыши были в пределах границы графика
+                if (currentX > x1){//идем вправо
+                    x2 = currentX; left = false;
+                    spanX[2] = spanX[3] = x2;//точка, в которой две коррдинаты x2=СпинX2
+                    spanY[1] = spanY[2] = minY; spanY [0] = spanY[3] = maxY;
+                }
+                else {//проверяем если идем влево
+                    if (!left){ //left нужен, чтобы повторно нне заходить сюда
+                         x2 = x1;//x2 теперь становится начальным значением
+                         left = true;
+                    }
+                    x1 = currentX; //а x1 текучим и движется влево (убывает)
+                    spanX[0] = spanX[1] = x2;
+                    spanX[2] = spanX[3] = x1;
+                    spanY[0] = spanY[3] = minY; spanY [1] = spanY[2] = maxY;
+                }
+                graphSpan->setData(spanX, spanY);
+                graphSpan->setVisible(true);
+                ui->widget_dft->replot();
+           }
+    }
+    ui->statusbar->showMessage("x="+QString::number(currentX,'f',2)+"; y="+QString::number(ui->widget_dft->yAxis->pixelToCoord(event->pos().y()),'f',2));//округление до 2-х знаков
+}
+
+void FilterFFT::spanMouseUp(QMouseEvent *event)
+{
+    if (event->button() == Qt::RightButton){
+        mouseDown = false;
+    }
+}
+
 void FilterFFT::on_pushButton_saveTxt_clicked() //сохранение в текстовый файл
 {
     QString nameGr = "Обратное преобраз-е Фурье";
@@ -134,10 +210,12 @@ void FilterFFT::on_Slider_level_valueChanged(int value) //изменение с�
     yL[0] = yL[1] = value;
     horizLevel->setData(xL.toVector(), yL.toVector());  
     for (int i = 0; i < N; i++){
-        if (value >= yFcopy[i]) {
-            yF[i] = 0.0; F[i] = 0.0;
-        }else{//восстанавливаем из копии
-            yF[i] = yFcopy[i]; F[i] = Fcopy[i];
+        if ((xF[i]>=x1) && (xF[i]<=x2)){
+            if (value >= yFcopy[i]) {
+                yF[i] = 0.0; F[i] = 0.0;
+            }else{//восстанавливаем из копии
+                yF[i] = yFcopy[i]; F[i] = Fcopy[i];
+            }
         }
     }
     DFTgraph->setData(xF.toVector(), yF.toVector());

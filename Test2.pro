@@ -11,6 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 TARGET = Test2
 TEMPLATE = app
 
+QMAKE_CXXFLAGS += -std=c++0x #в switch есть nullptr и это будет работать
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -20,7 +21,8 @@ SOURCES += main.cpp\
     deltawin.cpp \
     mnk.cpp \
     about.cpp \
-    filterfft.cpp
+    filterfft.cpp \
+    switch.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
@@ -30,7 +32,8 @@ HEADERS  += mainwindow.h \
     deltawin.h \
     mnk.h \
     about.h \
-    filterfft.h
+    filterfft.h \
+    switch.h
 
 FORMS    += mainwindow.ui \
     somewindow.ui \
