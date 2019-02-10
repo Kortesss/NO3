@@ -217,7 +217,7 @@
             <property name="maximumSize">
              <size>
               <width>50</width>
-              <height>20</height>
+              <height>24</height>
              </size>
             </property>
             <property name="styleSheet">
@@ -225,6 +225,8 @@
     min-height: 20px; 
     max-height: 20px; 
     background: #d5d5d5; 
+     border: 2px solid #8f8f91;
+	border-radius: 10px;
 } 
 
 .QSlider::groove:horizontal { 
