@@ -9,6 +9,7 @@
 #include <QPoint>
 #include "qcustomplot.h"
 #include <QTimer>
+//#include "switch.h"
 
 using namespace std;
 namespace Ui {
