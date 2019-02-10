@@ -50,7 +50,6 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     graphLevelMax->setPen(QColor(2, 15, 250, 255));//задаем темно-синий цвет
     graphLevelMax->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 6));
     graphLevelMax->setName(" ");
-
     graphic1 = ui->widget->addGraph();	//Добавление графика 1
     graphic1->setName(" ");
     graphic1->setPen(QColor(50, 50, 50, 255));//задаем цвет точки
@@ -374,6 +373,7 @@ void MainWindow::mousePress(QMouseEvent *event) //ручная установк�
                     mouseDown = true;
                 }else{//В пределах границ графика
                     ui->Spin_x1->setValue(currentX);
+                    //ui->switchSpan->_switch = true;
                     spanX[0] = spanX[1] = ui->Spin_x1->value();
                     mouseDown = true;
                 }
@@ -426,7 +426,10 @@ void MainWindow::histogramMouseMoved(QMouseEvent *event) //отображени�
 void MainWindow::spanMouseUp(QMouseEvent *event)
 {
     if (event->button() == Qt::RightButton){
-        if (!ui->action_9->isChecked())  mouseDown = false;
+        if (!ui->action_9->isChecked()){
+            mouseDown = false;
+            //ui->switchSpan->setOff();
+        }
     }
 }
 

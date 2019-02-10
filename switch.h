@@ -26,6 +26,9 @@ public:
         update();
     }
 
+    void setOn();
+    void setOff();
+
 protected:
     void paintEvent(QPaintEvent*) override;
     void mouseReleaseEvent(QMouseEvent*) override;
