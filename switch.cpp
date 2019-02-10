@@ -5,7 +5,7 @@ _height(16),
 _opacity(0.000),
 _switch(false),
 _margin(3),
-_thumb("#d5d5d5"),
+_thumb("#d5d5d5"), //светло-серый
 _anim(new QPropertyAnimation(this, "offset", this))
 {
     setOffset(_height / 2);
@@ -47,7 +47,7 @@ void Switch::paintEvent(QPaintEvent *e) {
     }
 }
 
-void Switch::mouseReleaseEvent(QMouseEvent *e) {
+void Switch::mouseReleaseEvent(QMouseEvent *e) { //нажатие на switch, на ходясь в пределах виджета
     if (e->button() & Qt::LeftButton) {
         _switch = _switch ? false : true;
         _thumb = _switch ? _brush : QBrush("#d5d5d5");
@@ -64,6 +64,24 @@ void Switch::mouseReleaseEvent(QMouseEvent *e) {
         }
     }
     QAbstractButton::mouseReleaseEvent(e);
+}
+
+void Switch::setOn() { //для переключения switch на вкл.
+    _switch = true;
+    _thumb = QBrush("#d5d5d5");
+    _anim->setStartValue(_height / 2);
+    _anim->setEndValue(width() - _height);
+    _anim->setDuration(120);
+    _anim->start();
+}
+
+void Switch::setOff() { //для переключения switch на выкл.
+    _switch = false;
+    _thumb = QColor("#009688");
+    _anim->setStartValue(offset());
+    _anim->setEndValue(_height / 2);
+    _anim->setDuration(120);
+    _anim->start();
 }
 
 void Switch::enterEvent(QEvent *e) {
