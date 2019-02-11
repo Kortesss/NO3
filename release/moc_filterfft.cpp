@@ -20,8 +20,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_FilterFFT_t {
-    QByteArrayData data[19];
-    char stringdata0[255];
+    QByteArrayData data[20];
+    char stringdata0[282];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -48,7 +48,8 @@ QT_MOC_LITERAL(14, 140, 29), // "on_pushButton_saveTxt_clicked"
 QT_MOC_LITERAL(15, 170, 28), // "on_Slider_level_valueChanged"
 QT_MOC_LITERAL(16, 199, 5), // "value"
 QT_MOC_LITERAL(17, 205, 27), // "on_Slider_sens_valueChanged"
-QT_MOC_LITERAL(18, 233, 21) // "on_pushButton_clicked"
+QT_MOC_LITERAL(18, 233, 21), // "on_pushButton_clicked"
+QT_MOC_LITERAL(19, 255, 26) // "on_SliderSpan_valueChanged"
 
     },
     "FilterFFT\0on_pushButton_close_clicked\0"
@@ -58,7 +59,7 @@ QT_MOC_LITERAL(18, 233, 21) // "on_pushButton_clicked"
     "on_pushButton_saveTxt_clicked\0"
     "on_Slider_level_valueChanged\0value\0"
     "on_Slider_sens_valueChanged\0"
-    "on_pushButton_clicked"
+    "on_pushButton_clicked\0on_SliderSpan_valueChanged"
 };
 #undef QT_MOC_LITERAL
 
@@ -68,7 +69,7 @@ static const uint qt_meta_data_FilterFFT[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      10,   14, // methods
+      11,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -76,16 +77,17 @@ static const uint qt_meta_data_FilterFFT[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    0,   64,    2, 0x08 /* Private */,
-       3,    2,   65,    2, 0x08 /* Private */,
-       7,    1,   70,    2, 0x08 /* Private */,
-       8,    1,   73,    2, 0x08 /* Private */,
-      11,    1,   76,    2, 0x08 /* Private */,
-      12,    1,   79,    2, 0x08 /* Private */,
-      14,    0,   82,    2, 0x08 /* Private */,
-      15,    1,   83,    2, 0x08 /* Private */,
-      17,    1,   86,    2, 0x08 /* Private */,
-      18,    0,   89,    2, 0x08 /* Private */,
+       1,    0,   69,    2, 0x08 /* Private */,
+       3,    2,   70,    2, 0x08 /* Private */,
+       7,    1,   75,    2, 0x08 /* Private */,
+       8,    1,   78,    2, 0x08 /* Private */,
+      11,    1,   81,    2, 0x08 /* Private */,
+      12,    1,   84,    2, 0x08 /* Private */,
+      14,    0,   87,    2, 0x08 /* Private */,
+      15,    1,   88,    2, 0x08 /* Private */,
+      17,    1,   91,    2, 0x08 /* Private */,
+      18,    0,   94,    2, 0x08 /* Private */,
+      19,    1,   95,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -98,6 +100,7 @@ static const uint qt_meta_data_FilterFFT[] = {
     QMetaType::Void, QMetaType::Int,   16,
     QMetaType::Void, QMetaType::Int,   16,
     QMetaType::Void,
+    QMetaType::Void, QMetaType::Int,   16,
 
        0        // eod
 };
@@ -118,6 +121,7 @@ void FilterFFT::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         case 7: _t->on_Slider_level_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 8: _t->on_Slider_sens_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 9: _t->on_pushButton_clicked(); break;
+        case 10: _t->on_SliderSpan_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     }
@@ -148,13 +152,13 @@ int FilterFFT::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 10)
+        if (_id < 11)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 10;
+        _id -= 11;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 10)
+        if (_id < 11)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 10;
+        _id -= 11;
     }
     return _id;
 }
