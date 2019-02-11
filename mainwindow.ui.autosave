@@ -53,19 +53,16 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="1">
-           <widget class="QDoubleSpinBox" name="Spin_x2">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_2">
             <property name="maximumSize">
              <size>
-              <width>80</width>
-              <height>20</height>
+              <width>153</width>
+              <height>16777215</height>
              </size>
             </property>
-            <property name="decimals">
-             <number>3</number>
-            </property>
-            <property name="maximum">
-             <double>9999.989999999999782</double>
+            <property name="text">
+             <string>Фильтрация экстремумов</string>
             </property>
            </widget>
           </item>
@@ -82,16 +79,19 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_2">
+          <item row="5" column="1">
+           <widget class="QDoubleSpinBox" name="Spin_x2">
             <property name="maximumSize">
              <size>
-              <width>153</width>
-              <height>16777215</height>
+              <width>80</width>
+              <height>20</height>
              </size>
             </property>
-            <property name="text">
-             <string>Фильтрация экстремумов</string>
+            <property name="decimals">
+             <number>3</number>
+            </property>
+            <property name="maximum">
+             <double>9999.989999999999782</double>
             </property>
            </widget>
           </item>
@@ -105,16 +105,22 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_4">
-            <property name="maximumSize">
-             <size>
-              <width>153</width>
-              <height>16777215</height>
-             </size>
+          <item row="0" column="1">
+           <widget class="QDoubleSpinBox" name="doubleSpinBox1">
+            <property name="focusPolicy">
+             <enum>Qt::WheelFocus</enum>
             </property>
-            <property name="text">
-             <string>Порог значения тренда, %</string>
+            <property name="decimals">
+             <number>2</number>
+            </property>
+            <property name="maximum">
+             <double>99.989999999999995</double>
+            </property>
+            <property name="singleStep">
+             <double>0.010000000000000</double>
+            </property>
+            <property name="value">
+             <double>0.050000000000000</double>
             </property>
            </widget>
           </item>
@@ -153,32 +159,23 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QDoubleSpinBox" name="doubleSpinBox1">
-            <property name="focusPolicy">
-             <enum>Qt::WheelFocus</enum>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_4">
+            <property name="maximumSize">
+             <size>
+              <width>153</width>
+              <height>16777215</height>
+             </size>
             </property>
-            <property name="decimals">
-             <number>2</number>
-            </property>
-            <property name="maximum">
-             <double>99.989999999999995</double>
-            </property>
-            <property name="singleStep">
-             <double>0.010000000000000</double>
-            </property>
-            <property name="value">
-             <double>0.050000000000000</double>
+            <property name="text">
+             <string>Порог значения тренда, %</string>
             </property>
            </widget>
           </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="label_6">
+          <item row="6" column="1">
+           <widget class="QCheckBox" name="checkMax">
             <property name="text">
-             <string>Диапазон значений:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             <string>Максимум</string>
             </property>
            </widget>
           </item>
@@ -195,6 +192,16 @@
             </property>
            </widget>
           </item>
+          <item row="7" column="0">
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Диапазон значений:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
           <item row="7" column="1">
            <widget class="Switch" name="switchSpan" native="true">
             <property name="maximumSize">
@@ -205,28 +212,19 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="1">
-           <widget class="QCheckBox" name="checkMax">
-            <property name="text">
-             <string>Максимум</string>
-            </property>
-           </widget>
-          </item>
           <item row="8" column="1">
            <widget class="QSlider" name="horizontalSlider">
             <property name="maximumSize">
              <size>
               <width>50</width>
-              <height>24</height>
+              <height>20</height>
              </size>
             </property>
             <property name="styleSheet">
              <string notr="true">.QSlider { 
     min-height: 20px; 
     max-height: 20px; 
-    background: #d5d5d5; 
-     border: 2px solid #8f8f91;
-	border-radius: 10px;
+    background: #d5d5d5;
 } 
 
 .QSlider::groove:horizontal { 
@@ -234,6 +232,7 @@
     height: 20px; 
     background: #009688; 
     margin: 0 0px; 
+
 } 
 
 .QSlider::handle:horizontal { 
@@ -241,6 +240,7 @@
     width: 20px; 
     height: 100px; 
     margin: 0px -6px; 
+border-radius: 10px;
 } </string>
             </property>
             <property name="maximum">
@@ -251,13 +251,6 @@
             </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="8" column="0">
-           <widget class="QLabel" name="label_7">
-            <property name="text">
-             <string>TextLabel</string>
             </property>
            </widget>
           </item>
