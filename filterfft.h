@@ -35,12 +35,14 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_SliderSpan_valueChanged(int value);
+
 private:
     Ui::FilterFFT *ui;
     QShortcut *CtrlQ;
     int N;
     double x1, x2; //для диапазонов на DFT
-    bool mouseDown, left; //mauseDown - при движении мыши, проверяем была ли нажата правая кнопка, left - переключатель
+    bool mouseDown, left, sp; //mauseDown - при движении мыши, проверяем была ли нажата правая кнопка, left - переключатель
     QList <double> xF, yF, yFcopy, ixF, iyF, xL, yL;
     double minX, minY, maxX, maxY, iMinX, iMinY, iMaxX, iMaxY;
     QVector<double> spanX, spanY; //данные для диапазона иксов

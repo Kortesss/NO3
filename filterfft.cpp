@@ -14,7 +14,7 @@ FilterFFT::FilterFFT(QList <double> x, QList <double> &y, QWidget *parent) :
     connect(ui->widget_dft,SIGNAL(mousePress(QMouseEvent*)),this,SLOT(mousePress(QMouseEvent*)));
     connect(ui->widget_dft, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(histogramMouseMoved(QMouseEvent*)));
     connect(ui->widget_dft, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(spanMouseUp(QMouseEvent*)));
-    mouseDown = false; left = false;
+    mouseDown = false; left = false; sp = false;
 
     ui->widget_dft->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
     ui->widget_dft->xAxis->setLabel("x");
@@ -131,28 +131,28 @@ void FilterFFT::mousePress(QMouseEvent *event) //событие для нажа�
         if ((currentX < minX) || (currentX > maxX)){
             graphSpan->setVisible(false); ui->widget_dft->replot();
             x1 = minX; x2 = maxX;
-            spanX[0] = spanX[1] = 0.0;
-            mouseDown = true;
+            spanX[0] = spanX[1] = x1;
+            mouseDown = true; sp = false;
         }else{//В пределах границ графика
             x1 = currentX;
             spanX[0] = spanX[1] = x1;
-            mouseDown = true;
+            mouseDown = true; sp = true;
         }
     }
     ui->widget_dft->replot();
 }
 
-void FilterFFT::histogramMouseMoved(QMouseEvent *event) //отображение координат в статус-баре
+void FilterFFT::histogramMouseMoved(QMouseEvent *event) //передвижение мышки на графике DFD
 {
     double currentX = ui->widget_dft->xAxis->pixelToCoord(event->pos().x());
     if (mouseDown){
         if (currentX < minX){//перед графиком
-            graphSpan->setVisible(false); ui->widget_dft->replot();
+            graphSpan->setVisible(false); ui->widget_dft->replot(); sp = false;
             }else if (currentX > maxX){//после графика
                 spanX[2] = spanX[3] = maxX;
                 graphSpan->setData(spanX, spanY);
                 graphSpan->setVisible(true);
-                ui->widget_dft->replot();
+                ui->widget_dft->replot(); sp = true;
             }
             else{//иначе координаты мыши были в пределах границы графика
                 if (currentX > x1){//идем вправо
@@ -172,7 +172,7 @@ void FilterFFT::histogramMouseMoved(QMouseEvent *event) //отображение
                 }
                 graphSpan->setData(spanX, spanY);
                 graphSpan->setVisible(true);
-                ui->widget_dft->replot();
+                ui->widget_dft->replot(); sp = true;
            }
     }
     ui->statusbar->showMessage("x="+QString::number(currentX,'f',2)+"; y="+QString::number(ui->widget_dft->yAxis->pixelToCoord(event->pos().y()),'f',2));//округление до 2-х знаков
@@ -182,6 +182,9 @@ void FilterFFT::spanMouseUp(QMouseEvent *event)
 {
     if (event->button() == Qt::RightButton){
         mouseDown = false;
+        if (graphSpan->visible()) ui->SliderSpan->setValue(1);
+        else ui->SliderSpan->setValue(0);
+        if (sp) ui->Slider_level->setValue(0);
     }
 }
 
@@ -200,7 +203,7 @@ void FilterFFT::on_pushButton_saveTxt_clicked() //сохранение в тек
         }
 }
 
-void FilterFFT::on_pushButton_close_clicked()
+void FilterFFT::on_pushButton_close_clicked() //закрытие окна
 {
     this->close();
 }
@@ -208,7 +211,7 @@ void FilterFFT::on_pushButton_close_clicked()
 void FilterFFT::on_Slider_level_valueChanged(int value) //изменение слайдера уровня шумов и фильтрация
 {
     yL[0] = yL[1] = value;
-    horizLevel->setData(xL.toVector(), yL.toVector());  
+    horizLevel->setData(xL.toVector(), yL.toVector());
     for (int i = 0; i < N; i++){
         if ((xF[i]>=x1) && (xF[i]<=x2)){
             if (value >= yFcopy[i]) {
@@ -254,4 +257,19 @@ void FilterFFT::on_pushButton_clicked()
     DFTgraph->setData(xF.toVector(), yF.toVector());
     ui->widget_dft->replot();
     iDFT(ixF);
+}
+
+void FilterFFT::on_SliderSpan_valueChanged(int value)
+{
+    if ((value == 1) && (sp)) { //вкл
+        ui->SliderSpan->setStyleSheet(".QSlider::groove:horizontal {height: 24px; background: #20B2AA; border-radius: 8px; padding:-4px 7px;}"
+                                                  ".QSlider::handle:horizontal {background: #008080; width: 22px; margin: 0px -7px; border-radius: 11px;}");
+        graphSpan->setVisible(true); ui->widget_dft->replot();
+    }
+    else{ //выкл
+        ui->SliderSpan->setStyleSheet(".QSlider::groove:horizontal {height: 24px; background:#696969; border-radius: 8px; padding:-4px 7px;}"
+                                       ".QSlider::handle:horizontal {background: #d5d5d5; width: 22px; margin: 0px -7px; border-radius: 11px;}");
+        graphSpan->setVisible(false); ui->widget_dft->replot();
+        ui->SliderSpan->setValue(0);
+    }
 }
