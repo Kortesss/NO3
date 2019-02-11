@@ -8,7 +8,6 @@ INPUT(
 ./release\mnk.o
 ./release\about.o
 ./release\filterfft.o
-./release\switch.o
 ./release\qrc_source.o
 ./release\moc_mainwindow.o
 ./release\moc_qcustomplot.o
@@ -16,5 +15,4 @@ INPUT(
 ./release\moc_deltawin.o
 ./release\moc_about.o
 ./release\moc_filterfft.o
-./release\moc_switch.o
 );

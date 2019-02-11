@@ -21,8 +21,7 @@ SOURCES += main.cpp\
     deltawin.cpp \
     mnk.cpp \
     about.cpp \
-    filterfft.cpp \
-    switch.cpp
+    filterfft.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
@@ -32,8 +31,7 @@ HEADERS  += mainwindow.h \
     deltawin.h \
     mnk.h \
     about.h \
-    filterfft.h \
-    switch.h
+    filterfft.h
 
 FORMS    += mainwindow.ui \
     somewindow.ui \

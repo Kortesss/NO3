@@ -9,7 +9,6 @@
 #include <QPoint>
 #include "qcustomplot.h"
 #include <QTimer>
-//#include "switch.h"
 
 using namespace std;
 namespace Ui {
@@ -94,6 +93,8 @@ private slots:
     void on_Spin_x2_valueChanged();
 
     void on_action_filter_triggered();
+
+    void on_SliderSpan_valueChanged(int value);
 
 private:
     Ui::MainWindow *ui;

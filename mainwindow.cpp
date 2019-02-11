@@ -10,7 +10,7 @@
 
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
-//привет от Кати
+
     connect(ui->widget,SIGNAL(mousePress(QMouseEvent*)),this,SLOT(mousePress(QMouseEvent*)));
     connect(ui->widget, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(histogramMouseMoved(QMouseEvent*)));
     connect(ui->widget, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(spanMouseUp(QMouseEvent*)));
@@ -373,7 +373,6 @@ void MainWindow::mousePress(QMouseEvent *event) //ручная установк�
                     mouseDown = true;
                 }else{//В пределах границ графика
                     ui->Spin_x1->setValue(currentX);
-                    //ui->switchSpan->_switch = true;
                     spanX[0] = spanX[1] = ui->Spin_x1->value();
                     mouseDown = true;
                 }
@@ -428,7 +427,8 @@ void MainWindow::spanMouseUp(QMouseEvent *event)
     if (event->button() == Qt::RightButton){
         if (!ui->action_9->isChecked()){
             mouseDown = false;
-            //ui->switchSpan->setOff();
+            if (graphSpan->visible()) ui->SliderSpan->setValue(1);
+            else ui->SliderSpan->setValue(0);
         }
     }
 }
@@ -612,7 +612,11 @@ void MainWindow::on_action_13_triggered() //вызов вычисления пр
       ui->Browser_Derivative->clear();
       ui->Browser_Derivative->append(QString("Производная:\ndx/dy = ")+QString::number(sred));
       //delete derivative();
-    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
+    }else{
+        if ((ui->Spin_x1->value() == 0.0) && (ui->Spin_x2->value() == 0.0)) //чтобы 2 раза не выдавало сообщение об ошибке
+            QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
+        ui->Spin_x1->setValue(0.0); ui->Spin_x2->setValue(0.0);
+    }
 }
 
 void MainWindow::on_action_17_triggered() //МНК
@@ -781,6 +785,7 @@ void MainWindow::on_listWidget_clicked() //для перехода по граф
     ui->Browser_Max->append("Макс. X:\n" + QString("%1").arg(maxx[gr_index]));
     ui->Spin_x1->setValue(0.0); ui->Spin_x2->setValue(0.0);
     graphSpan->setVisible(false);
+    ui->SliderSpan->setValue(0);
     FalseVisibleAllGraph();
 }
 
@@ -832,4 +837,19 @@ void MainWindow::on_action_about_triggered() //окно О программе
     about *WinAbout = new about(this);
     WinAbout->show();
     WinAbout->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+}
+
+void MainWindow::on_SliderSpan_valueChanged(int value) //вкл./выкл. диапазона значений
+{
+    if ((value == 1) && (ui->Spin_x2->value()>0.0)) { //вкл
+        ui->SliderSpan->setStyleSheet(".QSlider::groove:horizontal {height: 24px; background: #20B2AA; border-radius: 8px; padding:-4px 7px;}"
+                                                  ".QSlider::handle:horizontal {background: #008080; width: 22px; margin: 0px -7px; border-radius: 11px;}");
+        graphSpan->setVisible(true); ui->widget->replot();
+    }
+    else{ //выкл
+        ui->SliderSpan->setStyleSheet(".QSlider::groove:horizontal {height: 24px; background:#696969; border-radius: 8px; padding:-4px 7px;}"
+                                       ".QSlider::handle:horizontal {background: #d5d5d5; width: 22px; margin: 0px -7px; border-radius: 11px;}");
+        graphSpan->setVisible(false); ui->widget->replot();
+        ui->SliderSpan->setValue(0);
+    }
 }
