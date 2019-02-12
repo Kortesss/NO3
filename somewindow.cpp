@@ -2,15 +2,22 @@
 #include "ui_somewindow.h"
 #include <QDebug>
 
-SomeWindow::SomeWindow(QVector<double> dirivate,double x1, double x2, double koef, QWidget *parent) :
+SomeWindow::SomeWindow(QVector<double> &dirivate, double &x1, double &x2, double &koef, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SomeWindow)
 {
     ui->setupUi(this);
+    CtrlS = new QShortcut(this);
+    CtrlS->setKey(Qt::CTRL + Qt::Key_S);
+    CtrlQ = new QShortcut(this);
+    CtrlQ->setKey(Qt::CTRL + Qt::Key_Q);
+    connect(CtrlS, SIGNAL(activated()), this, SLOT(on_pushButton_save_clicked()));
+    connect(CtrlQ, SIGNAL(activated()), this, SLOT(on_pushButton_close_clicked()));
+
     graphDirivate(dirivate, x1, x2,koef);
 
 }
-void SomeWindow::graphDirivate(QVector<double> dirivate, double x1,double x2,double koef){
+void SomeWindow::graphDirivate(QVector<double> &dirivate, double &x1,double &x2,double &koef){
     ui->widget_dir->clearGraphs();//Если нужно, о очищаем все графики
     ui->widget_dir->addGraph();
     QVector<double> x1vector;
@@ -45,6 +52,25 @@ void SomeWindow::graphDirivate(QVector<double> dirivate, double x1,double x2,dou
 }
 SomeWindow::~SomeWindow()
 {
-    qDebug() << "Деструктор SomeWindow";
     delete ui;
+}
+
+void SomeWindow::on_pushButton_save_clicked()
+{
+    QString fileName = QFileDialog::getSaveFileName(0, QString::fromUtf8("Сохранение графика"),
+                       windowTitle(), "Изображение png (*.png);; Изображение jpg (*.jpg);; Изображение bmp(*.bmp);; Документ pdf(*.pdf)");
+    if (!fileName.isNull()){
+        QFile file(fileName);
+        if (!file.open(QIODevice::WriteOnly|QFile::WriteOnly)) QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Что-то пошло не так."));
+            else if (fileName.contains(".png", Qt::CaseInsensitive)) ui->widget_dir->savePng(fileName);
+                else if (fileName.contains(".jpg", Qt::CaseInsensitive)) ui->widget_dir->saveJpg(fileName);
+                    else if (fileName.contains(".bmp", Qt::CaseInsensitive)) ui->widget_dir->saveBmp(fileName);
+                        else ui->widget_dir->savePdf(fileName);
+        file.close();
+    }
+}
+
+void SomeWindow::on_pushButton_close_clicked()
+{
+    this->close();
 }

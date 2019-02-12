@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>610</width>
+    <width>611</width>
     <height>410</height>
    </rect>
   </property>
@@ -14,9 +14,78 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QCustomPlot" name="widget_dir" native="true"/>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="1" column="2">
+       <widget class="QPushButton" name="pushButton_close">
+        <property name="styleSheet">
+         <string notr="true"> QPushButton {
+     border: 2px solid #8f8f91;
+     border-radius: 6px;
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #f6f7fa, stop: 1 #dadbde);
+     min-height: 20px; 
+     min-width: 84px;
+}
+QPushButton:pressed {
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #dadbde, stop: 1 #f6f7fa);
+ }</string>
+        </property>
+        <property name="text">
+         <string>Закрыть</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="pushButton_save">
+        <property name="minimumSize">
+         <size>
+          <width>144</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"> QPushButton {
+     border: 2px solid #8f8f91;
+     border-radius: 6px;
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #f6f7fa, stop: 1 #dadbde);
+     min-height: 20px;
+     min-width: 140px;
+ }
+QPushButton:pressed {
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #dadbde, stop: 1 #f6f7fa);
+ }</string>
+        </property>
+        <property name="text">
+         <string>Сохранить как...</string>
+        </property>
+        <property name="icon">
+         <iconset resource="source.qrc">
+          <normaloff>:/img/img/512px-Save_font_awesome.svg.png</normaloff>:/img/img/512px-Save_font_awesome.svg.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="0" column="0" colspan="3">
+       <widget class="QCustomPlot" name="widget_dir" native="true"/>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -25,7 +94,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>610</width>
+     <width>611</width>
      <height>21</height>
     </rect>
    </property>
@@ -40,6 +109,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="source.qrc"/>
+ </resources>
  <connections/>
 </ui>

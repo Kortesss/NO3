@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>617</width>
-    <height>424</height>
+    <height>537</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -40,8 +40,8 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label_3">
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_5">
             <property name="maximumSize">
              <size>
               <width>153</width>
@@ -49,12 +49,12 @@
              </size>
             </property>
             <property name="text">
-             <string>Конечное значение</string>
+             <string>Время при установленом %</string>
             </property>
            </widget>
           </item>
           <item row="5" column="1">
-           <widget class="QDoubleSpinBox" name="doubleSpinBox_x2">
+           <widget class="QDoubleSpinBox" name="Spin_x2">
             <property name="maximumSize">
              <size>
               <width>80</width>
@@ -69,8 +69,57 @@
             </property>
            </widget>
           </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="label_3">
+            <property name="maximumSize">
+             <size>
+              <width>153</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Конечное значение</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_2">
+            <property name="maximumSize">
+             <size>
+              <width>153</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Фильтрация экстремумов</string>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QCheckBox" name="checkMin">
+            <property name="layoutDirection">
+             <enum>Qt::RightToLeft</enum>
+            </property>
+            <property name="text">
+             <string>Минимум</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_4">
+            <property name="maximumSize">
+             <size>
+              <width>153</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Порог значения тренда, %</string>
+            </property>
+           </widget>
+          </item>
           <item row="3" column="1">
-           <widget class="QDoubleSpinBox" name="doubleSpinBox_x1">
+           <widget class="QDoubleSpinBox" name="Spin_x1">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -91,25 +140,24 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="0">
-           <widget class="QCheckBox" name="checkMin">
-            <property name="layoutDirection">
-             <enum>Qt::RightToLeft</enum>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label">
+            <property name="maximumSize">
+             <size>
+              <width>153</width>
+              <height>16777215</height>
+             </size>
             </property>
             <property name="text">
-             <string>Минимум</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_2">
-            <property name="text">
-             <string>Фильтрация экстремумов</string>
+             <string>Начальное значение</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
            <widget class="QDoubleSpinBox" name="doubleSpinBox1">
+            <property name="focusPolicy">
+             <enum>Qt::WheelFocus</enum>
+            </property>
             <property name="decimals">
              <number>2</number>
             </property>
@@ -124,23 +172,26 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_4">
+          <item row="7" column="0">
+           <widget class="QLabel" name="label_6">
             <property name="text">
-             <string>Порог значения тренда, %</string>
+             <string>Диапазон значений:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label">
+          <item row="2" column="1">
+           <widget class="QTextBrowser" name="BrowserTime">
             <property name="maximumSize">
              <size>
-              <width>163</width>
-              <height>16777215</height>
+              <width>80</width>
+              <height>20</height>
              </size>
             </property>
-            <property name="text">
-             <string>Начальное значение</string>
+            <property name="verticalScrollBarPolicy">
+             <enum>Qt::ScrollBarAlwaysOff</enum>
             </property>
            </widget>
           </item>
@@ -148,6 +199,49 @@
            <widget class="QCheckBox" name="checkMax">
             <property name="text">
              <string>Максимум</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QSlider" name="SliderSpan">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>48</width>
+              <height>24</height>
+             </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">.QSlider::groove:horizontal {
+    height: 24px; 
+    background:#696969; 
+    border-radius: 8px;
+    padding:-4px 7px;
+} 
+
+.QSlider::handle:horizontal {
+    background: #d5d5d5; 
+    width: 22px; 
+    margin: 0px -7px; 
+    border-radius: 11px;
+} </string>
+            </property>
+            <property name="maximum">
+             <number>1</number>
+            </property>
+            <property name="pageStep">
+             <number>1</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
            </widget>
           </item>
@@ -170,19 +264,39 @@
           <property name="maximumSize">
            <size>
             <width>140</width>
-            <height>150</height>
+            <height>170</height>
            </size>
+          </property>
+          <property name="sortingEnabled">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
         <item>
          <layout class="QGridLayout" name="gridLayout_3">
-          <item row="0" column="0">
-           <widget class="QTextBrowser" name="textBrowser_4">
+          <item row="1" column="0">
+           <widget class="QTextBrowser" name="Browser_Min">
             <property name="maximumSize">
              <size>
               <width>113</width>
-              <height>60</height>
+              <height>38</height>
+             </size>
+            </property>
+            <property name="html">
+             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Мин. X: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QTextBrowser" name="Browser_Derivative">
+            <property name="maximumSize">
+             <size>
+              <width>113</width>
+              <height>50</height>
              </size>
             </property>
             <property name="sizeIncrement">
@@ -202,12 +316,12 @@
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Derivative&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Производная: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
-           <widget class="QTextBrowser" name="textBrowser_2">
+          <item row="2" column="0">
+           <widget class="QTextBrowser" name="Browser_Max">
             <property name="minimumSize">
              <size>
               <width>20</width>
@@ -217,7 +331,7 @@ p, li { white-space: pre-wrap; }
             <property name="maximumSize">
              <size>
               <width>113</width>
-              <height>60</height>
+              <height>38</height>
              </size>
             </property>
             <property name="html">
@@ -225,31 +339,7 @@ p, li { white-space: pre-wrap; }
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Maximum&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QTextBrowser" name="textBrowser_3">
-            <property name="maximumSize">
-             <size>
-              <width>113</width>
-              <height>60</height>
-             </size>
-            </property>
-            <property name="html">
-             <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Minimum&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QPushButton" name="pushButton">
-            <property name="text">
-             <string>Тест кнопка</string>
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Макс. X: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
            </widget>
           </item>
@@ -272,6 +362,9 @@ p, li { white-space: pre-wrap; }
             <width>0</width>
             <height>230</height>
            </size>
+          </property>
+          <property name="mouseTracking">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -346,8 +439,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="action_16"/>
     <addaction name="action_5"/>
     <addaction name="action_12"/>
-    <addaction name="action_8"/>
-    <addaction name="action_11"/>
+    <addaction name="action_exit"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -378,10 +470,19 @@ p, li { white-space: pre-wrap; }
     </widget>
     <addaction name="menu_5"/>
     <addaction name="actionD"/>
+    <addaction name="action_filter"/>
+   </widget>
+   <widget class="QMenu" name="menu_6">
+    <property name="title">
+     <string>Справка</string>
+    </property>
+    <addaction name="action_manual"/>
+    <addaction name="action_about"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
    <addaction name="menu_4"/>
+   <addaction name="menu_6"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action">
@@ -391,6 +492,9 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>Выбрать файл</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="action_2">
@@ -411,18 +515,16 @@ p, li { white-space: pre-wrap; }
     <string>выбор фильтра или значения</string>
    </property>
   </action>
-  <action name="action_8">
-   <property name="text">
-    <string>Новый эксперимент</string>
-   </property>
-  </action>
-  <action name="action_11">
+  <action name="action_exit">
    <property name="icon">
     <iconset resource="source.qrc">
      <normaloff>:/img/img/exit.png</normaloff>:/img/img/exit.png</iconset>
    </property>
    <property name="text">
     <string>Выход</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
    </property>
   </action>
   <action name="action_12">
@@ -432,6 +534,9 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="text">
     <string>Сохранить график</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="action_16">
@@ -493,9 +598,6 @@ p, li { white-space: pre-wrap; }
    </property>
   </action>
   <action name="action_4">
-   <property name="checkable">
-    <bool>false</bool>
-   </property>
    <property name="text">
     <string>Тестовый график</string>
    </property>
@@ -503,6 +605,27 @@ p, li { white-space: pre-wrap; }
   <action name="action_5">
    <property name="text">
     <string>Удалить график</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
+  </action>
+  <action name="action_manual">
+   <property name="text">
+    <string>Руководство пользователя</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+  </action>
+  <action name="action_about">
+   <property name="text">
+    <string>О программе</string>
+   </property>
+  </action>
+  <action name="action_filter">
+   <property name="text">
+    <string>Фильтрация сигнала</string>
    </property>
   </action>
  </widget>
@@ -515,6 +638,21 @@ p, li { white-space: pre-wrap; }
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>doubleSpinBox1</tabstop>
+  <tabstop>spinLevel</tabstop>
+  <tabstop>BrowserTime</tabstop>
+  <tabstop>Spin_x1</tabstop>
+  <tabstop>Spin_x2</tabstop>
+  <tabstop>checkMin</tabstop>
+  <tabstop>checkMax</tabstop>
+  <tabstop>listWidget</tabstop>
+  <tabstop>Browser_Derivative</tabstop>
+  <tabstop>Browser_Min</tabstop>
+  <tabstop>Browser_Max</tabstop>
+  <tabstop>textBrowser_X</tabstop>
+  <tabstop>textBrowser_Y</tabstop>
+ </tabstops>
  <resources>
   <include location="source.qrc"/>
  </resources>

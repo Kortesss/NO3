@@ -3,18 +3,21 @@
 #include "derivative.h"
 #include <QDebug>
 #include "somewindow.h"
+#include "about.h"
 #include "deltawin.h"
 #include "mnk.h"
-//#include "loadfile.h"
+#include "filterfft.h"
 
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
 
     connect(ui->widget,SIGNAL(mousePress(QMouseEvent*)),this,SLOT(mousePress(QMouseEvent*)));
     connect(ui->widget, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(histogramMouseMoved(QMouseEvent*)));
-    connect(&timer, SIGNAL(timeout()), SLOT(TimerTick()));  t = 0; gr_index = 0;
-
-    mnkMax=false; mnkMin=false;  levelMax=false; levelMin=false;
+    connect(ui->widget, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(spanMouseUp(QMouseEvent*)));
+    connect(&timer, SIGNAL(timeout()), SLOT(TimerTick()));
+    t = 0; gr_index = 0; mouseDown = false; left = false;
+    ui->listWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->listWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotCustomMenuRequested(QPoint)));
 
     ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
     ui->widget->xAxis->setLabel("x");
@@ -47,22 +50,18 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     graphLevelMax->setPen(QColor(2, 15, 250, 255));//задаем темно-синий цвет
     graphLevelMax->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 6));
     graphLevelMax->setName(" ");
-
     graphic1 = ui->widget->addGraph();	//Добавление графика 1
     graphic1->setName(" ");
     graphic1->setPen(QColor(50, 50, 50, 255));//задаем цвет точки
     //формируем вид точек
     graphic1->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
 
-}
+    graphSpan = ui->widget->addGraph(); //Добавление диапазона значений
+    QPen Pen1; Pen1.setWidthF(2); Pen1.setColor(QColor(192,192,192, 200)); //серый цвет с непрозрачностью 200
+    graphSpan->setPen(Pen1);
+    graphSpan->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
+    graphSpan->setName("Диапазон значений");
 
-void MainWindow::TimerTick(){//процедура таймера для добавления в список textBrowser
-    if (t < mass_x_Gr[gr_index].length()){
-        //а здесь получаем значения по индексу выделенного графика
-        ui->textBrowser_X->append(QString("%1").arg(mass_x_Gr[gr_index][t]));
-        ui->textBrowser_Y->append(QString("%1").arg(mass_y_Gr[gr_index][t]));
-        t++;
-    }else {timer.stop(); t = 0;} //в конце останавливаем таймер
 }
 
 MainWindow::~MainWindow()
@@ -71,23 +70,116 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-//Рисуем график y=x*x
-void MainWindow::on_action_4_triggered()
-{
-        double a = -1; //Начало интервала, где рисуем график по оси Ox
-        double b =  1; //Конец интервала, где рисуем график по оси Ox
-        double h = 0.01; //Шаг, с которым будем пробегать по оси Ox
+void MainWindow::TimerTick(){ //процедура таймера для добавления в список textBrowser
+    if (t < mass_x_Gr[gr_index].length()){
+        //а здесь получаем значения по индексу выделенного графика
+        ui->textBrowser_X->append(QString("%1").arg(mass_x_Gr[gr_index][t]));
+        ui->textBrowser_Y->append(QString("%1").arg(mass_y_Gr[gr_index][t]));
+        t++;
+    }else {timer.stop(); t = 0;} //в конце останавливаем таймер
+}
 
-        int N=(b-a)/h + 2; //Вычисляем количество точек, которые будем отрисовывать
+void MainWindow::slotCustomMenuRequested(QPoint pos) //контекстное меню
+{
+    if (ui->listWidget->count() > 0){
+        on_listWidget_clicked();
+        QMenu *qmenu = new QMenu(this);
+        //создаем действия для контекстного меню
+        QAction *rename = new QAction(trUtf8("Переименовать"), this);
+        QAction *clearGr = new QAction(trUtf8("Очистить графы"), this);
+        QAction *delGr = new QAction(trUtf8("Удалить график"), this);
+        QAction *saveGr = new QAction(trUtf8("Сохранить график"), this);
+        QAction *manualSet = new QAction(trUtf8("Скрыть точки установленне вручную"), this);
+        QAction *delMinMax = new QAction(trUtf8("Удалить точки экстремумов"), this);
+        QAction *deltaS = new QAction(trUtf8("Δ сигнала"), this);
+
+        //подключаем СЛОТы обработчики для действий контекстного меню
+        connect(rename, SIGNAL(triggered(bool)), this, SLOT(menuRename()));
+        connect(clearGr, SIGNAL(triggered(bool)), this, SLOT(on_action_16_triggered()));
+        connect(delGr, SIGNAL(triggered(bool)), this, SLOT(on_action_5_triggered()));
+        connect(saveGr, SIGNAL(triggered(bool)), this, SLOT(on_action_12_triggered()));
+        connect(manualSet, SIGNAL(triggered(bool)), this, SLOT(manualSetView()));
+        connect(delMinMax, SIGNAL(triggered(bool)), this, SLOT(on_action_7_triggered()));
+        connect(deltaS, SIGNAL(triggered(bool)), this, SLOT(on_actionD_triggered()));
+        //устанавливаем действия в меню
+        qmenu->addAction(rename);
+        qmenu->addAction(clearGr);
+        qmenu->addAction(delGr);
+        qmenu->addAction(saveGr);
+        qmenu->addSeparator(); //добавляем разделитель
+        qmenu->addAction(manualSet);
+        qmenu->addAction(delMinMax);
+        qmenu->addSeparator();
+        qmenu->addAction(deltaS);
+        //вызываем контекстное меню
+        qmenu->popup(ui->listWidget->viewport()->mapToGlobal(pos));
+    }
+}
+
+void MainWindow::menuRename() //переименование графика
+{
+    lineEditRename = new QLineEdit(this); //объявляем QLineEdit (текстовая строка)
+    lineEditRename->setAlignment(Qt::AlignCenter);
+    lineEditRename->setText(ui->listWidget->item(gr_index)->text());
+    lineEditRename->selectAll();    lineEditRename->setFocus();
+    itRename = new QListWidgetItem(ui->listWidget);
+    ui->listWidget->takeItem(gr_index); //удаляем строку, которую будем переименовывать
+    ui->listWidget->setItemWidget(itRename, lineEditRename);//связываем итем и текстовую строку
+    ui->listWidget->insertItem(gr_index, itRename);//вставляем в список графиков тот итем
+    connect(lineEditRename, SIGNAL(returnPressed()), SLOT(EnterPressedLineEditRename()));
+
+}
+
+void MainWindow::EnterPressedLineEditRename() //обработчик события нажатия Enter в текстовом поле
+{
+    delete itRename;
+    //ui->listWidget->addItem(lineEditRename->text()); delete lineEditRename;
+    QStringList qstr; qstr << lineEditRename->text(); delete lineEditRename;
+    ui->listWidget->insertItems(gr_index, qstr);
+    ui->listWidget->item(gr_index)->setTextAlignment(Qt::AlignCenter);
+    ui->listWidget->setCurrentRow(gr_index);
+    graphic1->setName(ui->listWidget->item(gr_index)->text());
+    ui->widget->replot();
+}
+
+void MainWindow::manualSetView() //показать/скрыть координаты точек установленных вручную
+{
+    for (int i = 0; i < textListMin[gr_index].length(); i++) {textListMin[gr_index][i]->setVisible(false);}
+    for (int i = 0; i < textListMax[gr_index].length(); i++) {textListMax[gr_index][i]->setVisible(false);}
+    ui->widget->replot();
+}
+
+void MainWindow::on_action_4_triggered() //Рисуем график y=x*x
+{
+        double a = 0; //Начало интервала, где рисуем график по оси Ox
+        double b =  0.5; //Конец интервала, где рисуем график по оси Ox
+        double h = 0.001; //Шаг, с которым будем пробегать по оси Ox
+
+        int N=((b-a)/h + 2)*2; //Вычисляем количество точек, которые будем отрисовывать (в 2 раза больше, т.к.+помеха)
         QVector<double> x(N), y(N); //Массивы координат точек
-        //Вычисляем наши данные
-        int i=0;
-        for (double X=a; X<=b; X+=h)//Пробегаем по всем точкам
-        {
-            x[i] = X;
-            y[i] = X*X;//Формула нашей функции
-            i++;
-        }
+        QFile fileOut("Зашумленный_сигнал.txt");
+            if(fileOut.open(QIODevice::WriteOnly | QIODevice::Text)){
+                QTextStream writeStream(&fileOut); // Создаем объект класса QTextStream
+                //Вычисляем наши данные
+                int i=0; double rand;
+                for (double X=a; X<=b; X+=h)//Пробегаем по всем точкам
+                {
+                    x[i] = X;
+                    if (i%2==0){ //на четном месте идет сигнал
+                        //y[i] = X*X;//Формула нашей функции
+                        y[i] = 15*qSin(2*M_PI*30*X)+15*qSin(2*M_PI*40*X)+15*qSin(2*M_PI*50*X)+15*qSin(2*M_PI*60*X);
+                        writeStream << x[i] << "\t" << y[i] << "\n";
+                        i++;
+                    }else{//а здесь бобавляется помеха
+                        rand = (qrand() % ((1000 + 1) + 1000) - 1000); //рандом от -1000 до 1000
+                        rand /=100; //для получения дробного числа и создания шума
+                        y[i] = y[i-1]+rand;
+                        writeStream << x[i] << "\t" << y[i] << "\n";
+                        i++;
+                    }
+                }
+                fileOut.close(); // Закрываем файл
+            }
         ui->widget->clearGraphs();
         ui->widget->addGraph();
         //Говорим, что отрисовать нужно график по нашим двум массивам x и y
@@ -109,8 +201,17 @@ void MainWindow::on_action_4_triggered()
         ui->widget->replot();
 }
 
-//выбор файла и заполнение массива данных
-void MainWindow::on_action_triggered()
+void MainWindow::on_action_filter_triggered() //Фильрация сигнала
+{
+    if (ui->listWidget->count() > 0){
+        FilterFFT *FFTWindow=new FilterFFT(mass_x_Gr[gr_index], mass_y_Gr[gr_index], this);
+        FFTWindow->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - фильтрация сигнала");
+        FFTWindow->show();
+        FFTWindow->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
+}
+
+void MainWindow::on_action_triggered() //выбор файла и заполнение массива данных
 {
     QProgressBar *progBar = new QProgressBar(this); //объявляем прогресс-бар
     QListWidgetItem *it = new QListWidgetItem(ui->listWidget); //объявляем итем и связываем его со списком графиков
@@ -162,98 +263,178 @@ void MainWindow::on_action_triggered()
         delete it; delete progBar;  /*delete btn;*/  delete l; delete wgt;
         ui->listWidget->addItem("График "+QString::number(gr_index+1));//+1 потому что там еще ничего нет
         ui->listWidget->item(gr_index)->setTextAlignment(Qt::AlignCenter);
-      }
-    minx = *std::min_element(mass_x_Gr[gr_index].begin(), mass_x_Gr[gr_index].end());
-    maxx = *std::max_element(mass_x_Gr[gr_index].begin(), mass_x_Gr[gr_index].end());
-    miny = *std::min_element(mass_y_Gr[gr_index].begin(), mass_y_Gr[gr_index].end());
-    maxy = *std::max_element(mass_y_Gr[gr_index].begin(), mass_y_Gr[gr_index].end());
-    koef=(maxx - minx)/(mass_x_Gr[gr_index].count());//расчет коэф. плотности данных
-    ui->textBrowser_2->append(QString("%1").arg(maxx));
-    ui->textBrowser_3->append(QString("%1").arg(minx));
-    on_action_3_triggered();//рисуем график
-    //для каждого графика задаем ему место под массив экстремумов, мнк, линии тренда и т.д.
-    mass_minX.append(QList <double>()); mass_maxX.append(QList <double>());
-    mass_minY.append(QList <double>()); mass_maxY.append(QList <double>());
-    trendMin.append(QList <double>()); trendMax.append(QList <double>());
-    ui->listWidget->setCurrentRow(gr_index); //устанавливаем выделение последнему загруженному графику
-    FalseVisibleAllGraph(); //очищаем все графы предыдущего графика
+        minx.append(*std::min_element(mass_x_Gr[gr_index].begin(), mass_x_Gr[gr_index].end()));
+        maxx.append(*std::max_element(mass_x_Gr[gr_index].begin(), mass_x_Gr[gr_index].end()));
+        miny.append(*std::min_element(mass_y_Gr[gr_index].begin(), mass_y_Gr[gr_index].end()));
+        maxy.append(*std::max_element(mass_y_Gr[gr_index].begin(), mass_y_Gr[gr_index].end()));
+        koef.append((maxx[gr_index] - minx[gr_index])/(mass_x_Gr[gr_index].count()));//расчет коэф. плотности данных
+        ui->Browser_Max->clear(); ui->Browser_Min->clear(); ui->BrowserTime->clear();
+        ui->Browser_Min->append("Мин. X:\n" + QString("%1").arg(minx[gr_index]));
+        ui->Browser_Max->append("Макс. X:\n" + QString("%1").arg(maxx[gr_index]));
+
+        //Создаем данные для интервала иксов
+        spanX.clear();
+        for (int i = 0; i < 4 ; i++) spanX.append(0.0);
+        on_action_3_triggered();//рисуем график
+        //для каждого графика задаем ему место под массив экстремумов, мнк, линии тренда и т.д.
+        mass_minX.append(QList <double>()); mass_maxX.append(QList <double>());
+        mass_minY.append(QList <double>()); mass_maxY.append(QList <double>());
+        trendMin.append(QList <double>()); trendMax.append(QList <double>());
+        mnkStrMin.append(" ");   mnkStrMax.append(" ");
+        xLevelMin.append(QList <double>()); yLevelMin.append(QList <double>());
+        xLevelMax.append(QList <double>()); yLevelMax.append(QList <double>());
+        textListMin.append(QList <QCPItemText*>()); textListMax.append(QList <QCPItemText*>()); //для подписи координат на графике
+        textListMNK.append(QList <QCPItemText*>()); //для отображения значения МНК на графике
+        textListMNK[gr_index].append(new QCPItemText(ui->widget)); textListMNK[gr_index].append(new QCPItemText(ui->widget));
+        ui->listWidget->setCurrentRow(gr_index); //устанавливаем выделение последнему загруженному графику
+        FalseVisibleAllGraph(); //очищаем все графы предыдущего графика
+    }else {delete it; delete progBar;  /*delete btn;*/  delete l; delete wgt;}
 }
 
-//рисуем график из загруженного массива
-void MainWindow::on_action_3_triggered()
+void MainWindow::on_action_3_triggered() //рисуем график из загруженного массива
 {
     graphic1->setData(mass_x_Gr[gr_index].toVector(), mass_y_Gr[gr_index].toVector());
+    graphic1->setVisible(true);
     //Установим область, которая будет показываться на графике
-    ui->widget->xAxis->setRange(minx, maxx);// Для оси Ox
-    ui->widget->yAxis->setRange(miny, maxy);//Для оси Oy
+    ui->widget->xAxis->setRange(minx[gr_index], maxx[gr_index]);// Для оси Ox
+    ui->widget->yAxis->setRange(miny[gr_index], maxy[gr_index]);//Для оси Oy
     graphic1->setName("График "+QString::number(gr_index+1));
     ui->widget->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);//устанавливаем легенду в правый верхний угол
     ui->widget->legend->setVisible(true); ui->widget->replot();
 }
 
-void MainWindow::mousePress(QMouseEvent *mouseEvent){
-      if (mouseEvent->button() == Qt::LeftButton){
-       QCPItemText *text = new QCPItemText(ui->widget);
-      if(graphic1->dataCount()!=0){
-          if (ui->action_9->isChecked()&& ui->checkMin->isChecked()){//если ручная настройка.чекед и мин.чекед
-              textListMin.append(text);
-              textListMin.last()->setVisible(true);
-              mass_minX[gr_index].append(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()));
-              mass_minY[gr_index].append(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
-              textListMin.last()->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',2) //округление до 2-х знаков
-                            +"; "+QString::number(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()),'f',2)+")");
-              textListMin.last()->position->setCoords(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x())-5, ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())-2);
-              graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
-              graphMin->setName("Минимумы"); graphMin->setVisible(true);
-              ui->widget->replot();
-          }
-      //добавляем максимумы x, y
-          if (ui->action_9->isChecked() && ui->checkMax->isChecked()){
-              mass_maxX[gr_index].append(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()));
-              mass_maxY[gr_index].append(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()));
-              graphMax->setData(mass_maxX[gr_index].toVector(), mass_maxY[gr_index].toVector());
-              graphMax->setName("Максимумы"); graphMax->setVisible(true);
-              textListMax.append(text);
-              textListMax.last()->setVisible(true);
-              textListMax.last()->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',2)
-                                +"; "+QString::number(ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y()),'f',2)+")");
-              textListMax.last()->position->setCoords(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x())-5, ui->widget->yAxis->pixelToCoord(mouseEvent->pos().y())+2);
-              ui->widget->replot();
-          }
-      }
-      }
-    if (mouseEvent->button() == Qt::RightButton){//удаление точек
-        if (ui->action_9->isChecked()&& ui->checkMin->isChecked()){
-            for(int i = 0; i < mass_minX[gr_index].count(); i ++){
-                if(QString::compare(QString::number(mass_minX[gr_index][i],'f',0), QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',0))==0){
-                    mass_minX[gr_index].removeAt(i);   mass_minY[gr_index].removeAt(i);
-                    graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
-                    if (this->textListMin.count()>0) this->textListMin[i]->setVisible(false); this->textListMin.removeAt(i);
-                    on_action_17_triggered();
-                }
+void MainWindow::mousePress(QMouseEvent *event) //ручная установка экстремумов
+{
+    if (ui->listWidget->count() > 0){
+        if (event->button() == Qt::LeftButton){
+            if (ui->action_9->isChecked()&& ui->checkMin->isChecked()){//если ручная настройка.чекед и мин.чекед
+                mass_minX[gr_index].append(ui->widget->xAxis->pixelToCoord(event->pos().x()));
+                mass_minY[gr_index].append(ui->widget->yAxis->pixelToCoord(event->pos().y()));
+                graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
+                graphMin->setName("Минимумы"); graphMin->setVisible(true);
+                textListMin[gr_index].append(new QCPItemText(ui->widget));
+                textListMin[gr_index].last()->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(event->pos().x()),'f',2) //округление до 2-х знаков
+                            +"; "+QString::number(ui->widget->yAxis->pixelToCoord(event->pos().y()),'f',2)+")");
+                textListMin[gr_index].last()->position->setCoords(ui->widget->xAxis->pixelToCoord(event->pos().x())-5, ui->widget->yAxis->pixelToCoord(event->pos().y())-2);
+                textListMin[gr_index].last()->setVisible(true);
+                if (trendMin[gr_index].count() > 0) on_action_17_triggered(); //перестраиваем МНК мин
+                ui->widget->replot();
+            }
+            //добавляем максимумы x, y
+            if (ui->action_9->isChecked() && ui->checkMax->isChecked()){
+                mass_maxX[gr_index].append(ui->widget->xAxis->pixelToCoord(event->pos().x()));
+                mass_maxY[gr_index].append(ui->widget->yAxis->pixelToCoord(event->pos().y()));
+                graphMax->setData(mass_maxX[gr_index].toVector(), mass_maxY[gr_index].toVector());
+                graphMax->setName("Максимумы"); graphMax->setVisible(true);
+                textListMax[gr_index].append(new QCPItemText(ui->widget));
+                textListMax[gr_index].last()->setText("("+QString::number(ui->widget->xAxis->pixelToCoord(event->pos().x()),'f',2)
+                                +"; "+QString::number(ui->widget->yAxis->pixelToCoord(event->pos().y()),'f',2)+")");
+                textListMax[gr_index].last()->position->setCoords(ui->widget->xAxis->pixelToCoord(event->pos().x())-5, ui->widget->yAxis->pixelToCoord(event->pos().y())+2);
+                textListMax[gr_index].last()->setVisible(true);
+                if (trendMax[gr_index].count() > 0) on_action_17_triggered(); //перестраиваем МНК макс
+                ui->widget->replot();
             }
         }
-        if (ui->action_9->isChecked() && ui->checkMax->isChecked()){
-            for(int i = 0; i < mass_maxX[gr_index].count(); i ++){
-                if(QString::compare(QString::number(mass_maxX[gr_index][i],'f',0), QString::number(ui->widget->xAxis->pixelToCoord(mouseEvent->pos().x()),'f',0))==0){
-                    mass_maxX[gr_index].removeAt(i);   mass_maxY[gr_index].removeAt(i);
-                    graphMax->setData(mass_maxX[gr_index].toVector(), mass_maxY[gr_index].toVector());
-                    if (this->textListMax.count()>0) this->textListMax[i]->setVisible(false); this->textListMax.removeAt(i);
-                    on_action_17_triggered();
+        if (event->button() == Qt::RightButton){//удаление точек
+            if (ui->action_9->isChecked()&& ui->checkMin->isChecked()){
+                for(int i = 0; i < mass_minX[gr_index].count(); i ++){
+                    if(QString::compare(QString::number(mass_minX[gr_index][i],'f',0), QString::number(ui->widget->xAxis->pixelToCoord(event->pos().x()),'f',0))==0){
+                        mass_minX[gr_index].removeAt(i);   mass_minY[gr_index].removeAt(i);
+                        graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
+                    if (textListMin[gr_index].count()>0){
+                        textListMin[gr_index][i]->setVisible(false); textListMin[gr_index].removeAt(i);
+                    }
+                    if (trendMin[gr_index].count() > 0) on_action_17_triggered(); //перестраиваем МНК мин
+                    }
                 }
             }
+            if (ui->action_9->isChecked() && ui->checkMax->isChecked()){
+                for(int i = 0; i < mass_maxX[gr_index].count(); i ++){
+                    if(QString::compare(QString::number(mass_maxX[gr_index][i],'f',0), QString::number(ui->widget->xAxis->pixelToCoord(event->pos().x()),'f',0))==0){
+                        mass_maxX[gr_index].removeAt(i);   mass_maxY[gr_index].removeAt(i);
+                        graphMax->setData(mass_maxX[gr_index].toVector(), mass_maxY[gr_index].toVector());
+                    if (textListMax[gr_index].count()>0){
+                        textListMax[gr_index][i]->setVisible(false);  textListMax[gr_index].removeAt(i);
+                    }
+                    if (trendMax[gr_index].count() > 0) on_action_17_triggered(); //перестраиваем МНК макс
+                    }
+                }
+            }
+            if (!ui->action_9->isChecked()){//для установки диапазона значений
+                spanY.clear();
+                spanY.append(maxy[gr_index]); spanY.append(miny[gr_index]);
+                spanY.append(miny[gr_index]); spanY.append(maxy[gr_index]);
+                double currentX = ui->widget->xAxis->pixelToCoord(event->pos().x());
+                if ((currentX < minx[gr_index]) || (currentX > maxx[gr_index])){
+                    graphSpan->setVisible(false); ui->widget->replot();
+                    ui->Spin_x1->setValue(0.0);
+                    ui->Spin_x2->setValue(0.0);
+                    spanX[0] = spanX[1] = ui->Spin_x1->value();
+                    mouseDown = true;
+                }else{//В пределах границ графика
+                    ui->Spin_x1->setValue(currentX);
+                    spanX[0] = spanX[1] = ui->Spin_x1->value();
+                    mouseDown = true;
+                }
+            }
+            ui->widget->replot();
         }
-        ui->widget->replot();
-      }
+    }
 }
 
-void MainWindow::histogramMouseMoved(QMouseEvent *event){
-    ui->statusBar->showMessage("x="+QString::number(ui->widget->xAxis->pixelToCoord(event->pos().x()),'f',2)//округление до 2-х знаков
-                               +"; y="+QString::number(ui->widget->yAxis->pixelToCoord(event->pos().y()),'f',2));
+void MainWindow::histogramMouseMoved(QMouseEvent *event) //отображение координат в статус-баре
+{
+    double currentX = ui->widget->xAxis->pixelToCoord(event->pos().x());
+    if (mouseDown){
+        if (!ui->action_9->isChecked()){
+            if (currentX < minx[gr_index]){//перед графиком
+                ui->Spin_x1->setValue(minx[gr_index]);
+                graphSpan->setVisible(false); ui->widget->replot();
+            }else if (currentX > maxx[gr_index]){//после графика
+                ui->Spin_x2->setValue(maxx[gr_index]);
+                spanX[2] = spanX[3] = ui->Spin_x2->value();
+                graphSpan->setData(spanX, spanY);
+                graphSpan->setVisible(true);
+                ui->widget->replot();
+            }
+            else{//иначе координаты мыши были в пределах границы графика
+                if (currentX > ui->Spin_x1->value()){//идем вправо
+                    ui->Spin_x2->setValue(currentX); left = false;
+                    spanX[2] = spanX[3] = ui->Spin_x2->value();//точка, в которой две коррдинаты x2=СпинX2
+                    spanY[1] = spanY[2] = miny[gr_index]; spanY [0] = spanY[3] = maxy[gr_index];
+                }
+                else {//проверяем если идем влево
+                    if (!left){ //left нужен, чтобы повторно нне заходить сюда
+                        ui->Spin_x2->setValue(ui->Spin_x1->value());//x2 теперь становится начальным значением
+                         left = true;
+                    }
+                    ui->Spin_x1->setValue(currentX); //а x1 текучим и движется влево (убывает)
+                    spanX[0] = spanX[1] = ui->Spin_x2->value();
+                    spanX[2] = spanX[3] = ui->Spin_x1->value();
+                    spanY[0] = spanY[3] = miny[gr_index]; spanY [1] = spanY[2] = maxy[gr_index];
+                }
+                graphSpan->setData(spanX, spanY);
+                graphSpan->setVisible(true);
+                ui->widget->replot();
+            }
+        }
+    }
+    ui->statusBar->showMessage("x="+QString::number(currentX,'f',2)+"; y="+QString::number(ui->widget->yAxis->pixelToCoord(event->pos().y()),'f',2));//округление до 2-х знаков
 }
 
-//вычисление производной по 2м точкам
-double MainWindow::prdelfun(double x1,double x2,double y1,double y2){
+void MainWindow::spanMouseUp(QMouseEvent *event)
+{
+    if (event->button() == Qt::RightButton){
+        if (!ui->action_9->isChecked()){
+            mouseDown = false;
+            if (graphSpan->visible()) ui->SliderSpan->setValue(1);
+            else ui->SliderSpan->setValue(0);
+        }
+    }
+}
+
+double MainWindow::prdelfun(double x1,double x2,double y1,double y2) //вычисление производной по 2м точкам
+{
     double dx,dy,dd;
     dx=x2-x1;
     dy=y2-y1;
@@ -261,41 +442,38 @@ double MainWindow::prdelfun(double x1,double x2,double y1,double y2){
     return dd;
 }
 
-void MainWindow::on_action_7_triggered()
+void MainWindow::on_action_7_triggered() //удаление экстремумов
 {
-    //удаление экстремумов
-    if (ui->checkMin->isChecked()){mass_minX[gr_index].clear(); mass_minY[gr_index].clear();
-                graphMin->setVisible(false); graphMin->setName(" ");
-                for (int i = 0; i < this->textListMin.length(); i++) {this->textListMin[i]->setVisible(false);}
-                textListMin.clear();}
-    if (ui->checkMax->isChecked()){mass_maxY[gr_index].clear(); mass_maxX[gr_index].clear();
-                graphMax->setVisible(false); graphMax->setName(" ");
-                for (int i = 0; i < this->textListMax.length(); i++) {this->textListMax[i]->setVisible(false);}
-                textListMax.clear();}
-    if (!ui->checkMin->isChecked() && !ui->checkMax->isChecked()){
-        mass_minX[gr_index].clear(); mass_minY[gr_index].clear(); graphMin->setVisible(false); graphMin->setName(" ");
-        mass_maxY[gr_index].clear(); mass_maxX[gr_index].clear(); graphMax->setVisible(false); graphMax->setName(" ");
-        for (int i = 0; i < this->textListMin.length(); i++) {this->textListMin[i]->setVisible(false);}
-        for (int i = 0; i < this->textListMax.length(); i++) {this->textListMax[i]->setVisible(false);}
-        this->textListMin.clear(); this->textListMax.clear();
-    }
-       ui->widget->replot();
+    if (ui->listWidget->count() > 0){
+        if (ui->checkMin->isChecked()){
+            mass_minX[gr_index].clear(); mass_minY[gr_index].clear();
+            graphMin->setVisible(false); graphMin->setName(" ");
+            for (int i = 0; i < textListMin[gr_index].length(); i++) {textListMin[gr_index][i]->setVisible(false);}
+            textListMin[gr_index].clear();
+        }
+        if (ui->checkMax->isChecked()){
+            mass_maxY[gr_index].clear(); mass_maxX[gr_index].clear();
+            graphMax->setVisible(false); graphMax->setName(" ");
+            for (int i = 0; i < textListMax[gr_index].length(); i++) {textListMax[gr_index][i]->setVisible(false);}
+            textListMax[gr_index].clear();}
+        if (!ui->checkMin->isChecked() && !ui->checkMax->isChecked()){
+            mass_minX[gr_index].clear(); mass_minY[gr_index].clear(); graphMin->setVisible(false); graphMin->setName(" ");
+            mass_maxY[gr_index].clear(); mass_maxX[gr_index].clear(); graphMax->setVisible(false); graphMax->setName(" ");
+            for (int i = 0; i < textListMin[gr_index].length(); i++) {textListMin[gr_index][i]->setVisible(false);}
+            for (int i = 0; i < textListMax[gr_index].length(); i++) {textListMax[gr_index][i]->setVisible(false);}
+            textListMin[gr_index].clear(); textListMax[gr_index].clear();
+        }
+        ui->widget->replot();
+    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
 
-void MainWindow::on_action_8_triggered()
-{
-    MainWindow *NewWindow=new MainWindow;
-    NewWindow->show();
-    NewWindow->setAttribute(Qt::WA_DeleteOnClose);
-}
-
-void MainWindow::on_action_11_triggered()
+void MainWindow::on_action_exit_triggered() //выход из программы
 {
     QApplication::quit();
 }
 
-void MainWindow::on_action_12_triggered()
-{//Сохранение графика
+void MainWindow::on_action_12_triggered() //Сохранение графика
+{
     QString nameGr = "";
     if (ui->listWidget->selectedItems().size()>0) nameGr = ui->listWidget->currentItem()->text();
 
@@ -312,104 +490,104 @@ void MainWindow::on_action_12_triggered()
     }
 }
 
-void MainWindow::on_spinLevel_valueChanged()
-{  //спин мнк
-   on_action_17_triggered();
-}
-
-void MainWindow::on_doubleSpinBox1_valueChanged()
-{   //измение спина экстремомов
+void MainWindow::on_doubleSpinBox1_valueChanged() //изменение спина экстремомов
+{
     on_action_10_triggered();
 }
 
-void MainWindow::on_actionD_triggered()
-{   //Расчет изменения дельты сигнала
-    if (mass_minX[gr_index].count()!=0 && mass_maxX[gr_index].count()!=0 && mass_minY[gr_index].count()!=0 && mass_maxY[gr_index].count()!=0){
-    //сортировка экстремумов по возрастанию, вдруг мы добавили в конец списка Qlist новый экстремум, который идет не по порядку
-        qSort(mass_minX[gr_index].begin(), mass_minX[gr_index].end(), qLess<double>());
-        qSort(mass_maxX[gr_index].begin(), mass_maxX[gr_index].end(), qLess<double>());
+void MainWindow::on_spinLevel_valueChanged() //спин мнк
+{
+   on_action_17_triggered();
+}
+
+void MainWindow::on_Spin_x1_valueChanged() //изменение спина нач. значение
+{
+    on_action_13_triggered();
+}
+
+void MainWindow::on_Spin_x2_valueChanged() //изменение спина конеч. значение
+{
+    on_action_13_triggered();
+}
+
+void MainWindow::on_actionD_triggered() //Расчет изменения дельты сигнала
+{
+    if (ui->listWidget->count() > 0){
+        if (mass_minX[gr_index].count()!=0 && mass_maxX[gr_index].count()!=0 && mass_minY[gr_index].count()!=0 && mass_maxY[gr_index].count()!=0){
+        //сортировка экстремумов по возрастанию, вдруг мы добавили в конец списка Qlist новый экстремум, который идет не по порядку
+            qSort(mass_minX[gr_index].begin(), mass_minX[gr_index].end(), qLess<double>());
+            qSort(mass_maxX[gr_index].begin(), mass_maxX[gr_index].end(), qLess<double>());
         //но игрикам не подходит сортирвка, поэтому лучше строить по порядку пока что
-        deltaWin *DeltaW = new deltaWin(mass_minX[gr_index], mass_maxX[gr_index], mass_minY[gr_index], mass_maxY[gr_index], this);
-        DeltaW->show();
-        DeltaW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
-    }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Экстремумы не определены!"));}
+            deltaWin *DeltaW = new deltaWin(mass_minX[gr_index], mass_maxX[gr_index], mass_minY[gr_index], mass_maxY[gr_index], this);
+            DeltaW->show();
+            DeltaW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+        }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Экстремумы не определены!"));
+    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
 
-void MainWindow::on_action_21_triggered()
+void MainWindow::on_action_21_triggered() //отрисовка графика производной
 {
-    on_action_13_triggered(); //вызов вычисления производной кучочно-непрерывной функции
-    //отрисовка графика производной
-    SomeWindow *DXWindow=new SomeWindow(dirivate,this->x1,this->x2,this->koef,this);
-    DXWindow->show();
-    DXWindow->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+    if (ui->listWidget->count() > 0){
+        on_action_13_triggered(); //вызов вычисления производной кучочно-непрерывной функции
+        SomeWindow *DXWindow=new SomeWindow(dirivate, x1, x2, koef[gr_index], this);
+        DXWindow->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - скорость изменения параметра");
+        DXWindow->show();
+        DXWindow->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
 
-void MainWindow::on_checkMin_clicked()
+void MainWindow::on_checkMin_clicked(){ui->checkMax->setChecked(false);}
+
+void MainWindow::on_checkMax_clicked(){ui->checkMin->setChecked(false);}
+
+void MainWindow::on_action_10_triggered() //Экстремумы
 {
-    ui->checkMax->setChecked(false);
-}
-
-void MainWindow::on_checkMax_clicked()
-{
-    ui->checkMin->setChecked(false);
-}
-
-void MainWindow::on_action_10_triggered()
-{   //Экстремумы
-    mass_minX[gr_index].clear(); mass_maxX[gr_index].clear();
-    mass_minY[gr_index].clear(); mass_maxY[gr_index].clear();//чтобы память не засорять
-        if ((mass_x_Gr[gr_index].count())>0) {
-           if (graphic1->dataCount()!=0){//если график1 построен
-                bool up; //переменная отвечающая за возрастание
-                if (mass_x_Gr[gr_index][1] > mass_x_Gr[gr_index][0]) up = true; //смотрим, возрастает ли график
-                for(int i = 0; i < mass_x_Gr[gr_index].count()-1; i ++){
-                    if (up){ //если возрастает
-                        if (mass_y_Gr[gr_index][i + 1] < mass_y_Gr[gr_index][i]){ //ждем когда она перестанет возрастать
-                            if((mass_y_Gr[gr_index][i] - mass_y_Gr[gr_index][i + 1])>ui->doubleSpinBox1->value()){
-                                mass_maxX[gr_index].append(mass_x_Gr[gr_index][i]);
-                                mass_maxY[gr_index].append(mass_y_Gr[gr_index][i]);
-                                up = false;
-                            }
+    if (ui->listWidget->count() > 0){
+        gr_index = ui->listWidget->currentRow();
+        mass_minX[gr_index].clear(); mass_maxX[gr_index].clear();
+        mass_minY[gr_index].clear(); mass_maxY[gr_index].clear();//чтобы память не засорять
+        bool up; //переменная отвечающая за возрастание
+        if (mass_x_Gr[gr_index][1] > mass_x_Gr[gr_index][0]) up = true; //смотрим, возрастает ли график
+            for(int i = 0; i < mass_x_Gr[gr_index].count()-1; i ++){
+                if (up){ //если возрастает
+                    if (mass_y_Gr[gr_index][i + 1] < mass_y_Gr[gr_index][i]){ //ждем когда она перестанет возрастать
+                        if((mass_y_Gr[gr_index][i] - mass_y_Gr[gr_index][i + 1])>ui->doubleSpinBox1->value()){
+                            mass_maxX[gr_index].append(mass_x_Gr[gr_index][i]);
+                            mass_maxY[gr_index].append(mass_y_Gr[gr_index][i]);
+                            up = false;
                         }
                     }
-                    else{
-                        if (mass_y_Gr[gr_index][i + 1] > mass_y_Gr[gr_index][i]){ //ждем когда она перестанет убывать
-                            if((mass_y_Gr[gr_index][i+1] - mass_y_Gr[gr_index][i])>ui->doubleSpinBox1->value()){
-                                mass_minX[gr_index].append(mass_x_Gr[gr_index][i]);
-                                mass_minY[gr_index].append(mass_y_Gr[gr_index][i]);
-                                up = true;
-                            }
+                }else{
+                    if (mass_y_Gr[gr_index][i + 1] > mass_y_Gr[gr_index][i]){ //ждем когда она перестанет убывать
+                        if((mass_y_Gr[gr_index][i+1] - mass_y_Gr[gr_index][i])>ui->doubleSpinBox1->value()){
+                            mass_minX[gr_index].append(mass_x_Gr[gr_index][i]);
+                            mass_minY[gr_index].append(mass_y_Gr[gr_index][i]);
+                            up = true;
                         }
                     }
                 }
-                graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
-                graphMin->setName("Минимумы");
-                graphMin->setVisible(true);
-                graphMax->setData(mass_maxX[gr_index].toVector(), mass_maxY[gr_index].toVector());
-                graphMax->setName("Максимумы");
-                graphMax->setVisible(true);
-                ui->widget->replot();
-             }
-              else{
-                QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("График пуст!"));
             }
-        }
-        else{
-            QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню, а то все рухнет )"));
-        }
+            graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
+            graphMin->setName("Минимумы");
+            graphMin->setVisible(true);
+            graphMax->setData(mass_maxX[gr_index].toVector(), mass_maxY[gr_index].toVector());
+            graphMax->setName("Максимумы");
+            graphMax->setVisible(true);
+            ui->widget->replot();
+    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
 
-void MainWindow::on_action_13_triggered()
-{ //вызов вычисления производной кучочно-непрерывной функции
-    if (graphic1->dataCount()!=0){
-      double x1 = ui->doubleSpinBox_x1->value();
-      double x2 = ui->doubleSpinBox_x2->value();
+void MainWindow::on_action_13_triggered() //вызов вычисления производной кусочно-непрерывной функции
+{
+    if (ui->listWidget->count() > 0){
+      double x1 = ui->Spin_x1->value();
+      double x2 = ui->Spin_x2->value();
   //расчет производной по отметкам (начало конец по Х)
       double sred=0, znpozit=0;
       dirivate.clear();
       //обработка введеных значений если они за пределами возможных
-      if (x1<this->minx) x1=this->minx;
-      if (x2>this->maxx) x2=this->maxx;
+      if (x1 < minx[gr_index] || x1 > maxx[gr_index]) x1 = minx[gr_index];
+      if (x2 > maxx[gr_index] || x2 < minx[gr_index]) x2 = maxx[gr_index];
       //ищем ближайшее к введеному значение из массива данных
       int i=0;
       while (x1>mass_x_Gr[gr_index][i]) { i++;}
@@ -430,108 +608,110 @@ void MainWindow::on_action_13_triggered()
               sred=sred+znpozit;
               j++;
       }
-        this->x1=x1;this->x2=x2;
-     // qDebug() << "sred="<<sred;
-      ui->textBrowser_4->clear();
-      ui->textBrowser_4->append(QString("dx/dy ")+QString::number(sred));
-      /*int i,j=100,k=200;
-      double sred=0, znpozit=0;
-      for (i=100; i<k; i++) {
-              qDebug() << ">mass_x="<<this->mass_x[i];
-              qDebug() << ">mass_y="<<this->mass_y[j];
-              znpozit=prdelfun(this->mass_x[i],this->mass_x[i+1],this->mass_y[j],this->mass_y[j+1]);
-              qDebug() << "znpozit="<<znpozit;
-              sred=sred+znpozit;
-              j++;
-      }
-      sred=sred/100;
-      qDebug() << "sred="<<sred;*/
+        this->x1=x1; this->x2=x2;
+      ui->Browser_Derivative->clear();
+      ui->Browser_Derivative->append(QString("Производная:\ndx/dy = ")+QString::number(sred));
       //delete derivative();
-    }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных"));}
+    }else{
+        if ((ui->Spin_x1->value() == 0.0) && (ui->Spin_x2->value() == 0.0)) //чтобы 2 раза не выдавало сообщение об ошибке
+            QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
+        ui->Spin_x1->setValue(0.0); ui->Spin_x2->setValue(0.0);
+    }
 }
 
-void MainWindow::on_action_17_triggered()
+void MainWindow::on_action_17_triggered() //МНК
 {
-    if (ui->checkMin->isChecked()){
-        //Метод наименьших квадратов (МНК) минимума
-        if (mass_minX[gr_index].count() != 0){
-            trendMin[gr_index].clear();
-            QList<double> yLevel, xLevel;
-            mnk *mnk1 = new mnk(mass_minX[gr_index], mass_minY[gr_index], mass_minX[gr_index].count());
-            double Kdet = mnk1->get_Kdet();
-            double a = mnk1->get_a();
-            double b = mnk1->get_b();
-            //QMessageBox::information(NULL,"Информация","Коэффициент детерминации = "+QString::number(Kdet));
-            for(int i = 0; i < mass_minX[gr_index].count(); i++){
-                trendMin[gr_index].append(mnk1->get_yy(mass_minX[gr_index][i]));
-            }
-            yLevel.append(trendMin[gr_index][0] + trendMin[gr_index][0]*(ui->spinLevel->value()/100));
-            yLevel.append(yLevel[0]+yLevel[0]*0.1);
-            yLevel.append(yLevel[0]-yLevel[0]*0.1);
-            xLevel.append((yLevel[0]-b)/a);   xLevel.append((yLevel[0]-b)/a); xLevel.append((yLevel[0]-b)/a);
-
-            graphMnkMin->setData(mass_minX[gr_index].toVector(), trendMin[gr_index].toVector());
-            graphMnkMin->setVisible(true);
-            graphMnkMin->setName(QString::number(a,'f',2)+"*x+"+QString::number(b,'f',2)+" R^2="+QString::number(Kdet,'f',2));
-            graphLevelMin->setData(xLevel.toVector(), yLevel.toVector());
-            graphLevelMin->setName("Линия перегиба min");
-            graphLevelMin->setVisible(true);
-            yLevel.clear(); xLevel.clear();
-            ui->widget->replot();
-            delete mnk1; //деструктор
-        }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки минимума не определены!"));}
-    }
-    if (ui->checkMax->isChecked()){
-        //Метод наименьших квадратов (МНК)максимума
-        if (mass_maxX[gr_index].count() != 0){
-            trendMax[gr_index].clear();
-            QList<double> yLevel, xLevel;
-            mnk *mnk2 = new mnk(mass_maxX[gr_index], mass_maxY[gr_index], mass_maxX[gr_index].count());
-            double Kdet = mnk2->get_Kdet();
-            double a = mnk2->get_a();
-            double b = mnk2->get_b();
-            //QMessageBox::information(NULL,"Информация","Коэффициент детерминации = "+QString::number(Kdet));
-            for(int i = 0; i < mass_maxX[gr_index].count(); i++){
-                trendMax[gr_index].append(mnk2->get_yy(mass_maxX[gr_index][i]));
-            }
-            yLevel.append(trendMax[gr_index][0] + trendMax[gr_index][0]*(ui->spinLevel->value()/100));
-            yLevel.append(yLevel[0]+yLevel[0]*0.1);
-            yLevel.append(yLevel[0]-yLevel[0]*0.1);
-
-            xLevel.append((yLevel[0]-b)/a);   xLevel.append((yLevel[0]-b)/a); xLevel.append((yLevel[0]-b)/a);
-            graphMnkMax->setData(mass_maxX[gr_index].toVector(), trendMax[gr_index].toVector());
-            graphMnkMax->setVisible(true);
-            graphMnkMax->setName(QString::number(a,'f',2)+"*x+"+QString::number(b,'f',2)+" R^2="+QString::number(Kdet,'f',2));
-            graphLevelMax->setData(xLevel.toVector(), yLevel.toVector());
-            graphLevelMax->setName("Линия перегиба max");
-            graphLevelMax->setVisible(true);
-            yLevel.clear(); xLevel.clear();
-            ui->widget->replot();
-            delete mnk2; //деструктор
-        }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки максимума не определены!"));}
-    }
-    if (!ui->checkMin->isChecked() && !ui->checkMax->isChecked()) QMessageBox::information(NULL,"Внимание", "Пожалуйста, выберите минимум или максимум.");
+    if (ui->listWidget->count() > 0){
+        double xLevel = 0, yLevel = 0;
+        if (ui->checkMin->isChecked()){//Метод наименьших квадратов (МНК) минимума
+            if (mass_minX[gr_index].count() != 0){
+                trendMin[gr_index].clear();  yLevelMin[gr_index].clear(); xLevelMin[gr_index].clear();
+                mnk *mnk1 = new mnk(mass_minX[gr_index], mass_minY[gr_index], mass_minX[gr_index].count());
+                //QMessageBox::information(NULL,"Информация","Коэффициент детерминации = "+QString::number(Kdet));
+                for(int i = 0; i < mass_minX[gr_index].count(); i++){
+                    trendMin[gr_index].append(mnk1->get_yy(mass_minX[gr_index][i]));
+                }
+                yLevelMin[gr_index].append(trendMin[gr_index][0] + trendMin[gr_index][0]*(ui->spinLevel->value()/100));
+                yLevelMin[gr_index].append(yLevelMin[gr_index][0]+yLevelMin[gr_index][0]*0.1);
+                yLevelMin[gr_index].append(yLevelMin[gr_index][0]-yLevelMin[gr_index][0]*0.1);
+                xLevelMin[gr_index].append((yLevelMin[gr_index][0]- mnk1->get_b()) / mnk1->get_a());
+                xLevelMin[gr_index].append((yLevelMin[gr_index][0]- mnk1->get_b()) / mnk1->get_a());
+                xLevelMin[gr_index].append((yLevelMin[gr_index][0]- mnk1->get_b()) / mnk1->get_a());
+                ui->BrowserTime->clear();
+                xLevel = (yLevelMin[gr_index][0] - mnk1->get_b()) / mnk1->get_a();
+                yLevel = yLevelMin[gr_index][0];
+                ui->BrowserTime->append(QString::number(xLevel));
+                textListMNK[gr_index][0]->setText("("+QString::number(xLevel) + ")");
+                textListMNK[gr_index][0]->position->setCoords(xLevel+5, yLevel-2);
+                textListMNK[gr_index][0]->setVisible(true);
+                graphMnkMin->setData(mass_minX[gr_index].toVector(), trendMin[gr_index].toVector());
+                graphMnkMin->setVisible(true);
+                mnkStrMin[gr_index] = QString::number(mnk1->get_a(),'f',2)+"*x+"+QString::number(mnk1->get_b(),'f',2)+" R^2="+QString::number(mnk1->get_Kdet(),'f',2);
+                graphMnkMin->setName(mnkStrMin[gr_index]);
+                graphLevelMin->setData(xLevelMin[gr_index].toVector(), yLevelMin[gr_index].toVector());
+                graphLevelMin->setName("Линия перегиба min");
+                graphLevelMin->setVisible(true);
+                ui->widget->replot();
+                delete mnk1; //деструктор
+            }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки минимума не определены!"));}
+        }
+        if (ui->checkMax->isChecked()){//Метод наименьших квадратов (МНК)максимума
+            if (mass_maxX[gr_index].count() != 0){
+                trendMax[gr_index].clear(); yLevelMax[gr_index].clear(); xLevelMax[gr_index].clear();
+                mnk *mnk2 = new mnk(mass_maxX[gr_index], mass_maxY[gr_index], mass_maxX[gr_index].count());
+                //QMessageBox::information(NULL,"Информация","Коэффициент детерминации = "+QString::number(Kdet));
+                for(int i = 0; i < mass_maxX[gr_index].count(); i++){
+                    trendMax[gr_index].append(mnk2->get_yy(mass_maxX[gr_index][i]));
+                }
+                yLevelMax[gr_index].append(trendMax[gr_index][0] + trendMax[gr_index][0]*(ui->spinLevel->value()/100));
+                yLevelMax[gr_index].append(yLevelMax[gr_index][0]+yLevelMax[gr_index][0]*0.1);
+                yLevelMax[gr_index].append(yLevelMax[gr_index][0]-yLevelMax[gr_index][0]*0.1);
+                xLevelMax[gr_index].append((yLevelMax[gr_index][0]-mnk2->get_b()) / mnk2->get_a());
+                xLevelMax[gr_index].append((yLevelMax[gr_index][0]-mnk2->get_b()) / mnk2->get_a());
+                xLevelMax[gr_index].append((yLevelMax[gr_index][0]-mnk2->get_b()) / mnk2->get_a());
+                ui->BrowserTime->clear();
+                xLevel = (yLevelMax[gr_index][0] - mnk2->get_b()) / mnk2->get_a();
+                yLevel = yLevelMax[gr_index][0];
+                ui->BrowserTime->append(QString::number(xLevel));
+                textListMNK[gr_index][1]->setText("("+QString::number(xLevel) + ")");
+                textListMNK[gr_index][1]->position->setCoords(xLevel+5, yLevel-2);
+                textListMNK[gr_index][1]->setVisible(true);
+                graphMnkMax->setData(mass_maxX[gr_index].toVector(), trendMax[gr_index].toVector());
+                graphMnkMax->setVisible(true);
+                mnkStrMax[gr_index] = QString::number(mnk2->get_a(),'f',2)+"*x+"+QString::number(mnk2->get_b(),'f',2)+" R^2="+QString::number(mnk2->get_Kdet(),'f',2);
+                graphMnkMax->setName(mnkStrMax[gr_index]);
+                graphLevelMax->setData(xLevelMax[gr_index].toVector(), yLevelMax[gr_index].toVector());
+                graphLevelMax->setName("Линия перегиба max");
+                graphLevelMax->setVisible(true);
+                ui->widget->replot();
+                delete mnk2; //деструктор
+            }else{QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Точки максимума не определены!"));}
+        }
+        if (!ui->checkMin->isChecked() && !ui->checkMax->isChecked()) QMessageBox::information(NULL,"Внимание", "Пожалуйста, выберите минимум или максимум.");
+    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
 
-void MainWindow::on_action_19_triggered()
-{   //удаление МНК
-    if (ui->checkMin->isChecked()){ trendMin[gr_index].clear(); graphMnkMin->setVisible(false); graphMnkMin->setName(" ");
-        graphLevelMin->setVisible(false); graphLevelMin->setName(" ");}
-    if (ui->checkMax->isChecked()){ trendMax[gr_index].clear(); graphMnkMax->setVisible(false); graphMnkMax->setName(" ");
-        graphLevelMax->setVisible(false); graphLevelMax->setName(" ");}
-    if (!ui->checkMin->isChecked() && !ui->checkMax->isChecked()){
+void MainWindow::on_action_19_triggered() //удаление МНК
+{
+    if (ui->listWidget->count() > 0){
+        if (ui->checkMin->isChecked()){ trendMin[gr_index].clear(); graphMnkMin->setVisible(false); graphMnkMin->setName(" ");
+        graphLevelMin->setVisible(false); graphLevelMin->setName(" ");   textListMNK[gr_index][0]->setVisible(false);}
+        if (ui->checkMax->isChecked()){ trendMax[gr_index].clear(); graphMnkMax->setVisible(false); graphMnkMax->setName(" ");
+        graphLevelMax->setVisible(false); graphLevelMax->setName(" ");   textListMNK[gr_index][1]->setVisible(false);}
+        if (!ui->checkMin->isChecked() && !ui->checkMax->isChecked()){
         trendMin[gr_index].clear(); graphMnkMin->setVisible(false); graphMnkMin->setName(" ");
         graphLevelMin->setVisible(false);  graphLevelMin->setName(" ");
         trendMax[gr_index].clear(); graphMnkMax->setVisible(false); graphMnkMax->setName(" ");
         graphLevelMax->setVisible(false); graphLevelMax->setName(" ");
+        textListMNK[gr_index][0]->setVisible(false);  textListMNK[gr_index][1]->setVisible(false);
     }
-    ui->widget->replot();
+        ui->widget->replot();
+    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
 
-void MainWindow::FalseVisibleAllGraph()
-{   //убираем видимость всех графов в интерфейсе текущего графика
-    //graphMin->setVisible(false); graphMax->setVisible(false); graphMin->setName(" ");graphMax->setName(" ");
-    if (mass_minX[gr_index].count() > 0){
+void MainWindow::FalseVisibleAllGraph() //скрытие графов
+{   //если для текущего графика есть какие то графы, то показываем их
+    if (mass_minX[gr_index].count() > 0){//если у графика есть граф min, то показываем его
         graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
         graphMin->setName("Минимумы");        graphMin->setVisible(true);
     } else {graphMin->setName(" ");        graphMin->setVisible(false);}
@@ -543,65 +723,133 @@ void MainWindow::FalseVisibleAllGraph()
     if (trendMin[gr_index].count() > 0){
         graphMnkMin->setData(mass_minX[gr_index].toVector(), trendMin[gr_index].toVector());
         graphMnkMin->setVisible(true);
-        //graphMnkMin->setName(QString::number(a,'f',2)+"*x+"+QString::number(b,'f',2)+" R^2="+QString::number(Kdet,'f',2));
-        //graphLevelMin->setData(xLevel.toVector(), yLevel.toVector());
+        graphMnkMin->setName(mnkStrMin[gr_index]);
+        graphLevelMin->setData(xLevelMin[gr_index].toVector(), yLevelMin[gr_index].toVector());
         graphLevelMin->setName("Линия перегиба min");
         graphLevelMin->setVisible(true);
     }else {graphMnkMin->setVisible(false); graphMnkMin->setName(" "); graphLevelMin->setVisible(false); graphLevelMin->setName(" ");}
     if (trendMax[gr_index].count() > 0){
         graphMnkMax->setData(mass_maxX[gr_index].toVector(), trendMax[gr_index].toVector());
         graphMnkMax->setVisible(true);
-        //graphMnkMax->setName(QString::number(a,'f',2)+"*x+"+QString::number(b,'f',2)+" R^2="+QString::number(Kdet,'f',2));
-        //graphLevelMax->setData(xLevel.toVector(), yLevel.toVector());
+        graphMnkMax->setName(mnkStrMax[gr_index]);
+        graphLevelMax->setData(xLevelMax[gr_index].toVector(), yLevelMax[gr_index].toVector());
         graphLevelMax->setName("Линия перегиба max");
         graphLevelMax->setVisible(true);
     }else {graphMnkMax->setVisible(false); graphMnkMax->setName(" "); graphLevelMax->setVisible(false); graphLevelMax->setName(" ");}
 
-    for (int i = 0; i < this->textListMin.length(); i++) {this->textListMin[i]->setVisible(false);}
-    for (int i = 0; i < this->textListMax.length(); i++) {this->textListMax[i]->setVisible(false);}
+    for (int j = 0; j < ui->listWidget->count(); j++) {
+        if (gr_index == j){ //пройдемся по всем графикам и либо установим видимость, либо снимен его координаты, если не на текущем находимся
+            for (int i = 0; i < textListMin[j].length(); i++) textListMin[j][i]->setVisible(true);
+            for (int i = 0; i < textListMax[j].length(); i++) textListMax[j][i]->setVisible(true);
+            textListMNK[j][0]->setVisible(true);  textListMNK[j][1]->setVisible(true);
+        }else{
+            for (int i = 0; i < textListMin[j].length(); i++) textListMin[j][i]->setVisible(false);
+            for (int i = 0; i < textListMax[j].length(); i++) textListMax[j][i]->setVisible(false);
+            textListMNK[j][0]->setVisible(false);  textListMNK[j][1]->setVisible(false);
+        }
+    }
     ui->widget->replot();
 }
 
-void MainWindow::on_action_16_triggered()
-{   //очистка всех графов из памяти и в интерфейсе текущего графика
-
-    mass_minX[gr_index].clear(); mass_maxX[gr_index].clear(); mass_minY[gr_index].clear(); mass_maxY[gr_index].clear();
-    graphMin->setVisible(false); graphMax->setVisible(false); graphMin->setName(" ");graphMax->setName(" ");
-    trendMin[gr_index].clear(); graphMnkMin->setVisible(false); graphMnkMin->setName(" "); graphLevelMin->setVisible(false); graphLevelMin->setName(" ");
-    trendMax[gr_index].clear(); graphMnkMax->setVisible(false); graphMnkMax->setName(" "); graphLevelMax->setVisible(false); graphLevelMax->setName(" ");
-    for (int i = 0; i < this->textListMin.length(); i++) {this->textListMin[i]->setVisible(false);}
-    for (int i = 0; i < this->textListMax.length(); i++) {this->textListMax[i]->setVisible(false);}
-    this->textListMin.clear(); this->textListMax.clear();
-    ui->widget->replot();
-}
-
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_action_16_triggered() //очистка всех графов из памяти и в интерфейсе текущего графика
 {
-    mass_x_Gr.append(QList <double>());
-    mass_x_Gr[0].append(0.233); //вместо нуля будет вставляться индекс ui->listWidget->count()-1;
-    mass_x_Gr[0].append(0.544);
-
-    qDebug() << "массив x: "; 
-    qDebug() << mass_x_Gr[0][0]; //а здесь получаем значения по индексу выделенного графика
-    qDebug() << mass_x_Gr[0][1];
-    qDebug() << ui->listWidget->currentRow();
-
+    if (ui->listWidget->count() > 0) {
+        mass_minX[gr_index].clear(); mass_maxX[gr_index].clear(); mass_minY[gr_index].clear(); mass_maxY[gr_index].clear();
+        graphMin->setVisible(false); graphMax->setVisible(false); graphMin->setName(" ");graphMax->setName(" ");
+        trendMin[gr_index].clear(); graphMnkMin->setVisible(false); graphMnkMin->setName(" "); graphLevelMin->setVisible(false); graphLevelMin->setName(" ");
+        trendMax[gr_index].clear(); graphMnkMax->setVisible(false); graphMnkMax->setName(" "); graphLevelMax->setVisible(false); graphLevelMax->setName(" ");
+        for (int i = 0; i < textListMin[gr_index].length(); i++) {textListMin[gr_index][i]->setVisible(false);}
+        for (int i = 0; i < textListMax[gr_index].length(); i++) {textListMax[gr_index][i]->setVisible(false);}
+        textListMNK[gr_index][0]->setVisible(false);  textListMNK[gr_index][1]->setVisible(false);
+        textListMNK[gr_index][0]->setText("");  textListMNK[gr_index][1]->setText("");
+        textListMin[gr_index].clear(); textListMax[gr_index].clear();
+        ui->widget->replot();
+        }else{
+        QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Отсутствуют графики!"));
+    }
 }
 
-void MainWindow::on_listWidget_clicked()
-{   //для перехода по графику
+void MainWindow::on_listWidget_clicked() //для перехода по графику
+{
     gr_index = ui->listWidget->currentRow();
     graphic1->setData(mass_x_Gr[gr_index].toVector(), mass_y_Gr[gr_index].toVector());
+    graphic1->setVisible(true);
     //Установим область, которая будет показываться на графике
-    //ui->widget->xAxis->setRange(minx, maxx);// Для оси Ox
-    //ui->widget->yAxis->setRange(miny, maxy);//Для оси Oy
-    graphic1->setName("График "+QString::number(gr_index+1));
+    ui->widget->xAxis->setRange(minx[gr_index], maxx[gr_index]);// Для оси Ox
+    ui->widget->yAxis->setRange(miny[gr_index], maxy[gr_index]);//Для оси Oy
+    graphic1->setName(ui->listWidget->item(gr_index)->text());
+    //ui->Browser_Derivative->clear();
+    //ui->Browser_Derivative->append(QString("Производная:\ndx/dy = ")+QString::number(sred));
+    ui->Browser_Max->clear(); ui->Browser_Min->clear();
+    ui->Browser_Min->append("Мин. X:\n" + QString("%1").arg(minx[gr_index]));
+    ui->Browser_Max->append("Макс. X:\n" + QString("%1").arg(maxx[gr_index]));
+    ui->Spin_x1->setValue(0.0); ui->Spin_x2->setValue(0.0);
+    graphSpan->setVisible(false);
+    ui->SliderSpan->setValue(0);
     FalseVisibleAllGraph();
 }
 
-void MainWindow::on_listWidget_doubleClicked()
-{   //для отображения координат графика
+void MainWindow::on_listWidget_doubleClicked() //для отображения координат графика
+{
     ui->textBrowser_X->clear(); ui->textBrowser_Y->clear();
     if (timer.isActive() == true) {timer.stop(); t = 0;}
     gr_index = ui->listWidget->currentRow(); timer.start();
+}
+
+void MainWindow::on_action_5_triggered() //удаление выделеного графика
+{
+    if (ui->listWidget->count() > 0){
+        if (timer.isActive() == true) {timer.stop(); t = 0;}
+        on_action_16_triggered(); //сначала очистим всех графы из памяти и в интерфейсе текущего графика
+        graphic1->setVisible(false); graphic1->setName(" ");
+        mass_minX.removeAt(gr_index); mass_maxX.removeAt(gr_index);
+        mass_minY.removeAt(gr_index); mass_maxY.removeAt(gr_index);
+        minx.removeAt(gr_index); miny.removeAt(gr_index);
+        maxx.removeAt(gr_index); maxy.removeAt(gr_index); koef.removeAt(gr_index);
+        trendMin.removeAt(gr_index); trendMax.removeAt(gr_index);
+        textListMin[gr_index].clear(); textListMax[gr_index].clear();
+        textListMin.removeAt(gr_index); textListMax.removeAt(gr_index);
+        textListMNK[gr_index].clear();  textListMNK.removeAt(gr_index);
+        xLevelMin.removeAt(gr_index), yLevelMin.removeAt(gr_index),
+        xLevelMax.removeAt(gr_index), yLevelMax.removeAt(gr_index);
+        mass_x_Gr.removeAt(gr_index); mass_y_Gr.removeAt(gr_index);
+        ui->widget->replot();
+        ui->listWidget->takeItem(gr_index); //удаляем из списка строку
+        gr_index = 0; //передвигаем указатель графиков в начало
+        ui->textBrowser_X->clear(); ui->textBrowser_Y->clear();
+        ui->Browser_Max->clear(); ui->Browser_Min->clear(); ui->BrowserTime->clear();
+        ui->Browser_Max->append("Мин. X:");  ui->Browser_Min->append("Макс. X:");
+        ui->Browser_Derivative->clear(); ui->Browser_Derivative->append(QString("Производная:"));
+    }else{
+        QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Отсутствуют графики!"));
+    }
+
+}
+
+void MainWindow::on_action_manual_triggered() //запуск руководства пользователя
+{
+    QString path = qApp->applicationDirPath();
+    QProcess::execute("hh.exe "+path+"/manual1.chm");
+}
+
+void MainWindow::on_action_about_triggered() //окно О программе
+{
+    about *WinAbout = new about(this);
+    WinAbout->show();
+    WinAbout->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+}
+
+void MainWindow::on_SliderSpan_valueChanged(int value) //вкл./выкл. диапазона значений
+{
+    if ((value == 1) && (ui->Spin_x2->value()>0.0)) { //вкл
+        ui->SliderSpan->setStyleSheet(".QSlider::groove:horizontal {height: 24px; background: #20B2AA; border-radius: 8px; padding:-4px 7px;}"
+                                                  ".QSlider::handle:horizontal {background: #008080; width: 22px; margin: 0px -7px; border-radius: 11px;}");
+        graphSpan->setVisible(true); ui->widget->replot();
+    }
+    else{ //выкл
+        ui->SliderSpan->setStyleSheet(".QSlider::groove:horizontal {height: 24px; background:#696969; border-radius: 8px; padding:-4px 7px;}"
+                                       ".QSlider::handle:horizontal {background: #d5d5d5; width: 22px; margin: 0px -7px; border-radius: 11px;}");
+        graphSpan->setVisible(false); ui->widget->replot();
+        ui->SliderSpan->setValue(0);
+    }
 }
