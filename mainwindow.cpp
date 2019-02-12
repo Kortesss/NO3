@@ -15,13 +15,12 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     connect(ui->widget, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(histogramMouseMoved(QMouseEvent*)));
     connect(ui->widget, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(spanMouseUp(QMouseEvent*)));
     connect(&timer, SIGNAL(timeout()), SLOT(TimerTick()));
+
     t = 0; gr_index = 0; mouseDown = false; left = false;
     ui->listWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->listWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotCustomMenuRequested(QPoint)));
 
     ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
-    ui->widget->xAxis->setLabel("x");
-    ui->widget->yAxis->setLabel("y");
     graphMin = ui->widget->addGraph(); //Добавление минимумов
     graphMin->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
     graphMin->setLineStyle(QCPGraph::lsNone);//убираем линии
@@ -77,138 +76,6 @@ void MainWindow::TimerTick(){ //процедура таймера для доб�
         ui->textBrowser_Y->append(QString("%1").arg(mass_y_Gr[gr_index][t]));
         t++;
     }else {timer.stop(); t = 0;} //в конце останавливаем таймер
-}
-
-void MainWindow::slotCustomMenuRequested(QPoint pos) //контекстное меню
-{
-    if (ui->listWidget->count() > 0){
-        on_listWidget_clicked();
-        QMenu *qmenu = new QMenu(this);
-        //создаем действия для контекстного меню
-        QAction *rename = new QAction(trUtf8("Переименовать"), this);
-        QAction *clearGr = new QAction(trUtf8("Очистить графы"), this);
-        QAction *delGr = new QAction(trUtf8("Удалить график"), this);
-        QAction *saveGr = new QAction(trUtf8("Сохранить график"), this);
-        QAction *manualSet = new QAction(trUtf8("Скрыть точки установленне вручную"), this);
-        QAction *delMinMax = new QAction(trUtf8("Удалить точки экстремумов"), this);
-        QAction *deltaS = new QAction(trUtf8("Δ сигнала"), this);
-
-        //подключаем СЛОТы обработчики для действий контекстного меню
-        connect(rename, SIGNAL(triggered(bool)), this, SLOT(menuRename()));
-        connect(clearGr, SIGNAL(triggered(bool)), this, SLOT(on_action_16_triggered()));
-        connect(delGr, SIGNAL(triggered(bool)), this, SLOT(on_action_5_triggered()));
-        connect(saveGr, SIGNAL(triggered(bool)), this, SLOT(on_action_12_triggered()));
-        connect(manualSet, SIGNAL(triggered(bool)), this, SLOT(manualSetView()));
-        connect(delMinMax, SIGNAL(triggered(bool)), this, SLOT(on_action_7_triggered()));
-        connect(deltaS, SIGNAL(triggered(bool)), this, SLOT(on_actionD_triggered()));
-        //устанавливаем действия в меню
-        qmenu->addAction(rename);
-        qmenu->addAction(clearGr);
-        qmenu->addAction(delGr);
-        qmenu->addAction(saveGr);
-        qmenu->addSeparator(); //добавляем разделитель
-        qmenu->addAction(manualSet);
-        qmenu->addAction(delMinMax);
-        qmenu->addSeparator();
-        qmenu->addAction(deltaS);
-        //вызываем контекстное меню
-        qmenu->popup(ui->listWidget->viewport()->mapToGlobal(pos));
-    }
-}
-
-void MainWindow::menuRename() //переименование графика
-{
-    lineEditRename = new QLineEdit(this); //объявляем QLineEdit (текстовая строка)
-    lineEditRename->setAlignment(Qt::AlignCenter);
-    lineEditRename->setText(ui->listWidget->item(gr_index)->text());
-    lineEditRename->selectAll();    lineEditRename->setFocus();
-    itRename = new QListWidgetItem(ui->listWidget);
-    ui->listWidget->takeItem(gr_index); //удаляем строку, которую будем переименовывать
-    ui->listWidget->setItemWidget(itRename, lineEditRename);//связываем итем и текстовую строку
-    ui->listWidget->insertItem(gr_index, itRename);//вставляем в список графиков тот итем
-    connect(lineEditRename, SIGNAL(returnPressed()), SLOT(EnterPressedLineEditRename()));
-
-}
-
-void MainWindow::EnterPressedLineEditRename() //обработчик события нажатия Enter в текстовом поле
-{
-    delete itRename;
-    //ui->listWidget->addItem(lineEditRename->text()); delete lineEditRename;
-    QStringList qstr; qstr << lineEditRename->text(); delete lineEditRename;
-    ui->listWidget->insertItems(gr_index, qstr);
-    ui->listWidget->item(gr_index)->setTextAlignment(Qt::AlignCenter);
-    ui->listWidget->setCurrentRow(gr_index);
-    graphic1->setName(ui->listWidget->item(gr_index)->text());
-    ui->widget->replot();
-}
-
-void MainWindow::manualSetView() //показать/скрыть координаты точек установленных вручную
-{
-    for (int i = 0; i < textListMin[gr_index].length(); i++) {textListMin[gr_index][i]->setVisible(false);}
-    for (int i = 0; i < textListMax[gr_index].length(); i++) {textListMax[gr_index][i]->setVisible(false);}
-    ui->widget->replot();
-}
-
-void MainWindow::on_action_4_triggered() //Рисуем график y=x*x
-{
-        double a = 0; //Начало интервала, где рисуем график по оси Ox
-        double b =  0.5; //Конец интервала, где рисуем график по оси Ox
-        double h = 0.001; //Шаг, с которым будем пробегать по оси Ox
-
-        int N=((b-a)/h + 2)*2; //Вычисляем количество точек, которые будем отрисовывать (в 2 раза больше, т.к.+помеха)
-        QVector<double> x(N), y(N); //Массивы координат точек
-        QFile fileOut("Зашумленный_сигнал.txt");
-            if(fileOut.open(QIODevice::WriteOnly | QIODevice::Text)){
-                QTextStream writeStream(&fileOut); // Создаем объект класса QTextStream
-                //Вычисляем наши данные
-                int i=0; double rand;
-                for (double X=a; X<=b; X+=h)//Пробегаем по всем точкам
-                {
-                    x[i] = X;
-                    if (i%2==0){ //на четном месте идет сигнал
-                        //y[i] = X*X;//Формула нашей функции
-                        y[i] = 15*qSin(2*M_PI*30*X)+15*qSin(2*M_PI*40*X)+15*qSin(2*M_PI*50*X)+15*qSin(2*M_PI*60*X);
-                        writeStream << x[i] << "\t" << y[i] << "\n";
-                        i++;
-                    }else{//а здесь бобавляется помеха
-                        rand = (qrand() % ((1000 + 1) + 1000) - 1000); //рандом от -1000 до 1000
-                        rand /=100; //для получения дробного числа и создания шума
-                        y[i] = y[i-1]+rand;
-                        writeStream << x[i] << "\t" << y[i] << "\n";
-                        i++;
-                    }
-                }
-                fileOut.close(); // Закрываем файл
-            }
-        ui->widget->clearGraphs();
-        ui->widget->addGraph();
-        //Говорим, что отрисовать нужно график по нашим двум массивам x и y
-        ui->widget->graph(0)->setData(x, y);
-        ui->widget->xAxis->setLabel("x");
-        ui->widget->yAxis->setLabel("y");
-
-        //Установим область, которая будет показываться на графике
-        ui->widget->xAxis->setRange(a, b);//Для оси Ox
-
-        //Для показа границ по оси Oy сложнее, так как надо по правильному
-        //вычислить минимальное и максимальное значение в векторах
-        double minY = y[0], maxY = y[0];
-        for (int i=1; i<N; i++){
-            if (y[i]<minY) minY = y[i];
-            if (y[i]>maxY) maxY = y[i];
-        }
-        ui->widget->yAxis->setRange(minY, maxY);//Для оси Oy
-        ui->widget->replot();
-}
-
-void MainWindow::on_action_filter_triggered() //Фильрация сигнала
-{
-    if (ui->listWidget->count() > 0){
-        FilterFFT *FFTWindow=new FilterFFT(mass_x_Gr[gr_index], mass_y_Gr[gr_index], this);
-        FFTWindow->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - фильтрация сигнала");
-        FFTWindow->show();
-        FFTWindow->setAttribute(Qt::WA_DeleteOnClose); //деструктор
-    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
 
 void MainWindow::on_action_triggered() //выбор файла и заполнение массива данных
@@ -286,6 +153,8 @@ void MainWindow::on_action_triggered() //выбор файла и заполне
         textListMin.append(QList <QCPItemText*>()); textListMax.append(QList <QCPItemText*>()); //для подписи координат на графике
         textListMNK.append(QList <QCPItemText*>()); //для отображения значения МНК на графике
         textListMNK[gr_index].append(new QCPItemText(ui->widget)); textListMNK[gr_index].append(new QCPItemText(ui->widget));
+        axis_x_Gr.append("x");   axis_y_Gr.append("y");
+        ui->widget->xAxis->setLabel(axis_x_Gr[gr_index]);   ui->widget->yAxis->setLabel(axis_y_Gr[gr_index]);
         ui->listWidget->setCurrentRow(gr_index); //устанавливаем выделение последнему загруженному графику
         FalseVisibleAllGraph(); //очищаем все графы предыдущего графика
     }else {delete it; delete progBar;  /*delete btn;*/  delete l; delete wgt;}
@@ -301,6 +170,190 @@ void MainWindow::on_action_3_triggered() //рисуем график из заг
     graphic1->setName("График "+QString::number(gr_index+1));
     ui->widget->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);//устанавливаем легенду в правый верхний угол
     ui->widget->legend->setVisible(true); ui->widget->replot();
+}
+
+void MainWindow::slotCustomMenuRequested(QPoint pos) //контекстное меню
+{
+    if (ui->listWidget->count() > 0){
+        on_listWidget_clicked();
+        QMenu *qmenu = new QMenu(this);
+        //создаем действия для контекстного меню
+        QAction *rename = new QAction(trUtf8("Переименовать"), this);
+        QAction *reaxis = new QAction(trUtf8("Наименование осей"), this);
+        QAction *clearGr = new QAction(trUtf8("Очистить графы"), this);
+        QAction *delGr = new QAction(trUtf8("Удалить график"), this);
+        QAction *saveGr = new QAction(trUtf8("Сохранить график"), this);
+        QAction *manualSet = new QAction(trUtf8("Скрыть точки установленне вручную"), this);
+        QAction *delMinMax = new QAction(trUtf8("Удалить точки экстремумов"), this);
+        QAction *deltaS = new QAction(trUtf8("Δ сигнала"), this);
+
+        //подключаем СЛОТы обработчики для действий контекстного меню
+        connect(rename, SIGNAL(triggered(bool)), this, SLOT(menuRename()));
+        connect(reaxis, SIGNAL(triggered(bool)), this, SLOT(menuReaxis()));
+        connect(clearGr, SIGNAL(triggered(bool)), this, SLOT(on_action_16_triggered()));
+        connect(delGr, SIGNAL(triggered(bool)), this, SLOT(on_action_5_triggered()));
+        connect(saveGr, SIGNAL(triggered(bool)), this, SLOT(on_action_12_triggered()));
+        connect(manualSet, SIGNAL(triggered(bool)), this, SLOT(manualSetView()));
+        connect(delMinMax, SIGNAL(triggered(bool)), this, SLOT(on_action_7_triggered()));
+        connect(deltaS, SIGNAL(triggered(bool)), this, SLOT(on_actionD_triggered()));
+        //устанавливаем действия в меню
+        qmenu->addAction(rename);
+        qmenu->addAction(reaxis);
+        qmenu->addAction(clearGr);
+        qmenu->addAction(delGr);
+        qmenu->addAction(saveGr);
+        qmenu->addSeparator(); //добавляем разделитель
+        qmenu->addAction(manualSet);
+        qmenu->addAction(delMinMax);
+        qmenu->addSeparator();
+        qmenu->addAction(deltaS);
+        //вызываем контекстное меню
+        qmenu->popup(ui->listWidget->viewport()->mapToGlobal(pos));
+    }
+}
+
+void MainWindow::menuRename() //переименование графика
+{
+    lineEditRename = new QLineEdit(this); //объявляем QLineEdit (текстовая строка)
+    lineEditRename->setAlignment(Qt::AlignCenter);
+    lineEditRename->setText(ui->listWidget->item(gr_index)->text());
+    lineEditRename->selectAll();    lineEditRename->setFocus();
+    itRename = new QListWidgetItem(ui->listWidget);
+    ui->listWidget->takeItem(gr_index); //удаляем строку, которую будем переименовывать
+    ui->listWidget->setItemWidget(itRename, lineEditRename);//связываем итем и текстовую строку
+    ui->listWidget->insertItem(gr_index, itRename);//вставляем в список графиков тот итем
+    connect(lineEditRename, SIGNAL(returnPressed()), SLOT(EnterPressedLineEditRename()));
+
+}
+
+void MainWindow::EnterPressedLineEditRename() //обработчик события нажатия Enter в текстовом поле
+{
+    delete itRename;
+    QStringList qstr; qstr << lineEditRename->text(); delete lineEditRename;
+    ui->listWidget->insertItems(gr_index, qstr);
+    ui->listWidget->item(gr_index)->setTextAlignment(Qt::AlignCenter);
+    ui->listWidget->setCurrentRow(gr_index);
+    graphic1->setName(ui->listWidget->item(gr_index)->text());
+    ui->widget->replot();
+}
+
+void MainWindow::menuReaxis() // окно для переименование осей графика
+{
+    QMainWindow *w = new QMainWindow(this); //this нужен, чтобы форма не плавала сама по себе и была уничтожена при закрытии главного окна программы
+    w->setWindowTitle("Наименование осей графика");
+    w->setMaximumHeight(100); w->setMaximumWidth(330);
+    w->setMinimumHeight(100); w->setMinimumWidth(330);
+    QString styleBut = "QPushButton {border: 2px solid #8f8f91; border-radius: 6px; background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
+            "stop: 0 #f6f7fa, stop: 1 #dadbde); min-height: 18px;}"
+            "QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #dadbde, stop: 1 #f6f7fa);}";
+    lineE1 = new QLineEdit(w);    lineE1->setText(ui->widget->xAxis->label());
+    lineE2 = new QLineEdit(w);    lineE2->setText(ui->widget->yAxis->label());
+    QPushButton *pB1 = new QPushButton(w);     pB1->setText("Сохранить"); pB1->setStyleSheet(styleBut);
+    QPushButton *pB2 = new QPushButton(w);     pB2->setText("Закрыть");    pB2->setStyleSheet(styleBut);
+    //горизонтальное размещение для полей ввода
+    QLayout *editLayout = new QHBoxLayout();
+    editLayout->addWidget(lineE1); editLayout->setSpacing(30); editLayout->addWidget(lineE2);
+    //горизонтальное размещение для кнопок
+    QLayout *buttonLayout = new QHBoxLayout();
+    buttonLayout->addWidget(pB1); buttonLayout->setSpacing(30); buttonLayout->addWidget(pB2);
+    //вертикальное размещение для полей и кнопок
+    QLayout *Layout1 = new QVBoxLayout();
+    Layout1->addItem(editLayout);    Layout1->setSpacing(20);    Layout1->addItem(buttonLayout);
+    //размещение на ценкральный виджет
+    QWidget *centralWidget = new QWidget(w);    centralWidget->setLayout(Layout1);
+    w->setCentralWidget(centralWidget);
+    w->show();
+    w->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+    connect(pB1, SIGNAL(clicked()), this, SLOT(ButtonPressedReaxis()));
+    connect(pB2, SIGNAL(clicked()), w, SLOT(close()));
+}
+
+void MainWindow::ButtonPressedReaxis() //обработчик события нажатия кнопки Сохранить в окне переименования осей
+{
+    axis_x_Gr[gr_index] = lineE1->text(); axis_y_Gr[gr_index] = lineE2->text();
+    ui->widget->xAxis->setLabel(axis_x_Gr[gr_index]);    ui->widget->yAxis->setLabel(axis_y_Gr[gr_index]);
+    ui->widget->replot();
+}
+
+void MainWindow::manualSetView() //показать/скрыть координаты точек установленных вручную
+{
+    for (int i = 0; i < textListMin[gr_index].length(); i++) {textListMin[gr_index][i]->setVisible(false);}
+    for (int i = 0; i < textListMax[gr_index].length(); i++) {textListMax[gr_index][i]->setVisible(false);}
+    ui->widget->replot();
+}
+
+void MainWindow::on_action_4_triggered() //Рисуем график y=x*x
+{
+        double a = 0; //Начало интервала, где рисуем график по оси Ox
+        double b =  0.5; //Конец интервала, где рисуем график по оси Ox
+        double h = 0.001; //Шаг, с которым будем пробегать по оси Ox
+
+        int N=((b-a)/h + 2)*2; //Вычисляем количество точек, которые будем отрисовывать (в 2 раза больше, т.к.+помеха)
+        QVector<double> x(N), y(N); //Массивы координат точек
+        QFile fileOut("Зашумленный_сигнал.txt");
+            if(fileOut.open(QIODevice::WriteOnly | QIODevice::Text)){
+                QTextStream writeStream(&fileOut); // Создаем объект класса QTextStream
+                //Вычисляем наши данные
+                int i=0; double rand;
+                for (double X=a; X<=b; X+=h)//Пробегаем по всем точкам
+                {
+                    x[i] = X;
+                    if (i%2==0){ //на четном месте идет сигнал
+                        //y[i] = X*X;//Формула нашей функции
+                        y[i] = 15*qSin(2*M_PI*30*X)+15*qSin(2*M_PI*40*X)+15*qSin(2*M_PI*50*X)+15*qSin(2*M_PI*60*X);
+                        writeStream << x[i] << "\t" << y[i] << "\n";
+                        i++;
+                    }else{//а здесь бобавляется помеха
+                        rand = (qrand() % ((1000 + 1) + 1000) - 1000); //рандом от -1000 до 1000
+                        rand /=100; //для получения дробного числа и создания шума
+                        y[i] = y[i-1]+rand;
+                        writeStream << x[i] << "\t" << y[i] << "\n";
+                        i++;
+                    }
+                }
+                fileOut.close(); // Закрываем файл
+            }
+        ui->widget->clearGraphs();
+        ui->widget->addGraph();
+        //Говорим, что отрисовать нужно график по нашим двум массивам x и y
+        ui->widget->graph(0)->setData(x, y);
+        ui->widget->xAxis->setLabel("x");
+        ui->widget->yAxis->setLabel("y");
+
+        //Установим область, которая будет показываться на графике
+        ui->widget->xAxis->setRange(a, b);//Для оси Ox
+
+        //Для показа границ по оси Oy сложнее, так как надо по правильному
+        //вычислить минимальное и максимальное значение в векторах
+        double minY = y[0], maxY = y[0];
+        for (int i=1; i<N; i++){
+            if (y[i]<minY) minY = y[i];
+            if (y[i]>maxY) maxY = y[i];
+        }
+        ui->widget->yAxis->setRange(minY, maxY);//Для оси Oy
+        ui->widget->replot();
+}
+
+void MainWindow::on_action_filter_triggered() //Фильрация сигнала
+{
+    if (ui->listWidget->count() > 0){
+        /*QList<double> tempX = mass_x_Gr[gr_index], tempY = mass_y_Gr[gr_index];
+        int x0 = 0, xN = mass_x_Gr[gr_index].count();
+        if ((x2 != 0) && (graphSpan->visible())){
+            tempX.clear(); tempY.clear();
+            for(int i = 0; i < mass_x_Gr[gr_index].count(); i++)
+                if ((mass_x_Gr[gr_index][i] >= x1) && (mass_x_Gr[gr_index][i] <= x2)){
+                    tempX.append(mass_x_Gr[gr_index][i]); tempY.append(mass_y_Gr[gr_index][i]);
+                    if (mass_x_Gr[gr_index][i] == tempX[0]) x0 = i;
+                    xN = i;
+                }
+        }
+        FilterFFT *FFTWindow = new FilterFFT(tempX, tempY, x0, xN, this);*/
+        FilterFFT *FFTWindow = new FilterFFT(mass_x_Gr[gr_index], mass_y_Gr[gr_index], this);
+        FFTWindow->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - фильтрация сигнала");
+        FFTWindow->show();
+        FFTWindow->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
 
 void MainWindow::mousePress(QMouseEvent *event) //ручная установка экстремумов
@@ -786,6 +839,7 @@ void MainWindow::on_listWidget_clicked() //для перехода по граф
     ui->Spin_x1->setValue(0.0); ui->Spin_x2->setValue(0.0);
     graphSpan->setVisible(false);
     ui->SliderSpan->setValue(0);
+    ui->widget->xAxis->setLabel(axis_x_Gr[gr_index]);    ui->widget->yAxis->setLabel(axis_y_Gr[gr_index]);
     FalseVisibleAllGraph();
 }
 
@@ -813,8 +867,11 @@ void MainWindow::on_action_5_triggered() //удаление выделеного
         xLevelMin.removeAt(gr_index), yLevelMin.removeAt(gr_index),
         xLevelMax.removeAt(gr_index), yLevelMax.removeAt(gr_index);
         mass_x_Gr.removeAt(gr_index); mass_y_Gr.removeAt(gr_index);
+        ui->widget->xAxis->setLabel("");   ui->widget->yAxis->setLabel("");//важно сделать до replot
         ui->widget->replot();
         ui->listWidget->takeItem(gr_index); //удаляем из списка строку
+        axis_x_Gr.removeAt(gr_index); axis_y_Gr.removeAt(gr_index);
+
         gr_index = 0; //передвигаем указатель графиков в начало
         ui->textBrowser_X->clear(); ui->textBrowser_Y->clear();
         ui->Browser_Max->clear(); ui->Browser_Min->clear(); ui->BrowserTime->clear();
