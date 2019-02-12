@@ -11,7 +11,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets printsupport
 TARGET = Test2
 TEMPLATE = app
 
-QMAKE_CXXFLAGS += -std=c++0x #в switch есть nullptr и это будет работать
 
 SOURCES += main.cpp\
         mainwindow.cpp \

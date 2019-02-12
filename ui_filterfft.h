@@ -151,6 +151,7 @@ public:
 
         sigma = new QDoubleSpinBox(centralwidget);
         sigma->setObjectName(QStringLiteral("sigma"));
+        sigma->setEnabled(false);
         sigma->setMinimumSize(QSize(50, 0));
         sigma->setMaximumSize(QSize(60, 16777215));
         sigma->setDecimals(2);
@@ -162,6 +163,7 @@ public:
 
         pushButton = new QPushButton(centralwidget);
         pushButton->setObjectName(QStringLiteral("pushButton"));
+        pushButton->setEnabled(false);
         pushButton->setMinimumSize(QSize(185, 24));
         pushButton->setMaximumSize(QSize(185, 16777215));
 

@@ -80,7 +80,11 @@ private slots:
 
     void menuRename();
 
+    void menuReaxis();
+
     void EnterPressedLineEditRename();
+
+    void ButtonPressedReaxis(QString x);
 
     void manualSetView();
 
@@ -98,6 +102,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QMainWindow *w;
     QLineEdit *lineEditRename;
     QListWidgetItem *itRename;
     bool mouseDown, left; //mauseDown - при движении мыши, проверяем была ли нажата правая кнопка, left - переключатель
@@ -108,6 +113,7 @@ private:
     QList<QList<double> > xLevelMin, yLevelMin, xLevelMax, yLevelMax;
     QList <QString> mnkStrMin, mnkStrMax; //для сохраниения легенды мнк
     QList <double> minx, miny, maxx, maxy, koef; //мин. и макс. x, y и коэффициент
+    QList <QString> axis_x_Gr, axis_y_Gr; //наименования осей каждого графика
     QVector<double> dirivate; //массив производных
     double x1, x2;
     QVector<double> spanX, spanY; //данные для диапазона иксов
