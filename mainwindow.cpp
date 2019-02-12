@@ -15,13 +15,12 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     connect(ui->widget, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(histogramMouseMoved(QMouseEvent*)));
     connect(ui->widget, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(spanMouseUp(QMouseEvent*)));
     connect(&timer, SIGNAL(timeout()), SLOT(TimerTick()));
+
     t = 0; gr_index = 0; mouseDown = false; left = false;
     ui->listWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->listWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotCustomMenuRequested(QPoint)));
 
     ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
-    ui->widget->xAxis->setLabel("x");
-    ui->widget->yAxis->setLabel("y");
     graphMin = ui->widget->addGraph(); //Добавление минимумов
     graphMin->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
     graphMin->setLineStyle(QCPGraph::lsNone);//убираем линии
@@ -155,6 +154,7 @@ void MainWindow::on_action_triggered() //выбор файла и заполне
         textListMNK.append(QList <QCPItemText*>()); //для отображения значения МНК на графике
         textListMNK[gr_index].append(new QCPItemText(ui->widget)); textListMNK[gr_index].append(new QCPItemText(ui->widget));
         axis_x_Gr.append("x");   axis_y_Gr.append("y");
+        ui->widget->xAxis->setLabel(axis_x_Gr[gr_index]);   ui->widget->yAxis->setLabel(axis_y_Gr[gr_index]);
         ui->listWidget->setCurrentRow(gr_index); //устанавливаем выделение последнему загруженному графику
         FalseVisibleAllGraph(); //очищаем все графы предыдущего графика
     }else {delete it; delete progBar;  /*delete btn;*/  delete l; delete wgt;}
@@ -239,17 +239,17 @@ void MainWindow::EnterPressedLineEditRename() //обработчик событ�
 
 void MainWindow::menuReaxis() // окно для переименование осей графика
 {
-    w = new QMainWindow(this); //this нужен, чтобы форма не плавала сама по себе и была уничтожена при закрытии главного окна программы
+    QMainWindow *w = new QMainWindow(this); //this нужен, чтобы форма не плавала сама по себе и была уничтожена при закрытии главного окна программы
     w->setWindowTitle("Наименование осей графика");
     w->setMaximumHeight(100); w->setMaximumWidth(330);
     w->setMinimumHeight(100); w->setMinimumWidth(330);
     QString styleBut = "QPushButton {border: 2px solid #8f8f91; border-radius: 6px; background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
             "stop: 0 #f6f7fa, stop: 1 #dadbde); min-height: 18px;}"
             "QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #dadbde, stop: 1 #f6f7fa);}";
-    QLineEdit *lineE1 = new QLineEdit(w);    lineE1->setText(ui->widget->xAxis->label());
-    QLineEdit *lineE2 = new QLineEdit(w);    lineE2->setText(ui->widget->yAxis->label());
+    lineE1 = new QLineEdit(w);    lineE1->setText(ui->widget->xAxis->label());
+    lineE2 = new QLineEdit(w);    lineE2->setText(ui->widget->yAxis->label());
     QPushButton *pB1 = new QPushButton(w);     pB1->setText("Сохранить"); pB1->setStyleSheet(styleBut);
-    QPushButton *pB2 = new QPushButton(w);     pB2->setText("Отмена");    pB2->setStyleSheet(styleBut);
+    QPushButton *pB2 = new QPushButton(w);     pB2->setText("Закрыть");    pB2->setStyleSheet(styleBut);
     //горизонтальное размещение для полей ввода
     QLayout *editLayout = new QHBoxLayout();
     editLayout->addWidget(lineE1); editLayout->setSpacing(30); editLayout->addWidget(lineE2);
@@ -258,25 +258,21 @@ void MainWindow::menuReaxis() // окно для переименование о
     buttonLayout->addWidget(pB1); buttonLayout->setSpacing(30); buttonLayout->addWidget(pB2);
     //вертикальное размещение для полей и кнопок
     QLayout *Layout1 = new QVBoxLayout();
-    Layout1->addItem(editLayout);
-    Layout1->setSpacing(20);
-    Layout1->addItem(buttonLayout);
+    Layout1->addItem(editLayout);    Layout1->setSpacing(20);    Layout1->addItem(buttonLayout);
     //размещение на ценкральный виджет
-    QWidget *centralWidget = new QWidget(w);
-    centralWidget->setLayout(Layout1);
+    QWidget *centralWidget = new QWidget(w);    centralWidget->setLayout(Layout1);
     w->setCentralWidget(centralWidget);
     w->show();
     w->setAttribute(Qt::WA_DeleteOnClose); //деструктор
-    connect(pB1, SIGNAL(clicked()), this, SLOT(ButtonPressedReaxis(QString)));
+    connect(pB1, SIGNAL(clicked()), this, SLOT(ButtonPressedReaxis()));
     connect(pB2, SIGNAL(clicked()), w, SLOT(close()));
 }
 
-void MainWindow::ButtonPressedReaxis(QString x) //обработчик события нажатия кнопки Сохранить в окне переименования осей
+void MainWindow::ButtonPressedReaxis() //обработчик события нажатия кнопки Сохранить в окне переименования осей
 {
-    //delete itRename;
-    ui->widget->xAxis->setLabel(x);
-
-    //ui->widget->replot();
+    axis_x_Gr[gr_index] = lineE1->text(); axis_y_Gr[gr_index] = lineE2->text();
+    ui->widget->xAxis->setLabel(axis_x_Gr[gr_index]);    ui->widget->yAxis->setLabel(axis_y_Gr[gr_index]);
+    ui->widget->replot();
 }
 
 void MainWindow::manualSetView() //показать/скрыть координаты точек установленных вручную
@@ -341,7 +337,19 @@ void MainWindow::on_action_4_triggered() //Рисуем график y=x*x
 void MainWindow::on_action_filter_triggered() //Фильрация сигнала
 {
     if (ui->listWidget->count() > 0){
-        FilterFFT *FFTWindow=new FilterFFT(mass_x_Gr[gr_index], mass_y_Gr[gr_index], this);
+        /*QList<double> tempX = mass_x_Gr[gr_index], tempY = mass_y_Gr[gr_index];
+        int x0 = 0, xN = mass_x_Gr[gr_index].count();
+        if ((x2 != 0) && (graphSpan->visible())){
+            tempX.clear(); tempY.clear();
+            for(int i = 0; i < mass_x_Gr[gr_index].count(); i++)
+                if ((mass_x_Gr[gr_index][i] >= x1) && (mass_x_Gr[gr_index][i] <= x2)){
+                    tempX.append(mass_x_Gr[gr_index][i]); tempY.append(mass_y_Gr[gr_index][i]);
+                    if (mass_x_Gr[gr_index][i] == tempX[0]) x0 = i;
+                    xN = i;
+                }
+        }
+        FilterFFT *FFTWindow = new FilterFFT(tempX, tempY, x0, xN, this);*/
+        FilterFFT *FFTWindow = new FilterFFT(mass_x_Gr[gr_index], mass_y_Gr[gr_index], this);
         FFTWindow->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - фильтрация сигнала");
         FFTWindow->show();
         FFTWindow->setAttribute(Qt::WA_DeleteOnClose); //деструктор
@@ -859,14 +867,16 @@ void MainWindow::on_action_5_triggered() //удаление выделеного
         xLevelMin.removeAt(gr_index), yLevelMin.removeAt(gr_index),
         xLevelMax.removeAt(gr_index), yLevelMax.removeAt(gr_index);
         mass_x_Gr.removeAt(gr_index); mass_y_Gr.removeAt(gr_index);
+        ui->widget->xAxis->setLabel("");   ui->widget->yAxis->setLabel("");//важно сделать до replot
         ui->widget->replot();
         ui->listWidget->takeItem(gr_index); //удаляем из списка строку
+        axis_x_Gr.removeAt(gr_index); axis_y_Gr.removeAt(gr_index);
+
         gr_index = 0; //передвигаем указатель графиков в начало
         ui->textBrowser_X->clear(); ui->textBrowser_Y->clear();
         ui->Browser_Max->clear(); ui->Browser_Min->clear(); ui->BrowserTime->clear();
         ui->Browser_Max->append("Мин. X:");  ui->Browser_Min->append("Макс. X:");
         ui->Browser_Derivative->clear(); ui->Browser_Derivative->append(QString("Производная:"));
-        axis_x_Gr.removeAt(gr_index); axis_y_Gr.removeAt(gr_index);
     }else{
         QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Отсутствуют графики!"));
     }

@@ -84,7 +84,7 @@ private slots:
 
     void EnterPressedLineEditRename();
 
-    void ButtonPressedReaxis(QString x);
+    void ButtonPressedReaxis();
 
     void manualSetView();
 
@@ -102,8 +102,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QMainWindow *w;
-    QLineEdit *lineEditRename;
+    QLineEdit *lineEditRename, *lineE1, *lineE2;
     QListWidgetItem *itRename;
     bool mouseDown, left; //mauseDown - при движении мыши, проверяем была ли нажата правая кнопка, left - переключатель
     double prdelfun(double x1,double x2,double y1,double y2); //процедура для поиска предела функции
