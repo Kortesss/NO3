@@ -15,7 +15,7 @@ class FilterFFT : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit FilterFFT(QList <double> x, QList <double> &y, QWidget *parent = 0);
+    explicit FilterFFT(QList <double> x, QList <double> &y, QWidget *parent = nullptr);
     ~FilterFFT(); //принимаем ссылки на объект, чтобы не копировать в памяти его же
 
 private slots:

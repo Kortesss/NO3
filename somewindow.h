@@ -14,7 +14,7 @@ class SomeWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit SomeWindow(QVector<double> &dirivate,double &x1,double &x2, double &koef, QWidget *parent = 0);
+    explicit SomeWindow(QVector<double> &dirivate,double &x1,double &x2, double &koef, QWidget *parent = nullptr);
     ~SomeWindow();
 
 private slots:

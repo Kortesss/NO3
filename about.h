@@ -12,7 +12,7 @@ class about : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit about(QWidget *parent = 0);
+    explicit about(QWidget *parent = nullptr);
     ~about();
 
 private slots:

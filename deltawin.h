@@ -12,7 +12,7 @@ class deltaWin : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit deltaWin(QList <double> &mass_minX, QList <double> &mass_maxX, QList <double> &mass_minY, QList <double> &mass_maxY, QWidget *parent = 0);
+    explicit deltaWin(QList <double> &mass_minX, QList <double> &mass_maxX, QList <double> &mass_minY, QList <double> &mass_maxY, QWidget *parent = nullptr);
     ~deltaWin();
 
 private:

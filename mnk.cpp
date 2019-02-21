@@ -65,6 +65,11 @@ double mnk::get_Kdet()
     return Kdet;
 }
 
+double mnk::get_Kcor()
+{
+    return Kcor;
+}
+
 double mnk::get_a()
 {
     return a;
