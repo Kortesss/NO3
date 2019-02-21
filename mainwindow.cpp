@@ -5,7 +5,6 @@
 #include "somewindow.h"
 #include "about.h"
 #include "deltawin.h"
-#include "mnk.h"
 #include "filterfft.h"
 
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow){
@@ -24,34 +23,28 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     graphMin = ui->widget->addGraph(); //Добавление минимумов
     graphMin->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
     graphMin->setLineStyle(QCPGraph::lsNone);//убираем линии
-    graphMin->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
-    graphMin->setName(" ");
+    graphMin->setName(" ");   graphMin->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
     graphMax = ui->widget->addGraph(); //Добавление максимумов
     graphMax->setPen(QColor(255, 0, 0, 255));//задаем красный цвет точки
-    graphMax->setLineStyle(QCPGraph::lsNone);//убираем линии
-    graphMax->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
-    graphMax->setName(" ");
+    graphMax->setLineStyle(QCPGraph::lsNone);
+    graphMax->setName(" ");    graphMax->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
 
     graphMnkMin = ui->widget->addGraph(); //Добавление МНК мин
     graphMnkMin->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
-    graphMnkMin->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
-    graphMnkMin->setName(" ");
+    graphMnkMin->setName(" ");    graphMnkMin->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
     graphLevelMin = ui->widget->addGraph(); //Добавление линии перегиба мин
     graphLevelMin->setPen(QColor(32, 154, 230, 255));//задаем синий цвет
-    graphLevelMin->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 6));
-    graphLevelMin->setName(" ");
+    graphLevelMin->setName(" ");   graphLevelMin->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 6));
 
     graphMnkMax = ui->widget->addGraph(); //Добавление МНК максимумов
     graphMnkMax->setPen(QColor(255, 0, 0, 255));
-    graphMnkMax->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
-    graphMnkMax->setName(" ");
+    graphMnkMax->setName(" ");   graphMnkMax->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
     graphLevelMax = ui->widget->addGraph(); //Добавление линии перегиба max
     graphLevelMax->setPen(QColor(2, 15, 250, 255));//задаем темно-синий цвет
-    graphLevelMax->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 6));
-    graphLevelMax->setName(" ");
+    graphLevelMax->setName(" ");    graphLevelMax->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 6));
+
     graphic1 = ui->widget->addGraph();	//Добавление графика 1
-    graphic1->setName(" ");
-    graphic1->setPen(QColor(50, 50, 50, 255));//задаем цвет точки
+    graphic1->setName(" ");   graphic1->setPen(QColor(50, 50, 50, 255));//задаем цвет точки
     //формируем вид точек
     graphic1->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
 
@@ -60,6 +53,11 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     graphSpan->setPen(Pen1);
     graphSpan->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
     graphSpan->setName("Диапазон значений");
+
+    graphStartWork = ui->widget->addGraph();	//Старт рабочего режима
+    graphStartWork->setName(" ");    graphStartWork->setPen(QColor(128, 0, 128, 255));
+    graphStartWork->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 6));
+    graphStartWork->setLineStyle(QCPGraph::lsNone);
 
 }
 
@@ -135,9 +133,9 @@ void MainWindow::on_action_triggered() //выбор файла и заполне
         miny.append(*std::min_element(mass_y_Gr[gr_index].begin(), mass_y_Gr[gr_index].end()));
         maxy.append(*std::max_element(mass_y_Gr[gr_index].begin(), mass_y_Gr[gr_index].end()));
         koef.append((maxx[gr_index] - minx[gr_index])/(mass_x_Gr[gr_index].count()));//расчет коэф. плотности данных
-        ui->Browser_Max->clear(); ui->Browser_Min->clear(); ui->BrowserTime->clear();
-        ui->Browser_Min->append("Мин. X:\n" + QString("%1").arg(minx[gr_index]));
-        ui->Browser_Max->append("Макс. X:\n" + QString("%1").arg(maxx[gr_index]));
+        ui->BrowserTime->clear();
+        ui->Browser_Min->setText("Мин. X:\n" + QString("%1").arg(minx[gr_index]));
+        ui->Browser_Max->setText("Макс. X:\n" + QString("%1").arg(maxx[gr_index]));
 
         //Создаем данные для интервала иксов
         spanX.clear();
@@ -153,6 +151,7 @@ void MainWindow::on_action_triggered() //выбор файла и заполне
         textListMin.append(QList <QCPItemText*>()); textListMax.append(QList <QCPItemText*>()); //для подписи координат на графике
         textListMNK.append(QList <QCPItemText*>()); //для отображения значения МНК на графике
         textListMNK[gr_index].append(new QCPItemText(ui->widget)); textListMNK[gr_index].append(new QCPItemText(ui->widget));
+        StWork1.append(QList <double>());  StWork2.append(QList <double>());
         axis_x_Gr.append("x");   axis_y_Gr.append("y");
         ui->widget->xAxis->setLabel(axis_x_Gr[gr_index]);   ui->widget->yAxis->setLabel(axis_y_Gr[gr_index]);
         ui->listWidget->setCurrentRow(gr_index); //устанавливаем выделение последнему загруженному графику
@@ -169,7 +168,8 @@ void MainWindow::on_action_3_triggered() //рисуем график из заг
     ui->widget->yAxis->setRange(miny[gr_index], maxy[gr_index]);//Для оси Oy
     graphic1->setName("График "+QString::number(gr_index+1));
     ui->widget->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);//устанавливаем легенду в правый верхний угол
-    ui->widget->legend->setVisible(true); ui->widget->replot();
+    ui->widget->legend->setVisible(true);
+    ui->widget->replot();
 }
 
 void MainWindow::slotCustomMenuRequested(QPoint pos) //контекстное меню
@@ -178,14 +178,14 @@ void MainWindow::slotCustomMenuRequested(QPoint pos) //контекстное м
         on_listWidget_clicked();
         QMenu *qmenu = new QMenu(this);
         //создаем действия для контекстного меню
-        QAction *rename = new QAction(trUtf8("Переименовать"), this);
-        QAction *reaxis = new QAction(trUtf8("Наименование осей"), this);
-        QAction *clearGr = new QAction(trUtf8("Очистить графы"), this);
-        QAction *delGr = new QAction(trUtf8("Удалить график"), this);
-        QAction *saveGr = new QAction(trUtf8("Сохранить график"), this);
-        QAction *manualSet = new QAction(trUtf8("Скрыть точки установленне вручную"), this);
-        QAction *delMinMax = new QAction(trUtf8("Удалить точки экстремумов"), this);
-        QAction *deltaS = new QAction(trUtf8("Δ сигнала"), this);
+        QAction *rename = new QAction("Переименовать", this);
+        QAction *reaxis = new QAction("Наименование осей", this);
+        QAction *clearGr = new QAction("Очистить графы", this);
+        QAction *delGr = new QAction("Удалить график", this);
+        QAction *saveGr = new QAction("Сохранить график", this);
+        QAction *manualSet = new QAction("Скрыть точки установленне вручную", this);
+        QAction *delMinMax = new QAction("Удалить точки экстремумов", this);
+        QAction *deltaS = new QAction("Δ сигнала", this);
 
         //подключаем СЛОТы обработчики для действий контекстного меню
         connect(rename, SIGNAL(triggered(bool)), this, SLOT(menuRename()));
@@ -223,7 +223,6 @@ void MainWindow::menuRename() //переименование графика
     ui->listWidget->setItemWidget(itRename, lineEditRename);//связываем итем и текстовую строку
     ui->listWidget->insertItem(gr_index, itRename);//вставляем в список графиков тот итем
     connect(lineEditRename, SIGNAL(returnPressed()), SLOT(EnterPressedLineEditRename()));
-
 }
 
 void MainWindow::EnterPressedLineEditRename() //обработчик события нажатия Enter в текстовом поле
@@ -239,40 +238,32 @@ void MainWindow::EnterPressedLineEditRename() //обработчик событ�
 
 void MainWindow::menuReaxis() // окно для переименование осей графика
 {
-    QMainWindow *w = new QMainWindow(this); //this нужен, чтобы форма не плавала сама по себе и была уничтожена при закрытии главного окна программы
+    QDialog *w = new QDialog(this); //this нужен, чтобы форма не плавала сама по себе и была уничтожена при закрытии главного окна программы
     w->setWindowTitle("Наименование осей графика");
-    w->setMaximumHeight(100); w->setMaximumWidth(330);
-    w->setMinimumHeight(100); w->setMinimumWidth(330);
+    w->setMaximumHeight(100); w->setMaximumWidth(290);      w->setMinimumHeight(100); w->setMinimumWidth(290);
+    w->setModal(true); //чтобы было модальным
     QString styleBut = "QPushButton {border: 2px solid #8f8f91; border-radius: 6px; background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
-            "stop: 0 #f6f7fa, stop: 1 #dadbde); min-height: 18px;}"
+            "stop: 0 #f6f7fa, stop: 1 #dadbde); min-height: 18px; min-width: 80px;}"
             "QPushButton:pressed {background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #dadbde, stop: 1 #f6f7fa);}";
-    lineE1 = new QLineEdit(w);    lineE1->setText(ui->widget->xAxis->label());
-    lineE2 = new QLineEdit(w);    lineE2->setText(ui->widget->yAxis->label());
-    QPushButton *pB1 = new QPushButton(w);     pB1->setText("Сохранить"); pB1->setStyleSheet(styleBut);
-    QPushButton *pB2 = new QPushButton(w);     pB2->setText("Закрыть");    pB2->setStyleSheet(styleBut);
-    //горизонтальное размещение для полей ввода
-    QLayout *editLayout = new QHBoxLayout();
-    editLayout->addWidget(lineE1); editLayout->setSpacing(30); editLayout->addWidget(lineE2);
-    //горизонтальное размещение для кнопок
-    QLayout *buttonLayout = new QHBoxLayout();
-    buttonLayout->addWidget(pB1); buttonLayout->setSpacing(30); buttonLayout->addWidget(pB2);
-    //вертикальное размещение для полей и кнопок
-    QLayout *Layout1 = new QVBoxLayout();
-    Layout1->addItem(editLayout);    Layout1->setSpacing(20);    Layout1->addItem(buttonLayout);
+    QLineEdit *lineE1 = new QLineEdit(w);    lineE1->setText(ui->widget->xAxis->label());
+    QLineEdit *lineE2 = new QLineEdit(w);    lineE2->setText(ui->widget->yAxis->label());
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    buttonBox->button(QDialogButtonBox::Ok)->setText("Сохранить");  buttonBox->button(QDialogButtonBox::Cancel)->setText("Закрыть");
+    buttonBox->setStyleSheet(styleBut);
+    connect(buttonBox, &QDialogButtonBox::accepted, w, &QDialog::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, w, &QDialog::reject);
+    QLayout *Layout1 = new QVBoxLayout(); //вертикальное размещение для полей и кнопок
+    Layout1->addWidget(lineE1);  Layout1->addWidget(lineE2);  Layout1->addWidget(buttonBox);
     //размещение на ценкральный виджет
-    QWidget *centralWidget = new QWidget(w);    centralWidget->setLayout(Layout1);
-    w->setCentralWidget(centralWidget);
-    w->show();
+    w->setLayout(Layout1);   w->show();
     w->setAttribute(Qt::WA_DeleteOnClose); //деструктор
-    connect(pB1, SIGNAL(clicked()), this, SLOT(ButtonPressedReaxis()));
-    connect(pB2, SIGNAL(clicked()), w, SLOT(close()));
-}
-
-void MainWindow::ButtonPressedReaxis() //обработчик события нажатия кнопки Сохранить в окне переименования осей
-{
-    axis_x_Gr[gr_index] = lineE1->text(); axis_y_Gr[gr_index] = lineE2->text();
-    ui->widget->xAxis->setLabel(axis_x_Gr[gr_index]);    ui->widget->yAxis->setLabel(axis_y_Gr[gr_index]);
-    ui->widget->replot();
+    connect(w, &QDialog::finished, [=](int result){ //лямбда-выражение для кнопки Сохранить
+        if (result){
+            axis_x_Gr[gr_index] = lineE1->text(); axis_y_Gr[gr_index] = lineE2->text();
+            ui->widget->xAxis->setLabel(axis_x_Gr[gr_index]);    ui->widget->yAxis->setLabel(axis_y_Gr[gr_index]);
+            ui->widget->replot();
+        }
+    });
 }
 
 void MainWindow::manualSetView() //показать/скрыть координаты точек установленных вручную
@@ -337,18 +328,13 @@ void MainWindow::on_action_4_triggered() //Рисуем график y=x*x
 void MainWindow::on_action_filter_triggered() //Фильрация сигнала
 {
     if (ui->listWidget->count() > 0){
-        /*QList<double> tempX = mass_x_Gr[gr_index], tempY = mass_y_Gr[gr_index];
-        int x0 = 0, xN = mass_x_Gr[gr_index].count();
-        if ((x2 != 0) && (graphSpan->visible())){
-            tempX.clear(); tempY.clear();
-            for(int i = 0; i < mass_x_Gr[gr_index].count(); i++)
-                if ((mass_x_Gr[gr_index][i] >= x1) && (mass_x_Gr[gr_index][i] <= x2)){
-                    tempX.append(mass_x_Gr[gr_index][i]); tempY.append(mass_y_Gr[gr_index][i]);
-                    if (mass_x_Gr[gr_index][i] == tempX[0]) x0 = i;
-                    xN = i;
-                }
-        }
-        FilterFFT *FFTWindow = new FilterFFT(tempX, tempY, x0, xN, this);*/
+        /*int x0 = 0, xN = mass_x_Gr[gr_index].count();
+        if ((ui->Spin_x2 != 0) && (graphSpan->visible())){
+            for(int i = 0; i < mass_x_Gr[gr_index].count(); i++){
+                if (mass_x_Gr[gr_index][i] == ui->Spin_x1->value())  x0 = i;
+                if (mass_x_Gr[gr_index][i] == ui->Spin_x2->value())  xN = i;
+            }
+        }*/
         FilterFFT *FFTWindow = new FilterFFT(mass_x_Gr[gr_index], mass_y_Gr[gr_index], this);
         FFTWindow->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - фильтрация сигнала");
         FFTWindow->show();
@@ -600,33 +586,34 @@ void MainWindow::on_action_10_triggered() //Экстремумы
         mass_minX[gr_index].clear(); mass_maxX[gr_index].clear();
         mass_minY[gr_index].clear(); mass_maxY[gr_index].clear();//чтобы память не засорять
         bool up; //переменная отвечающая за возрастание
-        if (mass_x_Gr[gr_index][1] > mass_x_Gr[gr_index][0]) up = true; //смотрим, возрастает ли график
-            for(int i = 0; i < mass_x_Gr[gr_index].count()-1; i ++){
-                if (up){ //если возрастает
-                    if (mass_y_Gr[gr_index][i + 1] < mass_y_Gr[gr_index][i]){ //ждем когда она перестанет возрастать
-                        if((mass_y_Gr[gr_index][i] - mass_y_Gr[gr_index][i + 1])>ui->doubleSpinBox1->value()){
-                            mass_maxX[gr_index].append(mass_x_Gr[gr_index][i]);
-                            mass_maxY[gr_index].append(mass_y_Gr[gr_index][i]);
-                            up = false;
-                        }
+        if (StWork1[gr_index].count() == 0) on_startWork_triggered();
+
+        mass_minX[gr_index].append(mass_x_Gr[gr_index][iWork]); mass_minY[gr_index].append(mass_y_Gr[gr_index][iWork]);
+        if (mass_y_Gr[gr_index][iWork+1] > mass_y_Gr[gr_index][iWork]) up = true;//смотрим, возрастает ли график
+        for(int i = iWork; i < mass_x_Gr[gr_index].count()-1; i ++){
+            if (up){ //если возрастает
+                if (mass_y_Gr[gr_index][i + 1] < mass_y_Gr[gr_index][i]){ //ждем когда она перестанет возрастать
+                    if((mass_y_Gr[gr_index][i] - mass_y_Gr[gr_index][i + 1])>ui->doubleSpinBox1->value()){
+                        mass_maxX[gr_index].append(mass_x_Gr[gr_index][i]);
+                        mass_maxY[gr_index].append(mass_y_Gr[gr_index][i]);
+                        up = false;
                     }
-                }else{
-                    if (mass_y_Gr[gr_index][i + 1] > mass_y_Gr[gr_index][i]){ //ждем когда она перестанет убывать
-                        if((mass_y_Gr[gr_index][i+1] - mass_y_Gr[gr_index][i])>ui->doubleSpinBox1->value()){
-                            mass_minX[gr_index].append(mass_x_Gr[gr_index][i]);
-                            mass_minY[gr_index].append(mass_y_Gr[gr_index][i]);
-                            up = true;
-                        }
+                }
+            }else{
+                if (mass_y_Gr[gr_index][i + 1] > mass_y_Gr[gr_index][i]){ //ждем когда она перестанет убывать
+                    if((mass_y_Gr[gr_index][i+1] - mass_y_Gr[gr_index][i])>ui->doubleSpinBox1->value()){
+                        mass_minX[gr_index].append(mass_x_Gr[gr_index][i]);
+                        mass_minY[gr_index].append(mass_y_Gr[gr_index][i]);
+                        up = true;
                     }
                 }
             }
-            graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
-            graphMin->setName("Минимумы");
-            graphMin->setVisible(true);
-            graphMax->setData(mass_maxX[gr_index].toVector(), mass_maxY[gr_index].toVector());
-            graphMax->setName("Максимумы");
-            graphMax->setVisible(true);
-            ui->widget->replot();
+        }
+        graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
+        graphMin->setName("Минимумы");  graphMin->setVisible(true);
+        graphMax->setData(mass_maxX[gr_index].toVector(), mass_maxY[gr_index].toVector());
+        graphMax->setName("Максимумы"); graphMax->setVisible(true);
+        ui->widget->replot();
     }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
 
@@ -662,8 +649,7 @@ void MainWindow::on_action_13_triggered() //вызов вычисления пр
               j++;
       }
         this->x1=x1; this->x2=x2;
-      ui->Browser_Derivative->clear();
-      ui->Browser_Derivative->append(QString("Производная:\ndx/dy = ")+QString::number(sred));
+      ui->Browser_Derivative->setText("Производная:\ndx/dy = "+QString::number(sred));
       //delete derivative();
     }else{
         if ((ui->Spin_x1->value() == 0.0) && (ui->Spin_x2->value() == 0.0)) //чтобы 2 раза не выдавало сообщение об ошибке
@@ -690,10 +676,9 @@ void MainWindow::on_action_17_triggered() //МНК
                 xLevelMin[gr_index].append((yLevelMin[gr_index][0]- mnk1->get_b()) / mnk1->get_a());
                 xLevelMin[gr_index].append((yLevelMin[gr_index][0]- mnk1->get_b()) / mnk1->get_a());
                 xLevelMin[gr_index].append((yLevelMin[gr_index][0]- mnk1->get_b()) / mnk1->get_a());
-                ui->BrowserTime->clear();
                 xLevel = (yLevelMin[gr_index][0] - mnk1->get_b()) / mnk1->get_a();
                 yLevel = yLevelMin[gr_index][0];
-                ui->BrowserTime->append(QString::number(xLevel));
+                ui->BrowserTime->setText(QString::number(xLevel));
                 textListMNK[gr_index][0]->setText("("+QString::number(xLevel) + ")");
                 textListMNK[gr_index][0]->position->setCoords(xLevel+5, yLevel-2);
                 textListMNK[gr_index][0]->setVisible(true);
@@ -722,10 +707,9 @@ void MainWindow::on_action_17_triggered() //МНК
                 xLevelMax[gr_index].append((yLevelMax[gr_index][0]-mnk2->get_b()) / mnk2->get_a());
                 xLevelMax[gr_index].append((yLevelMax[gr_index][0]-mnk2->get_b()) / mnk2->get_a());
                 xLevelMax[gr_index].append((yLevelMax[gr_index][0]-mnk2->get_b()) / mnk2->get_a());
-                ui->BrowserTime->clear();
                 xLevel = (yLevelMax[gr_index][0] - mnk2->get_b()) / mnk2->get_a();
                 yLevel = yLevelMax[gr_index][0];
-                ui->BrowserTime->append(QString::number(xLevel));
+                ui->BrowserTime->setText(QString::number(xLevel));
                 textListMNK[gr_index][1]->setText("("+QString::number(xLevel) + ")");
                 textListMNK[gr_index][1]->position->setCoords(xLevel+5, yLevel-2);
                 textListMNK[gr_index][1]->setVisible(true);
@@ -801,6 +785,11 @@ void MainWindow::FalseVisibleAllGraph() //скрытие графов
             textListMNK[j][0]->setVisible(false);  textListMNK[j][1]->setVisible(false);
         }
     }
+    if (StWork1[gr_index].count() > 0){//если у графика есть точки рабочего режима, то показываем его
+        graphStartWork->setData(StWork1[gr_index].toVector(), StWork2[gr_index].toVector());
+        graphStartWork->setName("Старт рабочего режима");       graphStartWork->setVisible(true);
+    } else {graphStartWork->setName(" ");        graphStartWork->setVisible(false);}
+
     ui->widget->replot();
 }
 
@@ -816,6 +805,8 @@ void MainWindow::on_action_16_triggered() //очистка всех графов
         textListMNK[gr_index][0]->setVisible(false);  textListMNK[gr_index][1]->setVisible(false);
         textListMNK[gr_index][0]->setText("");  textListMNK[gr_index][1]->setText("");
         textListMin[gr_index].clear(); textListMax[gr_index].clear();
+        StWork1[gr_index].clear(); StWork2[gr_index].clear(); graphStartWork->setName(" "); graphStartWork->setVisible(false);
+        ui->Browser_stWork->setText("Фазы начала рабочего режима:");
         ui->widget->replot();
         }else{
         QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Отсутствуют графики!"));
@@ -833,9 +824,12 @@ void MainWindow::on_listWidget_clicked() //для перехода по граф
     graphic1->setName(ui->listWidget->item(gr_index)->text());
     //ui->Browser_Derivative->clear();
     //ui->Browser_Derivative->append(QString("Производная:\ndx/dy = ")+QString::number(sred));
-    ui->Browser_Max->clear(); ui->Browser_Min->clear();
-    ui->Browser_Min->append("Мин. X:\n" + QString("%1").arg(minx[gr_index]));
-    ui->Browser_Max->append("Макс. X:\n" + QString("%1").arg(maxx[gr_index]));
+    ui->Browser_Min->setText("Мин. X:\n" + QString("%1").arg(minx[gr_index]));
+    ui->Browser_Max->setText("Макс. X:\n" + QString("%1").arg(maxx[gr_index]));
+    ui->Browser_stWork->clear(); ui->Browser_stWork->append("Фазы начала рабочего режима:");
+    for(int i = 0; i < StWork1[gr_index].count(); i++){
+        ui->Browser_stWork->append(QString::number(i+1)+" - ("+QString::number(StWork1[gr_index][i])+"; "+QString::number(StWork2[gr_index][i])+")");
+    }
     ui->Spin_x1->setValue(0.0); ui->Spin_x2->setValue(0.0);
     graphSpan->setVisible(false);
     ui->SliderSpan->setValue(0);
@@ -867,20 +861,20 @@ void MainWindow::on_action_5_triggered() //удаление выделеного
         xLevelMin.removeAt(gr_index), yLevelMin.removeAt(gr_index),
         xLevelMax.removeAt(gr_index), yLevelMax.removeAt(gr_index);
         mass_x_Gr.removeAt(gr_index); mass_y_Gr.removeAt(gr_index);
+        StWork1[gr_index].removeAt(gr_index); StWork2[gr_index].removeAt(gr_index);
         ui->widget->xAxis->setLabel("");   ui->widget->yAxis->setLabel("");//важно сделать до replot
         ui->widget->replot();
         ui->listWidget->takeItem(gr_index); //удаляем из списка строку
         axis_x_Gr.removeAt(gr_index); axis_y_Gr.removeAt(gr_index);
 
         gr_index = 0; //передвигаем указатель графиков в начало
-        ui->textBrowser_X->clear(); ui->textBrowser_Y->clear();
-        ui->Browser_Max->clear(); ui->Browser_Min->clear(); ui->BrowserTime->clear();
-        ui->Browser_Max->append("Мин. X:");  ui->Browser_Min->append("Макс. X:");
-        ui->Browser_Derivative->clear(); ui->Browser_Derivative->append(QString("Производная:"));
+        ui->textBrowser_X->clear(); ui->textBrowser_Y->clear(); ui->BrowserTime->clear();
+        ui->Browser_Max->setText("Мин. X:");  ui->Browser_Min->setText("Макс. X:");
+        ui->Browser_Derivative->setText("Производная:");
+        ui->Browser_stWork->setText("Фазы начала рабочего режима:");
     }else{
         QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Отсутствуют графики!"));
     }
-
 }
 
 void MainWindow::on_action_manual_triggered() //запуск руководства пользователя
@@ -908,5 +902,43 @@ void MainWindow::on_SliderSpan_valueChanged(int value) //вкл./выкл. ди�
                                        ".QSlider::handle:horizontal {background: #d5d5d5; width: 22px; margin: 0px -7px; border-radius: 11px;}");
         graphSpan->setVisible(false); ui->widget->replot();
         ui->SliderSpan->setValue(0);
+    }
+}
+
+void MainWindow::on_startWork_triggered() //определение начала рабочего режима
+{
+    if (ui->listWidget->count() > 0){
+        if (StWork1[gr_index].count() == 0){
+            QList <double> tempX, tempY, mnkLine;
+            tempX.append(mass_x_Gr[gr_index][0]);  tempY.append(mass_y_Gr[gr_index][0]);
+            StWork1[gr_index].append(0.0);  StWork2[gr_index].append(0.0);
+            int ind = 0;
+            for(int i = 1; i < mass_x_Gr[gr_index].count(); i++){
+                tempX.append(mass_x_Gr[gr_index][i]);  tempY.append(mass_y_Gr[gr_index][i]);
+                mnk *mnk3 = new mnk(tempX, tempY, tempX.count());
+                for(int j = 0; j < tempX.count(); j++){
+                    mnkLine.append(mnk3->get_yy(tempX[j]));
+                }
+                if (mnk3->get_Kdet() > 0.9){ // от 0.8 до 0.95, было 0.9
+                     StWork1[gr_index][ind] = mass_x_Gr[gr_index][i-1];
+                     StWork2[gr_index][ind] = mass_y_Gr[gr_index][i-1];
+                     if (ind == 0) iWork = i-1; //запоминаем индекс только 1 первоой точки старта
+                }else if (i % 550 == 0){ //интервал, т.е. каждые 550 точек перестраиваемемся
+                    tempX.clear();    tempY.clear();
+                    StWork1[gr_index].append(0.0);   StWork2[gr_index].append(0.0);
+                    ind += 1;
+                }
+                delete mnk3; mnkLine.clear();
+            }
+            for(int i = 0; i < StWork1[gr_index].count(); i++){
+                ui->Browser_stWork->append(QString::number(i+1)+" - ("+QString::number(StWork1[gr_index][i])+"; "+QString::number(StWork2[gr_index][i])+")");
+            }
+            graphStartWork->setName("Старт рабочего режима");
+            graphStartWork->setData(StWork1[gr_index].toVector(), StWork2[gr_index].toVector());
+            graphStartWork->setVisible(true);
+            ui->widget->replot();
+        }
+    }else{
+    QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Отсутствуют графики!"));
     }
 }

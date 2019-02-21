@@ -9,6 +9,7 @@
 #include <QPoint>
 #include "qcustomplot.h"
 #include <QTimer>
+#include "mnk.h"
 
 using namespace std;
 namespace Ui {
@@ -20,7 +21,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 public slots:
@@ -84,8 +85,6 @@ private slots:
 
     void EnterPressedLineEditRename();
 
-    void ButtonPressedReaxis();
-
     void manualSetView();
 
     void on_action_manual_triggered();
@@ -100,23 +99,27 @@ private slots:
 
     void on_SliderSpan_valueChanged(int value);
 
+    void on_startWork_triggered();
+
 private:
     Ui::MainWindow *ui;
-    QLineEdit *lineEditRename, *lineE1, *lineE2;
+    QLineEdit *lineEditRename;
     QListWidgetItem *itRename;
     bool mouseDown, left; //mauseDown - при движении мыши, проверяем была ли нажата правая кнопка, left - переключатель
     double prdelfun(double x1,double x2,double y1,double y2); //процедура для поиска предела функции
     double prfun(double px); //функции для поиска предела функции
     QList<QList<double> > mass_x_Gr, mass_y_Gr; //массив x и y каждого графика
     QList<QList<double> > mass_minX, mass_maxX, mass_minY, mass_maxY, trendMin, trendMax; //массивы мин. и макс. x, y и и точки для линии тренда для каждого графика
-    QList<QList<double> > xLevelMin, yLevelMin, xLevelMax, yLevelMax;
+    QList<QList<double> > xLevelMin, yLevelMin, xLevelMax, yLevelMax, StWork1,StWork2;
     QList <QString> mnkStrMin, mnkStrMax; //для сохраниения легенды мнк
     QList <double> minx, miny, maxx, maxy, koef; //мин. и макс. x, y и коэффициент
     QList <QString> axis_x_Gr, axis_y_Gr; //наименования осей каждого графика
     QVector<double> dirivate; //массив производных
     double x1, x2;
+    int iWork;//индекс значения начала рабочего режима
     QVector<double> spanX, spanY; //данные для диапазона иксов
-    QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax, *graphSpan; //все графики
+    QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax, *graphSpan, *graphStartWork; //все графики
+
     QList<QList<QCPItemText*> > textListMin, textListMax;//точки экстрем. для отображения координат
     QList<QList<QCPItemText*> > textListMNK; //для подписи точки МНК на нулевом месте будет min, а на 1 max
     QTimer timer; int t, gr_index; //таймер для добавления чисел в список на форму и переменная t для прохода по массиву

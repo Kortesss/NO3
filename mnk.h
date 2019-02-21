@@ -11,6 +11,7 @@ public:
     mnk(QList <double> &x, QList <double> &y, int n);
     double get_yy(double x);
     double get_Kdet();
+    double get_Kcor();
     double get_a();
     double get_b();
 private:

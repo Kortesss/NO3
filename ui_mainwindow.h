@@ -58,6 +58,7 @@ public:
     QAction *action_manual;
     QAction *action_about;
     QAction *action_filter;
+    QAction *startWork;
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout;
     QVBoxLayout *verticalLayout_2;
@@ -79,9 +80,10 @@ public:
     QSlider *SliderSpan;
     QListWidget *listWidget;
     QGridLayout *gridLayout_3;
-    QTextBrowser *Browser_Min;
     QTextBrowser *Browser_Derivative;
     QTextBrowser *Browser_Max;
+    QTextBrowser *Browser_Min;
+    QTextBrowser *Browser_stWork;
     QGridLayout *gridLayout_2;
     QCustomPlot *widget;
     QGroupBox *groupBox_2;
@@ -103,7 +105,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(617, 537);
+        MainWindow->resize(689, 582);
         action = new QAction(MainWindow);
         action->setObjectName(QStringLiteral("action"));
         QIcon icon;
@@ -158,6 +160,8 @@ public:
         action_about->setObjectName(QStringLiteral("action_about"));
         action_filter = new QAction(MainWindow);
         action_filter->setObjectName(QStringLiteral("action_filter"));
+        startWork = new QAction(MainWindow);
+        startWork->setObjectName(QStringLiteral("startWork"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         verticalLayout = new QVBoxLayout(centralWidget);
@@ -299,7 +303,7 @@ public:
         sizePolicy.setHeightForWidth(listWidget->sizePolicy().hasHeightForWidth());
         listWidget->setSizePolicy(sizePolicy);
         listWidget->setMinimumSize(QSize(130, 0));
-        listWidget->setMaximumSize(QSize(140, 170));
+        listWidget->setMaximumSize(QSize(140, 158));
         listWidget->setSortingEnabled(false);
 
         horizontalLayout->addWidget(listWidget);
@@ -307,14 +311,9 @@ public:
         gridLayout_3 = new QGridLayout();
         gridLayout_3->setSpacing(6);
         gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
-        Browser_Min = new QTextBrowser(centralWidget);
-        Browser_Min->setObjectName(QStringLiteral("Browser_Min"));
-        Browser_Min->setMaximumSize(QSize(113, 38));
-
-        gridLayout_3->addWidget(Browser_Min, 1, 0, 1, 1);
-
         Browser_Derivative = new QTextBrowser(centralWidget);
         Browser_Derivative->setObjectName(QStringLiteral("Browser_Derivative"));
+        Browser_Derivative->setMinimumSize(QSize(106, 0));
         Browser_Derivative->setMaximumSize(QSize(113, 50));
         Browser_Derivative->setSizeIncrement(QSize(0, 0));
         Browser_Derivative->setBaseSize(QSize(0, 0));
@@ -327,6 +326,19 @@ public:
         Browser_Max->setMaximumSize(QSize(113, 38));
 
         gridLayout_3->addWidget(Browser_Max, 2, 0, 1, 1);
+
+        Browser_Min = new QTextBrowser(centralWidget);
+        Browser_Min->setObjectName(QStringLiteral("Browser_Min"));
+        Browser_Min->setMaximumSize(QSize(113, 38));
+
+        gridLayout_3->addWidget(Browser_Min, 1, 0, 1, 1);
+
+        Browser_stWork = new QTextBrowser(centralWidget);
+        Browser_stWork->setObjectName(QStringLiteral("Browser_stWork"));
+        Browser_stWork->setMinimumSize(QSize(142, 0));
+        Browser_stWork->setMaximumSize(QSize(144, 16777215));
+
+        gridLayout_3->addWidget(Browser_stWork, 0, 1, 3, 1);
 
 
         horizontalLayout->addLayout(gridLayout_3);
@@ -389,7 +401,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 617, 21));
+        menuBar->setGeometry(QRect(0, 0, 689, 21));
         menu = new QMenu(menuBar);
         menu->setObjectName(QStringLiteral("menu"));
         menu_2 = new QMenu(menuBar);
@@ -436,6 +448,7 @@ public:
         menu_4->addAction(menu_5->menuAction());
         menu_4->addAction(actionD);
         menu_4->addAction(action_filter);
+        menu_4->addAction(startWork);
         menu_5->addAction(menu_3->menuAction());
         menu_3->addAction(action_17);
         menu_3->addAction(action_19);
@@ -480,6 +493,7 @@ public:
         action_manual->setShortcut(QApplication::translate("MainWindow", "F1", 0));
         action_about->setText(QApplication::translate("MainWindow", "\320\236 \320\277\321\200\320\276\320\263\321\200\320\260\320\274\320\274\320\265", 0));
         action_filter->setText(QApplication::translate("MainWindow", "\320\244\320\270\320\273\321\214\321\202\321\200\320\260\321\206\320\270\321\217 \321\201\320\270\320\263\320\275\320\260\320\273\320\260", 0));
+        startWork->setText(QApplication::translate("MainWindow", "\320\235\320\260\321\207\320\260\320\273\320\276 \321\200\320\260\320\261\320\276\321\207\320\265\320\263\320\276 \321\200\320\265\320\266\320\270\320\274\320\260", 0));
         label_5->setText(QApplication::translate("MainWindow", "\320\222\321\200\320\265\320\274\321\217 \320\277\321\200\320\270 \321\203\321\201\321\202\320\260\320\275\320\276\320\262\320\273\320\265\320\275\320\276\320\274 %", 0));
         label_3->setText(QApplication::translate("MainWindow", "\320\232\320\276\320\275\320\265\321\207\320\275\320\276\320\265 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\265", 0));
         label_2->setText(QApplication::translate("MainWindow", "\320\244\320\270\320\273\321\214\321\202\321\200\320\260\321\206\320\270\321\217 \321\215\320\272\321\201\321\202\321\200\320\265\320\274\321\203\320\274\320\276\320\262", 0));
@@ -488,11 +502,6 @@ public:
         label->setText(QApplication::translate("MainWindow", "\320\235\320\260\321\207\320\260\320\273\321\214\320\275\320\276\320\265 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\265", 0));
         label_6->setText(QApplication::translate("MainWindow", "\320\224\320\270\320\260\320\277\320\260\320\267\320\276\320\275 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\271:", 0));
         checkMax->setText(QApplication::translate("MainWindow", "\320\234\320\260\320\272\321\201\320\270\320\274\321\203\320\274", 0));
-        Browser_Min->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">\320\234\320\270\320\275. X: </p></body></html>", 0));
         Browser_Derivative->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -503,6 +512,16 @@ public:
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">\320\234\320\260\320\272\321\201. X: </p></body></html>", 0));
+        Browser_Min->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">\320\234\320\270\320\275. X: </p></body></html>", 0));
+        Browser_stWork->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">\320\244\320\260\320\267\321\213 \320\275\320\260\321\207\320\260\320\273\320\260 \321\200\320\260\320\261\320\276\321\207\320\265\320\263\320\276 \321\200\320\265\320\266\320\270\320\274\320\260:</p></body></html>", 0));
         groupBox_2->setTitle(QApplication::translate("MainWindow", "\320\227\320\275\320\260\321\207\320\265\320\275\320\270\321\217 Y:", 0));
         groupBox->setTitle(QApplication::translate("MainWindow", "\320\227\320\275\320\260\321\207\320\265\320\275\320\270\321\217 X:", 0));
         menu->setTitle(QApplication::translate("MainWindow", "\320\234\320\265\320\275\321\216", 0));
