@@ -59,25 +59,28 @@ public:
     QAction *action_about;
     QAction *action_filter;
     QAction *startWork;
+    QAction *action_SaveDataGr;
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout;
     QVBoxLayout *verticalLayout_2;
     QHBoxLayout *horizontalLayout;
     QGridLayout *gridLayout;
+    QLabel *label;
+    QDoubleSpinBox *Spin_x1;
+    QLabel *label_4;
+    QCheckBox *checkMin;
+    QDoubleSpinBox *doubleSpinBox1;
     QDoubleSpinBox *spinLevel;
     QLabel *label_5;
     QDoubleSpinBox *Spin_x2;
     QLabel *label_3;
     QLabel *label_2;
-    QCheckBox *checkMin;
-    QLabel *label_4;
-    QDoubleSpinBox *Spin_x1;
-    QLabel *label;
-    QDoubleSpinBox *doubleSpinBox1;
-    QLabel *label_6;
-    QTextBrowser *BrowserTime;
     QCheckBox *checkMax;
+    QTextBrowser *BrowserTime;
+    QLabel *label_6;
     QSlider *SliderSpan;
+    QDoubleSpinBox *SpinExp;
+    QCheckBox *checkExp;
     QListWidget *listWidget;
     QGridLayout *gridLayout_3;
     QTextBrowser *Browser_Derivative;
@@ -105,7 +108,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(689, 582);
+        MainWindow->resize(780, 582);
         action = new QAction(MainWindow);
         action->setObjectName(QStringLiteral("action"));
         QIcon icon;
@@ -125,7 +128,7 @@ public:
         action_12 = new QAction(MainWindow);
         action_12->setObjectName(QStringLiteral("action_12"));
         QIcon icon2;
-        icon2.addFile(QStringLiteral(":/img/img/512px-Save_font_awesome.svg.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon2.addFile(QStringLiteral(":/img/img/Line-Chart-icon.png"), QSize(), QIcon::Normal, QIcon::Off);
         action_12->setIcon(icon2);
         action_16 = new QAction(MainWindow);
         action_16->setObjectName(QStringLiteral("action_16"));
@@ -162,6 +165,11 @@ public:
         action_filter->setObjectName(QStringLiteral("action_filter"));
         startWork = new QAction(MainWindow);
         startWork->setObjectName(QStringLiteral("startWork"));
+        action_SaveDataGr = new QAction(MainWindow);
+        action_SaveDataGr->setObjectName(QStringLiteral("action_SaveDataGr"));
+        QIcon icon3;
+        icon3.addFile(QStringLiteral(":/img/img/512px-Save_font_awesome.svg.png"), QSize(), QIcon::Normal, QIcon::Off);
+        action_SaveDataGr->setIcon(icon3);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         verticalLayout = new QVBoxLayout(centralWidget);
@@ -180,6 +188,43 @@ public:
         gridLayout->setSpacing(6);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
         gridLayout->setContentsMargins(-1, -1, 0, -1);
+        label = new QLabel(centralWidget);
+        label->setObjectName(QStringLiteral("label"));
+        label->setMaximumSize(QSize(153, 16777215));
+
+        gridLayout->addWidget(label, 3, 0, 1, 1);
+
+        Spin_x1 = new QDoubleSpinBox(centralWidget);
+        Spin_x1->setObjectName(QStringLiteral("Spin_x1"));
+        Spin_x1->setMinimumSize(QSize(0, 0));
+        Spin_x1->setMaximumSize(QSize(80, 20));
+        Spin_x1->setDecimals(3);
+        Spin_x1->setMaximum(9999.99);
+
+        gridLayout->addWidget(Spin_x1, 3, 1, 1, 1);
+
+        label_4 = new QLabel(centralWidget);
+        label_4->setObjectName(QStringLiteral("label_4"));
+        label_4->setMaximumSize(QSize(153, 16777215));
+
+        gridLayout->addWidget(label_4, 1, 0, 1, 1);
+
+        checkMin = new QCheckBox(centralWidget);
+        checkMin->setObjectName(QStringLiteral("checkMin"));
+        checkMin->setLayoutDirection(Qt::RightToLeft);
+
+        gridLayout->addWidget(checkMin, 7, 0, 1, 1);
+
+        doubleSpinBox1 = new QDoubleSpinBox(centralWidget);
+        doubleSpinBox1->setObjectName(QStringLiteral("doubleSpinBox1"));
+        doubleSpinBox1->setFocusPolicy(Qt::WheelFocus);
+        doubleSpinBox1->setDecimals(2);
+        doubleSpinBox1->setMaximum(99.99);
+        doubleSpinBox1->setSingleStep(0.01);
+        doubleSpinBox1->setValue(0.05);
+
+        gridLayout->addWidget(doubleSpinBox1, 0, 1, 1, 1);
+
         spinLevel = new QDoubleSpinBox(centralWidget);
         spinLevel->setObjectName(QStringLiteral("spinLevel"));
         spinLevel->setDecimals(1);
@@ -213,48 +258,10 @@ public:
 
         gridLayout->addWidget(label_2, 0, 0, 1, 1);
 
-        checkMin = new QCheckBox(centralWidget);
-        checkMin->setObjectName(QStringLiteral("checkMin"));
-        checkMin->setLayoutDirection(Qt::RightToLeft);
+        checkMax = new QCheckBox(centralWidget);
+        checkMax->setObjectName(QStringLiteral("checkMax"));
 
-        gridLayout->addWidget(checkMin, 6, 0, 1, 1);
-
-        label_4 = new QLabel(centralWidget);
-        label_4->setObjectName(QStringLiteral("label_4"));
-        label_4->setMaximumSize(QSize(153, 16777215));
-
-        gridLayout->addWidget(label_4, 1, 0, 1, 1);
-
-        Spin_x1 = new QDoubleSpinBox(centralWidget);
-        Spin_x1->setObjectName(QStringLiteral("Spin_x1"));
-        Spin_x1->setMinimumSize(QSize(0, 0));
-        Spin_x1->setMaximumSize(QSize(80, 20));
-        Spin_x1->setDecimals(3);
-        Spin_x1->setMaximum(9999.99);
-
-        gridLayout->addWidget(Spin_x1, 3, 1, 1, 1);
-
-        label = new QLabel(centralWidget);
-        label->setObjectName(QStringLiteral("label"));
-        label->setMaximumSize(QSize(153, 16777215));
-
-        gridLayout->addWidget(label, 3, 0, 1, 1);
-
-        doubleSpinBox1 = new QDoubleSpinBox(centralWidget);
-        doubleSpinBox1->setObjectName(QStringLiteral("doubleSpinBox1"));
-        doubleSpinBox1->setFocusPolicy(Qt::WheelFocus);
-        doubleSpinBox1->setDecimals(2);
-        doubleSpinBox1->setMaximum(99.99);
-        doubleSpinBox1->setSingleStep(0.01);
-        doubleSpinBox1->setValue(0.05);
-
-        gridLayout->addWidget(doubleSpinBox1, 0, 1, 1, 1);
-
-        label_6 = new QLabel(centralWidget);
-        label_6->setObjectName(QStringLiteral("label_6"));
-        label_6->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
-
-        gridLayout->addWidget(label_6, 7, 0, 1, 1);
+        gridLayout->addWidget(checkMax, 7, 1, 1, 1);
 
         BrowserTime = new QTextBrowser(centralWidget);
         BrowserTime->setObjectName(QStringLiteral("BrowserTime"));
@@ -263,10 +270,11 @@ public:
 
         gridLayout->addWidget(BrowserTime, 2, 1, 1, 1);
 
-        checkMax = new QCheckBox(centralWidget);
-        checkMax->setObjectName(QStringLiteral("checkMax"));
+        label_6 = new QLabel(centralWidget);
+        label_6->setObjectName(QStringLiteral("label_6"));
+        label_6->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
-        gridLayout->addWidget(checkMax, 6, 1, 1, 1);
+        gridLayout->addWidget(label_6, 8, 0, 1, 1);
 
         SliderSpan = new QSlider(centralWidget);
         SliderSpan->setObjectName(QStringLiteral("SliderSpan"));
@@ -290,7 +298,23 @@ public:
         SliderSpan->setPageStep(1);
         SliderSpan->setOrientation(Qt::Horizontal);
 
-        gridLayout->addWidget(SliderSpan, 7, 1, 1, 1);
+        gridLayout->addWidget(SliderSpan, 8, 1, 1, 1);
+
+        SpinExp = new QDoubleSpinBox(centralWidget);
+        SpinExp->setObjectName(QStringLiteral("SpinExp"));
+        SpinExp->setEnabled(false);
+        SpinExp->setDecimals(2);
+        SpinExp->setMaximum(1);
+        SpinExp->setSingleStep(0.01);
+        SpinExp->setValue(0.5);
+
+        gridLayout->addWidget(SpinExp, 6, 1, 1, 1);
+
+        checkExp = new QCheckBox(centralWidget);
+        checkExp->setObjectName(QStringLiteral("checkExp"));
+        checkExp->setLayoutDirection(Qt::RightToLeft);
+
+        gridLayout->addWidget(checkExp, 6, 0, 1, 1);
 
 
         horizontalLayout->addLayout(gridLayout);
@@ -401,7 +425,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 689, 21));
+        menuBar->setGeometry(QRect(0, 0, 780, 21));
         menu = new QMenu(menuBar);
         menu->setObjectName(QStringLiteral("menu"));
         menu_2 = new QMenu(menuBar);
@@ -439,6 +463,7 @@ public:
         menu->addAction(action_16);
         menu->addAction(action_5);
         menu->addAction(action_12);
+        menu->addAction(action_SaveDataGr);
         menu->addAction(action_exit);
         menu_2->addAction(action_10);
         menu_2->addAction(action_9);
@@ -473,8 +498,8 @@ public:
 #endif // QT_NO_TOOLTIP
         action_exit->setText(QApplication::translate("MainWindow", "\320\222\321\213\321\205\320\276\320\264", 0));
         action_exit->setShortcut(QApplication::translate("MainWindow", "Ctrl+Q", 0));
-        action_12->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\263\321\200\320\260\321\204\320\270\320\272", 0));
-        action_12->setShortcut(QApplication::translate("MainWindow", "Ctrl+S", 0));
+        action_12->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\270\320\267\320\276\320\261\321\200\320\260\320\266\320\265\320\275\320\270\320\265 \320\263\321\200\320\260\321\204\320\270\320\272\320\260", 0));
+        action_12->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+S", 0));
         action_16->setText(QApplication::translate("MainWindow", "\320\236\321\207\320\270\321\201\321\202\320\270\321\202\321\214 \320\263\321\200\320\260\321\204\321\213", 0));
         action_21->setText(QApplication::translate("MainWindow", "\320\223\321\200\320\260\321\204\320\270\320\272 \321\201\320\272\320\276\321\200\320\276\321\201\321\202\320\270 \320\270\320\267\320\274\320\265\320\275\320\265\320\275\320\270\321\217 \320\277\320\260\321\200\320\260\320\274\320\265\321\202\321\200\320\260", 0));
         actionD->setText(QApplication::translate("MainWindow", "\316\224 \321\201\320\270\320\263\320\275\320\260\320\273\320\260", 0));
@@ -494,14 +519,17 @@ public:
         action_about->setText(QApplication::translate("MainWindow", "\320\236 \320\277\321\200\320\276\320\263\321\200\320\260\320\274\320\274\320\265", 0));
         action_filter->setText(QApplication::translate("MainWindow", "\320\244\320\270\320\273\321\214\321\202\321\200\320\260\321\206\320\270\321\217 \321\201\320\270\320\263\320\275\320\260\320\273\320\260", 0));
         startWork->setText(QApplication::translate("MainWindow", "\320\235\320\260\321\207\320\260\320\273\320\276 \321\200\320\260\320\261\320\276\321\207\320\265\320\263\320\276 \321\200\320\265\320\266\320\270\320\274\320\260", 0));
+        action_SaveDataGr->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\321\217 \320\263\321\200\320\260\321\204\320\270\320\272\320\260", 0));
+        action_SaveDataGr->setShortcut(QApplication::translate("MainWindow", "Ctrl+S", 0));
+        label->setText(QApplication::translate("MainWindow", "\320\235\320\260\321\207\320\260\320\273\321\214\320\275\320\276\320\265 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\265", 0));
+        label_4->setText(QApplication::translate("MainWindow", "\320\237\320\276\321\200\320\276\320\263 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\321\217 \321\202\321\200\320\265\320\275\320\264\320\260, %", 0));
+        checkMin->setText(QApplication::translate("MainWindow", "\320\234\320\270\320\275\320\270\320\274\321\203\320\274", 0));
         label_5->setText(QApplication::translate("MainWindow", "\320\222\321\200\320\265\320\274\321\217 \320\277\321\200\320\270 \321\203\321\201\321\202\320\260\320\275\320\276\320\262\320\273\320\265\320\275\320\276\320\274 %", 0));
         label_3->setText(QApplication::translate("MainWindow", "\320\232\320\276\320\275\320\265\321\207\320\275\320\276\320\265 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\265", 0));
         label_2->setText(QApplication::translate("MainWindow", "\320\244\320\270\320\273\321\214\321\202\321\200\320\260\321\206\320\270\321\217 \321\215\320\272\321\201\321\202\321\200\320\265\320\274\321\203\320\274\320\276\320\262", 0));
-        checkMin->setText(QApplication::translate("MainWindow", "\320\234\320\270\320\275\320\270\320\274\321\203\320\274", 0));
-        label_4->setText(QApplication::translate("MainWindow", "\320\237\320\276\321\200\320\276\320\263 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\321\217 \321\202\321\200\320\265\320\275\320\264\320\260, %", 0));
-        label->setText(QApplication::translate("MainWindow", "\320\235\320\260\321\207\320\260\320\273\321\214\320\275\320\276\320\265 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\265", 0));
-        label_6->setText(QApplication::translate("MainWindow", "\320\224\320\270\320\260\320\277\320\260\320\267\320\276\320\275 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\271:", 0));
         checkMax->setText(QApplication::translate("MainWindow", "\320\234\320\260\320\272\321\201\320\270\320\274\321\203\320\274", 0));
+        label_6->setText(QApplication::translate("MainWindow", "\320\224\320\270\320\260\320\277\320\260\320\267\320\276\320\275 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\271:", 0));
+        checkExp->setText(QApplication::translate("MainWindow", "\320\255\320\272\321\201\320\277\320\276\320\275\320\265\320\275\321\206\320\270\320\260\320\273\321\214\320\275\320\276\320\265 \321\201\320\263\320\273\320\260\320\266\320\270\320\262\320\260\320\275\320\270\320\265", 0));
         Browser_Derivative->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"

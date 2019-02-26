@@ -150,6 +150,7 @@ compiler_rcc_clean:
 release/qrc_source.cpp: source.qrc \
 		img/open.png \
 		img/512px-Save_font_awesome.svg.png \
+		img/Line-Chart-icon.png \
 		img/heart-monitor.png \
 		img/exit.png
 	C:\Qt\Qt5.5.1\5.5\mingw492_32\bin\rcc.exe -name source source.qrc -o release\qrc_source.cpp
@@ -4822,7 +4823,6 @@ release/mainwindow.o: mainwindow.cpp mainwindow.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QListWidget \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QMenu \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QMenuBar \
-		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QPushButton \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QSlider \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QStatusBar \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QTextBrowser \

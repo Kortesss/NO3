@@ -52,7 +52,7 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     QPen Pen1; Pen1.setWidthF(2); Pen1.setColor(QColor(192,192,192, 200)); //серый цвет с непрозрачностью 200
     graphSpan->setPen(Pen1);
     graphSpan->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
-    graphSpan->setName("Диапазон значений");
+    graphSpan->setName("Диапазон значений"); graphSpan->setVisible(false);
 
     graphStartWork = ui->widget->addGraph();	//Старт рабочего режима
     graphStartWork->setName(" ");    graphStartWork->setPen(QColor(128, 0, 128, 255));
@@ -155,7 +155,7 @@ void MainWindow::on_action_triggered() //выбор файла и заполне
         axis_x_Gr.append("x");   axis_y_Gr.append("y");
         ui->widget->xAxis->setLabel(axis_x_Gr[gr_index]);   ui->widget->yAxis->setLabel(axis_y_Gr[gr_index]);
         ui->listWidget->setCurrentRow(gr_index); //устанавливаем выделение последнему загруженному графику
-        FalseVisibleAllGraph(); //очищаем все графы предыдущего графика
+        on_listWidget_clicked();//очищаем все графы предыдущего графика
     }else {delete it; delete progBar;  /*delete btn;*/  delete l; delete wgt;}
 }
 
@@ -328,14 +328,17 @@ void MainWindow::on_action_4_triggered() //Рисуем график y=x*x
 void MainWindow::on_action_filter_triggered() //Фильрация сигнала
 {
     if (ui->listWidget->count() > 0){
-        /*int x0 = 0, xN = mass_x_Gr[gr_index].count();
-        if ((ui->Spin_x2 != 0) && (graphSpan->visible())){
-            for(int i = 0; i < mass_x_Gr[gr_index].count(); i++){
-                if (mass_x_Gr[gr_index][i] == ui->Spin_x1->value())  x0 = i;
-                if (mass_x_Gr[gr_index][i] == ui->Spin_x2->value())  xN = i;
+        QList <double> tempX, tempY;
+        FilterFFT *FFTWindow;
+        if (graphSpan->visible()){
+            for (int i = 0; i < mass_x_Gr[gr_index].count(); i++){
+                if (mass_x_Gr[gr_index][i] >= ui->Spin_x1->value() && (mass_x_Gr[gr_index][i] <= ui->Spin_x2->value())){
+                    tempX.append(mass_x_Gr[gr_index][i]);  tempY.append(mass_y_Gr[gr_index][i]);
+                }
             }
-        }*/
-        FilterFFT *FFTWindow = new FilterFFT(mass_x_Gr[gr_index], mass_y_Gr[gr_index], this);
+            FFTWindow = new FilterFFT(tempX, tempY, axis_x_Gr[gr_index], axis_y_Gr[gr_index], this);
+        }else FFTWindow = new FilterFFT(mass_x_Gr[gr_index], mass_y_Gr[gr_index], axis_x_Gr[gr_index], axis_y_Gr[gr_index], this);
+
         FFTWindow->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - фильтрация сигнала");
         FFTWindow->show();
         FFTWindow->setAttribute(Qt::WA_DeleteOnClose); //деструктор
@@ -468,6 +471,22 @@ void MainWindow::spanMouseUp(QMouseEvent *event)
             mouseDown = false;
             if (graphSpan->visible()) ui->SliderSpan->setValue(1);
             else ui->SliderSpan->setValue(0);
+            //экспоненциальное сглаживание
+            if (ui->checkExp->isChecked()){
+            expYcopy = expY;
+            for (int i = 1; i < mass_x_Gr[gr_index].count(); i++){
+                if ((mass_x_Gr[gr_index][i] < ui->Spin_x1->value()) || (mass_x_Gr[gr_index][i] > ui->Spin_x2->value())){
+                    expY[i] = expYcopy[i];
+                }else if ((mass_x_Gr[gr_index][i] >= ui->Spin_x1->value()) && (mass_x_Gr[gr_index][i] <= ui->Spin_x2->value())){
+                    expY[i] = expY[i-1] + ui->SpinExp->value() * (expYcopy[i] - expY[i-1]);
+                }else{
+                    expY[i] = expYcopy[i];
+                }
+            }
+
+            graphic1->setData(mass_x_Gr[gr_index].toVector(), expY.toVector());
+            ui->widget->replot();
+            }
         }
     }
 }
@@ -835,6 +854,7 @@ void MainWindow::on_listWidget_clicked() //для перехода по граф
     ui->SliderSpan->setValue(0);
     ui->widget->xAxis->setLabel(axis_x_Gr[gr_index]);    ui->widget->yAxis->setLabel(axis_y_Gr[gr_index]);
     FalseVisibleAllGraph();
+    expY = mass_y_Gr[gr_index];
 }
 
 void MainWindow::on_listWidget_doubleClicked() //для отображения координат графика
@@ -908,8 +928,10 @@ void MainWindow::on_SliderSpan_valueChanged(int value) //вкл./выкл. ди�
 void MainWindow::on_startWork_triggered() //определение начала рабочего режима
 {
     if (ui->listWidget->count() > 0){
-        if (StWork1[gr_index].count() == 0){
+        //if (StWork1[gr_index].count() == 0){
             QList <double> tempX, tempY, mnkLine;
+            StWork1[gr_index].clear();StWork2[gr_index].clear();
+            tempX.clear(); tempY.clear();
             tempX.append(mass_x_Gr[gr_index][0]);  tempY.append(mass_y_Gr[gr_index][0]);
             StWork1[gr_index].append(0.0);  StWork2[gr_index].append(0.0);
             int ind = 0;
@@ -919,7 +941,7 @@ void MainWindow::on_startWork_triggered() //определение начала 
                 for(int j = 0; j < tempX.count(); j++){
                     mnkLine.append(mnk3->get_yy(tempX[j]));
                 }
-                if (mnk3->get_Kdet() > 0.9){ // от 0.8 до 0.95, было 0.9
+                if (mnk3->get_Kdet() > 0.9){ // от 0.9 до 0.95, было 0.9
                      StWork1[gr_index][ind] = mass_x_Gr[gr_index][i-1];
                      StWork2[gr_index][ind] = mass_y_Gr[gr_index][i-1];
                      if (ind == 0) iWork = i-1; //запоминаем индекс только 1 первоой точки старта
@@ -937,8 +959,40 @@ void MainWindow::on_startWork_triggered() //определение начала 
             graphStartWork->setData(StWork1[gr_index].toVector(), StWork2[gr_index].toVector());
             graphStartWork->setVisible(true);
             ui->widget->replot();
-        }
+       // }
     }else{
     QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Отсутствуют графики!"));
     }
+}
+
+void MainWindow::on_action_8_triggered() //Савицкого-Голея
+{
+    if (ui->listWidget->count() > 0){
+        //expSmooth *WinExp=new expSmooth(mass_x_Gr[gr_index], mass_y_Gr[gr_index], axis_x_Gr[gr_index], axis_y_Gr[gr_index], this);
+        //WinExp->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - экспоненциальное сглаживание");
+        //WinExp->show();
+        //WinExp->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
+}
+
+void MainWindow::on_action_SaveDataGr_triggered() //сохранение данных графика в файл
+{
+    if (ui->listWidget->count() > 0){
+        QString nameGr = "Эксп_сглажиние_" + ui->listWidget->item(gr_index)->text();
+        QString fileName = QFileDialog::getSaveFileName(0, QString::fromUtf8("Сохранение преобразованного сигнала"),
+                      nameGr, "Файл txt (*.txt)");
+        QFile fileOut(fileName);
+            if(fileOut.open(QIODevice::WriteOnly | QIODevice::Text)){
+                QTextStream writeStream(&fileOut); // Создаем объект класса QTextStream
+                for(int i = 0; i < mass_x_Gr[gr_index].count(); i++){
+                    writeStream << mass_x_Gr[gr_index][i] << "\t" << expY[i] << "\n";
+                }
+                fileOut.close();
+            }
+     }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Для начала, необходимо загрузить данные."));
+}
+
+void MainWindow::on_checkExp_clicked(bool checked) //вкл./выкл. эксп. сглаживания
+{
+    ui->SpinExp->setEnabled(checked);
 }

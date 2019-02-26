@@ -101,6 +101,12 @@ private slots:
 
     void on_startWork_triggered();
 
+    void on_action_8_triggered();
+
+    void on_action_SaveDataGr_triggered();
+
+    void on_checkExp_clicked(bool checked);
+
 private:
     Ui::MainWindow *ui;
     QLineEdit *lineEditRename;
@@ -113,6 +119,7 @@ private:
     QList<QList<double> > xLevelMin, yLevelMin, xLevelMax, yLevelMax, StWork1,StWork2;
     QList <QString> mnkStrMin, mnkStrMax; //для сохраниения легенды мнк
     QList <double> minx, miny, maxx, maxy, koef; //мин. и макс. x, y и коэффициент
+    QList <double> expY, expYcopy; //для экспоненциального сглаживания
     QList <QString> axis_x_Gr, axis_y_Gr; //наименования осей каждого графика
     QVector<double> dirivate; //массив производных
     double x1, x2;
