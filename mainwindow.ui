@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>689</width>
+    <width>780</width>
     <height>582</height>
    </rect>
   </property>
@@ -30,6 +30,83 @@
           <property name="rightMargin">
            <number>0</number>
           </property>
+          <item row="3" column="0">
+           <widget class="QLabel" name="label">
+            <property name="maximumSize">
+             <size>
+              <width>153</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Начальное значение</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QDoubleSpinBox" name="Spin_x1">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>20</height>
+             </size>
+            </property>
+            <property name="decimals">
+             <number>3</number>
+            </property>
+            <property name="maximum">
+             <double>9999.989999999999782</double>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_4">
+            <property name="maximumSize">
+             <size>
+              <width>153</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Порог значения тренда, %</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0">
+           <widget class="QCheckBox" name="checkMin">
+            <property name="layoutDirection">
+             <enum>Qt::RightToLeft</enum>
+            </property>
+            <property name="text">
+             <string>Минимум</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QDoubleSpinBox" name="doubleSpinBox1">
+            <property name="focusPolicy">
+             <enum>Qt::WheelFocus</enum>
+            </property>
+            <property name="decimals">
+             <number>2</number>
+            </property>
+            <property name="maximum">
+             <double>99.989999999999995</double>
+            </property>
+            <property name="singleStep">
+             <double>0.010000000000000</double>
+            </property>
+            <property name="value">
+             <double>0.050000000000000</double>
+            </property>
+           </widget>
+          </item>
           <item row="1" column="1">
            <widget class="QDoubleSpinBox" name="spinLevel">
             <property name="decimals">
@@ -95,90 +172,10 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="0">
-           <widget class="QCheckBox" name="checkMin">
-            <property name="layoutDirection">
-             <enum>Qt::RightToLeft</enum>
-            </property>
+          <item row="7" column="1">
+           <widget class="QCheckBox" name="checkMax">
             <property name="text">
-             <string>Минимум</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_4">
-            <property name="maximumSize">
-             <size>
-              <width>153</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Порог значения тренда, %</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QDoubleSpinBox" name="Spin_x1">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>80</width>
-              <height>20</height>
-             </size>
-            </property>
-            <property name="decimals">
-             <number>3</number>
-            </property>
-            <property name="maximum">
-             <double>9999.989999999999782</double>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label">
-            <property name="maximumSize">
-             <size>
-              <width>153</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Начальное значение</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QDoubleSpinBox" name="doubleSpinBox1">
-            <property name="focusPolicy">
-             <enum>Qt::WheelFocus</enum>
-            </property>
-            <property name="decimals">
-             <number>2</number>
-            </property>
-            <property name="maximum">
-             <double>99.989999999999995</double>
-            </property>
-            <property name="singleStep">
-             <double>0.010000000000000</double>
-            </property>
-            <property name="value">
-             <double>0.050000000000000</double>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="0">
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>Диапазон значений:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             <string>Максимум</string>
             </property>
            </widget>
           </item>
@@ -195,14 +192,17 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="1">
-           <widget class="QCheckBox" name="checkMax">
+          <item row="8" column="0">
+           <widget class="QLabel" name="label_6">
             <property name="text">
-             <string>Максимум</string>
+             <string>Диапазон значений:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
-          <item row="7" column="1">
+          <item row="8" column="1">
            <widget class="QSlider" name="SliderSpan">
             <property name="minimumSize">
              <size>
@@ -242,6 +242,35 @@
             </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QDoubleSpinBox" name="SpinExp">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="decimals">
+             <number>2</number>
+            </property>
+            <property name="maximum">
+             <double>1.000000000000000</double>
+            </property>
+            <property name="singleStep">
+             <double>0.010000000000000</double>
+            </property>
+            <property name="value">
+             <double>0.500000000000000</double>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="0">
+           <widget class="QCheckBox" name="checkExp">
+            <property name="layoutDirection">
+             <enum>Qt::RightToLeft</enum>
+            </property>
+            <property name="text">
+             <string>Экспоненциальное сглаживание</string>
             </property>
            </widget>
           </item>
@@ -456,7 +485,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>689</width>
+     <width>780</width>
      <height>21</height>
     </rect>
    </property>
@@ -468,6 +497,7 @@ p, li { white-space: pre-wrap; }
     <addaction name="action_16"/>
     <addaction name="action_5"/>
     <addaction name="action_12"/>
+    <addaction name="action_SaveDataGr"/>
     <addaction name="action_exit"/>
    </widget>
    <widget class="QMenu" name="menu_2">
@@ -560,13 +590,13 @@ p, li { white-space: pre-wrap; }
   <action name="action_12">
    <property name="icon">
     <iconset resource="source.qrc">
-     <normaloff>:/img/img/512px-Save_font_awesome.svg.png</normaloff>:/img/img/512px-Save_font_awesome.svg.png</iconset>
+     <normaloff>:/img/img/Line-Chart-icon.png</normaloff>:/img/img/Line-Chart-icon.png</iconset>
    </property>
    <property name="text">
-    <string>Сохранить график</string>
+    <string>Сохранить изображение графика</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+S</string>
+    <string>Ctrl+Shift+S</string>
    </property>
   </action>
   <action name="action_16">
@@ -661,6 +691,18 @@ p, li { white-space: pre-wrap; }
   <action name="startWork">
    <property name="text">
     <string>Начало рабочего режима</string>
+   </property>
+  </action>
+  <action name="action_SaveDataGr">
+   <property name="icon">
+    <iconset resource="source.qrc">
+     <normaloff>:/img/img/512px-Save_font_awesome.svg.png</normaloff>:/img/img/512px-Save_font_awesome.svg.png</iconset>
+   </property>
+   <property name="text">
+    <string>Сохранить значения графика</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
  </widget>

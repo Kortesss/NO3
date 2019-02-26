@@ -201,7 +201,7 @@
         <item>
          <widget class="QDoubleSpinBox" name="sigma">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="minimumSize">
            <size>
@@ -222,17 +222,20 @@
            <double>0.000000000000000</double>
           </property>
           <property name="maximum">
-           <double>1000.000000000000000</double>
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.010000000000000</double>
           </property>
           <property name="value">
-           <double>1.000000000000000</double>
+           <double>0.050000000000000</double>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="pushButton">
           <property name="enabled">
-           <bool>false</bool>
+           <bool>true</bool>
           </property>
           <property name="minimumSize">
            <size>
