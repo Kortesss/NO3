@@ -101,11 +101,11 @@ private slots:
 
     void on_startWork_triggered();
 
-    void on_action_8_triggered();
-
     void on_action_SaveDataGr_triggered();
 
     void on_checkExp_clicked(bool checked);
+
+    void on_checkGolay_clicked(bool checked);
 
 private:
     Ui::MainWindow *ui;

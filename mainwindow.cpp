@@ -471,19 +471,53 @@ void MainWindow::spanMouseUp(QMouseEvent *event)
             mouseDown = false;
             if (graphSpan->visible()) ui->SliderSpan->setValue(1);
             else ui->SliderSpan->setValue(0);
-            //экспоненциальное сглаживание
-            if (ui->checkExp->isChecked()){
-            expYcopy = expY;
-            for (int i = 1; i < mass_x_Gr[gr_index].count(); i++){
-                if ((mass_x_Gr[gr_index][i] < ui->Spin_x1->value()) || (mass_x_Gr[gr_index][i] > ui->Spin_x2->value())){
-                    expY[i] = expYcopy[i];
-                }else if ((mass_x_Gr[gr_index][i] >= ui->Spin_x1->value()) && (mass_x_Gr[gr_index][i] <= ui->Spin_x2->value())){
-                    expY[i] = expY[i-1] + ui->SpinExp->value() * (expYcopy[i] - expY[i-1]);
-                }else{
-                    expY[i] = expYcopy[i];
+            if ((ui->checkExp->isChecked() || ui->checkGolay->isChecked()) && ui->listWidget->count() > 0){
+                //экспоненциальное сглаживание
+                if (ui->checkExp->isChecked()){
+                    expYcopy = expY;
+                    for (int i = 1; i < mass_x_Gr[gr_index].count(); i++){
+                        if ((mass_x_Gr[gr_index][i] < ui->Spin_x1->value()) || (mass_x_Gr[gr_index][i] > ui->Spin_x2->value())){
+                            expY[i] = expYcopy[i];
+                        }else if ((mass_x_Gr[gr_index][i] >= ui->Spin_x1->value()) && (mass_x_Gr[gr_index][i] <= ui->Spin_x2->value())){
+                            expY[i] = expY[i-1] + ui->SpinExp->value() * (expYcopy[i] - expY[i-1]); //записываем сглаженное значение
+                        }
+                    }
                 }
-            }
-
+                //сглаживание Савицкого-Голея
+                if (ui->checkGolay->isChecked()){
+                    expYcopy = expY;
+                    QList<int> h;
+                    int r =  ui->spinGolay->value(), k = 0, s = 0; //с - кол-во выходов за пределы окна
+                    double sum = 0;
+                    if (ui->rectORtriangle->value()==0)
+                        for (int g = -r; g <= r; g++)
+                            if (g==0) h.append(2);
+                            else h.append(1);
+                    else{
+                        for (int g = 1; g <= r+1; g++)  h.append(g);
+                        for (int g = r; g >= 1; g--)  h.append(g);
+                    }
+                    for (int i = 0; i < mass_x_Gr[gr_index].count(); i++){
+                        if ((mass_x_Gr[gr_index][i] < ui->Spin_x1->value()) || (mass_x_Gr[gr_index][i] > ui->Spin_x2->value())){
+                            expY[i] = expYcopy[i];
+                        }else if ((mass_x_Gr[gr_index][i] >= ui->Spin_x1->value()) && (mass_x_Gr[gr_index][i] <= ui->Spin_x2->value())){
+                            for (int j = i-r; j <= i+r; j++){ //для прохода по окну
+                                //если окно выходит заграницы всего графика, т.к. не могу проверить границу житого элемента(из-за отрицательного значения)
+                                if ((j < 0) || (j >= mass_x_Gr[gr_index].count())){
+                                    k+=1;
+                                }else if (( mass_x_Gr[gr_index][j] < ui->Spin_x1->value()) ||( mass_x_Gr[gr_index][j] > ui->Spin_x2->value())){//если окно выходит заграницы x1, x2, т.к. условие выше не подходит, но границы выяснить надо
+                                    k+=1;
+                                }else{
+                                    sum += expYcopy[j]*h[k];
+                                    s+=h[k];
+                                    k+=1;
+                                }
+                            } //записываем сглаженное значение
+                            expY[i] = sum / s; //здесь r*2 - раскрываем окно, прибавляем 2(середина+ единица от длины окна) и отнимаем кол-во выходов за пределы окна
+                            sum = 0; k = 0; s = 0;
+                        }
+                    }
+                }
             graphic1->setData(mass_x_Gr[gr_index].toVector(), expY.toVector());
             ui->widget->replot();
             }
@@ -854,7 +888,7 @@ void MainWindow::on_listWidget_clicked() //для перехода по граф
     ui->SliderSpan->setValue(0);
     ui->widget->xAxis->setLabel(axis_x_Gr[gr_index]);    ui->widget->yAxis->setLabel(axis_y_Gr[gr_index]);
     FalseVisibleAllGraph();
-    expY = mass_y_Gr[gr_index];
+    expY = mass_y_Gr[gr_index]; ui->spinGolay->setMaximum(mass_x_Gr[gr_index].count());
 }
 
 void MainWindow::on_listWidget_doubleClicked() //для отображения координат графика
@@ -965,16 +999,6 @@ void MainWindow::on_startWork_triggered() //определение начала 
     }
 }
 
-void MainWindow::on_action_8_triggered() //Савицкого-Голея
-{
-    if (ui->listWidget->count() > 0){
-        //expSmooth *WinExp=new expSmooth(mass_x_Gr[gr_index], mass_y_Gr[gr_index], axis_x_Gr[gr_index], axis_y_Gr[gr_index], this);
-        //WinExp->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - экспоненциальное сглаживание");
-        //WinExp->show();
-        //WinExp->setAttribute(Qt::WA_DeleteOnClose); //деструктор
-    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
-}
-
 void MainWindow::on_action_SaveDataGr_triggered() //сохранение данных графика в файл
 {
     if (ui->listWidget->count() > 0){
@@ -994,5 +1018,10 @@ void MainWindow::on_action_SaveDataGr_triggered() //сохранение дан�
 
 void MainWindow::on_checkExp_clicked(bool checked) //вкл./выкл. эксп. сглаживания
 {
-    ui->SpinExp->setEnabled(checked);
+    ui->SpinExp->setEnabled(checked); ui->checkGolay->setChecked(false); ui->spinGolay->setEnabled(false);
+}
+
+void MainWindow::on_checkGolay_clicked(bool checked)
+{
+    ui->spinGolay->setEnabled(checked); ui->checkExp->setChecked(false); ui->SpinExp->setEnabled(false);
 }
