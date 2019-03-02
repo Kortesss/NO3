@@ -73,10 +73,10 @@ QT_MOC_LITERAL(40, 770, 26), // "on_action_filter_triggered"
 QT_MOC_LITERAL(41, 797, 26), // "on_SliderSpan_valueChanged"
 QT_MOC_LITERAL(42, 824, 5), // "value"
 QT_MOC_LITERAL(43, 830, 22), // "on_startWork_triggered"
-QT_MOC_LITERAL(44, 853, 21), // "on_action_8_triggered"
-QT_MOC_LITERAL(45, 875, 30), // "on_action_SaveDataGr_triggered"
-QT_MOC_LITERAL(46, 906, 19), // "on_checkExp_clicked"
-QT_MOC_LITERAL(47, 926, 7) // "checked"
+QT_MOC_LITERAL(44, 853, 30), // "on_action_SaveDataGr_triggered"
+QT_MOC_LITERAL(45, 884, 19), // "on_checkExp_clicked"
+QT_MOC_LITERAL(46, 904, 7), // "checked"
+QT_MOC_LITERAL(47, 912, 21) // "on_checkGolay_clicked"
 
     },
     "MainWindow\0mousePress\0\0QMouseEvent*\0"
@@ -101,9 +101,10 @@ QT_MOC_LITERAL(47, 926, 7) // "checked"
     "on_Spin_x1_valueChanged\0on_Spin_x2_valueChanged\0"
     "on_action_filter_triggered\0"
     "on_SliderSpan_valueChanged\0value\0"
-    "on_startWork_triggered\0on_action_8_triggered\0"
+    "on_startWork_triggered\0"
     "on_action_SaveDataGr_triggered\0"
-    "on_checkExp_clicked\0checked"
+    "on_checkExp_clicked\0checked\0"
+    "on_checkGolay_clicked"
 };
 #undef QT_MOC_LITERAL
 
@@ -159,8 +160,8 @@ static const uint qt_meta_data_MainWindow[] = {
       41,    1,  257,    2, 0x08 /* Private */,
       43,    0,  260,    2, 0x08 /* Private */,
       44,    0,  261,    2, 0x08 /* Private */,
-      45,    0,  262,    2, 0x08 /* Private */,
-      46,    1,  263,    2, 0x08 /* Private */,
+      45,    1,  262,    2, 0x08 /* Private */,
+      47,    1,  265,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void, 0x80000000 | 3,    4,
@@ -201,8 +202,8 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void, QMetaType::Int,   42,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void,
-    QMetaType::Void, QMetaType::Bool,   47,
+    QMetaType::Void, QMetaType::Bool,   46,
+    QMetaType::Void, QMetaType::Bool,   46,
 
        0        // eod
 };
@@ -250,9 +251,9 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 34: _t->on_action_filter_triggered(); break;
         case 35: _t->on_SliderSpan_valueChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 36: _t->on_startWork_triggered(); break;
-        case 37: _t->on_action_8_triggered(); break;
-        case 38: _t->on_action_SaveDataGr_triggered(); break;
-        case 39: _t->on_checkExp_clicked((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 37: _t->on_action_SaveDataGr_triggered(); break;
+        case 38: _t->on_checkExp_clicked((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 39: _t->on_checkGolay_clicked((*reinterpret_cast< bool(*)>(_a[1]))); break;
         default: ;
         }
     }
