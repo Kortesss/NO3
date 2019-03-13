@@ -211,18 +211,18 @@ void FilterFFT::on_pushButton_close_clicked() //закрытие окна
 
 void FilterFFT::on_Slider_level_valueChanged(int value) //изменение слайдера уровня шумов и фильтрация
 {
-    yL[0] = yL[1] = value;
+    yL[0] = yL[1] = value;//24000000;//value;
     horizLevel->setData(xL.toVector(), yL.toVector());
-    /*for (int i = 0; i < N; i++){
+    for (int i = 0; i < N; i++){
         if ((xF[i]>=x1) && (xF[i]<=x2)){
-            if (value >= yFcopy[i]) {
+            if (yL[1] >= yFcopy[i]) {
                 yF[i] = 0.0; F[i] = 0.0;
             }else{//восстанавливаем из копии
                 yF[i] = yFcopy[i]; F[i] = Fcopy[i];
             }
         }
     }
-    DFTgraph->setData(xF.toVector(), yF.toVector());*/
+    DFTgraph->setData(xF.toVector(), yF.toVector());
     ui->widget_dft->replot();
     iDFT(ixF, F);
 }
