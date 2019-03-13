@@ -5,10 +5,12 @@
 #include <QFile> //Подключаем для работы с классом QFile
 #include <QtGui> //диалог открытия файла
 #include <QTextStream>
+#include <QDataStream>
 #include <QIODevice>
 #include <QPoint>
 #include "qcustomplot.h"
 #include <QTimer>
+#include <QShortcut>
 #include "mnk.h"
 
 using namespace std;
@@ -107,6 +109,8 @@ private slots:
 
     void on_checkGolay_clicked(bool checked);
 
+    void on_undo(); void on_redo();
+
 private:
     Ui::MainWindow *ui;
     QLineEdit *lineEditRename;
@@ -130,6 +134,8 @@ private:
     QList<QList<QCPItemText*> > textListMin, textListMax;//точки экстрем. для отображения координат
     QList<QList<QCPItemText*> > textListMNK; //для подписи точки МНК на нулевом месте будет min, а на 1 max
     QTimer timer; int t, gr_index; //таймер для добавления чисел в список на форму и переменная t для прохода по массиву
+
+    QShortcut *CtrlZ, *CtrlShiftZ;
 };
 
 #endif // MAINWINDOW_H

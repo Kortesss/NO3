@@ -10,6 +10,11 @@
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
 
+    CtrlZ = new QShortcut(this);    CtrlZ->setKey(Qt::CTRL + Qt::Key_Z);
+    connect(CtrlZ, SIGNAL(activated()), this, SLOT(on_undo()));
+    CtrlShiftZ = new QShortcut(this);    CtrlShiftZ->setKey(Qt::CTRL + Qt::SHIFT + Qt::Key_Z);
+    connect(CtrlShiftZ, SIGNAL(activated()), this, SLOT(on_redo()));
+
     connect(ui->widget,SIGNAL(mousePress(QMouseEvent*)),this,SLOT(mousePress(QMouseEvent*)));
     connect(ui->widget, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(histogramMouseMoved(QMouseEvent*)));
     connect(ui->widget, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(spanMouseUp(QMouseEvent*)));
@@ -58,13 +63,42 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     graphStartWork->setName(" ");    graphStartWork->setPen(QColor(128, 0, 128, 255));
     graphStartWork->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 6));
     graphStartWork->setLineStyle(QCPGraph::lsNone);
-
 }
 
 MainWindow::~MainWindow()
 {
     qDebug() << "деструктор MainWindow";
     delete ui;
+}
+
+void MainWindow::on_undo()
+{
+    if (expY.count() > 0){
+        //перед тем, как возвращать обратно, нужно сохранить текущее для последующего возврата
+        QFile tempRedo("tempRedo.bin");        QDataStream streamRedo(&tempRedo);
+        tempRedo.open(QIODevice::WriteOnly);        streamRedo << expY;
+        tempRedo.close();
+        QFile tempUndo("tempUndo.bin");        QDataStream streamUndo(&tempUndo);
+        tempUndo.open(QIODevice::ReadOnly);        expY.clear();
+        streamUndo >> expY;        tempUndo.close();
+        graphic1->setData(mass_x_Gr[gr_index].toVector(), expY.toVector());
+        ui->widget->replot();
+    }
+}
+
+void MainWindow::on_redo()
+{
+    if (expY.count() > 0){
+        //перед тем, как возвращать прямо, нужно сохранить текущее
+        QFile tempUndo("tempUndo.bin");        QDataStream streamUndo(&tempUndo);
+        tempUndo.open( QIODevice::WriteOnly);        streamUndo << expY;
+        tempUndo.close();
+        QFile tempRedo("tempRedo.bin");        QDataStream streamRedo(&tempRedo);
+        tempRedo.open(QIODevice::ReadOnly);        expY.clear();
+        streamRedo >> expY;        tempRedo.close();
+        graphic1->setData(mass_x_Gr[gr_index].toVector(), expY.toVector());
+        ui->widget->replot();
+    }
 }
 
 void MainWindow::TimerTick(){ //процедура таймера для добавления в список textBrowser
@@ -168,7 +202,7 @@ void MainWindow::on_action_3_triggered() //рисуем график из заг
     ui->widget->yAxis->setRange(miny[gr_index], maxy[gr_index]);//Для оси Oy
     graphic1->setName("График "+QString::number(gr_index+1));
     ui->widget->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);//устанавливаем легенду в правый верхний угол
-    ui->widget->legend->setVisible(true);
+    //ui->widget->legend->setVisible(true);
     ui->widget->replot();
 }
 
@@ -328,20 +362,22 @@ void MainWindow::on_action_4_triggered() //Рисуем график y=x*x
 void MainWindow::on_action_filter_triggered() //Фильрация сигнала
 {
     if (ui->listWidget->count() > 0){
-        QList <double> tempX, tempY;
-        FilterFFT *FFTWindow;
-        if (graphSpan->visible()){
-            for (int i = 0; i < mass_x_Gr[gr_index].count(); i++){
-                if (mass_x_Gr[gr_index][i] >= ui->Spin_x1->value() && (mass_x_Gr[gr_index][i] <= ui->Spin_x2->value())){
-                    tempX.append(mass_x_Gr[gr_index][i]);  tempY.append(mass_y_Gr[gr_index][i]);
+        if (ui->Spin_x1->value() != ui->Spin_x2->value()){
+            QList <double> tempX, tempY;
+            FilterFFT *FFTWindow;
+            if (graphSpan->visible()){
+                for (int i = 0; i < mass_x_Gr[gr_index].count(); i++){
+                    if (mass_x_Gr[gr_index][i] >= ui->Spin_x1->value() && (mass_x_Gr[gr_index][i] <= ui->Spin_x2->value())){
+                        tempX.append(mass_x_Gr[gr_index][i]);  tempY.append(mass_y_Gr[gr_index][i]);
+                    }
                 }
-            }
-            FFTWindow = new FilterFFT(tempX, tempY, axis_x_Gr[gr_index], axis_y_Gr[gr_index], this);
-        }else FFTWindow = new FilterFFT(mass_x_Gr[gr_index], mass_y_Gr[gr_index], axis_x_Gr[gr_index], axis_y_Gr[gr_index], this);
+                FFTWindow = new FilterFFT(tempX, tempY, axis_x_Gr[gr_index], axis_y_Gr[gr_index], this);
+            }else FFTWindow = new FilterFFT(mass_x_Gr[gr_index], mass_y_Gr[gr_index], axis_x_Gr[gr_index], axis_y_Gr[gr_index], this);
 
-        FFTWindow->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - фильтрация сигнала");
-        FFTWindow->show();
-        FFTWindow->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+            FFTWindow->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - фильтрация сигнала");
+            FFTWindow->show();
+            FFTWindow->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+        }else QMessageBox::critical(NULL,QObject::tr("Внимание"),tr("Интервал значений не определен."));
     }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
 
@@ -472,9 +508,14 @@ void MainWindow::spanMouseUp(QMouseEvent *event)
             if (graphSpan->visible()) ui->SliderSpan->setValue(1);
             else ui->SliderSpan->setValue(0);
             if ((ui->checkExp->isChecked() || ui->checkGolay->isChecked()) && ui->listWidget->count() > 0){
+                expYcopy = expY;
+                QFile tempFile("tempUndo.bin");
+                QDataStream stream(&tempFile);
+                tempFile.open(QIODevice::WriteOnly);
+                stream << expYcopy;
+                tempFile.close();
                 //экспоненциальное сглаживание
-                if (ui->checkExp->isChecked()){
-                    expYcopy = expY;
+                if (ui->checkExp->isChecked()){                   
                     for (int i = 1; i < mass_x_Gr[gr_index].count(); i++){
                         if ((mass_x_Gr[gr_index][i] < ui->Spin_x1->value()) || (mass_x_Gr[gr_index][i] > ui->Spin_x2->value())){
                             expY[i] = expYcopy[i];
@@ -485,7 +526,6 @@ void MainWindow::spanMouseUp(QMouseEvent *event)
                 }
                 //сглаживание Савицкого-Голея
                 if (ui->checkGolay->isChecked()){
-                    expYcopy = expY;
                     QList<int> h;
                     int r =  ui->spinGolay->value(), k = 0, s = 0; //с - кол-во выходов за пределы окна
                     double sum = 0;
@@ -564,7 +604,7 @@ void MainWindow::on_action_exit_triggered() //выход из программы
     QApplication::quit();
 }
 
-void MainWindow::on_action_12_triggered() //Сохранение графика
+void MainWindow::on_action_12_triggered() //Сохранение изображения графика
 {
     QString nameGr = "";
     if (ui->listWidget->selectedItems().size()>0) nameGr = ui->listWidget->currentItem()->text();
@@ -607,8 +647,8 @@ void MainWindow::on_actionD_triggered() //Расчет изменения дел
     if (ui->listWidget->count() > 0){
         if (mass_minX[gr_index].count()!=0 && mass_maxX[gr_index].count()!=0 && mass_minY[gr_index].count()!=0 && mass_maxY[gr_index].count()!=0){
         //сортировка экстремумов по возрастанию, вдруг мы добавили в конец списка Qlist новый экстремум, который идет не по порядку
-            qSort(mass_minX[gr_index].begin(), mass_minX[gr_index].end(), qLess<double>());
-            qSort(mass_maxX[gr_index].begin(), mass_maxX[gr_index].end(), qLess<double>());
+            std::sort(mass_minX[gr_index].begin(), mass_minX[gr_index].end());
+            std::sort(mass_maxX[gr_index].begin(), mass_maxX[gr_index].end());
         //но игрикам не подходит сортирвка, поэтому лучше строить по порядку пока что
             deltaWin *DeltaW = new deltaWin(mass_minX[gr_index], mass_maxX[gr_index], mass_minY[gr_index], mass_maxY[gr_index], this);
             DeltaW->show();
@@ -963,6 +1003,7 @@ void MainWindow::on_startWork_triggered() //определение начала 
 {
     if (ui->listWidget->count() > 0){
         //if (StWork1[gr_index].count() == 0){
+        ui->Browser_stWork->clear(); ui->Browser_stWork->append("Фазы начала рабочего режима:");
             QList <double> tempX, tempY, mnkLine;
             StWork1[gr_index].clear();StWork2[gr_index].clear();
             tempX.clear(); tempY.clear();
@@ -1025,3 +1066,4 @@ void MainWindow::on_checkGolay_clicked(bool checked)
 {
     ui->spinGolay->setEnabled(checked); ui->checkExp->setChecked(false); ui->SpinExp->setEnabled(false);
 }
+
