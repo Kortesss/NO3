@@ -202,7 +202,7 @@ void MainWindow::on_action_3_triggered() //рисуем график из заг
     ui->widget->yAxis->setRange(miny[gr_index], maxy[gr_index]);//Для оси Oy
     graphic1->setName("График "+QString::number(gr_index+1));
     ui->widget->axisRect()->insetLayout()->setInsetAlignment(0, Qt::AlignRight|Qt::AlignTop);//устанавливаем легенду в правый верхний угол
-    //ui->widget->legend->setVisible(true);
+    ui->widget->legend->setVisible(true);
     ui->widget->replot();
 }
 
@@ -578,22 +578,29 @@ void MainWindow::on_action_7_triggered() //удаление экстремумо
 {
     if (ui->listWidget->count() > 0){
         if (ui->checkMin->isChecked()){
+            if (trendMin[gr_index].count() <= 0){
             mass_minX[gr_index].clear(); mass_minY[gr_index].clear();
             graphMin->setVisible(false); graphMin->setName(" ");
             for (int i = 0; i < textListMin[gr_index].length(); i++) {textListMin[gr_index][i]->setVisible(false);}
             textListMin[gr_index].clear();
+            }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Сначала удалите линию тренда минимумов."));
         }
         if (ui->checkMax->isChecked()){
-            mass_maxY[gr_index].clear(); mass_maxX[gr_index].clear();
-            graphMax->setVisible(false); graphMax->setName(" ");
-            for (int i = 0; i < textListMax[gr_index].length(); i++) {textListMax[gr_index][i]->setVisible(false);}
-            textListMax[gr_index].clear();}
+            if (trendMax[gr_index].count() <= 0){
+                mass_maxY[gr_index].clear(); mass_maxX[gr_index].clear();
+                graphMax->setVisible(false); graphMax->setName(" ");
+                for (int i = 0; i < textListMax[gr_index].length(); i++) {textListMax[gr_index][i]->setVisible(false);}
+                textListMax[gr_index].clear();
+            }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Сначала удалите линию тренда максимумов."));
+        }
         if (!ui->checkMin->isChecked() && !ui->checkMax->isChecked()){
-            mass_minX[gr_index].clear(); mass_minY[gr_index].clear(); graphMin->setVisible(false); graphMin->setName(" ");
-            mass_maxY[gr_index].clear(); mass_maxX[gr_index].clear(); graphMax->setVisible(false); graphMax->setName(" ");
-            for (int i = 0; i < textListMin[gr_index].length(); i++) {textListMin[gr_index][i]->setVisible(false);}
-            for (int i = 0; i < textListMax[gr_index].length(); i++) {textListMax[gr_index][i]->setVisible(false);}
-            textListMin[gr_index].clear(); textListMax[gr_index].clear();
+            if ((trendMin[gr_index].count() <= 0) || (trendMax[gr_index].count() <= 0)){
+                mass_minX[gr_index].clear(); mass_minY[gr_index].clear(); graphMin->setVisible(false); graphMin->setName(" ");
+                mass_maxY[gr_index].clear(); mass_maxX[gr_index].clear(); graphMax->setVisible(false); graphMax->setName(" ");
+                for (int i = 0; i < textListMin[gr_index].length(); i++) {textListMin[gr_index][i]->setVisible(false);}
+                for (int i = 0; i < textListMax[gr_index].length(); i++) {textListMax[gr_index][i]->setVisible(false);}
+                textListMin[gr_index].clear(); textListMax[gr_index].clear();
+            }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Сначала удалите линии тренда."));
         }
         ui->widget->replot();
     }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
@@ -825,16 +832,16 @@ void MainWindow::on_action_19_triggered() //удаление МНК
 {
     if (ui->listWidget->count() > 0){
         if (ui->checkMin->isChecked()){ trendMin[gr_index].clear(); graphMnkMin->setVisible(false); graphMnkMin->setName(" ");
-        graphLevelMin->setVisible(false); graphLevelMin->setName(" ");   textListMNK[gr_index][0]->setVisible(false);}
+            graphLevelMin->setVisible(false); graphLevelMin->setName(" ");   textListMNK[gr_index][0]->setVisible(false);}
         if (ui->checkMax->isChecked()){ trendMax[gr_index].clear(); graphMnkMax->setVisible(false); graphMnkMax->setName(" ");
-        graphLevelMax->setVisible(false); graphLevelMax->setName(" ");   textListMNK[gr_index][1]->setVisible(false);}
+            graphLevelMax->setVisible(false); graphLevelMax->setName(" ");   textListMNK[gr_index][1]->setVisible(false);}
         if (!ui->checkMin->isChecked() && !ui->checkMax->isChecked()){
-        trendMin[gr_index].clear(); graphMnkMin->setVisible(false); graphMnkMin->setName(" ");
-        graphLevelMin->setVisible(false);  graphLevelMin->setName(" ");
-        trendMax[gr_index].clear(); graphMnkMax->setVisible(false); graphMnkMax->setName(" ");
-        graphLevelMax->setVisible(false); graphLevelMax->setName(" ");
-        textListMNK[gr_index][0]->setVisible(false);  textListMNK[gr_index][1]->setVisible(false);
-    }
+            trendMin[gr_index].clear(); graphMnkMin->setVisible(false); graphMnkMin->setName(" ");
+            graphLevelMin->setVisible(false);  graphLevelMin->setName(" ");
+            trendMax[gr_index].clear(); graphMnkMax->setVisible(false); graphMnkMax->setName(" ");
+            graphLevelMax->setVisible(false); graphLevelMax->setName(" ");
+            textListMNK[gr_index][0]->setVisible(false);  textListMNK[gr_index][1]->setVisible(false);
+        }
         ui->widget->replot();
     }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }

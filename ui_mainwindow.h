@@ -100,11 +100,11 @@ public:
     QLabel *label_10;
     QSpinBox *spinGolay;
     QGridLayout *gridLayout_3;
-    QTextBrowser *Browser_Min;
     QTextBrowser *Browser_Derivative;
-    QListWidget *listWidget;
+    QTextBrowser *Browser_Min;
     QTextBrowser *Browser_stWork;
     QTextBrowser *Browser_Max;
+    QListWidget *listWidget;
     QGridLayout *gridLayout_2;
     QCustomPlot *widget;
     QGroupBox *groupBox;
@@ -459,12 +459,6 @@ public:
         gridLayout_3 = new QGridLayout();
         gridLayout_3->setSpacing(6);
         gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
-        Browser_Min = new QTextBrowser(centralWidget);
-        Browser_Min->setObjectName(QStringLiteral("Browser_Min"));
-        Browser_Min->setMaximumSize(QSize(113, 38));
-
-        gridLayout_3->addWidget(Browser_Min, 1, 1, 1, 1);
-
         Browser_Derivative = new QTextBrowser(centralWidget);
         Browser_Derivative->setObjectName(QStringLiteral("Browser_Derivative"));
         Browser_Derivative->setMinimumSize(QSize(106, 0));
@@ -474,18 +468,11 @@ public:
 
         gridLayout_3->addWidget(Browser_Derivative, 0, 1, 1, 1);
 
-        listWidget = new QListWidget(centralWidget);
-        listWidget->setObjectName(QStringLiteral("listWidget"));
-        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(listWidget->sizePolicy().hasHeightForWidth());
-        listWidget->setSizePolicy(sizePolicy);
-        listWidget->setMinimumSize(QSize(130, 0));
-        listWidget->setMaximumSize(QSize(140, 190));
-        listWidget->setSortingEnabled(false);
+        Browser_Min = new QTextBrowser(centralWidget);
+        Browser_Min->setObjectName(QStringLiteral("Browser_Min"));
+        Browser_Min->setMaximumSize(QSize(113, 38));
 
-        gridLayout_3->addWidget(listWidget, 0, 0, 3, 1);
+        gridLayout_3->addWidget(Browser_Min, 1, 1, 1, 1);
 
         Browser_stWork = new QTextBrowser(centralWidget);
         Browser_stWork->setObjectName(QStringLiteral("Browser_stWork"));
@@ -500,6 +487,19 @@ public:
         Browser_Max->setMaximumSize(QSize(113, 38));
 
         gridLayout_3->addWidget(Browser_Max, 2, 1, 1, 1);
+
+        listWidget = new QListWidget(centralWidget);
+        listWidget->setObjectName(QStringLiteral("listWidget"));
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(listWidget->sizePolicy().hasHeightForWidth());
+        listWidget->setSizePolicy(sizePolicy);
+        listWidget->setMinimumSize(QSize(130, 0));
+        listWidget->setMaximumSize(QSize(140, 190));
+        listWidget->setSortingEnabled(false);
+
+        gridLayout_3->addWidget(listWidget, 0, 0, 3, 1);
 
 
         horizontalLayout_4->addLayout(gridLayout_3);
@@ -671,16 +671,16 @@ public:
         label_7->setText(QString());
         label_8->setText(QApplication::translate("MainWindow", "\316\224", 0));
         label_10->setText(QApplication::translate("MainWindow", "\320\240\320\260\320\264\320\270\321\203\321\201, r", 0));
-        Browser_Min->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">\320\234\320\270\320\275. X: </p></body></html>", 0));
         Browser_Derivative->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">\320\237\321\200\320\276\320\270\320\267\320\262\320\276\320\264\320\275\320\260\321\217: </p></body></html>", 0));
+        Browser_Min->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">\320\234\320\270\320\275. X: </p></body></html>", 0));
         Browser_stWork->setHtml(QApplication::translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
