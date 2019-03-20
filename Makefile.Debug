@@ -474,6 +474,7 @@ debug/moc_mainwindow.cpp: C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QMainW
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtGui/qvalidator.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtGui/qtguiversion.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QTextStream \
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QDataStream \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QIODevice \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QPoint \
 		qcustomplot.h \
@@ -648,6 +649,7 @@ debug/moc_mainwindow.cpp: C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QMainW
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QPair \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtPrintSupport/qprintpreviewwidget.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtPrintSupport/qtprintsupportversion.h \
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QShortcut \
 		mnk.h \
 		mainwindow.h
 	C:\Qt\Qt5.5.1\5.5\mingw492_32\bin\moc.exe $(DEFINES) -D__GNUC__ -DWIN32 -IC:/Qt/Qt5.5.1/5.5/mingw492_32/mkspecs/win32-g++ -IC:/Users/Public/Qt/GitHub/master -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtPrintSupport -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtGui -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtANGLE -IC:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore mainwindow.h -o debug\moc_mainwindow.cpp
@@ -4139,6 +4141,7 @@ debug/main.o: main.cpp mainwindow.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtGui/qvalidator.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtGui/qtguiversion.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QTextStream \
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QDataStream \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QIODevice \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QPoint \
 		qcustomplot.h \
@@ -4313,6 +4316,7 @@ debug/main.o: main.cpp mainwindow.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QPair \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtPrintSupport/qprintpreviewwidget.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtPrintSupport/qtprintsupportversion.h \
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QShortcut \
 		mnk.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QApplication
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug\main.o main.cpp
@@ -4634,6 +4638,7 @@ debug/mainwindow.o: mainwindow.cpp mainwindow.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtGui/qvalidator.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtGui/qtguiversion.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QTextStream \
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QDataStream \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QIODevice \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QPoint \
 		qcustomplot.h \
@@ -4808,6 +4813,7 @@ debug/mainwindow.o: mainwindow.cpp mainwindow.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QPair \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtPrintSupport/qprintpreviewwidget.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtPrintSupport/qtprintsupportversion.h \
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QShortcut \
 		mnk.h \
 		ui_mainwindow.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QAction \
@@ -4824,6 +4830,7 @@ debug/mainwindow.o: mainwindow.cpp mainwindow.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QListWidget \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QMenu \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QMenuBar \
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QPushButton \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QSlider \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QSpinBox \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QStatusBar \
@@ -4831,7 +4838,6 @@ debug/mainwindow.o: mainwindow.cpp mainwindow.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QVBoxLayout \
 		derivative.h \
 		somewindow.h \
-		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QShortcut \
 		about.h \
 		deltawin.h \
 		filterfft.h
