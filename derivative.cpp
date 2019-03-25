@@ -1,20 +1,20 @@
 #include "derivative.h"
 #include <QDebug>
 
-Derivative::Derivative(double x1,double x2,double y1,double y2)
+Derivative::Derivative()
 {
 
-  dx=x2-x1;
-  dy=y2-y1;
-  dd=dy/dx;
 }
 
-double Derivative::get_dd()
+double Derivative::get_dd(double x1,double x2,double y1,double y2)
 {
+    dx = x2-x1;
+    dy = y2-y1;
+    dd = dy/dx;
     return dd;
 }
 
 Derivative::~Derivative()
 {
-    qDebug() << "Деструктор производной";
+
 }

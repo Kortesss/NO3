@@ -16,6 +16,8 @@ FilterFFT::FilterFFT(QList <double> x, QList <double> &y, QString s1, QString s2
     connect(ui->widget_dft, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(spanMouseUp(QMouseEvent*)));
     mouseDown = false; left = false; sp = false;
 
+    ui->sigma->setVisible(false); ui->pushButton->setVisible(false);
+
     ui->widget_dft->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
     ui->widget_dft->xAxis->setLabel("x");
     ui->widget_dft->yAxis->setLabel("y");

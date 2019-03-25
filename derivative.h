@@ -10,8 +10,8 @@ class Derivative
 
 public:
     ~Derivative();
-    Derivative(double x1,double x2,double y1,double y2);
-    double get_dd();
+    Derivative();
+    double get_dd(double x1,double x2,double y1,double y2);
 private:
     double dx;
     double dy;

@@ -14,7 +14,7 @@ class SomeWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit SomeWindow(QVector<double> &dirivate,double &x1,double &x2, double &koef, QWidget *parent = nullptr);
+    explicit SomeWindow(QVector<double> &dirivate, int &x1, int &x2, double &koef, QWidget *parent = nullptr);
     ~SomeWindow();
 
 private slots:
@@ -24,7 +24,7 @@ private slots:
 
 private:
     Ui::SomeWindow *ui;
-    void graphDirivate(QVector<double> &dirivate, double &x1, double &x2, double &koef);
+    void graphDirivate(QVector<double> &dirivate, int &x1, int &x2, double &koef);
     QShortcut *CtrlS, *CtrlQ;
 };
 

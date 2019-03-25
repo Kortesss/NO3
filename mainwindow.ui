@@ -477,6 +477,48 @@
       </item>
       <item>
        <layout class="QGridLayout" name="gridLayout_3">
+        <item row="1" column="1">
+         <widget class="QTextBrowser" name="Browser_Min">
+          <property name="maximumSize">
+           <size>
+            <width>113</width>
+            <height>38</height>
+           </size>
+          </property>
+          <property name="html">
+           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Мин. X: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0" rowspan="3">
+         <widget class="QListWidget" name="listWidget">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>130</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>140</width>
+            <height>190</height>
+           </size>
+          </property>
+          <property name="sortingEnabled">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="1">
          <widget class="QTextBrowser" name="Browser_Derivative">
           <property name="minimumSize">
@@ -509,23 +551,6 @@
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Производная: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QTextBrowser" name="Browser_Min">
-          <property name="maximumSize">
-           <size>
-            <width>113</width>
-            <height>38</height>
-           </size>
-          </property>
-          <property name="html">
-           <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Мин. X: &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
          </widget>
         </item>
@@ -575,28 +600,29 @@ p, li { white-space: pre-wrap; }
           </property>
          </widget>
         </item>
-        <item row="0" column="0" rowspan="3">
-         <widget class="QListWidget" name="listWidget">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+        <item row="3" column="1">
+         <widget class="QPushButton" name="pushButton">
+          <property name="text">
+           <string>PushButton</string>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>130</width>
-            <height>0</height>
-           </size>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QDoubleSpinBox" name="SpinLimit">
+          <property name="decimals">
+           <number>3</number>
           </property>
-          <property name="maximumSize">
-           <size>
-            <width>140</width>
-            <height>190</height>
-           </size>
+          <property name="minimum">
+           <double>0.000000000000000</double>
           </property>
-          <property name="sortingEnabled">
-           <bool>false</bool>
+          <property name="maximum">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="singleStep">
+           <double>0.010000000000000</double>
+          </property>
+          <property name="value">
+           <double>0.920000000000000</double>
           </property>
          </widget>
         </item>
@@ -690,10 +716,10 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>Меню</string>
     </property>
-    <addaction name="action"/>
-    <addaction name="action_16"/>
-    <addaction name="action_5"/>
-    <addaction name="action_12"/>
+    <addaction name="action_OpenFile"/>
+    <addaction name="action_ClearGraph"/>
+    <addaction name="action_DelGraph"/>
+    <addaction name="action_SaveImage"/>
     <addaction name="action_SaveDataGr"/>
     <addaction name="action_exit"/>
    </widget>
@@ -702,6 +728,7 @@ p, li { white-space: pre-wrap; }
      <string>Экстремумы функции</string>
     </property>
     <addaction name="action_10"/>
+    <addaction name="action_autoSearch2"/>
     <addaction name="action_9"/>
     <addaction name="action_7"/>
     <addaction name="action_13"/>
@@ -719,8 +746,8 @@ p, li { white-space: pre-wrap; }
       <property name="title">
        <string>Метод наименьших квадратов</string>
       </property>
-      <addaction name="action_17"/>
-      <addaction name="action_19"/>
+      <addaction name="action_BildMnk"/>
+      <addaction name="action_DelMnk"/>
      </widget>
      <addaction name="menu_3"/>
     </widget>
@@ -742,7 +769,7 @@ p, li { white-space: pre-wrap; }
    <addaction name="menu_6"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="action">
+  <action name="action_OpenFile">
    <property name="icon">
     <iconset resource="source.qrc">
      <normaloff>:/img/img/open.png</normaloff>:/img/img/open.png</iconset>
@@ -759,7 +786,7 @@ p, li { white-space: pre-wrap; }
     <string>Производная</string>
    </property>
   </action>
-  <action name="action_3">
+  <action name="action_GrFunc">
    <property name="text">
     <string>График функции</string>
    </property>
@@ -784,7 +811,7 @@ p, li { white-space: pre-wrap; }
     <string>Ctrl+Q</string>
    </property>
   </action>
-  <action name="action_12">
+  <action name="action_SaveImage">
    <property name="icon">
     <iconset resource="source.qrc">
      <normaloff>:/img/img/Line-Chart-icon.png</normaloff>:/img/img/Line-Chart-icon.png</iconset>
@@ -796,7 +823,7 @@ p, li { white-space: pre-wrap; }
     <string>Ctrl+Shift+S</string>
    </property>
   </action>
-  <action name="action_16">
+  <action name="action_ClearGraph">
    <property name="text">
     <string>Очистить графы</string>
    </property>
@@ -844,22 +871,17 @@ p, li { white-space: pre-wrap; }
     <string>Скорость изменения параметра</string>
    </property>
   </action>
-  <action name="action_17">
+  <action name="action_BildMnk">
    <property name="text">
     <string>Построить</string>
    </property>
   </action>
-  <action name="action_19">
+  <action name="action_DelMnk">
    <property name="text">
     <string>Удалить</string>
    </property>
   </action>
-  <action name="action_4">
-   <property name="text">
-    <string>Тестовый график</string>
-   </property>
-  </action>
-  <action name="action_5">
+  <action name="action_DelGraph">
    <property name="text">
     <string>Удалить график</string>
    </property>
@@ -900,6 +922,11 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="action_autoSearch2">
+   <property name="text">
+    <string>Автопоиск 2</string>
    </property>
   </action>
  </widget>
