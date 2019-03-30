@@ -2,8 +2,8 @@
 #define DERIVATIVE_H
 
 #include <QMainWindow>
-#include <QObject>
-#include <QWidget>
+//#include <QObject>
+//#include <QWidget>
 
 class Derivative
 {

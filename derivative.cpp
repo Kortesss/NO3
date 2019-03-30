@@ -1,5 +1,4 @@
 #include "derivative.h"
-#include <QDebug>
 
 Derivative::Derivative()
 {

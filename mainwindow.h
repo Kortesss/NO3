@@ -39,6 +39,8 @@ private slots:
 
     void on_action_7_triggered();
 
+    void indexSearch(double valX1, double valX2);//ищем индекс массива выделенного интервала
+
     void on_action_exit_triggered();
 
     void on_spinLevel_valueChanged();
@@ -47,7 +49,7 @@ private slots:
 
     void on_actionD_triggered();
 
-    void on_action_21_triggered();
+    void on_action_GrDerivative_triggered();
 
     void on_checkMin_clicked();
 
@@ -55,7 +57,7 @@ private slots:
 
     void on_action_10_triggered();
 
-    void on_action_13_triggered();
+    void on_action_Derivat_triggered();
 
     void TimerTick();
 
@@ -71,8 +73,6 @@ private slots:
 
     void EnterPressedLineEditRename();
 
-    void manualSetView();
-
     void on_action_manual_triggered();
 
     void on_action_about_triggered();
@@ -84,6 +84,8 @@ private slots:
     void on_action_filter_triggered();
 
     void on_SliderSpan_valueChanged(int value);
+
+    void on_SliderLegend_valueChanged(int value);
 
     void on_startWork_triggered(double limit);
 
@@ -101,8 +103,6 @@ private slots:
 
     void on_action_OpenFile_triggered();
 
-    void on_action_GrFunc_triggered();
-
     void on_action_DelMnk_triggered();
 
     void on_action_SaveImage_triggered();
@@ -111,9 +111,11 @@ private slots:
 
     void on_action_autoSearch2_triggered();
 
-    void on_pushButton_clicked();
-
     void on_SpinLimit_valueChanged(double arg1);
+
+    void on_action_Correl_triggered();
+
+    void on_SliderPointGr_valueChanged(int value);
 
 private:
     Ui::MainWindow *ui;
@@ -131,12 +133,12 @@ private:
     int x1, x2; //индексы значений выделенного интервала
     int iWork;//индекс значения начала рабочего режима
     QVector<double> spanX, spanY; //данные для диапазона иксов
-    QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax, *graphSpan, *graphStartWork; //все графики
+    QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax, *graphSpan; //все графики
 
     QList<QList<QCPItemText*> > textListMin, textListMax;//точки экстрем. для отображения координат
     QList<QList<QCPItemText*> > textListMNK; //для подписи точки МНК на нулевом месте будет min, а на 1 max
     QTimer timer; int t, gr_index; //таймер для добавления чисел в список на форму и переменная t для прохода по массиву
-
+    QString sliderStyleOn, sliderStyleOff;
     QShortcut *CtrlZ, *CtrlY;
 };
 

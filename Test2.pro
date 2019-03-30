@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     deltawin.cpp \
     mnk.cpp \
     about.cpp \
-    filterfft.cpp
+    filterfft.cpp \
+    extrem_simple.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
@@ -47,7 +48,8 @@ HEADERS  += mainwindow.h \
     deltawin.h \
     mnk.h \
     about.h \
-    filterfft.h
+    filterfft.h \
+    extrem_simple.h
 
 FORMS    += mainwindow.ui \
     somewindow.ui \
