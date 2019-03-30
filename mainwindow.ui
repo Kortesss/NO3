@@ -47,27 +47,14 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="1">
+        <item row="8" column="1">
          <widget class="QCheckBox" name="checkMax">
           <property name="text">
            <string>Максимум</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_2">
-          <property name="maximumSize">
-           <size>
-            <width>153</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Фильтрация экстремумов</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
+        <item row="4" column="0">
          <widget class="QLabel" name="label_5">
           <property name="maximumSize">
            <size>
@@ -77,6 +64,19 @@
           </property>
           <property name="text">
            <string>Время при установленом %</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="maximumSize">
+           <size>
+            <width>153</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Фильтрация экстремумов</string>
           </property>
          </widget>
         </item>
@@ -93,7 +93,7 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="5" column="0">
          <widget class="QLabel" name="label">
           <property name="maximumSize">
            <size>
@@ -106,7 +106,7 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
+        <item row="3" column="0">
          <widget class="QLabel" name="label_4">
           <property name="maximumSize">
            <size>
@@ -119,7 +119,7 @@
           </property>
          </widget>
         </item>
-        <item row="6" column="0">
+        <item row="7" column="0">
          <widget class="QLabel" name="label_3">
           <property name="maximumSize">
            <size>
@@ -132,46 +132,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
-         <widget class="QTextBrowser" name="BrowserTime">
-          <property name="maximumSize">
-           <size>
-            <width>80</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="verticalScrollBarPolicy">
-           <enum>Qt::ScrollBarAlwaysOff</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="1">
-         <widget class="QDoubleSpinBox" name="Spin_x2">
-          <property name="maximumSize">
-           <size>
-            <width>80</width>
-            <height>20</height>
-           </size>
-          </property>
-          <property name="decimals">
-           <number>4</number>
-          </property>
-          <property name="maximum">
-           <double>9999.989999999999782</double>
-          </property>
-         </widget>
-        </item>
         <item row="2" column="1">
-         <widget class="QDoubleSpinBox" name="spinLevel">
-          <property name="decimals">
-           <number>1</number>
-          </property>
-          <property name="value">
-           <double>1.000000000000000</double>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
          <widget class="QDoubleSpinBox" name="doubleSpinBox1">
           <property name="focusPolicy">
            <enum>Qt::WheelFocus</enum>
@@ -190,7 +151,46 @@
           </property>
          </widget>
         </item>
-        <item row="7" column="0">
+        <item row="4" column="1">
+         <widget class="QTextBrowser" name="BrowserTime">
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="1">
+         <widget class="QDoubleSpinBox" name="Spin_x2">
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="decimals">
+           <number>4</number>
+          </property>
+          <property name="maximum">
+           <double>9999.989999999999782</double>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QDoubleSpinBox" name="spinLevel">
+          <property name="decimals">
+           <number>1</number>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
          <widget class="QCheckBox" name="checkMin">
           <property name="layoutDirection">
            <enum>Qt::RightToLeft</enum>
@@ -200,7 +200,7 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="5" column="1">
          <widget class="QDoubleSpinBox" name="Spin_x1">
           <property name="minimumSize">
            <size>
@@ -219,6 +219,20 @@
           </property>
           <property name="maximum">
            <double>9999.989999999999782</double>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QDoubleSpinBox" name="SpinTimeExp">
+          <property name="decimals">
+           <number>4</number>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Продолжительность опыта ≈</string>
           </property>
          </widget>
         </item>
@@ -991,10 +1005,10 @@ p, li { white-space: pre-wrap; }
     <property name="title">
      <string>Экстремумы функции</string>
     </property>
-    <addaction name="action_10"/>
+    <addaction name="autoSearchSimple"/>
     <addaction name="action_autoSearch2"/>
-    <addaction name="action_9"/>
-    <addaction name="action_7"/>
+    <addaction name="manualExtrem"/>
+    <addaction name="delExtrem"/>
    </widget>
    <widget class="QMenu" name="menu_4">
     <property name="title">
@@ -1016,7 +1030,6 @@ p, li { white-space: pre-wrap; }
     <addaction name="menu_5"/>
     <addaction name="actionD"/>
     <addaction name="action_filter"/>
-    <addaction name="startWork"/>
     <addaction name="action_Correl"/>
    </widget>
    <widget class="QMenu" name="menu_6">
@@ -1033,7 +1046,15 @@ p, li { white-space: pre-wrap; }
     <addaction name="action_Derivat"/>
     <addaction name="action_GrDerivative"/>
    </widget>
+   <widget class="QMenu" name="menu_8">
+    <property name="title">
+     <string>Начало раб. режима</string>
+    </property>
+    <addaction name="startWork1"/>
+    <addaction name="startWork2"/>
+   </widget>
    <addaction name="menu"/>
+   <addaction name="menu_8"/>
    <addaction name="menu_2"/>
    <addaction name="menu_7"/>
    <addaction name="menu_4"/>
@@ -1052,22 +1073,9 @@ p, li { white-space: pre-wrap; }
     <string>Ctrl+O</string>
    </property>
   </action>
-  <action name="action_2">
-   <property name="text">
-    <string>Производная</string>
-   </property>
-  </action>
   <action name="action_GrFunc">
    <property name="text">
     <string>График функции</string>
-   </property>
-  </action>
-  <action name="action_6">
-   <property name="text">
-    <string>Фильтрация</string>
-   </property>
-   <property name="toolTip">
-    <string>выбор фильтра или значения</string>
    </property>
   </action>
   <action name="action_exit">
@@ -1104,22 +1112,12 @@ p, li { white-space: pre-wrap; }
     <string>Δ сигнала</string>
    </property>
   </action>
-  <action name="action_24">
-   <property name="text">
-    <string>Начальное значение диапазона</string>
-   </property>
-  </action>
-  <action name="action_26">
-   <property name="text">
-    <string>Конечное значение диапазона</string>
-   </property>
-  </action>
-  <action name="action_7">
+  <action name="delExtrem">
    <property name="text">
     <string>Удалить точки экстремумов</string>
    </property>
   </action>
-  <action name="action_9">
+  <action name="manualExtrem">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -1127,7 +1125,7 @@ p, li { white-space: pre-wrap; }
     <string>Ручная настройка</string>
    </property>
   </action>
-  <action name="action_10">
+  <action name="autoSearchSimple">
    <property name="text">
     <string>Автопоиск (простой)</string>
    </property>
@@ -1168,9 +1166,9 @@ p, li { white-space: pre-wrap; }
     <string>Фильтрация сигнала</string>
    </property>
   </action>
-  <action name="startWork">
+  <action name="startWork1">
    <property name="text">
-    <string>Начало рабочего режима</string>
+    <string>Метод 1</string>
    </property>
   </action>
   <action name="action_SaveDataGr">
@@ -1203,6 +1201,11 @@ p, li { white-space: pre-wrap; }
   <action name="action_Correl">
    <property name="text">
     <string>Корреляционный анализ</string>
+   </property>
+  </action>
+  <action name="startWork2">
+   <property name="text">
+    <string>Метод 2</string>
    </property>
   </action>
  </widget>

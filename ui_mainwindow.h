@@ -39,48 +39,47 @@ class Ui_MainWindow
 {
 public:
     QAction *action_OpenFile;
-    QAction *action_2;
     QAction *action_GrFunc;
-    QAction *action_6;
     QAction *action_exit;
     QAction *action_SaveImage;
     QAction *action_ClearGraph;
     QAction *actionD;
-    QAction *action_24;
-    QAction *action_26;
-    QAction *action_7;
-    QAction *action_9;
-    QAction *action_10;
+    QAction *delExtrem;
+    QAction *manualExtrem;
+    QAction *autoSearchSimple;
     QAction *action_BildMnk;
     QAction *action_DelMnk;
     QAction *action_DelGraph;
     QAction *action_manual;
     QAction *action_about;
     QAction *action_filter;
-    QAction *startWork;
+    QAction *startWork1;
     QAction *action_SaveDataGr;
     QAction *action_autoSearch2;
     QAction *action_Derivat;
     QAction *action_GrDerivative;
     QAction *action_Correl;
+    QAction *startWork2;
     QWidget *centralWidget;
     QVBoxLayout *verticalLayout_8;
     QHBoxLayout *horizontalLayout_7;
     QGridLayout *gridLayout_1;
     QDoubleSpinBox *SpinLimit;
     QCheckBox *checkMax;
-    QLabel *label_2;
     QLabel *label_5;
+    QLabel *label_2;
     QLabel *label_13;
     QLabel *label;
     QLabel *label_4;
     QLabel *label_3;
+    QDoubleSpinBox *doubleSpinBox1;
     QTextBrowser *BrowserTime;
     QDoubleSpinBox *Spin_x2;
     QDoubleSpinBox *spinLevel;
-    QDoubleSpinBox *doubleSpinBox1;
     QCheckBox *checkMin;
     QDoubleSpinBox *Spin_x1;
+    QDoubleSpinBox *SpinTimeExp;
+    QLabel *label_7;
     QVBoxLayout *verticalLayout_7;
     QFrame *frame;
     QVBoxLayout *verticalLayout_2;
@@ -133,6 +132,7 @@ public:
     QMenu *menu_3;
     QMenu *menu_6;
     QMenu *menu_7;
+    QMenu *menu_8;
     QStatusBar *statusBar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -145,12 +145,8 @@ public:
         QIcon icon;
         icon.addFile(QStringLiteral(":/img/img/open.png"), QSize(), QIcon::Normal, QIcon::Off);
         action_OpenFile->setIcon(icon);
-        action_2 = new QAction(MainWindow);
-        action_2->setObjectName(QStringLiteral("action_2"));
         action_GrFunc = new QAction(MainWindow);
         action_GrFunc->setObjectName(QStringLiteral("action_GrFunc"));
-        action_6 = new QAction(MainWindow);
-        action_6->setObjectName(QStringLiteral("action_6"));
         action_exit = new QAction(MainWindow);
         action_exit->setObjectName(QStringLiteral("action_exit"));
         QIcon icon1;
@@ -165,17 +161,13 @@ public:
         action_ClearGraph->setObjectName(QStringLiteral("action_ClearGraph"));
         actionD = new QAction(MainWindow);
         actionD->setObjectName(QStringLiteral("actionD"));
-        action_24 = new QAction(MainWindow);
-        action_24->setObjectName(QStringLiteral("action_24"));
-        action_26 = new QAction(MainWindow);
-        action_26->setObjectName(QStringLiteral("action_26"));
-        action_7 = new QAction(MainWindow);
-        action_7->setObjectName(QStringLiteral("action_7"));
-        action_9 = new QAction(MainWindow);
-        action_9->setObjectName(QStringLiteral("action_9"));
-        action_9->setCheckable(true);
-        action_10 = new QAction(MainWindow);
-        action_10->setObjectName(QStringLiteral("action_10"));
+        delExtrem = new QAction(MainWindow);
+        delExtrem->setObjectName(QStringLiteral("delExtrem"));
+        manualExtrem = new QAction(MainWindow);
+        manualExtrem->setObjectName(QStringLiteral("manualExtrem"));
+        manualExtrem->setCheckable(true);
+        autoSearchSimple = new QAction(MainWindow);
+        autoSearchSimple->setObjectName(QStringLiteral("autoSearchSimple"));
         action_BildMnk = new QAction(MainWindow);
         action_BildMnk->setObjectName(QStringLiteral("action_BildMnk"));
         action_DelMnk = new QAction(MainWindow);
@@ -188,8 +180,8 @@ public:
         action_about->setObjectName(QStringLiteral("action_about"));
         action_filter = new QAction(MainWindow);
         action_filter->setObjectName(QStringLiteral("action_filter"));
-        startWork = new QAction(MainWindow);
-        startWork->setObjectName(QStringLiteral("startWork"));
+        startWork1 = new QAction(MainWindow);
+        startWork1->setObjectName(QStringLiteral("startWork1"));
         action_SaveDataGr = new QAction(MainWindow);
         action_SaveDataGr->setObjectName(QStringLiteral("action_SaveDataGr"));
         QIcon icon3;
@@ -203,6 +195,8 @@ public:
         action_GrDerivative->setObjectName(QStringLiteral("action_GrDerivative"));
         action_Correl = new QAction(MainWindow);
         action_Correl->setObjectName(QStringLiteral("action_Correl"));
+        startWork2 = new QAction(MainWindow);
+        startWork2->setObjectName(QStringLiteral("startWork2"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         verticalLayout_8 = new QVBoxLayout(centralWidget);
@@ -230,19 +224,19 @@ public:
         checkMax = new QCheckBox(centralWidget);
         checkMax->setObjectName(QStringLiteral("checkMax"));
 
-        gridLayout_1->addWidget(checkMax, 7, 1, 1, 1);
-
-        label_2 = new QLabel(centralWidget);
-        label_2->setObjectName(QStringLiteral("label_2"));
-        label_2->setMaximumSize(QSize(153, 16777215));
-
-        gridLayout_1->addWidget(label_2, 1, 0, 1, 1);
+        gridLayout_1->addWidget(checkMax, 8, 1, 1, 1);
 
         label_5 = new QLabel(centralWidget);
         label_5->setObjectName(QStringLiteral("label_5"));
         label_5->setMaximumSize(QSize(153, 16777215));
 
-        gridLayout_1->addWidget(label_5, 3, 0, 1, 1);
+        gridLayout_1->addWidget(label_5, 4, 0, 1, 1);
+
+        label_2 = new QLabel(centralWidget);
+        label_2->setObjectName(QStringLiteral("label_2"));
+        label_2->setMaximumSize(QSize(153, 16777215));
+
+        gridLayout_1->addWidget(label_2, 2, 0, 1, 1);
 
         label_13 = new QLabel(centralWidget);
         label_13->setObjectName(QStringLiteral("label_13"));
@@ -254,41 +248,19 @@ public:
         label->setObjectName(QStringLiteral("label"));
         label->setMaximumSize(QSize(153, 16777215));
 
-        gridLayout_1->addWidget(label, 4, 0, 1, 1);
+        gridLayout_1->addWidget(label, 5, 0, 1, 1);
 
         label_4 = new QLabel(centralWidget);
         label_4->setObjectName(QStringLiteral("label_4"));
         label_4->setMaximumSize(QSize(153, 16777215));
 
-        gridLayout_1->addWidget(label_4, 2, 0, 1, 1);
+        gridLayout_1->addWidget(label_4, 3, 0, 1, 1);
 
         label_3 = new QLabel(centralWidget);
         label_3->setObjectName(QStringLiteral("label_3"));
         label_3->setMaximumSize(QSize(153, 16777215));
 
-        gridLayout_1->addWidget(label_3, 6, 0, 1, 1);
-
-        BrowserTime = new QTextBrowser(centralWidget);
-        BrowserTime->setObjectName(QStringLiteral("BrowserTime"));
-        BrowserTime->setMaximumSize(QSize(80, 20));
-        BrowserTime->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-        gridLayout_1->addWidget(BrowserTime, 3, 1, 1, 1);
-
-        Spin_x2 = new QDoubleSpinBox(centralWidget);
-        Spin_x2->setObjectName(QStringLiteral("Spin_x2"));
-        Spin_x2->setMaximumSize(QSize(80, 20));
-        Spin_x2->setDecimals(4);
-        Spin_x2->setMaximum(9999.99);
-
-        gridLayout_1->addWidget(Spin_x2, 6, 1, 1, 1);
-
-        spinLevel = new QDoubleSpinBox(centralWidget);
-        spinLevel->setObjectName(QStringLiteral("spinLevel"));
-        spinLevel->setDecimals(1);
-        spinLevel->setValue(1);
-
-        gridLayout_1->addWidget(spinLevel, 2, 1, 1, 1);
+        gridLayout_1->addWidget(label_3, 7, 0, 1, 1);
 
         doubleSpinBox1 = new QDoubleSpinBox(centralWidget);
         doubleSpinBox1->setObjectName(QStringLiteral("doubleSpinBox1"));
@@ -298,13 +270,35 @@ public:
         doubleSpinBox1->setSingleStep(0.01);
         doubleSpinBox1->setValue(0.05);
 
-        gridLayout_1->addWidget(doubleSpinBox1, 1, 1, 1, 1);
+        gridLayout_1->addWidget(doubleSpinBox1, 2, 1, 1, 1);
+
+        BrowserTime = new QTextBrowser(centralWidget);
+        BrowserTime->setObjectName(QStringLiteral("BrowserTime"));
+        BrowserTime->setMaximumSize(QSize(80, 20));
+        BrowserTime->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+        gridLayout_1->addWidget(BrowserTime, 4, 1, 1, 1);
+
+        Spin_x2 = new QDoubleSpinBox(centralWidget);
+        Spin_x2->setObjectName(QStringLiteral("Spin_x2"));
+        Spin_x2->setMaximumSize(QSize(80, 20));
+        Spin_x2->setDecimals(4);
+        Spin_x2->setMaximum(9999.99);
+
+        gridLayout_1->addWidget(Spin_x2, 7, 1, 1, 1);
+
+        spinLevel = new QDoubleSpinBox(centralWidget);
+        spinLevel->setObjectName(QStringLiteral("spinLevel"));
+        spinLevel->setDecimals(1);
+        spinLevel->setValue(1);
+
+        gridLayout_1->addWidget(spinLevel, 3, 1, 1, 1);
 
         checkMin = new QCheckBox(centralWidget);
         checkMin->setObjectName(QStringLiteral("checkMin"));
         checkMin->setLayoutDirection(Qt::RightToLeft);
 
-        gridLayout_1->addWidget(checkMin, 7, 0, 1, 1);
+        gridLayout_1->addWidget(checkMin, 8, 0, 1, 1);
 
         Spin_x1 = new QDoubleSpinBox(centralWidget);
         Spin_x1->setObjectName(QStringLiteral("Spin_x1"));
@@ -313,7 +307,18 @@ public:
         Spin_x1->setDecimals(4);
         Spin_x1->setMaximum(9999.99);
 
-        gridLayout_1->addWidget(Spin_x1, 4, 1, 1, 1);
+        gridLayout_1->addWidget(Spin_x1, 5, 1, 1, 1);
+
+        SpinTimeExp = new QDoubleSpinBox(centralWidget);
+        SpinTimeExp->setObjectName(QStringLiteral("SpinTimeExp"));
+        SpinTimeExp->setDecimals(4);
+
+        gridLayout_1->addWidget(SpinTimeExp, 1, 1, 1, 1);
+
+        label_7 = new QLabel(centralWidget);
+        label_7->setObjectName(QStringLiteral("label_7"));
+
+        gridLayout_1->addWidget(label_7, 1, 0, 1, 1);
 
 
         horizontalLayout_7->addLayout(gridLayout_1);
@@ -731,6 +736,8 @@ public:
         menu_6->setObjectName(QStringLiteral("menu_6"));
         menu_7 = new QMenu(menuBar);
         menu_7->setObjectName(QStringLiteral("menu_7"));
+        menu_8 = new QMenu(menuBar);
+        menu_8->setObjectName(QStringLiteral("menu_8"));
         MainWindow->setMenuBar(menuBar);
         statusBar = new QStatusBar(MainWindow);
         statusBar->setObjectName(QStringLiteral("statusBar"));
@@ -759,6 +766,7 @@ public:
         QWidget::setTabOrder(textBrowser_X, textBrowser_Y);
 
         menuBar->addAction(menu->menuAction());
+        menuBar->addAction(menu_8->menuAction());
         menuBar->addAction(menu_2->menuAction());
         menuBar->addAction(menu_7->menuAction());
         menuBar->addAction(menu_4->menuAction());
@@ -769,14 +777,13 @@ public:
         menu->addAction(action_SaveImage);
         menu->addAction(action_SaveDataGr);
         menu->addAction(action_exit);
-        menu_2->addAction(action_10);
+        menu_2->addAction(autoSearchSimple);
         menu_2->addAction(action_autoSearch2);
-        menu_2->addAction(action_9);
-        menu_2->addAction(action_7);
+        menu_2->addAction(manualExtrem);
+        menu_2->addAction(delExtrem);
         menu_4->addAction(menu_5->menuAction());
         menu_4->addAction(actionD);
         menu_4->addAction(action_filter);
-        menu_4->addAction(startWork);
         menu_4->addAction(action_Correl);
         menu_5->addAction(menu_3->menuAction());
         menu_3->addAction(action_BildMnk);
@@ -785,6 +792,8 @@ public:
         menu_6->addAction(action_about);
         menu_7->addAction(action_Derivat);
         menu_7->addAction(action_GrDerivative);
+        menu_8->addAction(startWork1);
+        menu_8->addAction(startWork2);
 
         retranslateUi(MainWindow);
 
@@ -796,23 +805,16 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "\320\241\320\270\321\201\321\202\320\265\320\274\320\260 \320\274\320\276\320\275\320\270\321\202\320\276\321\200\320\270\320\275\320\263\320\260", 0));
         action_OpenFile->setText(QApplication::translate("MainWindow", "\320\222\321\213\320\261\321\200\320\260\321\202\321\214 \321\204\320\260\320\271\320\273", 0));
         action_OpenFile->setShortcut(QApplication::translate("MainWindow", "Ctrl+O", 0));
-        action_2->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\270\320\267\320\262\320\276\320\264\320\275\320\260\321\217", 0));
         action_GrFunc->setText(QApplication::translate("MainWindow", "\320\223\321\200\320\260\321\204\320\270\320\272 \321\204\321\203\320\275\320\272\321\206\320\270\320\270", 0));
-        action_6->setText(QApplication::translate("MainWindow", "\320\244\320\270\320\273\321\214\321\202\321\200\320\260\321\206\320\270\321\217", 0));
-#ifndef QT_NO_TOOLTIP
-        action_6->setToolTip(QApplication::translate("MainWindow", "\320\262\321\213\320\261\320\276\321\200 \321\204\320\270\320\273\321\214\321\202\321\200\320\260 \320\270\320\273\320\270 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\321\217", 0));
-#endif // QT_NO_TOOLTIP
         action_exit->setText(QApplication::translate("MainWindow", "\320\222\321\213\321\205\320\276\320\264", 0));
         action_exit->setShortcut(QApplication::translate("MainWindow", "Ctrl+Q", 0));
         action_SaveImage->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\270\320\267\320\276\320\261\321\200\320\260\320\266\320\265\320\275\320\270\320\265 \320\263\321\200\320\260\321\204\320\270\320\272\320\260", 0));
         action_SaveImage->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+S", 0));
         action_ClearGraph->setText(QApplication::translate("MainWindow", "\320\236\321\207\320\270\321\201\321\202\320\270\321\202\321\214 \320\263\321\200\320\260\321\204\321\213", 0));
         actionD->setText(QApplication::translate("MainWindow", "\316\224 \321\201\320\270\320\263\320\275\320\260\320\273\320\260", 0));
-        action_24->setText(QApplication::translate("MainWindow", "\320\235\320\260\321\207\320\260\320\273\321\214\320\275\320\276\320\265 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\265 \320\264\320\270\320\260\320\277\320\260\320\267\320\276\320\275\320\260", 0));
-        action_26->setText(QApplication::translate("MainWindow", "\320\232\320\276\320\275\320\265\321\207\320\275\320\276\320\265 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\265 \320\264\320\270\320\260\320\277\320\260\320\267\320\276\320\275\320\260", 0));
-        action_7->setText(QApplication::translate("MainWindow", "\320\243\320\264\320\260\320\273\320\270\321\202\321\214 \321\202\320\276\321\207\320\272\320\270 \321\215\320\272\321\201\321\202\321\200\320\265\320\274\321\203\320\274\320\276\320\262", 0));
-        action_9->setText(QApplication::translate("MainWindow", "\320\240\321\203\321\207\320\275\320\260\321\217 \320\275\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\260", 0));
-        action_10->setText(QApplication::translate("MainWindow", "\320\220\320\262\321\202\320\276\320\277\320\276\320\270\321\201\320\272 (\320\277\321\200\320\276\321\201\321\202\320\276\320\271)", 0));
+        delExtrem->setText(QApplication::translate("MainWindow", "\320\243\320\264\320\260\320\273\320\270\321\202\321\214 \321\202\320\276\321\207\320\272\320\270 \321\215\320\272\321\201\321\202\321\200\320\265\320\274\321\203\320\274\320\276\320\262", 0));
+        manualExtrem->setText(QApplication::translate("MainWindow", "\320\240\321\203\321\207\320\275\320\260\321\217 \320\275\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\260", 0));
+        autoSearchSimple->setText(QApplication::translate("MainWindow", "\320\220\320\262\321\202\320\276\320\277\320\276\320\270\321\201\320\272 (\320\277\321\200\320\276\321\201\321\202\320\276\320\271)", 0));
         action_BildMnk->setText(QApplication::translate("MainWindow", "\320\237\320\276\321\201\321\202\321\200\320\276\320\270\321\202\321\214", 0));
         action_DelMnk->setText(QApplication::translate("MainWindow", "\320\243\320\264\320\260\320\273\320\270\321\202\321\214", 0));
         action_DelGraph->setText(QApplication::translate("MainWindow", "\320\243\320\264\320\260\320\273\320\270\321\202\321\214 \320\263\321\200\320\260\321\204\320\270\320\272", 0));
@@ -821,21 +823,23 @@ public:
         action_manual->setShortcut(QApplication::translate("MainWindow", "F1", 0));
         action_about->setText(QApplication::translate("MainWindow", "\320\236 \320\277\321\200\320\276\320\263\321\200\320\260\320\274\320\274\320\265", 0));
         action_filter->setText(QApplication::translate("MainWindow", "\320\244\320\270\320\273\321\214\321\202\321\200\320\260\321\206\320\270\321\217 \321\201\320\270\320\263\320\275\320\260\320\273\320\260", 0));
-        startWork->setText(QApplication::translate("MainWindow", "\320\235\320\260\321\207\320\260\320\273\320\276 \321\200\320\260\320\261\320\276\321\207\320\265\320\263\320\276 \321\200\320\265\320\266\320\270\320\274\320\260", 0));
+        startWork1->setText(QApplication::translate("MainWindow", "\320\234\320\265\321\202\320\276\320\264 1", 0));
         action_SaveDataGr->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\321\217 \320\263\321\200\320\260\321\204\320\270\320\272\320\260", 0));
         action_SaveDataGr->setShortcut(QApplication::translate("MainWindow", "Ctrl+S", 0));
         action_autoSearch2->setText(QApplication::translate("MainWindow", "\320\220\320\262\321\202\320\276\320\277\320\276\320\270\321\201\320\272 (\320\277\320\276\321\201\320\273\320\265 \320\275\320\260\321\207\320\260\320\273\320\260 \321\200\320\260\320\261. \321\200\320\265\320\266\320\270\320\274\320\260)", 0));
         action_Derivat->setText(QApplication::translate("MainWindow", "\320\241\320\272\320\276\321\200\320\276\321\201\321\202\321\214 \320\270\320\267\320\274\320\265\320\275\320\265\320\275\320\270\321\217 \320\277\320\260\321\200\320\260\320\274\320\265\321\202\321\200\320\260", 0));
         action_GrDerivative->setText(QApplication::translate("MainWindow", "\320\223\321\200\320\260\321\204\320\270\320\272 \321\201\320\272\320\276\321\200\320\276\321\201\321\202\320\270 \320\270\320\267\320\274\320\265\320\275\320\265\320\275\320\270\321\217 \320\277\320\260\321\200\320\260\320\274\320\265\321\202\321\200\320\260", 0));
         action_Correl->setText(QApplication::translate("MainWindow", "\320\232\320\276\321\200\321\200\320\265\320\273\321\217\321\206\320\270\320\276\320\275\320\275\321\213\320\271 \320\260\320\275\320\260\320\273\320\270\320\267", 0));
+        startWork2->setText(QApplication::translate("MainWindow", "\320\234\320\265\321\202\320\276\320\264 2", 0));
         checkMax->setText(QApplication::translate("MainWindow", "\320\234\320\260\320\272\321\201\320\270\320\274\321\203\320\274", 0));
-        label_2->setText(QApplication::translate("MainWindow", "\320\244\320\270\320\273\321\214\321\202\321\200\320\260\321\206\320\270\321\217 \321\215\320\272\321\201\321\202\321\200\320\265\320\274\321\203\320\274\320\276\320\262", 0));
         label_5->setText(QApplication::translate("MainWindow", "\320\222\321\200\320\265\320\274\321\217 \320\277\321\200\320\270 \321\203\321\201\321\202\320\260\320\275\320\276\320\262\320\273\320\265\320\275\320\276\320\274 %", 0));
+        label_2->setText(QApplication::translate("MainWindow", "\320\244\320\270\320\273\321\214\321\202\321\200\320\260\321\206\320\270\321\217 \321\215\320\272\321\201\321\202\321\200\320\265\320\274\321\203\320\274\320\276\320\262", 0));
         label_13->setText(QApplication::translate("MainWindow", "\320\237\320\276\321\200\320\276\320\263\320\276\320\262\320\276\320\265 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\265, R ", 0));
         label->setText(QApplication::translate("MainWindow", "\320\235\320\260\321\207\320\260\320\273\321\214\320\275\320\276\320\265 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\265", 0));
         label_4->setText(QApplication::translate("MainWindow", "\320\237\320\276\321\200\320\276\320\263 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\321\217 \321\202\321\200\320\265\320\275\320\264\320\260, %", 0));
         label_3->setText(QApplication::translate("MainWindow", "\320\232\320\276\320\275\320\265\321\207\320\275\320\276\320\265 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\265", 0));
         checkMin->setText(QApplication::translate("MainWindow", "\320\234\320\270\320\275\320\270\320\274\321\203\320\274", 0));
+        label_7->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\264\320\276\320\273\320\266\320\270\321\202\320\265\320\273\321\214\320\275\320\276\321\201\321\202\321\214 \320\276\320\277\321\213\321\202\320\260 \342\211\210", 0));
         checkExp->setText(QApplication::translate("MainWindow", "\320\255\320\272\321\201\320\277\320\276\320\275\320\265\320\275\321\206\320\270\320\260\320\273\321\214\320\275\320\276\320\265\n"
 "\321\201\320\263\320\273\320\260\320\266\320\270\320\262\320\260\320\275\320\270\320\265", 0));
         label_9->setText(QApplication::translate("MainWindow", "\320\232\320\276\321\215\321\204-\321\202, p", 0));
@@ -891,6 +895,7 @@ public:
         menu_3->setTitle(QApplication::translate("MainWindow", "\320\234\320\265\321\202\320\276\320\264 \320\275\320\260\320\270\320\274\320\265\320\275\321\214\321\210\320\270\321\205 \320\272\320\262\320\260\320\264\321\200\320\260\321\202\320\276\320\262", 0));
         menu_6->setTitle(QApplication::translate("MainWindow", "\320\241\320\277\321\200\320\260\320\262\320\272\320\260", 0));
         menu_7->setTitle(QApplication::translate("MainWindow", "\320\241\320\272\320\276\321\200\320\276\321\201\321\202\321\214", 0));
+        menu_8->setTitle(QApplication::translate("MainWindow", "\320\235\320\260\321\207\320\260\320\273\320\276 \321\200\320\260\320\261. \321\200\320\265\320\266\320\270\320\274\320\260", 0));
     } // retranslateUi
 
 };

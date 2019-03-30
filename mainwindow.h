@@ -37,9 +37,11 @@ private slots:
 
     void slotCustomMenuRequested(QPoint pos); //для вызова контекстного меню
 
-    void on_action_7_triggered();
+    void on_delExtrem_triggered();
 
     void indexSearch(double valX1, double valX2);//ищем индекс массива выделенного интервала
+
+    void speedSearch(); //для расчета скорости реакции и восстановления текущего графика
 
     void on_action_exit_triggered();
 
@@ -55,7 +57,7 @@ private slots:
 
     void on_checkMax_clicked();
 
-    void on_action_10_triggered();
+    void on_autoSearchSimple_triggered();
 
     void on_action_Derivat_triggered();
 
@@ -87,7 +89,7 @@ private slots:
 
     void on_SliderLegend_valueChanged(int value);
 
-    void on_startWork_triggered(double limit);
+    void on_startWork1_triggered();
 
     void on_action_SaveDataGr_triggered();
 
