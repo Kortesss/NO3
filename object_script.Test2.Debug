@@ -8,6 +8,7 @@ INPUT(
 ./debug\mnk.o
 ./debug\about.o
 ./debug\filterfft.o
+./debug\extrem_simple.o
 ./debug\qrc_source.o
 ./debug\moc_mainwindow.o
 ./debug\moc_qcustomplot.o

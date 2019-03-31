@@ -37,19 +37,13 @@ private slots:
 
     void slotCustomMenuRequested(QPoint pos); //для вызова контекстного меню
 
-    void on_action_triggered();
+    void on_delExtrem_triggered();
 
-    void on_action_3_triggered();
+    void indexSearch(double valX1, double valX2);//ищем индекс массива выделенного интервала
 
-    void on_action_4_triggered();
-
-    void on_action_7_triggered();
+    void speedSearch(); //для расчета скорости реакции и восстановления текущего графика
 
     void on_action_exit_triggered();
-
-    void on_action_12_triggered();
-
-    void on_action_16_triggered();
 
     void on_spinLevel_valueChanged();
 
@@ -57,19 +51,15 @@ private slots:
 
     void on_actionD_triggered();
 
-    void on_action_21_triggered();
+    void on_action_GrDerivative_triggered();
 
     void on_checkMin_clicked();
 
     void on_checkMax_clicked();
 
-    void on_action_10_triggered();
+    void on_autoSearchSimple_triggered();
 
-    void on_action_13_triggered();
-
-    void on_action_17_triggered();
-
-    void on_action_19_triggered();
+    void on_action_Derivat_triggered();
 
     void TimerTick();
 
@@ -79,15 +69,11 @@ private slots:
 
     void FalseVisibleAllGraph();
 
-    void on_action_5_triggered();
-
     void menuRename();
 
     void menuReaxis();
 
     void EnterPressedLineEditRename();
-
-    void manualSetView();
 
     void on_action_manual_triggered();
 
@@ -101,7 +87,9 @@ private slots:
 
     void on_SliderSpan_valueChanged(int value);
 
-    void on_startWork_triggered();
+    void on_SliderLegend_valueChanged(int value);
+
+    void on_startWork1_triggered();
 
     void on_action_SaveDataGr_triggered();
 
@@ -111,31 +99,51 @@ private slots:
 
     void on_undo(); void on_redo();
 
+    void on_action_DelGraph_triggered();
+
+    void on_action_ClearGraph_triggered();
+
+    void on_action_OpenFile_triggered();
+
+    void on_action_DelMnk_triggered();
+
+    void on_action_SaveImage_triggered();
+
+    void on_action_BildMnk_triggered();
+
+    void on_action_autoSearch2_triggered();
+
+    void on_SpinLimit_valueChanged(double arg1);
+
+    void on_action_Correl_triggered();
+
+    void on_SliderPointGr_valueChanged(int value);
+
 private:
     Ui::MainWindow *ui;
     QLineEdit *lineEditRename;
     QListWidgetItem *itRename;
     bool mouseDown, left; //mauseDown - при движении мыши, проверяем была ли нажата правая кнопка, left - переключатель
-    double prdelfun(double x1,double x2,double y1,double y2); //процедура для поиска предела функции
-    double prfun(double px); //функции для поиска предела функции
     QList<QList<double> > mass_x_Gr, mass_y_Gr; //массив x и y каждого графика
     QList<QList<double> > mass_minX, mass_maxX, mass_minY, mass_maxY, trendMin, trendMax; //массивы мин. и макс. x, y и и точки для линии тренда для каждого графика
     QList<QList<double> > xLevelMin, yLevelMin, xLevelMax, yLevelMax, StWork1,StWork2;
     QList <QString> mnkStrMin, mnkStrMax; //для сохраниения легенды мнк
     QList <double> minx, miny, maxx, maxy, koef; //мин. и макс. x, y и коэффициент
-    QList <double> expY, expYcopy; //для экспоненциального сглаживания
+    QList <double> expY, expYcopy, speedReaction, speedRecovery; //для экспоненциального сглаживания
     QList <QString> axis_x_Gr, axis_y_Gr; //наименования осей каждого графика
     QVector<double> dirivate; //массив производных
-    double x1, x2;
+    int x1, x2; //индексы значений выделенного интервала
     int iWork;//индекс значения начала рабочего режима
     QVector<double> spanX, spanY; //данные для диапазона иксов
-    QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax, *graphSpan, *graphStartWork; //все графики
+    QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax, *graphSpan; //все графики
+    QCPItemRect *rectPoint, *rectSpan; //прямоугольник для выделения точек
 
     QList<QList<QCPItemText*> > textListMin, textListMax;//точки экстрем. для отображения координат
     QList<QList<QCPItemText*> > textListMNK; //для подписи точки МНК на нулевом месте будет min, а на 1 max
     QTimer timer; int t, gr_index; //таймер для добавления чисел в список на форму и переменная t для прохода по массиву
+    QString sliderStyleOn, sliderStyleOff;
+    QShortcut *CtrlZ, *CtrlY;
 
-    QShortcut *CtrlZ, *CtrlShiftZ;
 };
 
 #endif // MAINWINDOW_H

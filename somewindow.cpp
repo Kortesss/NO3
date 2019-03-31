@@ -2,7 +2,7 @@
 #include "ui_somewindow.h"
 #include <QDebug>
 
-SomeWindow::SomeWindow(QVector<double> &dirivate, double &x1, double &x2, double &koef, QWidget *parent) :
+SomeWindow::SomeWindow(QVector<double> &dirivate, int &x1, int &x2, double &koef, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::SomeWindow)
 {
@@ -17,12 +17,12 @@ SomeWindow::SomeWindow(QVector<double> &dirivate, double &x1, double &x2, double
     graphDirivate(dirivate, x1, x2,koef);
 
 }
-void SomeWindow::graphDirivate(QVector<double> &dirivate, double &x1,double &x2,double &koef){
+void SomeWindow::graphDirivate(QVector<double> &dirivate, int &x1, int &x2,double &koef){
     ui->widget_dir->clearGraphs();//Если нужно, о очищаем все графики
     ui->widget_dir->addGraph();
     QVector<double> x1vector;
-    double miny, maxy, i;
-    for(i=x1;i<dirivate.count()+x1;++i){
+    double miny, maxy;
+    for(int i = x1; i < dirivate.count()+x1; ++i){
         x1vector.append(i*koef);
     }
         miny = *std::min_element(dirivate.begin(), dirivate.end());
@@ -30,7 +30,6 @@ void SomeWindow::graphDirivate(QVector<double> &dirivate, double &x1,double &x2,
         qDebug() << "MIN Y="<<miny; qDebug() << "MAX Y="<<maxy;
         qDebug() << "x1="<<x1;
         qDebug() << "x2="<<x2;
-        qDebug() << "I="<<i;
     //}
     ui->widget_dir->graph(0)->setData(x1vector, dirivate);
     ui->widget_dir->graph(0)->setPen(QColor(50, 50, 50, 255));//задаем цвет точки
