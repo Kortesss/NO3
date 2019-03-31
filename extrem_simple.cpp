@@ -1,6 +1,6 @@
 #include "extrem_simple.h"
 
-extrem_simple::extrem_simple(QList<double> &mass_minX, QList<double> &mass_maxX, QList<double> &mass_minY, QList<double> &mass_maxY, QList<double> &mass_y_Gr, QList<double> &mass_x_Gr, int x1, int x2, double limit)
+extrem_simple::extrem_simple(QList<double> &mass_minX, QList<double> &mass_maxX, QList<double> &mass_minY, QList<double> &mass_maxY, QList<double> &mass_y_Gr, QList<double> &mass_x_Gr, int x1, int x2, double limit, double miny)
 {
     mass_minX.clear(); mass_maxX.clear();
     mass_minY.clear(); mass_maxY.clear();//чтобы память не засорять
@@ -13,7 +13,7 @@ extrem_simple::extrem_simple(QList<double> &mass_minX, QList<double> &mass_maxX,
     for(int i = x1+1; i <= x2; i ++){
         if (up){ //если возрастает
             if (mass_y_Gr[i] < mass_y_Gr[i-1]){ //ждем когда она перестанет возрастать
-                if((mass_y_Gr[i-1] - mass_y_Gr[i])>limit){
+                if((mass_y_Gr[i-1] - mass_y_Gr[i]) > (limit/10)){
                     mass_maxX.append(mass_x_Gr[i-1]);
                     mass_maxY.append(mass_y_Gr[i-1]);
                     up = false;

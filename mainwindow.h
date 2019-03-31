@@ -136,12 +136,14 @@ private:
     int iWork;//индекс значения начала рабочего режима
     QVector<double> spanX, spanY; //данные для диапазона иксов
     QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax, *graphSpan; //все графики
+    QCPItemRect *rectPoint, *rectSpan; //прямоугольник для выделения точек
 
     QList<QList<QCPItemText*> > textListMin, textListMax;//точки экстрем. для отображения координат
     QList<QList<QCPItemText*> > textListMNK; //для подписи точки МНК на нулевом месте будет min, а на 1 max
     QTimer timer; int t, gr_index; //таймер для добавления чисел в список на форму и переменная t для прохода по массиву
     QString sliderStyleOn, sliderStyleOff;
     QShortcut *CtrlZ, *CtrlY;
+
 };
 
 #endif // MAINWINDOW_H

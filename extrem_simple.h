@@ -6,7 +6,7 @@
 class extrem_simple
 {
 public:
-    extrem_simple(QList<double> &mass_minX, QList<double> &mass_maxX, QList<double> &mass_minY, QList<double> &mass_maxY, QList<double> &mass_y_Gr, QList<double> &mass_x_Gr, int x1, int x2, double limit);
+    extrem_simple(QList<double> &mass_minX, QList<double> &mass_maxX, QList<double> &mass_minY, QList<double> &mass_maxY, QList<double> &mass_y_Gr, QList<double> &mass_x_Gr, int x1, int x2, double limit, double miny);
 };
 
 #endif // EXTREM_SIMPLE_H
