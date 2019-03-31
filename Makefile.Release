@@ -6096,8 +6096,7 @@ release/deltawin.o: deltawin.cpp deltawin.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QStatusBar \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/qstatusbar.h \
 		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtWidgets/QWidget \
-		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/qmath.h \
-		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/QDebug
+		C:/Qt/Qt5.5.1/5.5/mingw492_32/include/QtCore/qmath.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release\deltawin.o deltawin.cpp
 
 release/mnk.o: mnk.cpp mnk.h \

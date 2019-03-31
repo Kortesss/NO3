@@ -266,8 +266,8 @@ public:
         doubleSpinBox1->setObjectName(QStringLiteral("doubleSpinBox1"));
         doubleSpinBox1->setFocusPolicy(Qt::WheelFocus);
         doubleSpinBox1->setDecimals(3);
-        doubleSpinBox1->setMaximum(100);
-        doubleSpinBox1->setSingleStep(0.1);
+        doubleSpinBox1->setMaximum(300);
+        doubleSpinBox1->setSingleStep(0.01);
         doubleSpinBox1->setValue(0);
 
         gridLayout_1->addWidget(doubleSpinBox1, 2, 1, 1, 1);

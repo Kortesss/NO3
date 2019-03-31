@@ -133,9 +133,7 @@ private:
     QList <QString> axis_x_Gr, axis_y_Gr; //наименования осей каждого графика
     QVector<double> dirivate; //массив производных
     int x1, x2; //индексы значений выделенного интервала
-    int iWork;//индекс значения начала рабочего режима
-    QVector<double> spanX, spanY; //данные для диапазона иксов
-    QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax, *graphSpan; //все графики
+    QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax; //все графики
     QCPItemRect *rectPoint, *rectSpan; //прямоугольник для выделения точек
 
     QList<QList<QCPItemText*> > textListMin, textListMax;//точки экстрем. для отображения координат
