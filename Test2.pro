@@ -38,7 +38,8 @@ SOURCES += main.cpp\
     mnk.cpp \
     about.cpp \
     filterfft.cpp \
-    extrem_simple.cpp
+    extrem_simple.cpp \
+    correl_analysis.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
@@ -49,13 +50,15 @@ HEADERS  += mainwindow.h \
     mnk.h \
     about.h \
     filterfft.h \
-    extrem_simple.h
+    extrem_simple.h \
+    correl_analysis.h
 
 FORMS    += mainwindow.ui \
     somewindow.ui \
     deltawin.ui \
     about.ui \
-    filterfft.ui
+    filterfft.ui \
+    correl_analysis.ui
 
 RESOURCES += \
     source.qrc

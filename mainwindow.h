@@ -119,6 +119,10 @@ private slots:
 
     void on_SliderPointGr_valueChanged(int value);
 
+    void on_SpinTimeExp_valueChanged(int arg1);
+
+    void on_startWork2_triggered();
+
 private:
     Ui::MainWindow *ui;
     QLineEdit *lineEditRename;

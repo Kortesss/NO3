@@ -12,7 +12,7 @@ class correl_analysis : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit correl_analysis(QWidget *parent = 0);
+    explicit correl_analysis(QWidget *parent = nullptr);
     ~correl_analysis();
 
 private:

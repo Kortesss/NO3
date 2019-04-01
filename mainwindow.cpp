@@ -7,6 +7,7 @@
 #include "deltawin.h"
 #include "filterfft.h"
 #include "extrem_simple.h"
+#include "correl_analysis.h"
 
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
@@ -385,7 +386,6 @@ void MainWindow::mousePress(QMouseEvent *event) //ручная установк�
                     rectSpan->topLeft->setCoords(minx[gr_index], maxy[gr_index]);
                     mouseDown = true;
                 }else{ //В пределах границ графика
-                    //ui->Spin_x1->setValue(minx[gr_index]);
                     ui->Spin_x1->setValue(currentX);
                     rectSpan->topLeft->setCoords(ui->Spin_x1->value(), maxy[gr_index]);
                     rectSpan->bottomRight->setCoords(ui->Spin_x1->value(), miny[gr_index]);
@@ -438,10 +438,10 @@ void MainWindow::histogramMouseMoved(QMouseEvent *event) //координаты 
 void MainWindow::spanMouseUp(QMouseEvent *event)
 {
     if (event->button() == Qt::RightButton){
-        if (!ui->manualExtrem->isChecked()){
+        if (rectSpan->visible()) ui->SliderSpan->setValue(1);
+        else ui->SliderSpan->setValue(0);
+        if (!ui->manualExtrem->isChecked() && !ui->checkTimeExp->isChecked()){
             mouseDown = false;
-            if (rectSpan->visible()) ui->SliderSpan->setValue(1);
-            else ui->SliderSpan->setValue(0);
             if ((ui->checkExp->isChecked() || ui->checkGolay->isChecked()) && ui->listWidget->count() > 0){
                 expYcopy = expY;
                 QFile tempFile("tempUndo.bin");
@@ -496,7 +496,8 @@ void MainWindow::spanMouseUp(QMouseEvent *event)
             graphic1->setData(mass_x_Gr[gr_index].toVector(), expY.toVector());
             ui->widget->replot();
             }
-        }else{
+        }else if (ui->manualExtrem->isChecked()){//включена ручная настройка экстремумов: удаление
+            mouseDown = false;
             rectPoint->setVisible(false); ui->widget->replot();
             if (ui->checkMin->isChecked()){
                 for(int i = 0; i < mass_minX[gr_index].count(); i++){
@@ -511,8 +512,7 @@ void MainWindow::spanMouseUp(QMouseEvent *event)
                     if (trendMin[gr_index].count() > 0) on_action_BildMnk_triggered(); //перестраиваем МНК мин
                     }
                 }
-            }
-            if (ui->checkMax->isChecked()){
+            }else if (ui->checkMax->isChecked()){
                 for(int i = 0; i < mass_maxX[gr_index].count(); i++){
                     if (((mass_maxX[gr_index][i] > rectPoint->topLeft->coords().x()) && (mass_maxY[gr_index][i] < rectPoint->topLeft->coords().y()) && (mass_maxX[gr_index][i] < rectPoint->bottomRight->coords().x()) && (mass_maxY[gr_index][i] > rectPoint->bottomRight->coords().y()))
                             || ((mass_maxX[gr_index][i] < rectPoint->topLeft->coords().x()) && (mass_maxY[gr_index][i] < rectPoint->topLeft->coords().y()) && (mass_maxX[gr_index][i] > rectPoint->bottomRight->coords().x()) && (mass_maxY[gr_index][i] > rectPoint->bottomRight->coords().y()))){
@@ -525,8 +525,7 @@ void MainWindow::spanMouseUp(QMouseEvent *event)
                     if (trendMax[gr_index].count() > 0) on_action_BildMnk_triggered(); //перестраиваем МНК макс
                     }
                 }
-            }
-            if ((ui->checkMin->isChecked()) && (ui->checkMax->isChecked())){
+            }else{
                 for(int i = 0; i < mass_minX[gr_index].count(); i++){
                     if(((mass_minX[gr_index][i] > rectPoint->topLeft->coords().x()) && (mass_minY[gr_index][i] < rectPoint->topLeft->coords().y()) && (mass_minX[gr_index][i] < rectPoint->bottomRight->coords().x()) && (mass_minY[gr_index][i] > rectPoint->bottomRight->coords().y()))
                             || ((mass_minX[gr_index][i] < rectPoint->topLeft->coords().x()) && (mass_minY[gr_index][i] < rectPoint->topLeft->coords().y()) && (mass_minX[gr_index][i] > rectPoint->bottomRight->coords().x()) && (mass_minY[gr_index][i] > rectPoint->bottomRight->coords().y()))){
@@ -556,6 +555,11 @@ void MainWindow::spanMouseUp(QMouseEvent *event)
             if (mass_minX[gr_index].count()==0) graphMin->setName(" ");
             if (mass_maxX[gr_index].count()==0) graphMax->setName(" ");
             ui->widget->replot();
+        }else{//здесь включен настройка продолжительности раб. режима
+            mouseDown = false;
+            indexSearch(ui->Spin_x1->value(), ui->Spin_x2->value());
+            if (ui->startWork1->isChecked()) ui->SpinTimeExp->setValue(x2-x1);
+            else ui->SpinTimeExp->setValue(x2-((x2-x1)/2)); //x2 минус радиус
         }
     }
 }
@@ -697,7 +701,7 @@ void MainWindow::on_action_autoSearch2_triggered() //2 способ экстре
         if (mass_minX[gr_index].count()>0){
             mass_maxX[gr_index].clear(); mass_maxY[gr_index].clear();//чтобы память не засорять
             int k = 0;
-            double maxX = 0.0, maxY = mass_y_Gr[gr_index][0];;
+            double maxX = 0.0, maxY = mass_y_Gr[gr_index][0];
             for(int i = 1; i < mass_minX[gr_index].count(); i++){
                 for(int j = k; j < mass_x_Gr[gr_index].count(); j++){
                     if (mass_x_Gr[gr_index][j] < mass_minX[gr_index][i]){ //
@@ -732,7 +736,7 @@ void MainWindow::indexSearch(double valX1, double valX2)//ищем индекс 
 
 void MainWindow::on_action_Derivat_triggered() //вызов вычисления производной кусочно-непрерывной функции
 {
-    if (ui->listWidget->count() > 0 && ui->Spin_x2->value()>ui->Spin_x1->value()){
+    if (ui->listWidget->count() > 0 && ui->Spin_x2->value()>ui->Spin_x1->value() && !ui->checkTimeExp->isChecked()){
         double sred = 0, znpozit = 0;
         dirivate.clear();       
         indexSearch(ui->Spin_x1->value(), ui->Spin_x2->value()); //ищем индекс диапазона
@@ -744,11 +748,7 @@ void MainWindow::on_action_Derivat_triggered() //вызов вычисления
         }
         ui->Browser_Derivative->setText("Производная:\ndx/dy = "+QString::number(abs(sred)));
         delete der;
-        }/*else{
-            if ((ui->Spin_x1->value() == 0.0) && (ui->Spin_x2->value() == 0.0)) //чтобы 2 раза не выдавало сообщение об ошибке
-                QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
-            ui->Spin_x1->setValue(0.0); ui->Spin_x2->setValue(0.0);
-        }*/
+        }
 }
 
 void MainWindow::speedSearch()
@@ -784,7 +784,10 @@ void MainWindow::on_action_Correl_triggered()
 {
     if (ui->listWidget->count() > 0){
         speedSearch();
-
+        correl_analysis *CorrelW = new correl_analysis(this);
+        CorrelW->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - Корреляционный анализ");
+        CorrelW->show();
+        CorrelW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
         /*QString nameGr = "корреляция_" + ui->listWidget->item(gr_index)->text();
         QFile fileOut(nameGr+".txt");
         if(fileOut.open(QIODevice::WriteOnly | QIODevice::Text)){
@@ -796,11 +799,7 @@ void MainWindow::on_action_Correl_triggered()
             }
             fileOut.close();
         }*/
-    }else{
-        if ((ui->Spin_x1->value() == 0.0) && (ui->Spin_x2->value() == 0.0)) //чтобы 2 раза не выдавало сообщение об ошибке
-            QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
-        ui->Spin_x1->setValue(0.0); ui->Spin_x2->setValue(0.0);
-    }
+    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
 
 void MainWindow::on_action_BildMnk_triggered() //Построить МНК
@@ -897,7 +896,7 @@ void MainWindow::on_action_DelGraph_triggered() //удаление выделе�
     if (ui->listWidget->count() > 0){
         if (timer.isActive() == true) {timer.stop(); t = 0;}
         if (ui->listWidget->count() == 1) ui->SliderLegend->setValue(0); //если остается последний график, то убираем легенду
-        ui->SliderPointGr->setValue(0);
+        ui->SliderPointGr->setValue(0); ui->SliderSpan->setValue(0);
         on_action_ClearGraph_triggered(); //сначала очистим всех графы из памяти и в интерфейсе текущего графика
         graphic1->setVisible(false); graphic1->setName(" ");
         mass_minX.removeAt(gr_index); mass_maxX.removeAt(gr_index);
@@ -1056,7 +1055,8 @@ void MainWindow::on_SliderPointGr_valueChanged(int value) //показать/с�
 
 void MainWindow::on_startWork1_triggered() //определение начала рабочего режима
 {
-    if (ui->listWidget->count() > 0){
+    ui->startWork2->setChecked(false);
+    if (ui->listWidget->count() > 0 && ui->checkTimeExp->isChecked()){
         ui->Browser_stWork->clear(); ui->Browser_stWork->append("Фазы начала рабочего режима:");
         QList <double> tempX, tempY, mnkLine;
         mass_minX[gr_index].clear(); mass_minY[gr_index].clear();
@@ -1074,7 +1074,7 @@ void MainWindow::on_startWork1_triggered() //определение начала
                 mass_minX[gr_index][ind] = mass_x_Gr[gr_index][i-1];
                 mass_minY[gr_index][ind] = mass_y_Gr[gr_index][i-1];
                 //if (ind == 0) iWork = i-1; //запоминаем индекс только 1 первоой точки старта
-            }else if (i % 550 == 0){ //интервал, т.е. каждые 550 точек перестраиваемемся
+            }else if (i % ui->SpinTimeExp->value() == 0){ //интервал, т.е. каждые 550 точек перестраиваемемся
                 tempX.clear();    tempY.clear();
                 mass_minX[gr_index].append(0.0);   mass_minY[gr_index].append(0.0);
                 ind += 1;
@@ -1082,22 +1082,62 @@ void MainWindow::on_startWork1_triggered() //определение начала
             delete mnk3; mnkLine.clear();
         }
         for(int i = 0; i < mass_minX[gr_index].count(); i++){
-            ui->Browser_stWork->append(QString::number(i+1)+" - ("+QString::number(mass_minX[gr_index][i])+"; "+QString::number(mass_minY[gr_index][i])+")");
+            if (i==mass_minX[gr_index].count()-1) ui->Browser_stWork->append("Точка завершения:\n"+QString::number(i+1)+" - ("+QString::number(mass_minX[gr_index][i])+"; "+QString::number(mass_minY[gr_index][i])+")");
+            else ui->Browser_stWork->append(QString::number(i+1)+" - ("+QString::number(mass_minX[gr_index][i])+"; "+QString::number(mass_minY[gr_index][i])+")");
         }
         graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
         graphMin->setName("Минимумы"); graphMin->setVisible(true);
         ui->widget->replot();
-    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Отсутствуют графики!"));
+    }
+}
+
+void MainWindow::on_startWork2_triggered()
+{
+    ui->startWork1->setChecked(false);
+    if (ui->listWidget->count() > 0 && ui->checkTimeExp->isChecked()){
+        ui->Browser_stWork->clear(); ui->Browser_stWork->append("Фазы начала рабочего режима:");
+        mass_minX[gr_index].clear(); mass_minY[gr_index].clear();
+        int r = (x2-x1)/2, ind = 0, i = 0, k = 0;
+        double minY = mass_y_Gr[gr_index][0];
+        while (i < mass_x_Gr[gr_index].count()){
+            for(int j = i-r; j <= i+r; j++){
+                if (j>0 && j<mass_x_Gr[gr_index].count()){
+                    if (mass_y_Gr[gr_index][j] < minY){
+                        minY = mass_y_Gr[gr_index][j]; ind = j; // и индекс минимума запоминаем
+                    }
+                }
+            }
+            mass_minX[gr_index].append(mass_x_Gr[gr_index][ind]);//здесь его используем (индекс минимального)
+            mass_minY[gr_index].append(minY);
+            //если оно выйдет за пределы массива, то установим последний индекс в еонце цикла
+            if ((i+ui->SpinTimeExp->value()) > mass_x_Gr[gr_index].count() && k==0){ i = mass_x_Gr[gr_index].count()-1; k = 1;}
+            else i+=ui->SpinTimeExp->value();
+            minY = maxy[gr_index];//минимум обновляетя макс, чтобы потом точно нашелся элемент меньше его
+        }
+        for(int i = 0; i < mass_minX[gr_index].count(); i++){
+            if (i==mass_minX[gr_index].count()-1) ui->Browser_stWork->append("Точка завершения:\n"+QString::number(i+1)+" - ("+QString::number(mass_minX[gr_index][i])+"; "+QString::number(mass_minY[gr_index][i])+")");
+            else ui->Browser_stWork->append(QString::number(i+1)+" - ("+QString::number(mass_minX[gr_index][i])+"; "+QString::number(mass_minY[gr_index][i])+")");
+        }
+        graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
+        graphMin->setName("Минимумы"); graphMin->setVisible(true);
+        ui->widget->replot();
+    }
 }
 
 void MainWindow::on_checkExp_clicked(bool checked) //вкл./выкл. эксп. сглаживания
 {
-    ui->SpinExp->setEnabled(checked); ui->checkGolay->setChecked(false); ui->spinGolay->setEnabled(false);
+    ui->SpinExp->setEnabled(checked); ui->checkGolay->setChecked(false); ui->spinGolay->setEnabled(false); ui->checkTimeExp->setChecked(false);
 }
 
 void MainWindow::on_checkGolay_clicked(bool checked) //вкл./выкл. сглаживания Савицкого-Голея
 {
-    ui->spinGolay->setEnabled(checked); ui->checkExp->setChecked(false); ui->SpinExp->setEnabled(false);
+    ui->spinGolay->setEnabled(checked); ui->checkExp->setChecked(false); ui->SpinExp->setEnabled(false); ui->checkTimeExp->setChecked(false);
 }
 
 void MainWindow::on_SpinLimit_valueChanged(double arg1){ on_startWork1_triggered(); } //изменение порог. знач. (R)  для старт режима (метод 1)
+
+void MainWindow::on_SpinTimeExp_valueChanged(int arg1){
+    if (ui->startWork1->isChecked()) on_startWork1_triggered();
+    else on_startWork2_triggered();
+}
+
