@@ -25,7 +25,7 @@ private slots:
 private:
     Ui::SomeWindow *ui;
     void graphDirivate(QVector<double> &dirivate, int &x1, int &x2, double &koef);
-    QShortcut *CtrlS, *CtrlQ;
+    QShortcut *CtrlShiftS, *CtrlQ;
 };
 
 #endif // SOMEWINDOW_H

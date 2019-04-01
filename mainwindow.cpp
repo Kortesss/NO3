@@ -191,15 +191,6 @@ void MainWindow::on_action_OpenFile_triggered() //выбор файла и за�
         ui->listWidget->setCurrentRow(gr_index); //устанавливаем выделение последнему загруженному графику
         on_listWidget_clicked();//очищаем все графы предыдущего графика
         x2 = mass_x_Gr[gr_index].count()-1;
-        /*mnk *mnk1 = new mnk(mass_x_Gr[gr_index], mass_y_Gr[gr_index], mass_x_Gr[gr_index].count());
-        //QMessageBox::information(NULL,"Информация","Коэффициент корреляции = "+QString::number(mnk1->get_Kcor()));
-        for(int i = 0; i < mass_x_Gr[gr_index].count(); i++){
-            trendMin[gr_index].append(mnk1->get_yy(mass_x_Gr[gr_index][i]));
-        }
-        graphMnkMin->setData(mass_x_Gr[gr_index].toVector(), trendMin[gr_index].toVector());
-        graphMnkMin->setVisible(true);
-        ui->widget->replot();
-        delete mnk1;*/
     }else {delete it; delete progBar;  /*delete btn;*/  delete l; delete wgt;}
 }
 
@@ -784,10 +775,11 @@ void MainWindow::on_action_Correl_triggered()
 {
     if (ui->listWidget->count() > 0){
         speedSearch();
-        correl_analysis *CorrelW = new correl_analysis(this);
-        CorrelW->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - Корреляционный анализ");
-        CorrelW->show();
-        CorrelW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+        if (mass_minY.count() > 0){
+            correl_analysis *CorrelW = new correl_analysis(speedReaction, speedRecovery, "Скорость реакции", "Скорость восстановления", this);
+            CorrelW->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - Корреляционный анализ");
+            CorrelW->show();
+            CorrelW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
         /*QString nameGr = "корреляция_" + ui->listWidget->item(gr_index)->text();
         QFile fileOut(nameGr+".txt");
         if(fileOut.open(QIODevice::WriteOnly | QIODevice::Text)){
@@ -799,6 +791,7 @@ void MainWindow::on_action_Correl_triggered()
             }
             fileOut.close();
         }*/
+        }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Скорость не реакции или восстановления не определены!"));
     }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
 
