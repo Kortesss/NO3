@@ -335,28 +335,37 @@ void MainWindow::mousePress(QMouseEvent *event) //ручная установк�
         double currentX = ui->widget->xAxis->pixelToCoord(event->pos().x());
         double currentY = ui->widget->yAxis->pixelToCoord(event->pos().y());
         if (event->button() == Qt::LeftButton){
+            int coords = (mass_x_Gr[gr_index][1] - mass_x_Gr[gr_index][0])*4;
             if (ui->manualExtrem->isChecked()&& ui->checkMin->isChecked()){//если ручная настройка.чекед и мин.чекед
                 ui->SliderPointGr->setValue(1);
-                mass_minX[gr_index].append(currentX);  mass_minY[gr_index].append(currentY);
+                int i=0;
+                for(i = 0; i < mass_minX[gr_index].count(); i++){
+                    if (mass_minX[gr_index][i]>currentX) break;
+                }
+                mass_minX[gr_index].insert(i, currentX);  mass_minY[gr_index].insert(i, currentY);
                 graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
                 graphMin->setName("Минимумы"); graphMin->setVisible(true);
-                textListMin[gr_index].append(new QCPItemText(ui->widget));//округление до 2-х знаков
-                textListMin[gr_index].last()->setText("("+QString::number(currentX,'f',2)+"; "+QString::number(currentY,'f',2)+")");
-                textListMin[gr_index].last()->position->setCoords(currentX-5, currentY-2);
-                textListMin[gr_index].last()->setVisible(true);
+                textListMin[gr_index].insert(i, new QCPItemText(ui->widget));//округление до 2-х знаков ниже
+                textListMin[gr_index][i]->setText("("+QString::number(currentX,'f',2)+"; "+QString::number(currentY,'f',2)+")");
+                textListMin[gr_index][i]->position->setCoords(currentX-coords, currentY-coords);
+                textListMin[gr_index][i]->setVisible(true);
                 if (trendMin[gr_index].count() > 0) on_action_BildMnk_triggered(); //перестраиваем МНК мин
                 ui->widget->replot();
             }
             //добавляем максимумы x, y
             if (ui->manualExtrem->isChecked() && ui->checkMax->isChecked()){
                 ui->SliderPointGr->setValue(1);
-                mass_maxX[gr_index].append(currentX);   mass_maxY[gr_index].append(currentY);
+                int i=0;
+                for(i = 0; i < mass_maxX[gr_index].count(); i++){
+                    if (mass_maxX[gr_index][i]>currentX) break;
+                }
+                mass_maxX[gr_index].insert(i, currentX);  mass_maxY[gr_index].insert(i, currentY);
                 graphMax->setData(mass_maxX[gr_index].toVector(), mass_maxY[gr_index].toVector());
                 graphMax->setName("Максимумы"); graphMax->setVisible(true);
-                textListMax[gr_index].append(new QCPItemText(ui->widget));
-                textListMax[gr_index].last()->setText("("+QString::number(currentX,'f',2)+"; "+QString::number(currentY,'f',2)+")");
-                textListMax[gr_index].last()->position->setCoords(currentX-5, currentY+2);
-                textListMax[gr_index].last()->setVisible(true);
+                textListMax[gr_index].insert(i, new QCPItemText(ui->widget));
+                textListMax[gr_index][i]->setText("("+QString::number(currentX,'f',2)+"; "+QString::number(currentY,'f',2)+")");
+                textListMax[gr_index][i]->position->setCoords(currentX-coords, currentY+coords);
+                textListMax[gr_index][i]->setVisible(true);
                 if (trendMax[gr_index].count() > 0) on_action_BildMnk_triggered(); //перестраиваем МНК макс
                 ui->widget->replot();
             }
@@ -690,21 +699,21 @@ void MainWindow::on_action_autoSearch2_triggered() //2 способ экстре
 {
     if (ui->listWidget->count() > 0){
         if (mass_minX[gr_index].count()>0){
-            mass_maxX[gr_index].clear(); mass_maxY[gr_index].clear();//чтобы память не засорять
+            mass_maxX[gr_index].clear(); mass_maxY[gr_index].clear();
             int k = 0;
-            double maxX = 0.0, maxY = mass_y_Gr[gr_index][0];
-            for(int i = 1; i < mass_minX[gr_index].count(); i++){
-                for(int j = k; j < mass_x_Gr[gr_index].count(); j++){
-                    if (mass_x_Gr[gr_index][j] < mass_minX[gr_index][i]){ //
-                        if(mass_y_Gr[gr_index][j] > maxY){
-                            maxX = mass_x_Gr[gr_index][j];
-                            maxY = mass_y_Gr[gr_index][j];
+            double maxX = minx[gr_index], maxY = mass_y_Gr[gr_index][0];
+            for(int i = 1; i < mass_minX[gr_index].count(); i++){//нужно между 0 и 1 мин найти макс, поэтому начинаем искать до 1 минимума
+                for(int j = k; j < mass_x_Gr[gr_index].count(); j++){//j будет проходить по иксам, только не сначала, а от минимума
+                    if (mass_x_Gr[gr_index][j] < mass_minX[gr_index][i]){ //если мы еще не встретили значение следующего минимума
+                        if(mass_y_Gr[gr_index][j+1] > maxY){//а здесь уже сравнимаем на макс значение
+                            maxX = mass_x_Gr[gr_index][j+1];
+                            maxY = mass_y_Gr[gr_index][j+1];
                         }
-                    }else {k = j+1; break; }
+                    }else {k = j; break; }//k пока стало на место мин, но потом будет проверка на [j+1]>maxY
                 }
                 mass_maxX[gr_index].append(maxX);
                 mass_maxY[gr_index].append(maxY);
-                maxY = 0.0;
+                maxY = miny[gr_index];
             }
             graphMax->setData(mass_maxX[gr_index].toVector(), mass_maxY[gr_index].toVector());
             graphMax->setName("Максимумы"); graphMax->setVisible(true);
@@ -769,30 +778,6 @@ void MainWindow::speedSearch()
         }
         delete der;
     }
-}
-
-void MainWindow::on_action_Correl_triggered()
-{
-    if (ui->listWidget->count() > 0){
-        speedSearch();
-        if (mass_minY.count() > 0){
-            correl_analysis *CorrelW = new correl_analysis(speedReaction, speedRecovery, "Скорость реакции", "Скорость восстановления", this);
-            CorrelW->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - Корреляционный анализ");
-            CorrelW->show();
-            CorrelW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
-        /*QString nameGr = "корреляция_" + ui->listWidget->item(gr_index)->text();
-        QFile fileOut(nameGr+".txt");
-        if(fileOut.open(QIODevice::WriteOnly | QIODevice::Text)){
-            QTextStream writeStream(&fileOut); // Создаем объект класса QTextStream
-            for(int i = 0; i < mass_maxX[gr_index].count(); i++){
-                double amp = abs(mass_maxY[gr_index][i] - mass_minY[gr_index][i]);//mass_minY[gr_index][i]);
-                writeStream << speedReaction[i] << "\t" << amp << "\t" << speedRecovery[i]<< "\n";
-                //writeStream << amp << "\n";
-            }
-            fileOut.close();
-        }*/
-        }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Скорость не реакции или восстановления не определены!"));
-    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
 
 void MainWindow::on_action_BildMnk_triggered() //Построить МНК
@@ -1091,10 +1076,10 @@ void MainWindow::on_startWork2_triggered()
         ui->Browser_stWork->clear(); ui->Browser_stWork->append("Фазы начала рабочего режима:");
         mass_minX[gr_index].clear(); mass_minY[gr_index].clear();
         int r = (x2-x1)/2, ind = 0, i = 0, k = 0;
-        double minY = mass_y_Gr[gr_index][0];
+        double minY = maxy[gr_index];
         while (i < mass_x_Gr[gr_index].count()){
             for(int j = i-r; j <= i+r; j++){
-                if (j>0 && j<mass_x_Gr[gr_index].count()){
+                if (j>=0 && j<mass_x_Gr[gr_index].count()){
                     if (mass_y_Gr[gr_index][j] < minY){
                         minY = mass_y_Gr[gr_index][j]; ind = j; // и индекс минимума запоминаем
                     }
@@ -1129,8 +1114,50 @@ void MainWindow::on_checkGolay_clicked(bool checked) //вкл./выкл. сгл�
 
 void MainWindow::on_SpinLimit_valueChanged(double arg1){ on_startWork1_triggered(); } //изменение порог. знач. (R)  для старт режима (метод 1)
 
-void MainWindow::on_SpinTimeExp_valueChanged(int arg1){
+void MainWindow::on_SpinTimeExp_valueChanged(int arg1){ //изменение времени эксперимента
     if (ui->startWork1->isChecked()) on_startWork1_triggered();
     else on_startWork2_triggered();
 }
+
+void MainWindow::on_actionVreac_Max_triggered()
+{
+    if (ui->listWidget->count() > 0){
+        speedSearch();
+        if (mass_minY.count() > 0){
+            correl_analysis *CorrelW = new correl_analysis(speedReaction, mass_maxY[gr_index], "Скорость реакции V, м/с", "Размах сигнала R, Ом", this);
+            CorrelW->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - Корреляционный анализ");
+            CorrelW->show();
+            CorrelW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+        }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Скорость не реакции или восстановления не определены!"));
+    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
+}
+
+void MainWindow::on_action_Vrecov_Max_triggered()
+{
+    if (ui->listWidget->count() > 0){
+        speedSearch();
+        if (mass_minY.count() > 0){
+            correl_analysis *CorrelW = new correl_analysis(speedRecovery, mass_maxY[gr_index], "Скорость восстановления V, м/с", "Размах сигнала R, Ом", this);
+            CorrelW->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - Корреляционный анализ");
+            CorrelW->show();
+            CorrelW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+        }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Скорость не реакции или восстановления не определены!"));
+    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
+}
+
+void MainWindow::on_actionVreac_Vrec_triggered()
+{
+    if (ui->listWidget->count() > 0){
+        speedSearch();
+        if (mass_minY.count() > 0){
+            correl_analysis *CorrelW = new correl_analysis(speedRecovery,speedReaction, "Скорость реакции V1, м/с", "Скорость восстановления V2, м/с", this);
+            CorrelW->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - Корреляционный анализ");
+            CorrelW->show();
+            CorrelW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+        }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Скорость не реакции или восстановления не определены!"));
+    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
+}
+
+
+
 

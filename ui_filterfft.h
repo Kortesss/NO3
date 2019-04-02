@@ -176,6 +176,7 @@ public:
         SliderSpan->setObjectName(QStringLiteral("SliderSpan"));
         SliderSpan->setMinimumSize(QSize(0, 24));
         SliderSpan->setMaximumSize(QSize(48, 24));
+        SliderSpan->setCursor(QCursor(Qt::PointingHandCursor));
         SliderSpan->setStyleSheet(QLatin1String(".QSlider::groove:horizontal {\n"
 "    height: 24px; \n"
 "    background:#696969; \n"
@@ -272,6 +273,9 @@ public:
         label_3->setText(QApplication::translate("FilterFFT", "\320\235\320\276\321\200\320\274.", 0));
         label_4->setText(QApplication::translate("FilterFFT", "\320\222\321\213\321\201.", 0));
         pushButton->setText(QApplication::translate("FilterFFT", "\320\255\320\272\321\201\320\277. \321\201\320\263\320\273\320\260\320\266\320\270\320\262\320\260\320\275\320\270\320\265", 0));
+#ifndef QT_NO_TOOLTIP
+        SliderSpan->setToolTip(QApplication::translate("FilterFFT", "<html><head/><body><p>\320\237\320\276\320\272\320\260\320\267\320\260\321\202\321\214/\321\201\320\272\321\200\321\213\321\202\321\214 <span style=\" font-weight:600;\">\320\264\320\270\320\260\320\277\320\260\320\267\320\276\320\275 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\271</span></p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
         label_5->setText(QApplication::translate("FilterFFT", "\320\224\320\270\320\260\320\277\320\260\320\267\320\276\320\275 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\271", 0));
         pushButton_saveTxt->setText(QApplication::translate("FilterFFT", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\262 \321\204\320\260\320\271\320\273...", 0));
         pushButton_close->setText(QApplication::translate("FilterFFT", "\320\227\320\260\320\272\321\200\321\213\321\202\321\214", 0));

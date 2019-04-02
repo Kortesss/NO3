@@ -706,7 +706,7 @@ p, li { white-space: pre-wrap; }
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Показать/скрыть &lt;span style=&quot; font-weight:600;&quot;&gt;диапазон значений&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Если выделенный диапазон мешает&lt;/p&gt;&lt;p&gt;или не нужен при сохранении графика, &lt;/p&gt;&lt;p&gt;его можно скрыть.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Показать/скрыть &lt;span style=&quot; font-weight:600;&quot;&gt;диапазон значений&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Если выделенный диапазон мешает или не нужен при сохранении графика, его можно скрыть.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="styleSheet">
              <string notr="true">.QSlider::groove:horizontal {
@@ -803,7 +803,7 @@ p, li { white-space: pre-wrap; }
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Показать/скрыть &lt;span style=&quot; font-weight:600;&quot;&gt;легенду&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Если она закрывает часть графика&lt;/p&gt;&lt;p&gt;или не нужна при сохранении &lt;/p&gt;&lt;p&gt;изображения графика.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Показать/скрыть &lt;span style=&quot; font-weight:600;&quot;&gt;легенду&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Если она закрывает часть графика или не нужна при сохранении изображения графика.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="styleSheet">
              <string notr="true">.QSlider::groove:horizontal {
@@ -884,7 +884,7 @@ p, li { white-space: pre-wrap; }
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="toolTip">
-             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Показать/скрыть &lt;span style=&quot; font-weight:600;&quot;&gt;диапазон значений&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;Если выделенный диапазон мешает&lt;/p&gt;&lt;p&gt;или не нужен при сохранении графика, &lt;/p&gt;&lt;p&gt;его можно скрыть.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Показать/скрыть &lt;span style=&quot; font-weight:600;&quot;&gt;диапазон значений&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Если выделенный диапазон мешает или не нужен при сохранении графика, его можно скрыть.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="styleSheet">
              <string notr="true">.QSlider::groove:horizontal {
@@ -1040,10 +1040,18 @@ p, li { white-space: pre-wrap; }
      </widget>
      <addaction name="menu_3"/>
     </widget>
+    <widget class="QMenu" name="menu_9">
+     <property name="title">
+      <string>Корреляционный</string>
+     </property>
+     <addaction name="actionVreac_Max"/>
+     <addaction name="action_Vrecov_Max"/>
+     <addaction name="actionVreac_Vrec"/>
+    </widget>
     <addaction name="menu_5"/>
     <addaction name="actionD"/>
     <addaction name="action_filter"/>
-    <addaction name="action_Correl"/>
+    <addaction name="menu_9"/>
    </widget>
    <widget class="QMenu" name="menu_6">
     <property name="title">
@@ -1217,17 +1225,27 @@ p, li { white-space: pre-wrap; }
     <string>График скорости изменения параметра</string>
    </property>
   </action>
-  <action name="action_Correl">
-   <property name="text">
-    <string>Корреляционный анализ</string>
-   </property>
-  </action>
   <action name="startWork2">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="text">
     <string>Метод 2</string>
+   </property>
+  </action>
+  <action name="actionVreac_Max">
+   <property name="text">
+    <string>Vреакции ↔ Размах сигнала</string>
+   </property>
+  </action>
+  <action name="action_Vrecov_Max">
+   <property name="text">
+    <string>Vвосстановления ↔ Размах сигнала</string>
+   </property>
+  </action>
+  <action name="actionVreac_Vrec">
+   <property name="text">
+    <string>Vреакции ↔ Vвосстановления</string>
    </property>
   </action>
  </widget>

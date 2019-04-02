@@ -115,13 +115,17 @@ private slots:
 
     void on_SpinLimit_valueChanged(double arg1);
 
-    void on_action_Correl_triggered();
-
     void on_SliderPointGr_valueChanged(int value);
 
     void on_SpinTimeExp_valueChanged(int arg1);
 
     void on_startWork2_triggered();
+
+    void on_actionVreac_Vrec_triggered();
+
+    void on_actionVreac_Max_triggered();
+
+    void on_action_Vrecov_Max_triggered();
 
 private:
     Ui::MainWindow *ui;
