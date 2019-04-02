@@ -115,9 +115,17 @@ private slots:
 
     void on_SpinLimit_valueChanged(double arg1);
 
-    void on_action_Correl_triggered();
-
     void on_SliderPointGr_valueChanged(int value);
+
+    void on_SpinTimeExp_valueChanged(int arg1);
+
+    void on_startWork2_triggered();
+
+    void on_actionVreac_Vrec_triggered();
+
+    void on_actionVreac_Max_triggered();
+
+    void on_action_Vrecov_Max_triggered();
 
 private:
     Ui::MainWindow *ui;
@@ -133,9 +141,7 @@ private:
     QList <QString> axis_x_Gr, axis_y_Gr; //наименования осей каждого графика
     QVector<double> dirivate; //массив производных
     int x1, x2; //индексы значений выделенного интервала
-    int iWork;//индекс значения начала рабочего режима
-    QVector<double> spanX, spanY; //данные для диапазона иксов
-    QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax, *graphSpan; //все графики
+    QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax; //все графики
     QCPItemRect *rectPoint, *rectSpan; //прямоугольник для выделения точек
 
     QList<QList<QCPItemText*> > textListMin, textListMax;//точки экстрем. для отображения координат

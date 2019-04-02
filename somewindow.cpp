@@ -7,11 +7,11 @@ SomeWindow::SomeWindow(QVector<double> &dirivate, int &x1, int &x2, double &koef
     ui(new Ui::SomeWindow)
 {
     ui->setupUi(this);
-    CtrlS = new QShortcut(this);
-    CtrlS->setKey(Qt::CTRL + Qt::Key_S);
+    CtrlShiftS = new QShortcut(this);
+    CtrlShiftS->setKey(Qt::CTRL + Qt::SHIFT + Qt::Key_S);
     CtrlQ = new QShortcut(this);
     CtrlQ->setKey(Qt::CTRL + Qt::Key_Q);
-    connect(CtrlS, SIGNAL(activated()), this, SLOT(on_pushButton_save_clicked()));
+    connect(CtrlShiftS, SIGNAL(activated()), this, SLOT(on_pushButton_save_clicked()));
     connect(CtrlQ, SIGNAL(activated()), this, SLOT(on_pushButton_close_clicked()));
 
     graphDirivate(dirivate, x1, x2,koef);

@@ -270,6 +270,12 @@
               <height>24</height>
              </size>
             </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Показать/скрыть &lt;span style=&quot; font-weight:600;&quot;&gt;диапазон значений&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="styleSheet">
              <string notr="true">.QSlider::groove:horizontal {
     height: 24px; 

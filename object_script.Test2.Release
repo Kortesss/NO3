@@ -9,6 +9,7 @@ INPUT(
 ./release\about.o
 ./release\filterfft.o
 ./release\extrem_simple.o
+./release\correl_analysis.o
 ./release\qrc_source.o
 ./release\moc_mainwindow.o
 ./release\moc_qcustomplot.o
@@ -16,4 +17,5 @@ INPUT(
 ./release\moc_deltawin.o
 ./release\moc_about.o
 ./release\moc_filterfft.o
+./release\moc_correl_analysis.o
 );
