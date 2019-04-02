@@ -1157,7 +1157,3 @@ void MainWindow::on_actionVreac_Vrec_triggered()
         }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Скорость не реакции или восстановления не определены!"));
     }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
-
-
-
-
