@@ -6,7 +6,6 @@ INPUT(
 ./debug\somewindow.o
 ./debug\deltawin.o
 ./debug\mnk.o
-./debug\about.o
 ./debug\filterfft.o
 ./debug\extrem_simple.o
 ./debug\correl_analysis.o
@@ -15,7 +14,6 @@ INPUT(
 ./debug\moc_qcustomplot.o
 ./debug\moc_somewindow.o
 ./debug\moc_deltawin.o
-./debug\moc_about.o
 ./debug\moc_filterfft.o
 ./debug\moc_correl_analysis.o
 );

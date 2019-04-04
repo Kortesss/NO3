@@ -260,8 +260,8 @@ void FilterFFT::on_pushButton_clicked()
 void FilterFFT::on_SliderSpan_valueChanged(int value)
 {
     if ((value == 1) && (sp)) { //вкл
-        ui->SliderSpan->setStyleSheet(".QSlider::groove:horizontal {height: 24px; background: #20B2AA; border-radius: 8px; padding:-4px 7px;}"
-                                                  ".QSlider::handle:horizontal {background: #008080; width: 22px; margin: 0px -7px; border-radius: 11px;}");
+        ui->SliderSpan->setStyleSheet(".QSlider::groove:horizontal {height: 24px; background: #87CEEB; border-radius: 8px; padding:-4px 7px;}"
+                                                  ".QSlider::handle:horizontal {background: #1E90FF; width: 22px; margin: 0px -7px; border-radius: 11px;}");
         graphSpan->setVisible(true); ui->widget_dft->replot();
     }
     else{ //выкл

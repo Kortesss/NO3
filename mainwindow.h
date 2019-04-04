@@ -37,29 +37,17 @@ private slots:
 
     void slotCustomMenuRequested(QPoint pos); //для вызова контекстного меню
 
-    void on_delExtrem_triggered();
-
     void indexSearch(double valX1, double valX2);//ищем индекс массива выделенного интервала
 
     void speedSearch(); //для расчета скорости реакции и восстановления текущего графика
-
-    void on_action_exit_triggered();
 
     void on_spinLevel_valueChanged();
 
     void on_doubleSpinBox1_valueChanged();
 
-    void on_actionD_triggered();
+    void autoSearchSimple(); //1 способ поиска экстремумов (простой)
 
-    void on_action_GrDerivative_triggered();
-
-    void on_checkMin_clicked();
-
-    void on_checkMax_clicked();
-
-    void on_autoSearchSimple_triggered();
-
-    void on_action_Derivat_triggered();
+    void Derivat_triggered(); //расчет скорости по выделенному диапазону
 
     void TimerTick();
 
@@ -75,23 +63,13 @@ private slots:
 
     void EnterPressedLineEditRename();
 
-    void on_action_manual_triggered();
-
-    void on_action_about_triggered();
-
     void on_Spin_x1_valueChanged();
 
     void on_Spin_x2_valueChanged();
 
-    void on_action_filter_triggered();
-
     void on_SliderSpan_valueChanged(int value);
 
     void on_SliderLegend_valueChanged(int value);
-
-    void on_startWork1_triggered();
-
-    void on_action_SaveDataGr_triggered();
 
     void on_checkExp_clicked(bool checked);
 
@@ -99,33 +77,45 @@ private slots:
 
     void on_undo(); void on_redo();
 
-    void on_action_DelGraph_triggered();
-
-    void on_action_ClearGraph_triggered();
-
-    void on_action_OpenFile_triggered();
-
-    void on_action_DelMnk_triggered();
-
-    void on_action_SaveImage_triggered();
-
-    void on_action_BildMnk_triggered();
-
-    void on_action_autoSearch2_triggered();
-
     void on_SpinLimit_valueChanged(double arg1);
 
     void on_SliderPointGr_valueChanged(int value);
 
     void on_SpinTimeExp_valueChanged(int arg1);
 
-    void on_startWork2_triggered();
+    void on_btn_Manual_clicked();
 
-    void on_actionVreac_Vrec_triggered();
+    void on_btn_BildMnk_clicked();
 
-    void on_actionVreac_Max_triggered();
+    void on_btn_delMnk_clicked();
 
-    void on_action_Vrecov_Max_triggered();
+    void on_btn_DFT_clicked();
+
+    void on_btn_delta_clicked();
+
+    void on_cmbBox_Correl_activated(int index);
+
+    void on_btn_grDerivative_clicked();
+
+    void on_btn_autoSearch2_clicked();
+
+    void on_btn_delExtrem_clicked();
+
+    void on_startWork1_clicked();
+
+    void on_startWork2_clicked();
+
+    void on_btn_clearGraph_clicked();
+
+    void on_btn_openFile_clicked();
+
+    void on_btn_saveImage_clicked();
+
+    void on_btn_saveDataGr_clicked();
+
+    void on_btn_exit_clicked();
+
+    void on_btn_delGraph_clicked();
 
 private:
     Ui::MainWindow *ui;

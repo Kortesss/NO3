@@ -36,7 +36,6 @@ SOURCES += main.cpp\
     somewindow.cpp \
     deltawin.cpp \
     mnk.cpp \
-    about.cpp \
     filterfft.cpp \
     extrem_simple.cpp \
     correl_analysis.cpp
@@ -48,7 +47,6 @@ HEADERS  += mainwindow.h \
     somewindow.h \
     deltawin.h \
     mnk.h \
-    about.h \
     filterfft.h \
     extrem_simple.h \
     correl_analysis.h
@@ -56,7 +54,6 @@ HEADERS  += mainwindow.h \
 FORMS    += mainwindow.ui \
     somewindow.ui \
     deltawin.ui \
-    about.ui \
     filterfft.ui \
     correl_analysis.ui
 
