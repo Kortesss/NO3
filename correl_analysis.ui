@@ -126,14 +126,14 @@
        <widget class="QPushButton" name="pushButton_save">
         <property name="minimumSize">
          <size>
-          <width>144</width>
-          <height>24</height>
+          <width>150</width>
+          <height>26</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>24</height>
+          <height>26</height>
          </size>
         </property>
         <property name="styleSheet">
@@ -157,14 +157,23 @@ QPushButton:pressed {
          <iconset resource="source.qrc">
           <normaloff>:/img/img/512px-Save_font_awesome.svg.png</normaloff>:/img/img/512px-Save_font_awesome.svg.png</iconset>
         </property>
+        <property name="shortcut">
+         <string>Ctrl+Shift+S</string>
+        </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_close">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>26</height>
+         </size>
+        </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>24</height>
+          <height>26</height>
          </size>
         </property>
         <property name="styleSheet">
@@ -183,6 +192,19 @@ QPushButton:pressed {
         </property>
         <property name="text">
          <string>Закрыть</string>
+        </property>
+        <property name="icon">
+         <iconset resource="source.qrc">
+          <normaloff>:/img/img/log-out.png</normaloff>:/img/img/log-out.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>18</width>
+          <height>18</height>
+         </size>
+        </property>
+        <property name="shortcut">
+         <string>Ctrl+Q</string>
         </property>
        </widget>
       </item>

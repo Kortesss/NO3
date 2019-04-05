@@ -8,13 +8,6 @@ correl_analysis::correl_analysis(QList <double> mass1, QList <double> mass2, QSt
 {
     ui->setupUi(this);
 
-    CtrlShiftS = new QShortcut(this);
-    CtrlShiftS->setKey(Qt::CTRL + Qt::SHIFT + Qt::Key_S);
-    CtrlQ = new QShortcut(this);
-    CtrlQ->setKey(Qt::CTRL + Qt::Key_Q);
-    connect(CtrlShiftS, SIGNAL(activated()), this, SLOT(on_pushButton_save_clicked()));
-    connect(CtrlQ, SIGNAL(activated()), this, SLOT(on_pushButton_close_clicked()));
-
     ui->widgetCorr->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
     graphCorr = ui->widgetCorr->addGraph();
     graphCorr->setPen(QColor(50, 50, 50, 255));//черный

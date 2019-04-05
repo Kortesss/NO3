@@ -238,13 +238,13 @@ public:
     QLabel *label_12;
     QSlider *SliderPointGr;
     QGridLayout *gridLayout_5;
-    QCustomPlot *widget;
     QGroupBox *groupBox;
     QVBoxLayout *verticalLayout_3;
     QTextBrowser *textBrowser_X;
     QGroupBox *groupBox_2;
     QVBoxLayout *verticalLayout_4;
     QTextBrowser *textBrowser_Y;
+    QCustomPlot *widget;
     QMenuBar *menuBar;
     QStatusBar *statusBar;
 
@@ -349,7 +349,7 @@ public:
         verticalLayout_9->setContentsMargins(-1, -1, 0, -1);
         btn_openFile = new QPushButton(tab);
         btn_openFile->setObjectName(QStringLiteral("btn_openFile"));
-        QSizePolicy sizePolicy1(QSizePolicy::Minimum, QSizePolicy::Preferred);
+        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy1.setHorizontalStretch(0);
         sizePolicy1.setVerticalStretch(0);
         sizePolicy1.setHeightForWidth(btn_openFile->sizePolicy().hasHeightForWidth());
@@ -372,15 +372,20 @@ public:
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
         QIcon icon3;
-        icon3.addFile(QStringLiteral(":/img/img/ios-albums.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        icon3.addFile(QStringLiteral(":/img/img/albums.png"), QSize(), QIcon::Normal, QIcon::Off);
         btn_openFile->setIcon(icon3);
+        btn_openFile->setIconSize(QSize(18, 18));
+        btn_openFile->setAutoDefault(false);
 
         verticalLayout_9->addWidget(btn_openFile);
 
         btn_exit = new QPushButton(tab);
         btn_exit->setObjectName(QStringLiteral("btn_exit"));
-        sizePolicy1.setHeightForWidth(btn_exit->sizePolicy().hasHeightForWidth());
-        btn_exit->setSizePolicy(sizePolicy1);
+        QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Preferred);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(btn_exit->sizePolicy().hasHeightForWidth());
+        btn_exit->setSizePolicy(sizePolicy2);
         btn_exit->setMinimumSize(QSize(130, 30));
         btn_exit->setMaximumSize(QSize(130, 30));
         btn_exit->setStyleSheet(QLatin1String(" QPushButton {\n"
@@ -398,7 +403,7 @@ public:
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
         QIcon icon4;
-        icon4.addFile(QStringLiteral(":/img/img/ios-log-out.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        icon4.addFile(QStringLiteral(":/img/img/log-out.png"), QSize(), QIcon::Normal, QIcon::Off);
         btn_exit->setIcon(icon4);
         btn_exit->setIconSize(QSize(19, 19));
 
@@ -409,11 +414,11 @@ public:
 
         label_8 = new QLabel(tab);
         label_8->setObjectName(QStringLiteral("label_8"));
-        QSizePolicy sizePolicy2(QSizePolicy::Minimum, QSizePolicy::Minimum);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(label_8->sizePolicy().hasHeightForWidth());
-        label_8->setSizePolicy(sizePolicy2);
+        QSizePolicy sizePolicy3(QSizePolicy::Minimum, QSizePolicy::Minimum);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(label_8->sizePolicy().hasHeightForWidth());
+        label_8->setSizePolicy(sizePolicy3);
         label_8->setMinimumSize(QSize(10, 0));
         label_8->setMaximumSize(QSize(10, 16777215));
         label_8->setFrameShape(QFrame::VLine);
@@ -426,11 +431,8 @@ public:
         verticalLayout_10->setObjectName(QStringLiteral("verticalLayout_10"));
         btn_saveImage = new QPushButton(tab);
         btn_saveImage->setObjectName(QStringLiteral("btn_saveImage"));
-        QSizePolicy sizePolicy3(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        sizePolicy3.setHorizontalStretch(0);
-        sizePolicy3.setVerticalStretch(0);
-        sizePolicy3.setHeightForWidth(btn_saveImage->sizePolicy().hasHeightForWidth());
-        btn_saveImage->setSizePolicy(sizePolicy3);
+        sizePolicy1.setHeightForWidth(btn_saveImage->sizePolicy().hasHeightForWidth());
+        btn_saveImage->setSizePolicy(sizePolicy1);
         btn_saveImage->setMinimumSize(QSize(240, 30));
         btn_saveImage->setMaximumSize(QSize(240, 30));
         btn_saveImage->setStyleSheet(QLatin1String(" QPushButton {\n"
@@ -456,8 +458,8 @@ public:
 
         btn_saveDataGr = new QPushButton(tab);
         btn_saveDataGr->setObjectName(QStringLiteral("btn_saveDataGr"));
-        sizePolicy3.setHeightForWidth(btn_saveDataGr->sizePolicy().hasHeightForWidth());
-        btn_saveDataGr->setSizePolicy(sizePolicy3);
+        sizePolicy1.setHeightForWidth(btn_saveDataGr->sizePolicy().hasHeightForWidth());
+        btn_saveDataGr->setSizePolicy(sizePolicy1);
         btn_saveDataGr->setMinimumSize(QSize(240, 30));
         btn_saveDataGr->setMaximumSize(QSize(240, 30));
         btn_saveDataGr->setStyleSheet(QLatin1String(" QPushButton {\n"
@@ -497,11 +499,8 @@ public:
         horizontalLayout_12->setObjectName(QStringLiteral("horizontalLayout_12"));
         listWidget = new QListWidget(tab_2);
         listWidget->setObjectName(QStringLiteral("listWidget"));
-        QSizePolicy sizePolicy4(QSizePolicy::Preferred, QSizePolicy::Preferred);
-        sizePolicy4.setHorizontalStretch(0);
-        sizePolicy4.setVerticalStretch(0);
-        sizePolicy4.setHeightForWidth(listWidget->sizePolicy().hasHeightForWidth());
-        listWidget->setSizePolicy(sizePolicy4);
+        sizePolicy1.setHeightForWidth(listWidget->sizePolicy().hasHeightForWidth());
+        listWidget->setSizePolicy(sizePolicy1);
         listWidget->setMinimumSize(QSize(130, 0));
         listWidget->setMaximumSize(QSize(140, 16777215));
         listWidget->setSortingEnabled(false);
@@ -510,8 +509,8 @@ public:
 
         Browser_stWork = new QTextBrowser(tab_2);
         Browser_stWork->setObjectName(QStringLiteral("Browser_stWork"));
-        sizePolicy4.setHeightForWidth(Browser_stWork->sizePolicy().hasHeightForWidth());
-        Browser_stWork->setSizePolicy(sizePolicy4);
+        sizePolicy1.setHeightForWidth(Browser_stWork->sizePolicy().hasHeightForWidth());
+        Browser_stWork->setSizePolicy(sizePolicy1);
         Browser_stWork->setMinimumSize(QSize(160, 0));
         Browser_stWork->setMaximumSize(QSize(170, 16777215));
 
@@ -522,16 +521,16 @@ public:
         verticalLayout_12->setObjectName(QStringLiteral("verticalLayout_12"));
         Browser_Min = new QTextBrowser(tab_2);
         Browser_Min->setObjectName(QStringLiteral("Browser_Min"));
-        sizePolicy4.setHeightForWidth(Browser_Min->sizePolicy().hasHeightForWidth());
-        Browser_Min->setSizePolicy(sizePolicy4);
+        sizePolicy1.setHeightForWidth(Browser_Min->sizePolicy().hasHeightForWidth());
+        Browser_Min->setSizePolicy(sizePolicy1);
         Browser_Min->setMaximumSize(QSize(113, 38));
 
         verticalLayout_12->addWidget(Browser_Min);
 
         Browser_Max = new QTextBrowser(tab_2);
         Browser_Max->setObjectName(QStringLiteral("Browser_Max"));
-        sizePolicy4.setHeightForWidth(Browser_Max->sizePolicy().hasHeightForWidth());
-        Browser_Max->setSizePolicy(sizePolicy4);
+        sizePolicy1.setHeightForWidth(Browser_Max->sizePolicy().hasHeightForWidth());
+        Browser_Max->setSizePolicy(sizePolicy1);
         Browser_Max->setMinimumSize(QSize(20, 20));
         Browser_Max->setMaximumSize(QSize(113, 38));
 
@@ -542,8 +541,8 @@ public:
 
         label_14 = new QLabel(tab_2);
         label_14->setObjectName(QStringLiteral("label_14"));
-        sizePolicy4.setHeightForWidth(label_14->sizePolicy().hasHeightForWidth());
-        label_14->setSizePolicy(sizePolicy4);
+        sizePolicy1.setHeightForWidth(label_14->sizePolicy().hasHeightForWidth());
+        label_14->setSizePolicy(sizePolicy1);
         label_14->setMinimumSize(QSize(10, 0));
         label_14->setMaximumSize(QSize(10, 16777215));
         label_14->setFrameShape(QFrame::VLine);
@@ -556,8 +555,8 @@ public:
         verticalLayout_23->setObjectName(QStringLiteral("verticalLayout_23"));
         btn_clearGraph = new QPushButton(tab_2);
         btn_clearGraph->setObjectName(QStringLiteral("btn_clearGraph"));
-        sizePolicy4.setHeightForWidth(btn_clearGraph->sizePolicy().hasHeightForWidth());
-        btn_clearGraph->setSizePolicy(sizePolicy4);
+        sizePolicy1.setHeightForWidth(btn_clearGraph->sizePolicy().hasHeightForWidth());
+        btn_clearGraph->setSizePolicy(sizePolicy1);
         btn_clearGraph->setMinimumSize(QSize(130, 50));
         btn_clearGraph->setMaximumSize(QSize(130, 50));
         btn_clearGraph->setAutoFillBackground(false);
@@ -584,8 +583,8 @@ public:
 
         btn_delGraph = new QPushButton(tab_2);
         btn_delGraph->setObjectName(QStringLiteral("btn_delGraph"));
-        sizePolicy4.setHeightForWidth(btn_delGraph->sizePolicy().hasHeightForWidth());
-        btn_delGraph->setSizePolicy(sizePolicy4);
+        sizePolicy1.setHeightForWidth(btn_delGraph->sizePolicy().hasHeightForWidth());
+        btn_delGraph->setSizePolicy(sizePolicy1);
         btn_delGraph->setMinimumSize(QSize(130, 50));
         btn_delGraph->setMaximumSize(QSize(130, 50));
         btn_delGraph->setAutoFillBackground(false);
@@ -634,8 +633,8 @@ public:
 
         startWork1 = new QPushButton(tab_3);
         startWork1->setObjectName(QStringLiteral("startWork1"));
-        sizePolicy1.setHeightForWidth(startWork1->sizePolicy().hasHeightForWidth());
-        startWork1->setSizePolicy(sizePolicy1);
+        sizePolicy2.setHeightForWidth(startWork1->sizePolicy().hasHeightForWidth());
+        startWork1->setSizePolicy(sizePolicy2);
         startWork1->setMinimumSize(QSize(130, 30));
         startWork1->setMaximumSize(QSize(130, 30));
         startWork1->setAutoFillBackground(false);
@@ -663,16 +662,16 @@ public:
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
         label_13 = new QLabel(tab_3);
         label_13->setObjectName(QStringLiteral("label_13"));
-        sizePolicy4.setHeightForWidth(label_13->sizePolicy().hasHeightForWidth());
-        label_13->setSizePolicy(sizePolicy4);
+        sizePolicy1.setHeightForWidth(label_13->sizePolicy().hasHeightForWidth());
+        label_13->setSizePolicy(sizePolicy1);
         label_13->setMaximumSize(QSize(153, 20));
 
         horizontalLayout_5->addWidget(label_13);
 
         SpinLimit = new QDoubleSpinBox(tab_3);
         SpinLimit->setObjectName(QStringLiteral("SpinLimit"));
-        sizePolicy4.setHeightForWidth(SpinLimit->sizePolicy().hasHeightForWidth());
-        SpinLimit->setSizePolicy(sizePolicy4);
+        sizePolicy1.setHeightForWidth(SpinLimit->sizePolicy().hasHeightForWidth());
+        SpinLimit->setSizePolicy(sizePolicy1);
         SpinLimit->setMaximumSize(QSize(80, 20));
         SpinLimit->setDecimals(4);
         SpinLimit->setMinimum(0);
@@ -694,8 +693,8 @@ public:
 
         label_19 = new QLabel(tab_3);
         label_19->setObjectName(QStringLiteral("label_19"));
-        sizePolicy1.setHeightForWidth(label_19->sizePolicy().hasHeightForWidth());
-        label_19->setSizePolicy(sizePolicy1);
+        sizePolicy2.setHeightForWidth(label_19->sizePolicy().hasHeightForWidth());
+        label_19->setSizePolicy(sizePolicy2);
         label_19->setMinimumSize(QSize(10, 0));
         label_19->setMaximumSize(QSize(10, 16777215));
         label_19->setFrameShape(QFrame::VLine);
@@ -712,8 +711,8 @@ public:
 
         startWork2 = new QPushButton(tab_3);
         startWork2->setObjectName(QStringLiteral("startWork2"));
-        sizePolicy1.setHeightForWidth(startWork2->sizePolicy().hasHeightForWidth());
-        startWork2->setSizePolicy(sizePolicy1);
+        sizePolicy2.setHeightForWidth(startWork2->sizePolicy().hasHeightForWidth());
+        startWork2->setSizePolicy(sizePolicy2);
         startWork2->setMinimumSize(QSize(130, 30));
         startWork2->setMaximumSize(QSize(130, 30));
         startWork2->setAutoFillBackground(false);
@@ -745,8 +744,8 @@ public:
 
         label_20 = new QLabel(tab_3);
         label_20->setObjectName(QStringLiteral("label_20"));
-        sizePolicy1.setHeightForWidth(label_20->sizePolicy().hasHeightForWidth());
-        label_20->setSizePolicy(sizePolicy1);
+        sizePolicy2.setHeightForWidth(label_20->sizePolicy().hasHeightForWidth());
+        label_20->setSizePolicy(sizePolicy2);
         label_20->setMinimumSize(QSize(10, 0));
         label_20->setMaximumSize(QSize(10, 16777215));
         label_20->setFrameShape(QFrame::VLine);
@@ -772,11 +771,11 @@ public:
 
         SpinTimeExp = new QSpinBox(tab_3);
         SpinTimeExp->setObjectName(QStringLiteral("SpinTimeExp"));
-        QSizePolicy sizePolicy5(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        sizePolicy5.setHorizontalStretch(0);
-        sizePolicy5.setVerticalStretch(0);
-        sizePolicy5.setHeightForWidth(SpinTimeExp->sizePolicy().hasHeightForWidth());
-        SpinTimeExp->setSizePolicy(sizePolicy5);
+        QSizePolicy sizePolicy4(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        sizePolicy4.setHorizontalStretch(0);
+        sizePolicy4.setVerticalStretch(0);
+        sizePolicy4.setHeightForWidth(SpinTimeExp->sizePolicy().hasHeightForWidth());
+        SpinTimeExp->setSizePolicy(sizePolicy4);
         SpinTimeExp->setMaximumSize(QSize(80, 20));
         SpinTimeExp->setMaximum(10000);
 
@@ -790,8 +789,8 @@ public:
         horizontalLayout_15->setObjectName(QStringLiteral("horizontalLayout_15"));
         checkTimeExp = new QCheckBox(tab_3);
         checkTimeExp->setObjectName(QStringLiteral("checkTimeExp"));
-        sizePolicy4.setHeightForWidth(checkTimeExp->sizePolicy().hasHeightForWidth());
-        checkTimeExp->setSizePolicy(sizePolicy4);
+        sizePolicy1.setHeightForWidth(checkTimeExp->sizePolicy().hasHeightForWidth());
+        checkTimeExp->setSizePolicy(sizePolicy1);
         checkTimeExp->setMaximumSize(QSize(16777215, 16777215));
 
         horizontalLayout_15->addWidget(checkTimeExp);
@@ -826,11 +825,11 @@ public:
 
         label_23 = new QLabel(tab_4);
         label_23->setObjectName(QStringLiteral("label_23"));
-        QSizePolicy sizePolicy6(QSizePolicy::Preferred, QSizePolicy::Expanding);
-        sizePolicy6.setHorizontalStretch(0);
-        sizePolicy6.setVerticalStretch(0);
-        sizePolicy6.setHeightForWidth(label_23->sizePolicy().hasHeightForWidth());
-        label_23->setSizePolicy(sizePolicy6);
+        QSizePolicy sizePolicy5(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        sizePolicy5.setHorizontalStretch(0);
+        sizePolicy5.setVerticalStretch(0);
+        sizePolicy5.setHeightForWidth(label_23->sizePolicy().hasHeightForWidth());
+        label_23->setSizePolicy(sizePolicy5);
         label_23->setMaximumSize(QSize(16777215, 20));
 
         verticalLayout_7->addWidget(label_23);
@@ -840,19 +839,19 @@ public:
         horizontalLayout_18->setObjectName(QStringLiteral("horizontalLayout_18"));
         label_2 = new QLabel(tab_4);
         label_2->setObjectName(QStringLiteral("label_2"));
-        QSizePolicy sizePolicy7(QSizePolicy::Preferred, QSizePolicy::Fixed);
-        sizePolicy7.setHorizontalStretch(0);
-        sizePolicy7.setVerticalStretch(0);
-        sizePolicy7.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
-        label_2->setSizePolicy(sizePolicy7);
+        QSizePolicy sizePolicy6(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy6.setHorizontalStretch(0);
+        sizePolicy6.setVerticalStretch(0);
+        sizePolicy6.setHeightForWidth(label_2->sizePolicy().hasHeightForWidth());
+        label_2->setSizePolicy(sizePolicy6);
         label_2->setMaximumSize(QSize(160, 20));
 
         horizontalLayout_18->addWidget(label_2);
 
         doubleSpinBox1 = new QDoubleSpinBox(tab_4);
         doubleSpinBox1->setObjectName(QStringLiteral("doubleSpinBox1"));
-        sizePolicy7.setHeightForWidth(doubleSpinBox1->sizePolicy().hasHeightForWidth());
-        doubleSpinBox1->setSizePolicy(sizePolicy7);
+        sizePolicy6.setHeightForWidth(doubleSpinBox1->sizePolicy().hasHeightForWidth());
+        doubleSpinBox1->setSizePolicy(sizePolicy6);
         doubleSpinBox1->setMaximumSize(QSize(70, 16777215));
         doubleSpinBox1->setFocusPolicy(Qt::WheelFocus);
         doubleSpinBox1->setDecimals(3);
@@ -874,8 +873,8 @@ public:
 
         label_24 = new QLabel(tab_4);
         label_24->setObjectName(QStringLiteral("label_24"));
-        sizePolicy1.setHeightForWidth(label_24->sizePolicy().hasHeightForWidth());
-        label_24->setSizePolicy(sizePolicy1);
+        sizePolicy2.setHeightForWidth(label_24->sizePolicy().hasHeightForWidth());
+        label_24->setSizePolicy(sizePolicy2);
         label_24->setMinimumSize(QSize(10, 0));
         label_24->setMaximumSize(QSize(10, 16777215));
         label_24->setFrameShape(QFrame::VLine);
@@ -885,8 +884,8 @@ public:
 
         btn_autoSearch2 = new QPushButton(tab_4);
         btn_autoSearch2->setObjectName(QStringLiteral("btn_autoSearch2"));
-        sizePolicy1.setHeightForWidth(btn_autoSearch2->sizePolicy().hasHeightForWidth());
-        btn_autoSearch2->setSizePolicy(sizePolicy1);
+        sizePolicy2.setHeightForWidth(btn_autoSearch2->sizePolicy().hasHeightForWidth());
+        btn_autoSearch2->setSizePolicy(sizePolicy2);
         btn_autoSearch2->setMinimumSize(QSize(130, 50));
         btn_autoSearch2->setMaximumSize(QSize(130, 50));
         btn_autoSearch2->setAutoFillBackground(false);
@@ -915,8 +914,8 @@ public:
 
         label_25 = new QLabel(tab_4);
         label_25->setObjectName(QStringLiteral("label_25"));
-        sizePolicy1.setHeightForWidth(label_25->sizePolicy().hasHeightForWidth());
-        label_25->setSizePolicy(sizePolicy1);
+        sizePolicy2.setHeightForWidth(label_25->sizePolicy().hasHeightForWidth());
+        label_25->setSizePolicy(sizePolicy2);
         label_25->setMinimumSize(QSize(10, 0));
         label_25->setMaximumSize(QSize(10, 16777215));
         label_25->setFrameShape(QFrame::VLine);
@@ -926,8 +925,8 @@ public:
 
         manualExtrem = new QPushButton(tab_4);
         manualExtrem->setObjectName(QStringLiteral("manualExtrem"));
-        sizePolicy1.setHeightForWidth(manualExtrem->sizePolicy().hasHeightForWidth());
-        manualExtrem->setSizePolicy(sizePolicy1);
+        sizePolicy2.setHeightForWidth(manualExtrem->sizePolicy().hasHeightForWidth());
+        manualExtrem->setSizePolicy(sizePolicy2);
         manualExtrem->setMinimumSize(QSize(130, 30));
         manualExtrem->setMaximumSize(QSize(130, 50));
         manualExtrem->setAutoFillBackground(false);
@@ -946,7 +945,7 @@ public:
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
         QIcon icon9;
-        icon9.addFile(QStringLiteral(":/img/img/md-build.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        icon9.addFile(QStringLiteral(":/img/img/md-build.png"), QSize(), QIcon::Normal, QIcon::Off);
         manualExtrem->setIcon(icon9);
         manualExtrem->setIconSize(QSize(24, 24));
         manualExtrem->setCheckable(true);
@@ -955,8 +954,8 @@ public:
 
         label_30 = new QLabel(tab_4);
         label_30->setObjectName(QStringLiteral("label_30"));
-        sizePolicy1.setHeightForWidth(label_30->sizePolicy().hasHeightForWidth());
-        label_30->setSizePolicy(sizePolicy1);
+        sizePolicy2.setHeightForWidth(label_30->sizePolicy().hasHeightForWidth());
+        label_30->setSizePolicy(sizePolicy2);
         label_30->setMinimumSize(QSize(10, 0));
         label_30->setMaximumSize(QSize(10, 16777215));
         label_30->setFrameShape(QFrame::VLine);
@@ -969,25 +968,26 @@ public:
         verticalLayout_21->setObjectName(QStringLiteral("verticalLayout_21"));
         rbMax = new QRadioButton(tab_4);
         rbMax->setObjectName(QStringLiteral("rbMax"));
-        sizePolicy7.setHeightForWidth(rbMax->sizePolicy().hasHeightForWidth());
-        rbMax->setSizePolicy(sizePolicy7);
+        sizePolicy6.setHeightForWidth(rbMax->sizePolicy().hasHeightForWidth());
+        rbMax->setSizePolicy(sizePolicy6);
         rbMax->setMaximumSize(QSize(100, 16777215));
 
         verticalLayout_21->addWidget(rbMax);
 
         rbMin = new QRadioButton(tab_4);
         rbMin->setObjectName(QStringLiteral("rbMin"));
-        sizePolicy7.setHeightForWidth(rbMin->sizePolicy().hasHeightForWidth());
-        rbMin->setSizePolicy(sizePolicy7);
+        sizePolicy6.setHeightForWidth(rbMin->sizePolicy().hasHeightForWidth());
+        rbMin->setSizePolicy(sizePolicy6);
         rbMin->setMaximumSize(QSize(100, 16777215));
 
         verticalLayout_21->addWidget(rbMin);
 
         rbAll = new QRadioButton(tab_4);
         rbAll->setObjectName(QStringLiteral("rbAll"));
-        sizePolicy7.setHeightForWidth(rbAll->sizePolicy().hasHeightForWidth());
-        rbAll->setSizePolicy(sizePolicy7);
+        sizePolicy6.setHeightForWidth(rbAll->sizePolicy().hasHeightForWidth());
+        rbAll->setSizePolicy(sizePolicy6);
         rbAll->setMaximumSize(QSize(100, 16777215));
+        rbAll->setChecked(true);
 
         verticalLayout_21->addWidget(rbAll);
 
@@ -996,8 +996,8 @@ public:
 
         label_31 = new QLabel(tab_4);
         label_31->setObjectName(QStringLiteral("label_31"));
-        sizePolicy1.setHeightForWidth(label_31->sizePolicy().hasHeightForWidth());
-        label_31->setSizePolicy(sizePolicy1);
+        sizePolicy2.setHeightForWidth(label_31->sizePolicy().hasHeightForWidth());
+        label_31->setSizePolicy(sizePolicy2);
         label_31->setMinimumSize(QSize(10, 0));
         label_31->setMaximumSize(QSize(10, 16777215));
         label_31->setFrameShape(QFrame::VLine);
@@ -1007,8 +1007,8 @@ public:
 
         btn_delExtrem = new QPushButton(tab_4);
         btn_delExtrem->setObjectName(QStringLiteral("btn_delExtrem"));
-        sizePolicy1.setHeightForWidth(btn_delExtrem->sizePolicy().hasHeightForWidth());
-        btn_delExtrem->setSizePolicy(sizePolicy1);
+        sizePolicy2.setHeightForWidth(btn_delExtrem->sizePolicy().hasHeightForWidth());
+        btn_delExtrem->setSizePolicy(sizePolicy2);
         btn_delExtrem->setMinimumSize(QSize(130, 30));
         btn_delExtrem->setMaximumSize(QSize(130, 50));
         btn_delExtrem->setAutoFillBackground(false);
@@ -1027,7 +1027,7 @@ public:
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
         QIcon icon10;
-        icon10.addFile(QStringLiteral(":/img/img/md-remove-circle.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        icon10.addFile(QStringLiteral(":/img/img/md-remove-circle.png"), QSize(), QIcon::Normal, QIcon::Off);
         btn_delExtrem->setIcon(icon10);
         btn_delExtrem->setIconSize(QSize(28, 28));
 
@@ -1056,8 +1056,8 @@ public:
         horizontalLayout_13->setObjectName(QStringLiteral("horizontalLayout_13"));
         label = new QLabel(tab_5);
         label->setObjectName(QStringLiteral("label"));
-        sizePolicy4.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
-        label->setSizePolicy(sizePolicy4);
+        sizePolicy1.setHeightForWidth(label->sizePolicy().hasHeightForWidth());
+        label->setSizePolicy(sizePolicy1);
         label->setMaximumSize(QSize(135, 16777215));
 
         horizontalLayout_13->addWidget(label);
@@ -1079,8 +1079,8 @@ public:
         horizontalLayout_14->setObjectName(QStringLiteral("horizontalLayout_14"));
         label_3 = new QLabel(tab_5);
         label_3->setObjectName(QStringLiteral("label_3"));
-        sizePolicy4.setHeightForWidth(label_3->sizePolicy().hasHeightForWidth());
-        label_3->setSizePolicy(sizePolicy4);
+        sizePolicy1.setHeightForWidth(label_3->sizePolicy().hasHeightForWidth());
+        label_3->setSizePolicy(sizePolicy1);
         label_3->setMaximumSize(QSize(135, 16777215));
 
         horizontalLayout_14->addWidget(label_3);
@@ -1105,8 +1105,8 @@ public:
 
         label_18 = new QLabel(tab_5);
         label_18->setObjectName(QStringLiteral("label_18"));
-        sizePolicy2.setHeightForWidth(label_18->sizePolicy().hasHeightForWidth());
-        label_18->setSizePolicy(sizePolicy2);
+        sizePolicy3.setHeightForWidth(label_18->sizePolicy().hasHeightForWidth());
+        label_18->setSizePolicy(sizePolicy3);
         label_18->setMinimumSize(QSize(10, 0));
         label_18->setMaximumSize(QSize(10, 16777215));
         label_18->setFrameShape(QFrame::VLine);
@@ -1119,16 +1119,16 @@ public:
         verticalLayout_14->setObjectName(QStringLiteral("verticalLayout_14"));
         label_17 = new QLabel(tab_5);
         label_17->setObjectName(QStringLiteral("label_17"));
-        sizePolicy4.setHeightForWidth(label_17->sizePolicy().hasHeightForWidth());
-        label_17->setSizePolicy(sizePolicy4);
+        sizePolicy1.setHeightForWidth(label_17->sizePolicy().hasHeightForWidth());
+        label_17->setSizePolicy(sizePolicy1);
         label_17->setMaximumSize(QSize(200, 16777215));
 
         verticalLayout_14->addWidget(label_17);
 
         Browser_Derivative = new QTextBrowser(tab_5);
         Browser_Derivative->setObjectName(QStringLiteral("Browser_Derivative"));
-        sizePolicy4.setHeightForWidth(Browser_Derivative->sizePolicy().hasHeightForWidth());
-        Browser_Derivative->setSizePolicy(sizePolicy4);
+        sizePolicy1.setHeightForWidth(Browser_Derivative->sizePolicy().hasHeightForWidth());
+        Browser_Derivative->setSizePolicy(sizePolicy1);
         Browser_Derivative->setMinimumSize(QSize(200, 0));
         Browser_Derivative->setMaximumSize(QSize(113, 50));
         Browser_Derivative->setSizeIncrement(QSize(0, 0));
@@ -1145,8 +1145,8 @@ public:
 
         label_16 = new QLabel(tab_5);
         label_16->setObjectName(QStringLiteral("label_16"));
-        sizePolicy2.setHeightForWidth(label_16->sizePolicy().hasHeightForWidth());
-        label_16->setSizePolicy(sizePolicy2);
+        sizePolicy3.setHeightForWidth(label_16->sizePolicy().hasHeightForWidth());
+        label_16->setSizePolicy(sizePolicy3);
         label_16->setMinimumSize(QSize(10, 0));
         label_16->setMaximumSize(QSize(10, 16777215));
         label_16->setFrameShape(QFrame::VLine);
@@ -1156,8 +1156,8 @@ public:
 
         btn_grDerivative = new QPushButton(tab_5);
         btn_grDerivative->setObjectName(QStringLiteral("btn_grDerivative"));
-        sizePolicy1.setHeightForWidth(btn_grDerivative->sizePolicy().hasHeightForWidth());
-        btn_grDerivative->setSizePolicy(sizePolicy1);
+        sizePolicy2.setHeightForWidth(btn_grDerivative->sizePolicy().hasHeightForWidth());
+        btn_grDerivative->setSizePolicy(sizePolicy2);
         btn_grDerivative->setMinimumSize(QSize(180, 50));
         btn_grDerivative->setMaximumSize(QSize(180, 50));
         btn_grDerivative->setAutoFillBackground(false);
@@ -1176,7 +1176,7 @@ public:
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
         QIcon icon11;
-        icon11.addFile(QStringLiteral(":/img/img/md-trending-up.svg"), QSize(), QIcon::Normal, QIcon::Off);
+        icon11.addFile(QStringLiteral(":/img/img/md-trending-up.png"), QSize(), QIcon::Normal, QIcon::Off);
         btn_grDerivative->setIcon(icon11);
         btn_grDerivative->setIconSize(QSize(30, 30));
 
@@ -1195,8 +1195,11 @@ public:
         horizontalLayout_17->setObjectName(QStringLiteral("horizontalLayout_17"));
         frame = new QFrame(tab_6);
         frame->setObjectName(QStringLiteral("frame"));
-        sizePolicy3.setHeightForWidth(frame->sizePolicy().hasHeightForWidth());
-        frame->setSizePolicy(sizePolicy3);
+        QSizePolicy sizePolicy7(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        sizePolicy7.setHorizontalStretch(0);
+        sizePolicy7.setVerticalStretch(0);
+        sizePolicy7.setHeightForWidth(frame->sizePolicy().hasHeightForWidth());
+        frame->setSizePolicy(sizePolicy7);
         frame->setMaximumSize(QSize(170, 16777215));
         frame->setFrameShape(QFrame::Box);
         frame->setFrameShadow(QFrame::Sunken);
@@ -1246,8 +1249,8 @@ public:
 
         label_22 = new QLabel(tab_6);
         label_22->setObjectName(QStringLiteral("label_22"));
-        sizePolicy2.setHeightForWidth(label_22->sizePolicy().hasHeightForWidth());
-        label_22->setSizePolicy(sizePolicy2);
+        sizePolicy3.setHeightForWidth(label_22->sizePolicy().hasHeightForWidth());
+        label_22->setSizePolicy(sizePolicy3);
         label_22->setMinimumSize(QSize(10, 0));
         label_22->setMaximumSize(QSize(10, 16777215));
         label_22->setFrameShape(QFrame::VLine);
@@ -1257,8 +1260,8 @@ public:
 
         frame_2 = new QFrame(tab_6);
         frame_2->setObjectName(QStringLiteral("frame_2"));
-        sizePolicy3.setHeightForWidth(frame_2->sizePolicy().hasHeightForWidth());
-        frame_2->setSizePolicy(sizePolicy3);
+        sizePolicy7.setHeightForWidth(frame_2->sizePolicy().hasHeightForWidth());
+        frame_2->setSizePolicy(sizePolicy7);
         frame_2->setMaximumSize(QSize(170, 16777215));
         frame_2->setFrameShape(QFrame::Box);
         frame_2->setFrameShadow(QFrame::Sunken);
@@ -1355,8 +1358,8 @@ public:
         horizontalLayout_26->setObjectName(QStringLiteral("horizontalLayout_26"));
         btn_delta = new QPushButton(tab_7);
         btn_delta->setObjectName(QStringLiteral("btn_delta"));
-        sizePolicy1.setHeightForWidth(btn_delta->sizePolicy().hasHeightForWidth());
-        btn_delta->setSizePolicy(sizePolicy1);
+        sizePolicy2.setHeightForWidth(btn_delta->sizePolicy().hasHeightForWidth());
+        btn_delta->setSizePolicy(sizePolicy2);
         btn_delta->setMinimumSize(QSize(130, 30));
         btn_delta->setMaximumSize(QSize(130, 50));
         btn_delta->setAutoFillBackground(false);
@@ -1383,8 +1386,8 @@ public:
 
         label_32 = new QLabel(tab_7);
         label_32->setObjectName(QStringLiteral("label_32"));
-        sizePolicy2.setHeightForWidth(label_32->sizePolicy().hasHeightForWidth());
-        label_32->setSizePolicy(sizePolicy2);
+        sizePolicy3.setHeightForWidth(label_32->sizePolicy().hasHeightForWidth());
+        label_32->setSizePolicy(sizePolicy3);
         label_32->setMinimumSize(QSize(10, 0));
         label_32->setMaximumSize(QSize(10, 16777215));
         label_32->setFrameShape(QFrame::VLine);
@@ -1406,8 +1409,8 @@ public:
         horizontalLayout_25->setObjectName(QStringLiteral("horizontalLayout_25"));
         btn_DFT = new QPushButton(tab_7);
         btn_DFT->setObjectName(QStringLiteral("btn_DFT"));
-        sizePolicy1.setHeightForWidth(btn_DFT->sizePolicy().hasHeightForWidth());
-        btn_DFT->setSizePolicy(sizePolicy1);
+        sizePolicy2.setHeightForWidth(btn_DFT->sizePolicy().hasHeightForWidth());
+        btn_DFT->setSizePolicy(sizePolicy2);
         btn_DFT->setMinimumSize(QSize(40, 50));
         btn_DFT->setMaximumSize(QSize(50, 50));
         QFont font2;
@@ -1434,8 +1437,8 @@ public:
 
         btn_FFT = new QPushButton(tab_7);
         btn_FFT->setObjectName(QStringLiteral("btn_FFT"));
-        sizePolicy1.setHeightForWidth(btn_FFT->sizePolicy().hasHeightForWidth());
-        btn_FFT->setSizePolicy(sizePolicy1);
+        sizePolicy2.setHeightForWidth(btn_FFT->sizePolicy().hasHeightForWidth());
+        btn_FFT->setSizePolicy(sizePolicy2);
         btn_FFT->setMinimumSize(QSize(40, 50));
         btn_FFT->setMaximumSize(QSize(50, 50));
         btn_FFT->setFont(font2);
@@ -1469,8 +1472,8 @@ public:
 
         label_33 = new QLabel(tab_7);
         label_33->setObjectName(QStringLiteral("label_33"));
-        sizePolicy2.setHeightForWidth(label_33->sizePolicy().hasHeightForWidth());
-        label_33->setSizePolicy(sizePolicy2);
+        sizePolicy3.setHeightForWidth(label_33->sizePolicy().hasHeightForWidth());
+        label_33->setSizePolicy(sizePolicy3);
         label_33->setMinimumSize(QSize(10, 0));
         label_33->setMaximumSize(QSize(10, 16777215));
         label_33->setFrameShape(QFrame::VLine);
@@ -1528,8 +1531,8 @@ public:
         horizontalLayout_23->setObjectName(QStringLiteral("horizontalLayout_23"));
         btn_BildMnk = new QPushButton(tab_8);
         btn_BildMnk->setObjectName(QStringLiteral("btn_BildMnk"));
-        sizePolicy1.setHeightForWidth(btn_BildMnk->sizePolicy().hasHeightForWidth());
-        btn_BildMnk->setSizePolicy(sizePolicy1);
+        sizePolicy2.setHeightForWidth(btn_BildMnk->sizePolicy().hasHeightForWidth());
+        btn_BildMnk->setSizePolicy(sizePolicy2);
         btn_BildMnk->setMinimumSize(QSize(130, 30));
         btn_BildMnk->setMaximumSize(QSize(130, 30));
         btn_BildMnk->setAutoFillBackground(false);
@@ -1555,8 +1558,8 @@ public:
 
         btn_delMnk = new QPushButton(tab_8);
         btn_delMnk->setObjectName(QStringLiteral("btn_delMnk"));
-        sizePolicy1.setHeightForWidth(btn_delMnk->sizePolicy().hasHeightForWidth());
-        btn_delMnk->setSizePolicy(sizePolicy1);
+        sizePolicy2.setHeightForWidth(btn_delMnk->sizePolicy().hasHeightForWidth());
+        btn_delMnk->setSizePolicy(sizePolicy2);
         btn_delMnk->setMinimumSize(QSize(130, 30));
         btn_delMnk->setMaximumSize(QSize(130, 30));
         btn_delMnk->setAutoFillBackground(false);
@@ -1609,8 +1612,8 @@ public:
 
         label_29 = new QLabel(tab_8);
         label_29->setObjectName(QStringLiteral("label_29"));
-        sizePolicy2.setHeightForWidth(label_29->sizePolicy().hasHeightForWidth());
-        label_29->setSizePolicy(sizePolicy2);
+        sizePolicy3.setHeightForWidth(label_29->sizePolicy().hasHeightForWidth());
+        label_29->setSizePolicy(sizePolicy3);
         label_29->setMinimumSize(QSize(10, 0));
         label_29->setMaximumSize(QSize(10, 16777215));
         label_29->setFrameShape(QFrame::VLine);
@@ -1632,8 +1635,8 @@ public:
 
         spinLevel = new QDoubleSpinBox(tab_8);
         spinLevel->setObjectName(QStringLiteral("spinLevel"));
-        sizePolicy4.setHeightForWidth(spinLevel->sizePolicy().hasHeightForWidth());
-        spinLevel->setSizePolicy(sizePolicy4);
+        sizePolicy1.setHeightForWidth(spinLevel->sizePolicy().hasHeightForWidth());
+        spinLevel->setSizePolicy(sizePolicy1);
         spinLevel->setMaximumSize(QSize(60, 20));
         spinLevel->setDecimals(1);
         spinLevel->setValue(0);
@@ -1654,8 +1657,8 @@ public:
 
         BrowserTime = new QTextBrowser(tab_8);
         BrowserTime->setObjectName(QStringLiteral("BrowserTime"));
-        sizePolicy4.setHeightForWidth(BrowserTime->sizePolicy().hasHeightForWidth());
-        BrowserTime->setSizePolicy(sizePolicy4);
+        sizePolicy1.setHeightForWidth(BrowserTime->sizePolicy().hasHeightForWidth());
+        BrowserTime->setSizePolicy(sizePolicy1);
         BrowserTime->setMaximumSize(QSize(80, 20));
         BrowserTime->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
@@ -1682,7 +1685,7 @@ public:
         label_26->setObjectName(QStringLiteral("label_26"));
         label_26->setMaximumSize(QSize(120, 120));
         label_26->setTextFormat(Qt::AutoText);
-        label_26->setPixmap(QPixmap(QString::fromUtf8(":/img/img/md-stats.svg")));
+        label_26->setPixmap(QPixmap(QString::fromUtf8(":/img/img/md-stats.png")));
         label_26->setScaledContents(true);
         label_26->setWordWrap(false);
 
@@ -1693,8 +1696,8 @@ public:
         verticalLayout_18->setObjectName(QStringLiteral("verticalLayout_18"));
         label_28 = new QLabel(tab_9);
         label_28->setObjectName(QStringLiteral("label_28"));
-        sizePolicy2.setHeightForWidth(label_28->sizePolicy().hasHeightForWidth());
-        label_28->setSizePolicy(sizePolicy2);
+        sizePolicy3.setHeightForWidth(label_28->sizePolicy().hasHeightForWidth());
+        label_28->setSizePolicy(sizePolicy3);
         label_28->setMaximumSize(QSize(16777215, 20));
 
         verticalLayout_18->addWidget(label_28);
@@ -1717,8 +1720,8 @@ public:
 
         label_27 = new QLabel(tab_9);
         label_27->setObjectName(QStringLiteral("label_27"));
-        sizePolicy2.setHeightForWidth(label_27->sizePolicy().hasHeightForWidth());
-        label_27->setSizePolicy(sizePolicy2);
+        sizePolicy3.setHeightForWidth(label_27->sizePolicy().hasHeightForWidth());
+        label_27->setSizePolicy(sizePolicy3);
         label_27->setMinimumSize(QSize(10, 0));
         label_27->setMaximumSize(QSize(10, 16777215));
         label_27->setFrameShape(QFrame::VLine);
@@ -1728,8 +1731,8 @@ public:
 
         btn_Manual = new QPushButton(tab_9);
         btn_Manual->setObjectName(QStringLiteral("btn_Manual"));
-        sizePolicy1.setHeightForWidth(btn_Manual->sizePolicy().hasHeightForWidth());
-        btn_Manual->setSizePolicy(sizePolicy1);
+        sizePolicy2.setHeightForWidth(btn_Manual->sizePolicy().hasHeightForWidth());
+        btn_Manual->setSizePolicy(sizePolicy2);
         btn_Manual->setMinimumSize(QSize(130, 30));
         btn_Manual->setMaximumSize(QSize(130, 50));
         btn_Manual->setAutoFillBackground(false);
@@ -1912,19 +1915,10 @@ public:
         gridLayout_5 = new QGridLayout();
         gridLayout_5->setSpacing(6);
         gridLayout_5->setObjectName(QStringLiteral("gridLayout_5"));
-        widget = new QCustomPlot(centralWidget);
-        widget->setObjectName(QStringLiteral("widget"));
-        sizePolicy3.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
-        widget->setSizePolicy(sizePolicy3);
-        widget->setMinimumSize(QSize(0, 0));
-        widget->setMouseTracking(true);
-
-        gridLayout_5->addWidget(widget, 0, 1, 2, 1);
-
         groupBox = new QGroupBox(centralWidget);
         groupBox->setObjectName(QStringLiteral("groupBox"));
-        sizePolicy3.setHeightForWidth(groupBox->sizePolicy().hasHeightForWidth());
-        groupBox->setSizePolicy(sizePolicy3);
+        sizePolicy7.setHeightForWidth(groupBox->sizePolicy().hasHeightForWidth());
+        groupBox->setSizePolicy(sizePolicy7);
         groupBox->setMaximumSize(QSize(150, 16777215));
         verticalLayout_3 = new QVBoxLayout(groupBox);
         verticalLayout_3->setSpacing(6);
@@ -1940,8 +1934,8 @@ public:
 
         groupBox_2 = new QGroupBox(centralWidget);
         groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
-        sizePolicy3.setHeightForWidth(groupBox_2->sizePolicy().hasHeightForWidth());
-        groupBox_2->setSizePolicy(sizePolicy3);
+        sizePolicy7.setHeightForWidth(groupBox_2->sizePolicy().hasHeightForWidth());
+        groupBox_2->setSizePolicy(sizePolicy7);
         groupBox_2->setMaximumSize(QSize(150, 16777215));
         verticalLayout_4 = new QVBoxLayout(groupBox_2);
         verticalLayout_4->setSpacing(6);
@@ -1954,6 +1948,15 @@ public:
 
 
         gridLayout_5->addWidget(groupBox_2, 1, 0, 1, 1);
+
+        widget = new QCustomPlot(centralWidget);
+        widget->setObjectName(QStringLiteral("widget"));
+        sizePolicy7.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
+        widget->setSizePolicy(sizePolicy7);
+        widget->setMinimumSize(QSize(0, 0));
+        widget->setMouseTracking(true);
+
+        gridLayout_5->addWidget(widget, 0, 1, 2, 1);
 
 
         verticalLayout_8->addLayout(gridLayout_5);
@@ -1971,6 +1974,7 @@ public:
         retranslateUi(MainWindow);
 
         tabWidget->setCurrentIndex(0);
+        btn_openFile->setDefault(false);
 
 
         QMetaObject::connectSlotsByName(MainWindow);
@@ -2110,11 +2114,11 @@ public:
         label_15->setText(QApplication::translate("MainWindow", "\320\244\320\270\320\273\321\214\321\202\321\200\320\260\321\206\320\270\321\217 \321\201\320\270\320\263\320\275\320\260\320\273\320\260 \n"
 "(\320\277\321\200\320\265\320\276\320\261\321\200\320\260\320\267\320\276\320\262\320\260\320\275\320\270\320\265 \320\244\321\203\321\200\321\214\320\265):", 0));
 #ifndef QT_NO_TOOLTIP
-        btn_DFT->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">\320\224\320\270\321\201\320\272\321\200\320\265\321\202\320\275\320\276\320\265 \320\277\321\200\320\265\320\276\320\261\321\200\320\260\320\267\320\276\320\262\320\260\320\275\320\270\320\265 \320\244\321\203\321\200\321\214\320\265</span> \320\266\320\265\320\273\320\260\321\202\320\265\320\273\321\214\320\275\320\276 \320\270\321\201\320\277\320\276\320\273\321\214\320\267\320\276\320\262\320\260\321\202\321\214 \320\264\320\273\321\217 \320\275\320\265\320\261\320\276\320\273\321\214\321\210\320\270\321\205 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\271 (\320\275\320\270\320\266\320\265 10^6)</p></body></html>", 0));
+        btn_DFT->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">\320\224\320\270\321\201\320\272\321\200\320\265\321\202\320\275\320\276\320\265 \320\277\321\200\320\265\320\276\320\261\321\200\320\260\320\267\320\276\320\262\320\260\320\275\320\270\320\265 \320\244\321\203\321\200\321\214\320\265</span></p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         btn_DFT->setText(QApplication::translate("MainWindow", "DFT", 0));
 #ifndef QT_NO_TOOLTIP
-        btn_FFT->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">\320\221\321\213\321\201\321\202\321\200\320\276\320\265 \320\277\321\200\320\265\320\276\320\261\321\200\320\260\320\267\320\276\320\262\320\260\320\275\320\270\320\265 \320\244\321\203\321\200\321\214\320\265</span> \320\266\320\265\320\273\320\260\321\202\320\265\320\273\321\214\320\275\320\276 \320\270\321\201\320\277\320\276\320\273\321\214\320\267\320\276\320\262\320\260\321\202\321\214 \320\264\320\273\321\217 \320\261\320\276\320\273\321\214\321\210\320\270\321\205 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\271 (\321\201\320\262\321\213\321\210\320\265 10^6)</p></body></html>", 0));
+        btn_FFT->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">\320\221\321\213\321\201\321\202\321\200\320\276\320\265 \320\277\321\200\320\265\320\276\320\261\321\200\320\260\320\267\320\276\320\262\320\260\320\275\320\270\320\265 \320\244\321\203\321\200\321\214\320\265</span></p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         btn_FFT->setText(QApplication::translate("MainWindow", "FFT", 0));
         label_33->setText(QString());

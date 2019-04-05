@@ -117,6 +117,8 @@ private slots:
 
     void on_btn_delGraph_clicked();
 
+    void on_btn_FFT_clicked();
+
 private:
     Ui::MainWindow *ui;
     QLineEdit *lineEditRename;

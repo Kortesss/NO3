@@ -657,8 +657,30 @@ void MainWindow::on_btn_DFT_clicked() //Фильрация сигнала: Ди�
                         tempX.append(mass_x_Gr[gr_index][i]);  tempY.append(mass_y_Gr[gr_index][i]);
                     }
                 }
-                FFTWindow = new FilterFFT(tempX, tempY, axis_x_Gr[gr_index], axis_y_Gr[gr_index], this);
-            }else FFTWindow = new FilterFFT(mass_x_Gr[gr_index], mass_y_Gr[gr_index], axis_x_Gr[gr_index], axis_y_Gr[gr_index], this);
+                FFTWindow = new FilterFFT(tempX, tempY, axis_x_Gr[gr_index], axis_y_Gr[gr_index], 0, this);
+            }else FFTWindow = new FilterFFT(mass_x_Gr[gr_index], mass_y_Gr[gr_index], axis_x_Gr[gr_index], axis_y_Gr[gr_index], 0, this);
+
+            FFTWindow->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - фильтрация сигнала");
+            FFTWindow->show();
+            FFTWindow->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+        }else QMessageBox::critical(NULL,QObject::tr("Внимание"),tr("Интервал значений не определен."));
+    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
+}
+
+void MainWindow::on_btn_FFT_clicked() //Быстрое преобразование Фурье
+{
+    if (ui->listWidget->count() > 0){
+        if (ui->Spin_x1->value() < ui->Spin_x2->value()){
+            QList <double> tempX, tempY;
+            FilterFFT *FFTWindow;
+            if (rectSpan->visible()){
+                for (int i = 0; i < mass_x_Gr[gr_index].count(); i++){
+                    if (mass_x_Gr[gr_index][i] >= ui->Spin_x1->value() && (mass_x_Gr[gr_index][i] <= ui->Spin_x2->value())){
+                        tempX.append(mass_x_Gr[gr_index][i]);  tempY.append(mass_y_Gr[gr_index][i]);
+                    }
+                }
+                FFTWindow = new FilterFFT(tempX, tempY, axis_x_Gr[gr_index], axis_y_Gr[gr_index], 1, this);
+            }else FFTWindow = new FilterFFT(mass_x_Gr[gr_index], mass_y_Gr[gr_index], axis_x_Gr[gr_index], axis_y_Gr[gr_index], 1, this);
 
             FFTWindow->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - фильтрация сигнала");
             FFTWindow->show();
@@ -1124,4 +1146,6 @@ void MainWindow::on_btn_clearGraph_clicked()
         QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Отсутствуют графики!"));
     }
 }
+
+
 

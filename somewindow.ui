@@ -19,6 +19,12 @@
      <layout class="QGridLayout" name="gridLayout">
       <item row="1" column="2">
        <widget class="QPushButton" name="pushButton_close">
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>26</height>
+         </size>
+        </property>
         <property name="styleSheet">
          <string notr="true"> QPushButton {
      border: 2px solid #8f8f91;
@@ -36,14 +42,24 @@ QPushButton:pressed {
         <property name="text">
          <string>Закрыть</string>
         </property>
+        <property name="icon">
+         <iconset resource="source.qrc">
+          <normaloff>:/img/img/log-out.png</normaloff>:/img/img/log-out.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>18</width>
+          <height>18</height>
+         </size>
+        </property>
        </widget>
       </item>
       <item row="1" column="1">
        <widget class="QPushButton" name="pushButton_save">
         <property name="minimumSize">
          <size>
-          <width>144</width>
-          <height>24</height>
+          <width>150</width>
+          <height>26</height>
          </size>
         </property>
         <property name="styleSheet">

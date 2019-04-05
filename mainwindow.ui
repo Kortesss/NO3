@@ -44,7 +44,7 @@
        <enum>QTabWidget::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>8</number>
       </property>
       <property name="iconSize">
        <size>
@@ -77,7 +77,7 @@
           <item>
            <widget class="QPushButton" name="btn_openFile">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -118,7 +118,22 @@ QPushButton:checked{
             </property>
             <property name="icon">
              <iconset resource="source.qrc">
-              <normaloff>:/img/img/ios-albums.svg</normaloff>:/img/img/ios-albums.svg</iconset>
+              <normaloff>:/img/img/albums.png</normaloff>:/img/img/albums.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>18</width>
+              <height>18</height>
+             </size>
+            </property>
+            <property name="shortcut">
+             <string>Ctrl+O</string>
+            </property>
+            <property name="autoDefault">
+             <bool>false</bool>
+            </property>
+            <property name="default">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -163,13 +178,16 @@ QPushButton:checked{
             </property>
             <property name="icon">
              <iconset resource="source.qrc">
-              <normaloff>:/img/img/ios-log-out.svg</normaloff>:/img/img/ios-log-out.svg</iconset>
+              <normaloff>:/img/img/log-out.png</normaloff>:/img/img/log-out.png</iconset>
             </property>
             <property name="iconSize">
              <size>
               <width>19</width>
               <height>19</height>
              </size>
+            </property>
+            <property name="shortcut">
+             <string>Ctrl+Q</string>
             </property>
            </widget>
           </item>
@@ -211,7 +229,7 @@ QPushButton:checked{
           <item>
            <widget class="QPushButton" name="btn_saveImage">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -257,12 +275,15 @@ QPushButton:checked{
               <height>18</height>
              </size>
             </property>
+            <property name="shortcut">
+             <string>Ctrl+Shift+S</string>
+            </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="btn_saveDataGr">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -301,6 +322,9 @@ QPushButton:checked{
             <property name="icon">
              <iconset resource="source.qrc">
               <normaloff>:/img/img/512px-Save_font_awesome.svg.png</normaloff>:/img/img/512px-Save_font_awesome.svg.png</iconset>
+            </property>
+            <property name="shortcut">
+             <string>Ctrl+S</string>
             </property>
             <property name="checkable">
              <bool>false</bool>
@@ -591,6 +615,9 @@ QPushButton:checked{
               <width>25</width>
               <height>25</height>
              </size>
+            </property>
+            <property name="shortcut">
+             <string>Del</string>
             </property>
            </widget>
           </item>
@@ -1308,7 +1335,7 @@ QPushButton:checked{
           </property>
           <property name="icon">
            <iconset resource="source.qrc">
-            <normaloff>:/img/img/md-build.svg</normaloff>:/img/img/md-build.svg</iconset>
+            <normaloff>:/img/img/md-build.png</normaloff>:/img/img/md-build.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -1494,7 +1521,7 @@ QPushButton:checked{
           </property>
           <property name="icon">
            <iconset resource="source.qrc">
-            <normaloff>:/img/img/md-remove-circle.svg</normaloff>:/img/img/md-remove-circle.svg</iconset>
+            <normaloff>:/img/img/md-remove-circle.png</normaloff>:/img/img/md-remove-circle.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -1834,7 +1861,7 @@ QPushButton:checked{
           </property>
           <property name="icon">
            <iconset resource="source.qrc">
-            <normaloff>:/img/img/md-trending-up.svg</normaloff>:/img/img/md-trending-up.svg</iconset>
+            <normaloff>:/img/img/md-trending-up.png</normaloff>:/img/img/md-trending-up.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -2287,7 +2314,7 @@ QPushButton:checked{
                </font>
               </property>
               <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Дискретное преобразование Фурье&lt;/span&gt; желательно использовать для небольших значений (ниже 10^6)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Дискретное преобразование Фурье&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="autoFillBackground">
                <bool>false</bool>
@@ -2340,7 +2367,7 @@ QPushButton:checked{
                </font>
               </property>
               <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Быстрое преобразование Фурье&lt;/span&gt; желательно использовать для больших значений (свыше 10^6)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Быстрое преобразование Фурье&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="autoFillBackground">
                <bool>false</bool>
@@ -2792,7 +2819,7 @@ QPushButton:checked{
            <enum>Qt::AutoText</enum>
           </property>
           <property name="pixmap">
-           <pixmap resource="source.qrc">:/img/img/md-stats.svg</pixmap>
+           <pixmap resource="source.qrc">:/img/img/md-stats.png</pixmap>
           </property>
           <property name="scaledContents">
            <bool>true</bool>
@@ -2941,6 +2968,9 @@ QPushButton:checked{
             <width>20</width>
             <height>20</height>
            </size>
+          </property>
+          <property name="shortcut">
+           <string>F1</string>
           </property>
           <property name="checkable">
            <bool>false</bool>
@@ -3244,25 +3274,6 @@ QPushButton:checked{
     </item>
     <item>
      <layout class="QGridLayout" name="gridLayout_5">
-      <item row="0" column="1" rowspan="2">
-       <widget class="QCustomPlot" name="widget" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="mouseTracking">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QGroupBox" name="groupBox">
         <property name="sizePolicy">
@@ -3309,6 +3320,25 @@ QPushButton:checked{
           <widget class="QTextBrowser" name="textBrowser_Y"/>
          </item>
         </layout>
+       </widget>
+      </item>
+      <item row="0" column="1" rowspan="2">
+       <widget class="QCustomPlot" name="widget" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
      </layout>
