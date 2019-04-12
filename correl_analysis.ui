@@ -126,8 +126,8 @@
        <widget class="QPushButton" name="pushButton_save">
         <property name="minimumSize">
          <size>
-          <width>150</width>
-          <height>26</height>
+          <width>144</width>
+          <height>25</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -155,10 +155,25 @@ QPushButton:pressed {
         </property>
         <property name="icon">
          <iconset resource="source.qrc">
-          <normaloff>:/img/img/512px-Save_font_awesome.svg.png</normaloff>:/img/img/512px-Save_font_awesome.svg.png</iconset>
+          <normaloff>:/img/img/heart-monitor.png</normaloff>:/img/img/heart-monitor.png</iconset>
         </property>
         <property name="shortcut">
          <string>Ctrl+Shift+S</string>
+        </property>
+        <property name="autoRepeat">
+         <bool>false</bool>
+        </property>
+        <property name="autoExclusive">
+         <bool>false</bool>
+        </property>
+        <property name="autoDefault">
+         <bool>false</bool>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -166,8 +181,8 @@ QPushButton:pressed {
        <widget class="QPushButton" name="pushButton_close">
         <property name="minimumSize">
          <size>
-          <width>100</width>
-          <height>26</height>
+          <width>90</width>
+          <height>25</height>
          </size>
         </property>
         <property name="maximumSize">

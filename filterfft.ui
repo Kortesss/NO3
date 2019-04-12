@@ -282,7 +282,7 @@
           <property name="minimumSize">
            <size>
             <width>185</width>
-            <height>26</height>
+            <height>25</height>
            </size>
           </property>
           <property name="maximumSize">
@@ -305,7 +305,7 @@ QPushButton:pressed {
  }</string>
           </property>
           <property name="text">
-           <string>Сохранить в файл...</string>
+           <string>Сохранить значения</string>
           </property>
           <property name="icon">
            <iconset resource="source.qrc">
@@ -321,7 +321,7 @@ QPushButton:pressed {
           <property name="minimumSize">
            <size>
             <width>185</width>
-            <height>26</height>
+            <height>25</height>
            </size>
           </property>
           <property name="maximumSize">

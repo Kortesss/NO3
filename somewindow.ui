@@ -21,8 +21,8 @@
        <widget class="QPushButton" name="pushButton_close">
         <property name="minimumSize">
          <size>
-          <width>100</width>
-          <height>26</height>
+          <width>88</width>
+          <height>25</height>
          </size>
         </property>
         <property name="styleSheet">
@@ -52,14 +52,17 @@ QPushButton:pressed {
           <height>18</height>
          </size>
         </property>
+        <property name="shortcut">
+         <string>Ctrl+Q</string>
+        </property>
        </widget>
       </item>
       <item row="1" column="1">
        <widget class="QPushButton" name="pushButton_save">
         <property name="minimumSize">
          <size>
-          <width>150</width>
-          <height>26</height>
+          <width>144</width>
+          <height>25</height>
          </size>
         </property>
         <property name="styleSheet">
@@ -81,7 +84,10 @@ QPushButton:pressed {
         </property>
         <property name="icon">
          <iconset resource="source.qrc">
-          <normaloff>:/img/img/512px-Save_font_awesome.svg.png</normaloff>:/img/img/512px-Save_font_awesome.svg.png</iconset>
+          <normaloff>:/img/img/heart-monitor.png</normaloff>:/img/img/heart-monitor.png</iconset>
+        </property>
+        <property name="shortcut">
+         <string>Ctrl+Shift+S</string>
         </property>
        </widget>
       </item>

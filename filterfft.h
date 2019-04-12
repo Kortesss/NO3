@@ -15,16 +15,13 @@ class FilterFFT : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit FilterFFT(QList <double> x, QList <double> &y, QString s1, QString s2, int H, QWidget *parent = nullptr);
+    explicit FilterFFT(QList <double> &x, QList <double> &y, QString s1, QString s2, QWidget *parent = nullptr);
     ~FilterFFT(); //принимаем ссылки на объект, чтобы не копировать в памяти его же
 
 private slots:
     void on_pushButton_close_clicked();
-    void DFT(QList<double> &x, QList<double> &y);
-    void iDFT(QList<double> &x, QList< std::complex <double> > f);
-
-    void FFT(QList<double> &x, QList<double> &y);
-    void iFFT(QList<double> &x, QList< std::complex <double> > f);
+    void DFT(QList<double> &y);
+    void iDFT(QList< std::complex <double> > f);
 
     void mousePress(QMouseEvent *event);
     void histogramMouseMoved(QMouseEvent *event);
@@ -41,7 +38,7 @@ private slots:
 private:
     Ui::FilterFFT *ui;
     QShortcut *CtrlQ;
-    int N, h;
+    int N;
     double x1, x2; //для диапазонов на DFT
     bool mouseDown, left, sp; //mauseDown - при движении мыши, проверяем была ли нажата правая кнопка, left - переключатель
     QList <double> xF, yF, yFcopy, ixF, iyF, xL, yL, expY, expYcopy;

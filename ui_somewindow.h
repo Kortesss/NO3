@@ -52,6 +52,7 @@ public:
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
         pushButton_close = new QPushButton(centralwidget);
         pushButton_close->setObjectName(QStringLiteral("pushButton_close"));
+        pushButton_close->setMinimumSize(QSize(88, 25));
         pushButton_close->setStyleSheet(QLatin1String(" QPushButton {\n"
 "     border: 2px solid #8f8f91;\n"
 "     border-radius: 6px;\n"
@@ -64,12 +65,16 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #f6f7fa);\n"
 " }"));
+        QIcon icon;
+        icon.addFile(QStringLiteral(":/img/img/log-out.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton_close->setIcon(icon);
+        pushButton_close->setIconSize(QSize(18, 18));
 
         gridLayout->addWidget(pushButton_close, 1, 2, 1, 1);
 
         pushButton_save = new QPushButton(centralwidget);
         pushButton_save->setObjectName(QStringLiteral("pushButton_save"));
-        pushButton_save->setMinimumSize(QSize(144, 24));
+        pushButton_save->setMinimumSize(QSize(144, 25));
         pushButton_save->setStyleSheet(QLatin1String(" QPushButton {\n"
 "     border: 2px solid #8f8f91;\n"
 "     border-radius: 6px;\n"
@@ -82,9 +87,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #f6f7fa);\n"
 " }"));
-        QIcon icon;
-        icon.addFile(QStringLiteral(":/img/img/512px-Save_font_awesome.svg.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButton_save->setIcon(icon);
+        QIcon icon1;
+        icon1.addFile(QStringLiteral(":/img/img/heart-monitor.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton_save->setIcon(icon1);
 
         gridLayout->addWidget(pushButton_save, 1, 1, 1, 1);
 
@@ -118,7 +123,9 @@ public:
     {
         SomeWindow->setWindowTitle(QApplication::translate("SomeWindow", "MainWindow", 0));
         pushButton_close->setText(QApplication::translate("SomeWindow", "\320\227\320\260\320\272\321\200\321\213\321\202\321\214", 0));
+        pushButton_close->setShortcut(QApplication::translate("SomeWindow", "Ctrl+Q", 0));
         pushButton_save->setText(QApplication::translate("SomeWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\272\320\260\320\272...", 0));
+        pushButton_save->setShortcut(QApplication::translate("SomeWindow", "Ctrl+Shift+S", 0));
     } // retranslateUi
 
 };
