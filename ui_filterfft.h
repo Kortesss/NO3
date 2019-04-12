@@ -13,7 +13,6 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
@@ -47,8 +46,6 @@ public:
     QHBoxLayout *horizontalLayout;
     QLabel *label_3;
     QLabel *label_4;
-    QDoubleSpinBox *sigma;
-    QPushButton *pushButton;
     QHBoxLayout *horizontalLayout_2;
     QSlider *SliderSpan;
     QLabel *label_5;
@@ -103,7 +100,7 @@ public:
 
         verticalLayout->addWidget(Slider_level);
 
-        verticalSpacer_2 = new QSpacerItem(20, 20, QSizePolicy::Minimum, QSizePolicy::Preferred);
+        verticalSpacer_2 = new QSpacerItem(20, 30, QSizePolicy::Minimum, QSizePolicy::Preferred);
 
         verticalLayout->addItem(verticalSpacer_2);
 
@@ -135,40 +132,19 @@ public:
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         label_3 = new QLabel(centralwidget);
         label_3->setObjectName(QStringLiteral("label_3"));
-        label_3->setMaximumSize(QSize(90, 15));
+        label_3->setMaximumSize(QSize(90, 14));
 
         horizontalLayout->addWidget(label_3);
 
         label_4 = new QLabel(centralwidget);
         label_4->setObjectName(QStringLiteral("label_4"));
-        label_4->setMaximumSize(QSize(90, 15));
+        label_4->setMaximumSize(QSize(90, 14));
         label_4->setAlignment(Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter);
 
         horizontalLayout->addWidget(label_4);
 
 
         verticalLayout->addLayout(horizontalLayout);
-
-        sigma = new QDoubleSpinBox(centralwidget);
-        sigma->setObjectName(QStringLiteral("sigma"));
-        sigma->setEnabled(true);
-        sigma->setMinimumSize(QSize(50, 0));
-        sigma->setMaximumSize(QSize(60, 16777215));
-        sigma->setDecimals(2);
-        sigma->setMinimum(0);
-        sigma->setMaximum(1);
-        sigma->setSingleStep(0.01);
-        sigma->setValue(0.05);
-
-        verticalLayout->addWidget(sigma);
-
-        pushButton = new QPushButton(centralwidget);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setEnabled(true);
-        pushButton->setMinimumSize(QSize(185, 24));
-        pushButton->setMaximumSize(QSize(185, 16777215));
-
-        verticalLayout->addWidget(pushButton);
 
         horizontalLayout_2 = new QHBoxLayout();
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
@@ -205,13 +181,13 @@ public:
 
         verticalLayout->addLayout(horizontalLayout_2);
 
-        verticalSpacer = new QSpacerItem(20, 50, QSizePolicy::Minimum, QSizePolicy::Preferred);
+        verticalSpacer = new QSpacerItem(20, 90, QSizePolicy::Minimum, QSizePolicy::Preferred);
 
         verticalLayout->addItem(verticalSpacer);
 
         pushButton_saveTxt = new QPushButton(centralwidget);
         pushButton_saveTxt->setObjectName(QStringLiteral("pushButton_saveTxt"));
-        pushButton_saveTxt->setMinimumSize(QSize(185, 24));
+        pushButton_saveTxt->setMinimumSize(QSize(185, 25));
         pushButton_saveTxt->setMaximumSize(QSize(185, 16777215));
         pushButton_saveTxt->setStyleSheet(QLatin1String(" QPushButton {\n"
 "     border: 2px solid #8f8f91;\n"
@@ -224,12 +200,15 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #f6f7fa);\n"
 " }"));
+        QIcon icon;
+        icon.addFile(QStringLiteral(":/img/img/512px-Save_font_awesome.svg.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton_saveTxt->setIcon(icon);
 
         verticalLayout->addWidget(pushButton_saveTxt);
 
         pushButton_close = new QPushButton(centralwidget);
         pushButton_close->setObjectName(QStringLiteral("pushButton_close"));
-        pushButton_close->setMinimumSize(QSize(185, 24));
+        pushButton_close->setMinimumSize(QSize(185, 25));
         pushButton_close->setMaximumSize(QSize(185, 16777215));
         pushButton_close->setStyleSheet(QLatin1String(" QPushButton {\n"
 "     border: 2px solid #8f8f91;\n"
@@ -242,6 +221,10 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #f6f7fa);\n"
 " }"));
+        QIcon icon1;
+        icon1.addFile(QStringLiteral(":/img/img/log-out.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton_close->setIcon(icon1);
+        pushButton_close->setIconSize(QSize(18, 18));
 
         verticalLayout->addWidget(pushButton_close);
 
@@ -272,13 +255,14 @@ public:
         label->setText(QApplication::translate("FilterFFT", "\320\247\321\203\320\262\321\201\321\202\320\262\320\270\321\202\320\265\320\273\321\214\320\275\320\276\321\201\321\202\321\214:", 0));
         label_3->setText(QApplication::translate("FilterFFT", "\320\235\320\276\321\200\320\274.", 0));
         label_4->setText(QApplication::translate("FilterFFT", "\320\222\321\213\321\201.", 0));
-        pushButton->setText(QApplication::translate("FilterFFT", "\320\255\320\272\321\201\320\277. \321\201\320\263\320\273\320\260\320\266\320\270\320\262\320\260\320\275\320\270\320\265", 0));
 #ifndef QT_NO_TOOLTIP
         SliderSpan->setToolTip(QApplication::translate("FilterFFT", "<html><head/><body><p>\320\237\320\276\320\272\320\260\320\267\320\260\321\202\321\214/\321\201\320\272\321\200\321\213\321\202\321\214 <span style=\" font-weight:600;\">\320\264\320\270\320\260\320\277\320\260\320\267\320\276\320\275 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\271</span></p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         label_5->setText(QApplication::translate("FilterFFT", "\320\224\320\270\320\260\320\277\320\260\320\267\320\276\320\275 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\271", 0));
-        pushButton_saveTxt->setText(QApplication::translate("FilterFFT", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\262 \321\204\320\260\320\271\320\273...", 0));
+        pushButton_saveTxt->setText(QApplication::translate("FilterFFT", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\321\217", 0));
+        pushButton_saveTxt->setShortcut(QApplication::translate("FilterFFT", "Ctrl+S", 0));
         pushButton_close->setText(QApplication::translate("FilterFFT", "\320\227\320\260\320\272\321\200\321\213\321\202\321\214", 0));
+        pushButton_close->setShortcut(QApplication::translate("FilterFFT", "Ctrl+Q", 0));
     } // retranslateUi
 
 };

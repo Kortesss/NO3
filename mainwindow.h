@@ -31,101 +31,96 @@ public slots:
 signals:
 
 private slots:
-    void mousePress(QMouseEvent *event);
-    void histogramMouseMoved(QMouseEvent *event);
+
+    void on_btn_openFile_clicked(); //выбор файла и заполнение массива данных
+
+    void on_btn_exit_clicked(); //выход из программы
+
+    void on_btn_saveImage_clicked(); //Сохранение изображения графика
+
+    void on_btn_saveDataGr_clicked(); //сохранение данных графика в файл
+
+    void TimerTick(); //процедура таймера для добавления в список textBrowser
+
+    void on_listWidget_doubleClicked(); //для отображения координат графика
+
+    void on_listWidget_clicked(); //для перехода по графику
+
+    void FalseVisibleAllGraph(); //скрытие графов
+
+    void mousePress(QMouseEvent *event); //ручная установка/удаление экстремумов
+    void histogramMouseMoved(QMouseEvent *event); //координаты в статус-баре и границы интервала
     void spanMouseUp(QMouseEvent *mouseEvent);
 
     void slotCustomMenuRequested(QPoint pos); //для вызова контекстного меню
 
-    void on_delExtrem_triggered();
+    void menuRename(); //переименование графика
+
+    void EnterPressedLineEditRename(); //обработчик события нажатия Enter в текстовом поле
+
+    void menuReaxis(); // окно для переименование осей графика
+
+    void on_btn_clearGraph_clicked(); //очистить графы графика
+
+    void on_btn_delGraph_clicked(); //удаление выделеного графика
+
+    void on_startWork1_clicked(); //определение начала рабочего режима (1 метод)
+
+    void on_SpinLimit_valueChanged(double arg1); //изменение порог. знач. (R)  для старт режима (метод 1)
+
+    void on_startWork2_clicked(); //начало раб. режима (2 метод)
+
+    void on_SpinTimeExp_valueChanged(int arg1); //изменение времени эксперимента
+
+    void on_checkTimeExp_toggled(bool checked); //вкл/выкл скользящего окна
+
+    void on_doubleSpinBox1_valueChanged();  //изменение спина экстремомов (простой)
+
+    void autoSearchSimple(); //1 способ поиска экстремумов (простой)
+
+    void on_btn_autoSearch2_clicked(); //2 способ экстремумов
+
+    void on_manualExtrem_clicked(bool checked); //ручное изменение экстремумов
+
+    void on_btn_delExtrem_clicked(); //удаление экстремумов
+
+    void on_Spin_x1_valueChanged(); //изменение спина нач. значение
+
+    void on_Spin_x2_valueChanged(); //изменение спина конеч. значение
+
+    void on_btn_grDerivative_clicked(); //отрисовка графика производной
 
     void indexSearch(double valX1, double valX2);//ищем индекс массива выделенного интервала
 
     void speedSearch(); //для расчета скорости реакции и восстановления текущего графика
 
-    void on_action_exit_triggered();
+    void Derivat_triggered(); //расчет скорости по выделенному диапазону
 
-    void on_spinLevel_valueChanged();
+    void on_checkExp_clicked(bool checked); //вкл./выкл. эксп. сглаживания
 
-    void on_doubleSpinBox1_valueChanged();
-
-    void on_actionD_triggered();
-
-    void on_action_GrDerivative_triggered();
-
-    void on_checkMin_clicked();
-
-    void on_checkMax_clicked();
-
-    void on_autoSearchSimple_triggered();
-
-    void on_action_Derivat_triggered();
-
-    void TimerTick();
-
-    void on_listWidget_clicked();
-
-    void on_listWidget_doubleClicked();
-
-    void FalseVisibleAllGraph();
-
-    void menuRename();
-
-    void menuReaxis();
-
-    void EnterPressedLineEditRename();
-
-    void on_action_manual_triggered();
-
-    void on_action_about_triggered();
-
-    void on_Spin_x1_valueChanged();
-
-    void on_Spin_x2_valueChanged();
-
-    void on_action_filter_triggered();
-
-    void on_SliderSpan_valueChanged(int value);
-
-    void on_SliderLegend_valueChanged(int value);
-
-    void on_startWork1_triggered();
-
-    void on_action_SaveDataGr_triggered();
-
-    void on_checkExp_clicked(bool checked);
-
-    void on_checkGolay_clicked(bool checked);
+    void on_checkGolay_clicked(bool checked); //вкл./выкл. сглаживания Савицкого-Голея
 
     void on_undo(); void on_redo();
 
-    void on_action_DelGraph_triggered();
+    void on_btn_delta_clicked(); //Расчет изменения дельты сигнала
 
-    void on_action_ClearGraph_triggered();
+    void on_btn_DFT_clicked(); //Фильрация сигнала: Дискретное преобразование Фурье
 
-    void on_action_OpenFile_triggered();
+    void on_cmbBox_Correl_activated(int index); //Корреляционный анализ
 
-    void on_action_DelMnk_triggered();
+    void on_btn_BildMnk_clicked(); //Построить МНК
 
-    void on_action_SaveImage_triggered();
+    void on_btn_delMnk_clicked(); //удаление МНК
 
-    void on_action_BildMnk_triggered();
+    void on_spinLevel_valueChanged(); //спин мнк
 
-    void on_action_autoSearch2_triggered();
+    void on_btn_Manual_clicked(); //запуск руководства пользователя
 
-    void on_SpinLimit_valueChanged(double arg1);
+    void on_SliderSpan_valueChanged(int value); //вкл./выкл. диапазона значений
 
-    void on_SliderPointGr_valueChanged(int value);
+    void on_SliderLegend_valueChanged(int value); //вкл./выкл. легенды
 
-    void on_SpinTimeExp_valueChanged(int arg1);
-
-    void on_startWork2_triggered();
-
-    void on_actionVreac_Vrec_triggered();
-
-    void on_actionVreac_Max_triggered();
-
-    void on_action_Vrecov_Max_triggered();
+    void on_SliderPointGr_valueChanged(int value); //показать/скрыть координаты точек установленных вручную
 
 private:
     Ui::MainWindow *ui;

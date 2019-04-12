@@ -88,11 +88,13 @@ public:
 
         label_5 = new QLabel(centralwidget);
         label_5->setObjectName(QStringLiteral("label_5"));
+        label_5->setAlignment(Qt::AlignCenter);
 
         gridLayout->addWidget(label_5, 4, 0, 1, 1);
 
         label_6 = new QLabel(centralwidget);
         label_6->setObjectName(QStringLiteral("label_6"));
+        label_6->setAlignment(Qt::AlignCenter);
 
         gridLayout->addWidget(label_6, 4, 1, 1, 1);
 

@@ -6,7 +6,6 @@ INPUT(
 ./release\somewindow.o
 ./release\deltawin.o
 ./release\mnk.o
-./release\about.o
 ./release\filterfft.o
 ./release\extrem_simple.o
 ./release\correl_analysis.o
@@ -15,7 +14,6 @@ INPUT(
 ./release\moc_qcustomplot.o
 ./release\moc_somewindow.o
 ./release\moc_deltawin.o
-./release\moc_about.o
 ./release\moc_filterfft.o
 ./release\moc_correl_analysis.o
 );

@@ -15,13 +15,13 @@ class FilterFFT : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit FilterFFT(QList <double> x, QList <double> &y, QString s1, QString s2, QWidget *parent = nullptr);
+    explicit FilterFFT(QList <double> &x, QList <double> &y, QString s1, QString s2, QWidget *parent = nullptr);
     ~FilterFFT(); //принимаем ссылки на объект, чтобы не копировать в памяти его же
 
 private slots:
     void on_pushButton_close_clicked();
-    void DFT(QList<double> &x, QList<double> &y);
-    void iDFT(QList<double> &x, QList< std::complex <double> > f);
+    void DFT(QList<double> &y);
+    void iDFT(QList< std::complex <double> > f);
 
     void mousePress(QMouseEvent *event);
     void histogramMouseMoved(QMouseEvent *event);
@@ -32,8 +32,6 @@ private slots:
     void on_Slider_level_valueChanged(int value);
 
     void on_Slider_sens_valueChanged(int value);
-
-    void on_pushButton_clicked();
 
     void on_SliderSpan_valueChanged(int value);
 

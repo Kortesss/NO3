@@ -8,13 +8,6 @@ correl_analysis::correl_analysis(QList <double> mass1, QList <double> mass2, QSt
 {
     ui->setupUi(this);
 
-    CtrlShiftS = new QShortcut(this);
-    CtrlShiftS->setKey(Qt::CTRL + Qt::SHIFT + Qt::Key_S);
-    CtrlQ = new QShortcut(this);
-    CtrlQ->setKey(Qt::CTRL + Qt::Key_Q);
-    connect(CtrlShiftS, SIGNAL(activated()), this, SLOT(on_pushButton_save_clicked()));
-    connect(CtrlQ, SIGNAL(activated()), this, SLOT(on_pushButton_close_clicked()));
-
     ui->widgetCorr->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
     graphCorr = ui->widgetCorr->addGraph();
     graphCorr->setPen(QColor(50, 50, 50, 255));//черный
@@ -25,8 +18,8 @@ correl_analysis::correl_analysis(QList <double> mass1, QList <double> mass2, QSt
     graphTrend->setPen(QColor(255, 0, 0, 255));//красный
     graphTrend->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
     ui->widgetCorr->xAxis->setLabel(nameX);    ui->widgetCorr->yAxis->setLabel(nameY);
-    sliderStyleOn = ".QSlider::groove:horizontal {height: 24px; background: #20B2AA; border-radius: 8px; padding:-4px 7px;}"
-                    ".QSlider::handle:horizontal {background: #008080; width: 22px; margin: 0px -7px; border-radius: 11px;}";
+    sliderStyleOn = ".QSlider::groove:horizontal {height: 24px; background: #87CEEB; border-radius: 8px; padding:-4px 7px;}"
+                    ".QSlider::handle:horizontal {background: #1E90FF; width: 22px; margin: 0px -7px; border-radius: 11px;}";
     sliderStyleOff = ".QSlider::groove:horizontal {height: 24px; background:#696969; border-radius: 8px; padding:-4px 7px;}"
                      ".QSlider::handle:horizontal {background: #d5d5d5; width: 22px; margin: 0px -7px; border-radius: 11px;}";
     draw(mass1, mass2);

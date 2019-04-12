@@ -29,7 +29,6 @@ private slots:
 private:
     Ui::correl_analysis *ui;
 
-    QShortcut *CtrlShiftS, *CtrlQ;
     QCPGraph *graphCorr, *graphTrend;
     QList <double> trendCorr;
     QString sliderStyleOn, sliderStyleOff;

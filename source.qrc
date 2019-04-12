@@ -1,9 +1,27 @@
 <RCC>
     <qresource prefix="/img">
-        <file>img/open.png</file>
-        <file>img/exit.png</file>
         <file>img/512px-Save_font_awesome.svg.png</file>
+        <file>img/about.png</file>
+        <file>img/albums.png</file>
+        <file>img/del3.png</file>
+        <file>img/del4.png</file>
+        <file>img/destroy.png</file>
+        <file>img/exit.png</file>
+        <file>img/hammer.png</file>
         <file>img/heart-monitor.png</file>
+        <file>img/img_clear.png</file>
         <file>img/Line-Chart-icon.png</file>
+        <file>img/log-out.png</file>
+        <file>img/manual.png</file>
+        <file>img/max1.png</file>
+        <file>img/md-build.png</file>
+        <file>img/md-remove.png</file>
+        <file>img/md-remove-circle.png</file>
+        <file>img/md-stats.png</file>
+        <file>img/md-trending-down.png</file>
+        <file>img/md-trending-up.png</file>
+        <file>img/og-in.png</file>
+        <file>img/open.png</file>
+        <file>img/triangle.png</file>
     </qresource>
 </RCC>
