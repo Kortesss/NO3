@@ -505,6 +505,7 @@ public:
         listWidget->setSizePolicy(sizePolicy1);
         listWidget->setMinimumSize(QSize(130, 0));
         listWidget->setMaximumSize(QSize(140, 16777215));
+        listWidget->setContextMenuPolicy(Qt::DefaultContextMenu);
         listWidget->setSortingEnabled(false);
 
         horizontalLayout_12->addWidget(listWidget);
@@ -2065,7 +2066,7 @@ public:
         label_19->setText(QString());
         startWork2->setText(QApplication::translate("MainWindow", "\320\241\320\277\320\276\321\201\320\276\320\261 2", 0));
         label_20->setText(QString());
-        label_7->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\264\320\276\320\273\320\266\320\270\321\202\320\265\320\273\321\214\320\275\320\276\321\201\321\202\321\214 \320\276\320\277\321\213\321\202\320\260 \342\211\210", 0));
+        label_7->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\264\320\276\320\273\320\266\320\270\321\202\320\265\320\273\321\214\320\275\320\276\321\201\321\202\321\214 \321\204\320\260\320\267\321\213 \342\211\210", 0));
         checkTimeExp->setText(QApplication::translate("MainWindow", "\320\241\320\272\320\276\320\273\321\214\320\267\321\217\321\211\320\265\320\265 \320\276\320\272\320\275\320\276", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindow", "\320\235\320\260\321\207\320\260\320\273\320\276 \321\200\320\260\320\261\320\276\321\207\320\265\320\263\320\276 \321\200\320\265\320\266\320\270\320\274\320\260", 0));
         label_23->setText(QApplication::translate("MainWindow", "\320\220\320\262\321\202\320\276\320\277\320\276\320\270\321\201\320\272 (\320\274\320\265\321\202\320\276\320\264 1)", 0));

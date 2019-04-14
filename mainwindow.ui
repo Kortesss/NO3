@@ -379,6 +379,9 @@ QPushButton:checked{
             <height>16777215</height>
            </size>
           </property>
+          <property name="contextMenuPolicy">
+           <enum>Qt::DefaultContextMenu</enum>
+          </property>
           <property name="toolTip">
            <string>Список графиков</string>
           </property>
@@ -966,7 +969,7 @@ QPushButton:checked{
                </size>
               </property>
               <property name="text">
-               <string>Продолжительность опыта ≈</string>
+               <string>Продолжительность фазы ≈</string>
               </property>
              </widget>
             </item>

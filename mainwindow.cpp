@@ -515,6 +515,7 @@ void MainWindow::slotCustomMenuRequested(QPoint pos) //контекстное м
 {
     if (ui->listWidget->count() > 0){
         on_listWidget_clicked();
+        QPoint gPos = ui->listWidget->mapToGlobal(pos);
         QMenu *qmenu = new QMenu(this);
         //создаем действия для контекстного меню
         QAction *rename = new QAction("Переименовать", this);
@@ -540,7 +541,8 @@ void MainWindow::slotCustomMenuRequested(QPoint pos) //контекстное м
         qmenu->addAction(delMinMax);     qmenu->addSeparator();
         qmenu->addAction(deltaS);
         //вызываем контекстное меню
-        qmenu->popup(ui->listWidget->viewport()->mapToGlobal(pos));
+        if (ui->listWidget->itemAt(pos)) qmenu->exec(gPos);
+        //qmenu->popup(ui->listWidget->viewport()->mapToGlobal(pos));
     }
 }
 
