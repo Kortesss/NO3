@@ -122,6 +122,9 @@ private slots:
 
     void on_SliderPointGr_valueChanged(int value); //показать/скрыть координаты точек установленных вручную
 
+    void on_treeWidget_itemClicked(QTreeWidgetItem *item, int column);
+    void slotCustomMenuRequested2(QPoint pos); //контекстное меню 2
+
 private:
     Ui::MainWindow *ui;
     QLineEdit *lineEditRename;
