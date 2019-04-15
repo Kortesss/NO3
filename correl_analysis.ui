@@ -43,7 +43,41 @@
          </font>
         </property>
         <property name="text">
-         <string>Коэффициент корреляции = </string>
+         <string>r = </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <weight>75</weight>
+          <italic>false</italic>
+          <bold>true</bold>
+          <underline>true</underline>
+          <strikeout>false</strikeout>
+         </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>PointingHandCursor</cursorShape>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
+        <property name="text">
+         <string>Подробнее</string>
+        </property>
+        <property name="textFormat">
+         <enum>Qt::AutoText</enum>
+        </property>
+        <property name="scaledContents">
+         <bool>false</bool>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
@@ -127,7 +161,7 @@
         <property name="minimumSize">
          <size>
           <width>144</width>
-          <height>25</height>
+          <height>24</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -181,8 +215,8 @@ QPushButton:pressed {
        <widget class="QPushButton" name="pushButton_close">
         <property name="minimumSize">
          <size>
-          <width>90</width>
-          <height>25</height>
+          <width>88</width>
+          <height>24</height>
          </size>
         </property>
         <property name="maximumSize">

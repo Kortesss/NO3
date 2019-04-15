@@ -10,6 +10,7 @@
 
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
+    this->setWindowFlags(Qt::WindowStaysOnTopHint);//окно поверх всех других окон
 
     CtrlZ = new QShortcut(this);    CtrlZ->setKey(Qt::CTRL + Qt::Key_Z);
     connect(CtrlZ, SIGNAL(activated()), this, SLOT(on_undo()));
@@ -24,6 +25,9 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     t = 0; gr_index = 0; mouseDown = false; left = false; x1 = 0; x2 = 0;
     ui->listWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->listWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotCustomMenuRequested(QPoint)));
+
+    ui->treeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->treeWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotCustomMenuRequested2(QPoint)));
 
     ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
     graphMin = ui->widget->addGraph(); //Добавление минимумов
@@ -1163,3 +1167,41 @@ void MainWindow::on_SliderPointGr_valueChanged(int value) //показать/с�
         ui->widget->replot();
     }else ui->SliderPointGr->setValue(0);
 }
+
+void MainWindow::on_treeWidget_itemClicked(QTreeWidgetItem *item, int column)
+{
+     if (item->parent()) {
+      qDebug() << "Дочерний " << item->text(column);
+     }
+     else {
+      qDebug() << "Родитель " << item->text(column);
+     }
+     QTreeWidgetItem *itm = new QTreeWidgetItem();
+     // Создание дочерних элементов для itm
+     QTreeWidgetItem *child = new QTreeWidgetItem();
+     child->setText(0, "Текст ребенка 1 - 1 столбец");
+     // Привязка дочерних элементов к itm верхнего уровня
+     itm->addChild(child);
+     ui->treeWidget->addTopLevelItem(itm);
+}
+
+void MainWindow::slotCustomMenuRequested2(QPoint pos) //контекстное меню 2
+{
+        QPoint gPos = ui->treeWidget->mapToGlobal(pos);
+        QMenu *qmenu = new QMenu(this);
+        //вызываем контекстное меню
+        if (ui->treeWidget->itemAt(pos)->parent()->isExpanded()){
+            QAction *rename = new QAction("Переименовать", this);
+            connect(rename, SIGNAL(triggered(bool)), this, SLOT(menuRename()));
+            qmenu->addAction(rename);
+        }
+
+        if (ui->treeWidget->itemAt(pos)->parent()){
+            QAction *reaxis = new QAction("Наименование осей", this);
+            connect(reaxis, SIGNAL(triggered(bool)), this, SLOT(menuReaxis()));
+            qmenu->addAction(reaxis);
+
+        }
+        qmenu->exec(gPos);
+}
+

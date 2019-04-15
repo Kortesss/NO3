@@ -34,6 +34,7 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTextBrowser>
+#include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include "qcustomplot.h"
@@ -86,6 +87,7 @@ public:
     QVBoxLayout *verticalLayout_12;
     QTextBrowser *Browser_Min;
     QTextBrowser *Browser_Max;
+    QTreeWidget *treeWidget;
     QLabel *label_14;
     QVBoxLayout *verticalLayout_23;
     QPushButton *btn_clearGraph;
@@ -506,6 +508,7 @@ public:
         listWidget->setMinimumSize(QSize(130, 0));
         listWidget->setMaximumSize(QSize(140, 16777215));
         listWidget->setContextMenuPolicy(Qt::DefaultContextMenu);
+        listWidget->setWordWrap(true);
         listWidget->setSortingEnabled(false);
 
         horizontalLayout_12->addWidget(listWidget);
@@ -541,6 +544,26 @@ public:
 
 
         horizontalLayout_12->addLayout(verticalLayout_12);
+
+        treeWidget = new QTreeWidget(tab_2);
+        QTreeWidgetItem *__qtreewidgetitem = new QTreeWidgetItem(treeWidget);
+        new QTreeWidgetItem(__qtreewidgetitem);
+        new QTreeWidgetItem(__qtreewidgetitem);
+        new QTreeWidgetItem(treeWidget);
+        treeWidget->setObjectName(QStringLiteral("treeWidget"));
+        sizePolicy1.setHeightForWidth(treeWidget->sizePolicy().hasHeightForWidth());
+        treeWidget->setSizePolicy(sizePolicy1);
+        treeWidget->setLayoutDirection(Qt::LeftToRight);
+        treeWidget->setFrameShape(QFrame::StyledPanel);
+        treeWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+        treeWidget->setTextElideMode(Qt::ElideRight);
+        treeWidget->setColumnCount(1);
+        treeWidget->header()->setVisible(false);
+        treeWidget->header()->setCascadingSectionResizes(true);
+        treeWidget->header()->setHighlightSections(true);
+        treeWidget->header()->setProperty("showSortIndicator", QVariant(true));
+
+        horizontalLayout_12->addWidget(treeWidget);
 
         label_14 = new QLabel(tab_2);
         label_14->setObjectName(QStringLiteral("label_14"));
@@ -2051,6 +2074,21 @@ public:
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8.25pt;\">\320\234\320\260\320\272\321\201. X: </span></p></body></html>", 0));
+        QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();
+        ___qtreewidgetitem->setText(0, QApplication::translate("MainWindow", "1", 0));
+
+        const bool __sortingEnabled = treeWidget->isSortingEnabled();
+        treeWidget->setSortingEnabled(false);
+        QTreeWidgetItem *___qtreewidgetitem1 = treeWidget->topLevelItem(0);
+        ___qtreewidgetitem1->setText(0, QApplication::translate("MainWindow", "1", 0));
+        QTreeWidgetItem *___qtreewidgetitem2 = ___qtreewidgetitem1->child(0);
+        ___qtreewidgetitem2->setText(0, QApplication::translate("MainWindow", "1.1", 0));
+        QTreeWidgetItem *___qtreewidgetitem3 = ___qtreewidgetitem1->child(1);
+        ___qtreewidgetitem3->setText(0, QApplication::translate("MainWindow", "1.2", 0));
+        QTreeWidgetItem *___qtreewidgetitem4 = treeWidget->topLevelItem(1);
+        ___qtreewidgetitem4->setText(0, QApplication::translate("MainWindow", "2", 0));
+        treeWidget->setSortingEnabled(__sortingEnabled);
+
         label_14->setText(QString());
         btn_clearGraph->setText(QApplication::translate("MainWindow", "\320\236\321\207\320\270\321\201\321\202\320\270\321\202\321\214\n"
 "\320\263\321\200\320\260\321\204\321\213", 0));
