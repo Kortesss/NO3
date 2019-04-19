@@ -158,6 +158,10 @@ public:
     QSpacerItem *horizontalSpacer_2;
     QWidget *tab_6;
     QHBoxLayout *horizontalLayout_17;
+    QVBoxLayout *verticalLayout_24;
+    QRadioButton *rbSourceSignal;
+    QRadioButton *rbZSignal;
+    QLabel *label_22;
     QFrame *frame;
     QVBoxLayout *verticalLayout_2;
     QVBoxLayout *verticalLayout;
@@ -165,7 +169,7 @@ public:
     QHBoxLayout *horizontalLayout;
     QLabel *label_9;
     QDoubleSpinBox *SpinExp;
-    QLabel *label_22;
+    QLabel *label_35;
     QFrame *frame_2;
     QVBoxLayout *verticalLayout_6;
     QVBoxLayout *verticalLayout_5;
@@ -1200,6 +1204,34 @@ public:
         horizontalLayout_17->setSpacing(6);
         horizontalLayout_17->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_17->setObjectName(QStringLiteral("horizontalLayout_17"));
+        verticalLayout_24 = new QVBoxLayout();
+        verticalLayout_24->setSpacing(6);
+        verticalLayout_24->setObjectName(QStringLiteral("verticalLayout_24"));
+        rbSourceSignal = new QRadioButton(tab_6);
+        rbSourceSignal->setObjectName(QStringLiteral("rbSourceSignal"));
+        rbSourceSignal->setChecked(true);
+
+        verticalLayout_24->addWidget(rbSourceSignal);
+
+        rbZSignal = new QRadioButton(tab_6);
+        rbZSignal->setObjectName(QStringLiteral("rbZSignal"));
+
+        verticalLayout_24->addWidget(rbZSignal);
+
+
+        horizontalLayout_17->addLayout(verticalLayout_24);
+
+        label_22 = new QLabel(tab_6);
+        label_22->setObjectName(QStringLiteral("label_22"));
+        sizePolicy3.setHeightForWidth(label_22->sizePolicy().hasHeightForWidth());
+        label_22->setSizePolicy(sizePolicy3);
+        label_22->setMinimumSize(QSize(10, 0));
+        label_22->setMaximumSize(QSize(10, 16777215));
+        label_22->setFrameShape(QFrame::VLine);
+        label_22->setFrameShadow(QFrame::Raised);
+
+        horizontalLayout_17->addWidget(label_22);
+
         frame = new QFrame(tab_6);
         frame->setObjectName(QStringLiteral("frame"));
         QSizePolicy sizePolicy7(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -1254,16 +1286,16 @@ public:
 
         horizontalLayout_17->addWidget(frame);
 
-        label_22 = new QLabel(tab_6);
-        label_22->setObjectName(QStringLiteral("label_22"));
-        sizePolicy3.setHeightForWidth(label_22->sizePolicy().hasHeightForWidth());
-        label_22->setSizePolicy(sizePolicy3);
-        label_22->setMinimumSize(QSize(10, 0));
-        label_22->setMaximumSize(QSize(10, 16777215));
-        label_22->setFrameShape(QFrame::VLine);
-        label_22->setFrameShadow(QFrame::Raised);
+        label_35 = new QLabel(tab_6);
+        label_35->setObjectName(QStringLiteral("label_35"));
+        sizePolicy3.setHeightForWidth(label_35->sizePolicy().hasHeightForWidth());
+        label_35->setSizePolicy(sizePolicy3);
+        label_35->setMinimumSize(QSize(10, 0));
+        label_35->setMaximumSize(QSize(10, 16777215));
+        label_35->setFrameShape(QFrame::VLine);
+        label_35->setFrameShadow(QFrame::Raised);
 
-        horizontalLayout_17->addWidget(label_22);
+        horizontalLayout_17->addWidget(label_35);
 
         frame_2 = new QFrame(tab_6);
         frame_2->setObjectName(QStringLiteral("frame_2"));
@@ -1998,7 +2030,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(5);
+        tabWidget->setCurrentIndex(0);
         btn_openFile->setDefault(false);
 
 
@@ -2128,10 +2160,13 @@ public:
         btn_grDerivative->setText(QApplication::translate("MainWindow", "\320\223\321\200\320\260\321\204\320\270\320\272 \321\201\320\272\320\276\321\200\320\276\321\201\321\202\320\270\n"
 "\320\270\320\267\320\274\320\265\320\275\320\265\320\275\320\270\321\217 \320\277\320\260\321\200\320\260\320\274\320\265\321\202\321\200\320\260", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab_5), QApplication::translate("MainWindow", "\320\241\320\272\320\276\321\200\320\276\321\201\321\202\321\214", 0));
+        rbSourceSignal->setText(QApplication::translate("MainWindow", "\320\230\321\201\321\205\320\276\320\264\320\275\321\213\320\271 \321\201\320\270\320\263\320\275\320\260\320\273", 0));
+        rbZSignal->setText(QApplication::translate("MainWindow", "Z - \321\201\320\270\320\263\320\275\320\260\320\273", 0));
+        label_22->setText(QString());
         checkExp->setText(QApplication::translate("MainWindow", "\320\255\320\272\321\201\320\277\320\276\320\275\320\265\320\275\321\206\320\270\320\260\320\273\321\214\320\275\320\276\320\265\n"
 "\321\201\320\263\320\273\320\260\320\266\320\270\320\262\320\260\320\275\320\270\320\265", 0));
         label_9->setText(QApplication::translate("MainWindow", "\320\232\320\276\321\215\321\204-\321\202, p", 0));
-        label_22->setText(QString());
+        label_35->setText(QString());
         checkGolay->setText(QApplication::translate("MainWindow", "\320\241\320\263\320\273\320\260\320\266\320\270\320\262\320\260\320\275\320\270\320\265\n"
 "\320\241\320\260\320\262\320\270\321\206\320\272\320\276\320\263\320\276-\320\223\320\260\320\273\320\265\321\217", 0));
         label_rect->setText(QString());

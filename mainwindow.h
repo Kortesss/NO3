@@ -54,7 +54,11 @@ private slots:
     void histogramMouseMoved(QMouseEvent *event); //координаты в статус-баре и границы интервала
     void spanMouseUp(QMouseEvent *mouseEvent);
 
-    void slotCustomMenuRequested(QPoint pos); //для вызова контекстного меню
+    void on_rbSourceSignal_clicked();
+
+    void on_rbZSignal_clicked();
+
+    void slotCustomMenuRequested(QPoint pos); //контекстное меню
 
     void menuRename(); //переименование графика
 
@@ -129,6 +133,9 @@ private slots:
     void on_btn_BuildZ_clicked(); //Построение Z - сигнала
     void act_DelZ_clicked(); //Удаление Z - сигнала
     void act_HideZ_clicked(); //Скрытие Z - сигнала
+
+
+    void on_checkTimeExp_clicked();
 
 private:
     Ui::MainWindow *ui;
