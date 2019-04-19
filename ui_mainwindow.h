@@ -34,7 +34,7 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QTextBrowser>
-#include <QtWidgets/QTreeWidget>
+#include <QtWidgets/QToolButton>
 #include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 #include "qcustomplot.h"
@@ -87,7 +87,6 @@ public:
     QVBoxLayout *verticalLayout_12;
     QTextBrowser *Browser_Min;
     QTextBrowser *Browser_Max;
-    QTreeWidget *treeWidget;
     QLabel *label_14;
     QVBoxLayout *verticalLayout_23;
     QPushButton *btn_clearGraph;
@@ -195,15 +194,17 @@ public:
     QSpacerItem *verticalSpacer_13;
     QLabel *label_21;
     QComboBox *cmbBox_Correl;
-    QPushButton *btn_CorrToText;
+    QToolButton *btn_CorrToText;
     QSpacerItem *verticalSpacer_12;
+    QLabel *label_34;
+    QToolButton *btn_BuildZ;
     QSpacerItem *horizontalSpacer_8;
     QWidget *tab_8;
     QHBoxLayout *horizontalLayout_24;
     QVBoxLayout *verticalLayout_20;
     QLabel *label_mnk;
     QHBoxLayout *horizontalLayout_23;
-    QPushButton *btn_BildMnk;
+    QPushButton *btn_BuildMnk;
     QPushButton *btn_delMnk;
     QHBoxLayout *horizontalLayout_21;
     QRadioButton *rbMinMnk;
@@ -544,26 +545,6 @@ public:
 
 
         horizontalLayout_12->addLayout(verticalLayout_12);
-
-        treeWidget = new QTreeWidget(tab_2);
-        QTreeWidgetItem *__qtreewidgetitem = new QTreeWidgetItem(treeWidget);
-        new QTreeWidgetItem(__qtreewidgetitem);
-        new QTreeWidgetItem(__qtreewidgetitem);
-        new QTreeWidgetItem(treeWidget);
-        treeWidget->setObjectName(QStringLiteral("treeWidget"));
-        sizePolicy1.setHeightForWidth(treeWidget->sizePolicy().hasHeightForWidth());
-        treeWidget->setSizePolicy(sizePolicy1);
-        treeWidget->setLayoutDirection(Qt::LeftToRight);
-        treeWidget->setFrameShape(QFrame::StyledPanel);
-        treeWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
-        treeWidget->setTextElideMode(Qt::ElideRight);
-        treeWidget->setColumnCount(1);
-        treeWidget->header()->setVisible(false);
-        treeWidget->header()->setCascadingSectionResizes(true);
-        treeWidget->header()->setHighlightSections(true);
-        treeWidget->header()->setProperty("showSortIndicator", QVariant(true));
-
-        horizontalLayout_12->addWidget(treeWidget);
 
         label_14 = new QLabel(tab_2);
         label_14->setObjectName(QStringLiteral("label_14"));
@@ -1508,28 +1489,17 @@ public:
 
         verticalLayout_22->addWidget(cmbBox_Correl);
 
-        btn_CorrToText = new QPushButton(tab_7);
+        btn_CorrToText = new QToolButton(tab_7);
         btn_CorrToText->setObjectName(QStringLiteral("btn_CorrToText"));
-        sizePolicy2.setHeightForWidth(btn_CorrToText->sizePolicy().hasHeightForWidth());
-        btn_CorrToText->setSizePolicy(sizePolicy2);
+        sizePolicy1.setHeightForWidth(btn_CorrToText->sizePolicy().hasHeightForWidth());
+        btn_CorrToText->setSizePolicy(sizePolicy1);
         btn_CorrToText->setMinimumSize(QSize(0, 24));
         btn_CorrToText->setMaximumSize(QSize(16777215, 16777215));
-        btn_CorrToText->setStyleSheet(QLatin1String(" QPushButton {\n"
-"     border: 2px solid #8f8f91;\n"
-"     border-radius: 6px;\n"
-"     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
-"                                       stop: 0 #f6f7fa, stop: 1 #dadbde);\n"
-"}\n"
-"QPushButton:pressed {\n"
-"     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
-"                                       stop: 0 #dadbde, stop: 1 #f6f7fa);\n"
-" }\n"
-"QPushButton:checked{\n"
-"     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
-"                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
-" }"));
-        btn_CorrToText->setIcon(icon2);
-        btn_CorrToText->setCheckable(true);
+        btn_CorrToText->setStyleSheet(QStringLiteral(""));
+        btn_CorrToText->setCheckable(false);
+        btn_CorrToText->setChecked(false);
+        btn_CorrToText->setPopupMode(QToolButton::MenuButtonPopup);
+        btn_CorrToText->setToolButtonStyle(Qt::ToolButtonTextOnly);
 
         verticalLayout_22->addWidget(btn_CorrToText);
 
@@ -1539,6 +1509,27 @@ public:
 
 
         horizontalLayout_26->addLayout(verticalLayout_22);
+
+        label_34 = new QLabel(tab_7);
+        label_34->setObjectName(QStringLiteral("label_34"));
+        sizePolicy3.setHeightForWidth(label_34->sizePolicy().hasHeightForWidth());
+        label_34->setSizePolicy(sizePolicy3);
+        label_34->setMinimumSize(QSize(10, 0));
+        label_34->setMaximumSize(QSize(10, 16777215));
+        label_34->setFrameShape(QFrame::VLine);
+        label_34->setFrameShadow(QFrame::Raised);
+
+        horizontalLayout_26->addWidget(label_34);
+
+        btn_BuildZ = new QToolButton(tab_7);
+        btn_BuildZ->setObjectName(QStringLiteral("btn_BuildZ"));
+        sizePolicy6.setHeightForWidth(btn_BuildZ->sizePolicy().hasHeightForWidth());
+        btn_BuildZ->setSizePolicy(sizePolicy6);
+        btn_BuildZ->setMinimumSize(QSize(100, 24));
+        btn_BuildZ->setPopupMode(QToolButton::MenuButtonPopup);
+        btn_BuildZ->setToolButtonStyle(Qt::ToolButtonTextOnly);
+
+        horizontalLayout_26->addWidget(btn_BuildZ);
 
         horizontalSpacer_8 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -1563,14 +1554,14 @@ public:
         horizontalLayout_23 = new QHBoxLayout();
         horizontalLayout_23->setSpacing(6);
         horizontalLayout_23->setObjectName(QStringLiteral("horizontalLayout_23"));
-        btn_BildMnk = new QPushButton(tab_8);
-        btn_BildMnk->setObjectName(QStringLiteral("btn_BildMnk"));
-        sizePolicy2.setHeightForWidth(btn_BildMnk->sizePolicy().hasHeightForWidth());
-        btn_BildMnk->setSizePolicy(sizePolicy2);
-        btn_BildMnk->setMinimumSize(QSize(130, 30));
-        btn_BildMnk->setMaximumSize(QSize(130, 30));
-        btn_BildMnk->setAutoFillBackground(false);
-        btn_BildMnk->setStyleSheet(QLatin1String(" QPushButton {\n"
+        btn_BuildMnk = new QPushButton(tab_8);
+        btn_BuildMnk->setObjectName(QStringLiteral("btn_BuildMnk"));
+        sizePolicy2.setHeightForWidth(btn_BuildMnk->sizePolicy().hasHeightForWidth());
+        btn_BuildMnk->setSizePolicy(sizePolicy2);
+        btn_BuildMnk->setMinimumSize(QSize(130, 30));
+        btn_BuildMnk->setMaximumSize(QSize(130, 30));
+        btn_BuildMnk->setAutoFillBackground(false);
+        btn_BuildMnk->setStyleSheet(QLatin1String(" QPushButton {\n"
 "     border: 2px solid #8f8f91;\n"
 "     border-radius: 6px;\n"
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
@@ -1586,9 +1577,9 @@ public:
 " }"));
         QIcon icon13;
         icon13.addFile(QStringLiteral(":/img/img/hammer.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_BildMnk->setIcon(icon13);
+        btn_BuildMnk->setIcon(icon13);
 
-        horizontalLayout_23->addWidget(btn_BildMnk);
+        horizontalLayout_23->addWidget(btn_BuildMnk);
 
         btn_delMnk = new QPushButton(tab_8);
         btn_delMnk->setObjectName(QStringLiteral("btn_delMnk"));
@@ -2007,7 +1998,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(5);
         btn_openFile->setDefault(false);
 
 
@@ -2074,21 +2065,6 @@ public:
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8.25pt;\">\320\234\320\260\320\272\321\201. X: </span></p></body></html>", 0));
-        QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();
-        ___qtreewidgetitem->setText(0, QApplication::translate("MainWindow", "1", 0));
-
-        const bool __sortingEnabled = treeWidget->isSortingEnabled();
-        treeWidget->setSortingEnabled(false);
-        QTreeWidgetItem *___qtreewidgetitem1 = treeWidget->topLevelItem(0);
-        ___qtreewidgetitem1->setText(0, QApplication::translate("MainWindow", "1", 0));
-        QTreeWidgetItem *___qtreewidgetitem2 = ___qtreewidgetitem1->child(0);
-        ___qtreewidgetitem2->setText(0, QApplication::translate("MainWindow", "1.1", 0));
-        QTreeWidgetItem *___qtreewidgetitem3 = ___qtreewidgetitem1->child(1);
-        ___qtreewidgetitem3->setText(0, QApplication::translate("MainWindow", "1.2", 0));
-        QTreeWidgetItem *___qtreewidgetitem4 = treeWidget->topLevelItem(1);
-        ___qtreewidgetitem4->setText(0, QApplication::translate("MainWindow", "2", 0));
-        treeWidget->setSortingEnabled(__sortingEnabled);
-
         label_14->setText(QString());
         btn_clearGraph->setText(QApplication::translate("MainWindow", "\320\236\321\207\320\270\321\201\321\202\320\270\321\202\321\214\n"
 "\320\263\321\200\320\260\321\204\321\213", 0));
@@ -2179,10 +2155,12 @@ public:
          << QApplication::translate("MainWindow", "V\320\262\320\276\321\201\321\201\321\202\320\260\320\275\320\276\320\262\320\273\320\265\320\275\320\270\321\217 \342\206\224 \320\240\320\260\320\267\320\274\320\260\321\205 \321\201\320\270\320\263\320\275\320\260\320\273\320\260", 0)
          << QApplication::translate("MainWindow", "V\321\200\320\265\320\260\320\272\321\206\320\270\320\270 \342\206\224 V\320\262\320\276\321\201\321\201\321\202\320\260\320\275\320\276\320\262\320\273\320\265\320\275\320\270\321\217", 0)
         );
-        btn_CorrToText->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\321\217 \320\262 \321\204\320\260\320\271\320\273", 0));
+        btn_CorrToText->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\262 \321\204\320\260\320\271\320\273", 0));
+        label_34->setText(QString());
+        btn_BuildZ->setText(QApplication::translate("MainWindow", "Z - \321\201\320\270\320\263\320\275\320\260\320\273", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab_7), QApplication::translate("MainWindow", "\320\242\320\265\321\205\320\275\320\270\321\207\320\265\321\201\320\272\320\270\320\271 \320\260\320\275\320\260\320\273\320\270\320\267", 0));
         label_mnk->setText(QApplication::translate("MainWindow", "\320\234\320\265\321\202\320\276\320\264 \320\275\320\260\320\270\320\274\320\265\320\275\321\214\321\210\320\270\321\205 \320\272\320\262\320\260\320\264\321\200\320\260\321\202\320\276\320\262:", 0));
-        btn_BildMnk->setText(QApplication::translate("MainWindow", "\320\237\320\276\321\201\321\202\321\200\320\276\320\270\321\202\321\214", 0));
+        btn_BuildMnk->setText(QApplication::translate("MainWindow", "\320\237\320\276\321\201\321\202\321\200\320\276\320\270\321\202\321\214", 0));
         btn_delMnk->setText(QApplication::translate("MainWindow", "\320\243\320\264\320\260\320\273\320\270\321\202\321\214", 0));
         rbMinMnk->setText(QApplication::translate("MainWindow", "\320\234\320\270\320\275\320\270\320\274\321\203\320\274", 0));
         rbMaxMnk->setText(QApplication::translate("MainWindow", "\320\234\320\260\320\272\321\201\320\270\320\274\321\203\320\274", 0));
