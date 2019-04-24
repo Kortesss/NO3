@@ -201,7 +201,9 @@ public:
     QToolButton *btn_CorrToText;
     QSpacerItem *verticalSpacer_12;
     QLabel *label_34;
+    QVBoxLayout *verticalLayout_25;
     QToolButton *btn_BuildZ;
+    QPushButton *btnConv1;
     QSpacerItem *horizontalSpacer_8;
     QWidget *tab_8;
     QHBoxLayout *horizontalLayout_24;
@@ -1553,6 +1555,9 @@ public:
 
         horizontalLayout_26->addWidget(label_34);
 
+        verticalLayout_25 = new QVBoxLayout();
+        verticalLayout_25->setSpacing(6);
+        verticalLayout_25->setObjectName(QStringLiteral("verticalLayout_25"));
         btn_BuildZ = new QToolButton(tab_7);
         btn_BuildZ->setObjectName(QStringLiteral("btn_BuildZ"));
         sizePolicy6.setHeightForWidth(btn_BuildZ->sizePolicy().hasHeightForWidth());
@@ -1561,7 +1566,15 @@ public:
         btn_BuildZ->setPopupMode(QToolButton::MenuButtonPopup);
         btn_BuildZ->setToolButtonStyle(Qt::ToolButtonTextOnly);
 
-        horizontalLayout_26->addWidget(btn_BuildZ);
+        verticalLayout_25->addWidget(btn_BuildZ);
+
+        btnConv1 = new QPushButton(tab_7);
+        btnConv1->setObjectName(QStringLiteral("btnConv1"));
+
+        verticalLayout_25->addWidget(btnConv1);
+
+
+        horizontalLayout_26->addLayout(verticalLayout_25);
 
         horizontalSpacer_8 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -2030,7 +2043,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(6);
         btn_openFile->setDefault(false);
 
 
@@ -2193,6 +2206,7 @@ public:
         btn_CorrToText->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\262 \321\204\320\260\320\271\320\273", 0));
         label_34->setText(QString());
         btn_BuildZ->setText(QApplication::translate("MainWindow", "Z - \321\201\320\270\320\263\320\275\320\260\320\273", 0));
+        btnConv1->setText(QApplication::translate("MainWindow", "\320\241\320\262\320\265\321\200\321\202\320\272\320\260", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab_7), QApplication::translate("MainWindow", "\320\242\320\265\321\205\320\275\320\270\321\207\320\265\321\201\320\272\320\270\320\271 \320\260\320\275\320\260\320\273\320\270\320\267", 0));
         label_mnk->setText(QApplication::translate("MainWindow", "\320\234\320\265\321\202\320\276\320\264 \320\275\320\260\320\270\320\274\320\265\320\275\321\214\321\210\320\270\321\205 \320\272\320\262\320\260\320\264\321\200\320\260\321\202\320\276\320\262:", 0));
         btn_BuildMnk->setText(QApplication::translate("MainWindow", "\320\237\320\276\321\201\321\202\321\200\320\276\320\270\321\202\321\214", 0));
