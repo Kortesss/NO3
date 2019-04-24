@@ -90,17 +90,13 @@ private slots:
 
     void on_btn_delExtrem_clicked(); //удаление экстремумов
 
-    void on_Spin_x1_valueChanged(); //изменение спина нач. значение
-
-    void on_Spin_x2_valueChanged(); //изменение спина конеч. значение
-
     void on_btn_grDerivative_clicked(); //отрисовка графика производной
 
     void indexSearch(double valX1, double valX2);//ищем индекс массива выделенного интервала
 
     void speedSearch(); //для расчета скорости реакции и восстановления текущего графика
 
-    void Derivat_triggered(); //расчет скорости по выделенному диапазону
+    void Derivat_triggered(int d, QList<double> &x, QList<double> &y); //расчет скорости по выделенному диапазону
 
     void on_checkExp_clicked(bool checked); //вкл./выкл. эксп. сглаживания
 
@@ -137,6 +133,8 @@ private slots:
 
     void on_checkTimeExp_clicked();
 
+    void on_btnConv1_clicked();
+
 private:
     Ui::MainWindow *ui;
     QLineEdit *lineEditRename;
@@ -144,12 +142,12 @@ private:
     bool mouseDown, left; //mauseDown - при движении мыши, проверяем была ли нажата правая кнопка, left - переключатель
     QList<QList<double> > mass_x_Gr, mass_y_Gr; //массив x и y каждого графика
     QList<QList<double> > mass_minX, mass_maxX, mass_minY, mass_maxY, trendMin, trendMax; //массивы мин. и макс. x, y и и точки для линии тренда для каждого графика
-    QList<QList<double> > xLevelMin, yLevelMin, xLevelMax, yLevelMax, StWork1,StWork2, Zsignal;
+    QList<QList<double> > xLevelMin, yLevelMin, xLevelMax, yLevelMax, StWork1,StWork2, Zsignal, conv;
     QList <QString> mnkStrMin, mnkStrMax; //для сохраниения легенды мнк
     QList <double> minx, miny, maxx, maxy, koef; //мин. и макс. x, y и коэффициент
     QList <double> expY, expYcopy, speedReaction, speedRecovery; //для экспоненциального сглаживания
     QList <QString> axis_x_Gr, axis_y_Gr; //наименования осей каждого графика
-    QVector<double> dirivate; //массив производных
+    QVector<double> derivate, derivate2, derivateConv; //1-я и 2-я производных исх. сигнала, производная свертки
     int x1, x2; //индексы значений выделенного интервала
     QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax, *graphZ; //все графики
     QCPItemRect *rectPoint, *rectSpan; //прямоугольник для выделения точек

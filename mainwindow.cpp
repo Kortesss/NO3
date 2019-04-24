@@ -162,7 +162,7 @@ void MainWindow::on_btn_openFile_clicked() //выбор файла и запол
         textListMNK.append(QList <QCPItemText*>()); //для отображения значения МНК на графике
         textListMNK[gr_index].append(new QCPItemText(ui->widget)); textListMNK[gr_index].append(new QCPItemText(ui->widget));
         StWork1.append(QList <double>());  StWork2.append(QList <double>());
-        Zsignal.append(QList <double>());
+        Zsignal.append(QList <double>());  conv.append(QList <double>());
         axis_x_Gr.append("x");   axis_y_Gr.append("y");
         ui->listWidget->setCurrentRow(gr_index); //устанавливаем выделение последнему загруженному графику
         on_listWidget_clicked();//очищаем все графы предыдущего графика
@@ -404,7 +404,8 @@ void MainWindow::histogramMouseMoved(QMouseEvent *event) //координаты 
             }
             else{//иначе координаты мыши были в пределах границы графика
                 if (currentX >= ui->Spin_x1->value() && !left){//идем вправо
-                    ui->Spin_x2->setValue(currentX); left = false;
+                    ui->Spin_x2->setValue(currentX);
+                    left = false;
                     rectSpan->bottomRight->setCoords(currentX, miny[gr_index]);
                 }else{//проверяем если идем влево
                     if (!left){ //left нужен, чтобы повторно не заходить сюда
@@ -418,9 +419,7 @@ void MainWindow::histogramMouseMoved(QMouseEvent *event) //координаты 
                 rectSpan->setVisible(true);
                 ui->widget->replot();
             }
-        }else{
-            rectPoint->bottomRight->setCoords(currentX, currentY); ui->widget->replot();
-        }
+        }else   rectPoint->bottomRight->setCoords(currentX, currentY); ui->widget->replot();
     }
     ui->statusBar->showMessage("x="+QString::number(currentX,'f',3)+"; y="+QString::number(currentY,'f',3));//округление до 3-х знаков
 }
@@ -432,6 +431,7 @@ void MainWindow::spanMouseUp(QMouseEvent *event)
         else ui->SliderSpan->setValue(0);
         if (!ui->manualExtrem->isChecked() && !ui->checkTimeExp->isChecked()){
             mouseDown = false;
+            Derivat_triggered(0, mass_x_Gr[gr_index], mass_y_Gr[gr_index]);
             if ((ui->checkExp->isChecked() || ui->checkGolay->isChecked()) && ui->listWidget->count() > 0){
                 expYcopy = expY;
                 QFile tempFile("tempUndo.bin");
@@ -661,7 +661,7 @@ void MainWindow::on_btn_clearGraph_clicked() //очистить графы гр�
         textListMNK[gr_index][0]->setText("");  textListMNK[gr_index][1]->setText("");
         textListMin[gr_index].clear(); textListMax[gr_index].clear();
         StWork1[gr_index].clear(); StWork2[gr_index].clear();
-        Zsignal[gr_index].clear();
+        Zsignal[gr_index].clear(); conv[gr_index].clear();
         ui->Browser_stWork->setText("Фазы начала рабочего режима:");
         ui->widget->replot();
         }else{
@@ -681,7 +681,7 @@ void MainWindow::on_btn_delGraph_clicked() //удаление выделеног
         mass_minY.removeAt(gr_index); mass_maxY.removeAt(gr_index);
         minx.removeAt(gr_index); miny.removeAt(gr_index);
         maxx.removeAt(gr_index); maxy.removeAt(gr_index); koef.removeAt(gr_index);
-        Zsignal.removeAt(gr_index);
+        Zsignal.removeAt(gr_index);  conv.removeAt(gr_index);
         trendMin.removeAt(gr_index); trendMax.removeAt(gr_index);
         textListMin[gr_index].clear(); textListMax[gr_index].clear();
         textListMin.removeAt(gr_index); textListMax.removeAt(gr_index);
@@ -912,15 +912,11 @@ void MainWindow::on_btn_delExtrem_clicked() //удаление экстрему�
     }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
 
-void MainWindow::on_Spin_x1_valueChanged(){ Derivat_triggered(); } //изменение спина нач. значение
-
-void MainWindow::on_Spin_x2_valueChanged(){ Derivat_triggered(); } //изменение спина конеч. значение
-
 void MainWindow::on_btn_grDerivative_clicked() //отрисовка графика производной
 {
     if (ui->listWidget->count() > 0){
-        Derivat_triggered(); //вызов вычисления производной кучочно-непрерывной функции
-        SomeWindow *DXWindow=new SomeWindow(dirivate, x1, x2, koef[gr_index], this);
+        Derivat_triggered(0, mass_x_Gr[gr_index], mass_y_Gr[gr_index]); //вызов вычисления производной кучочно-непрерывной функции
+        SomeWindow *DXWindow=new SomeWindow(derivate, x1, x2, koef[gr_index], this);
         DXWindow->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - скорость изменения параметра");
         DXWindow->show();
         DXWindow->setAttribute(Qt::WA_DeleteOnClose); //деструктор
@@ -939,7 +935,7 @@ void MainWindow::indexSearch(double valX1, double valX2)//ищем индекс 
     }
 }
 
-void MainWindow::speedSearch()
+void MainWindow::speedSearch() //скорость реакции и восстановления
 {
     if (mass_minX[gr_index].count() > 0){
         double sred = 0, znpozit = 0, valX1 = 0, valX2 = 0;
@@ -968,21 +964,25 @@ void MainWindow::speedSearch()
     }
 }
 
-void MainWindow::Derivat_triggered() //вызов вычисления производной кусочно-непрерывной функции
+void MainWindow::Derivat_triggered(int d, QList<double> &x, QList<double> &y) //вызов вычисления производной кусочно-непрерывной функции
 {
     if (ui->listWidget->count() > 0 && ui->Spin_x2->value()>ui->Spin_x1->value() && !ui->checkTimeExp->isChecked()){
         double sred = 0, znpozit = 0;
-        dirivate.clear();
         indexSearch(ui->Spin_x1->value(), ui->Spin_x2->value()); //ищем индекс диапазона
         Derivative *der = new Derivative();
-        for (int i = x1; i <= x2; i++) {
-            znpozit = der->get_dd(mass_x_Gr[gr_index][i],mass_x_Gr[gr_index][i+1], mass_y_Gr[gr_index][i], mass_y_Gr[gr_index][i+1]);
-            dirivate.append(znpozit); //этот список нужен для отрисовки гафика производной
-            sred += znpozit;
+        if (d==0){//1-я производная
+            derivate.clear();
+            for (int i = x1; i <= x2; i++) {
+                znpozit = der->get_dd(x[i], x[i+1], y[i], y[i+1]);
+                derivate.append(znpozit); //этот список нужен для отрисовки графика производной
+                sred += znpozit;
+            }
+            ui->Browser_Derivative->setText("Производная:\ndx/dy = "+QString::number(abs(sred)));
+        }else{//2-я производная
+
         }
-        ui->Browser_Derivative->setText("Производная:\ndx/dy = "+QString::number(abs(sred)));
-        delete der;
-        }
+    delete der;
+    }
 }
 
 void MainWindow::on_checkExp_clicked(bool checked) //вкл./выкл. эксп. сглаживания
@@ -1249,32 +1249,20 @@ void MainWindow::on_btn_BuildZ_clicked() //Построение Z - сигнал
 {
     if (ui->listWidget->count() > 0){
         if (mass_minX[gr_index].count() > 0){
-            if (Zsignal[gr_index].count() == 0) graphZ->addToLegend(ui->widget->legend);
+            if (Zsignal[gr_index].count() == 0) graphZ->addToLegend(ui->widget->legend); //чтобы не добавлять по неск. раз легенду
             Zsignal[gr_index].clear(); QList <double> Zx;
             double s = 0.0;
             int k = 0, h = 0, j = 1;
-    /*for (int i = 0; i < mass_y_Gr[gr_index].count(); i++){
-        s+= mass_y_Gr[gr_index][i];     k += 1;
-        if (mass_minX[gr_index][j] == mass_x_Gr[gr_index][i]){
-            avg.append(s/k); //делим на количество точек текущего рабочего режима, не включая текущую точку, она явл. началом след. раб. режима
-            s = mass_y_Gr[gr_index][i]; k = 1; j+=1;
-        }
-    }
-    k = 0; j = 1;
-    for (int i = 0; i < mass_y_Gr[gr_index].count(); i++){
-        Zsignal[gr_index].append(qPow(mass_y_Gr[gr_index][i]-avg[k], 2));
-        if ((mass_minX[gr_index][j] == mass_x_Gr[gr_index][i]) && (i != mass_y_Gr[gr_index].count()-1)) {k+=1; j+=1;}
-    }*/
             for (int i = 0; i < mass_y_Gr[gr_index].count(); i++){
-                for (int g = h; g <= i; g++){
+                for (int g = h; g <= i; g++){ //счистаем сумму и количество отсчетов до текущего эл-та
                     s+= mass_y_Gr[gr_index][g];     k += 1;
                 }
-                Zsignal[gr_index].append(qPow(mass_y_Gr[gr_index][i]-(s/k), 2));
-                s = 0.0; k = 0; Zx.append(mass_x_Gr[gr_index][i]);
-                if (mass_minX[gr_index][j] == mass_x_Gr[gr_index][i]){
-                    h = i; j+=1;
+                Zsignal[gr_index].append(qPow(mass_y_Gr[gr_index][i]-(s/k), 2)); //вычисляем z-сигнал
+                s = 0.0; k = 0; Zx.append(mass_x_Gr[gr_index][i]); //обнуяем и записываем икс, чтобы было равное кол-во данных в graphZ->setData()
+                if (mass_minX[gr_index][j] == mass_x_Gr[gr_index][i]){ //если закончилась фаза, переводим j на другой элемент минимума
+                    h = i; j+=1; //h устанавливаем новое начало
                 }
-                if (mass_x_Gr[gr_index][i] == mass_minX[gr_index].last()) break;
+                if (mass_x_Gr[gr_index][i] == mass_minX[gr_index].last()) break;//цикл длится до последнего минимума из всех иксов
             }
             graphZ->setData(Zx.toVector(), Zsignal[gr_index].toVector());
             graphZ->setVisible(true);     ui->widget->replot();
@@ -1296,7 +1284,22 @@ void MainWindow::act_HideZ_clicked() //Скрытие Z - сигнала
     graphZ->setVisible(false);  ui->widget->replot();
 }
 
-void MainWindow::on_checkTimeExp_clicked()//когда выбираем скоьзящее окно, чтобы кнопка русной настройки экстр. отжималась
+void MainWindow::on_checkTimeExp_clicked()//когда выбираем скользящее окно, чтобы кнопка ручной настройки экстр. отжималась
 {
     ui->manualExtrem->setChecked(false);
+}
+
+void MainWindow::on_btnConv1_clicked() //свертка z-сигнала с производной исходного сигнала
+{
+    if (Zsignal[gr_index].count() > 0){
+        Derivat_triggered(0, mass_x_Gr[gr_index], mass_y_Gr[gr_index]); //вычисление производной  исходного сигнала с z-сигналом
+        conv[gr_index].clear();
+        int m = Zsignal[gr_index].count(), n = derivate.count();
+        for (int k = 0; k < (m + n - 1); k++){
+            conv[gr_index].append(0);
+            for (int i = qMax(0,k+1-n); i < qMin(k+1, m); i++) {
+                conv[gr_index][k] += Zsignal[gr_index][i] * derivate[k - i];
+            }
+        }
+    }
 }
