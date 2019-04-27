@@ -54,10 +54,6 @@ private slots:
     void histogramMouseMoved(QMouseEvent *event); //координаты в статус-баре и границы интервала
     void spanMouseUp(QMouseEvent *mouseEvent);
 
-    void on_rbSourceSignal_clicked();
-
-    void on_rbZSignal_clicked();
-
     void slotCustomMenuRequested(QPoint pos); //контекстное меню
 
     void menuRename(); //переименование графика
@@ -126,14 +122,7 @@ private slots:
 
     void on_btn_CorrToText_clicked(); //сохранить скорости и размах в файл
 
-    void on_btn_BuildZ_clicked(); //Построение Z - сигнала
-    void act_DelZ_clicked(); //Удаление Z - сигнала
-    void act_HideZ_clicked(); //Скрытие Z - сигнала
-
-
     void on_checkTimeExp_clicked();
-
-    void on_btnConv1_clicked();
 
 private:
     Ui::MainWindow *ui;
@@ -142,14 +131,14 @@ private:
     bool mouseDown, left; //mauseDown - при движении мыши, проверяем была ли нажата правая кнопка, left - переключатель
     QList<QList<double> > mass_x_Gr, mass_y_Gr; //массив x и y каждого графика
     QList<QList<double> > mass_minX, mass_maxX, mass_minY, mass_maxY, trendMin, trendMax; //массивы мин. и макс. x, y и и точки для линии тренда для каждого графика
-    QList<QList<double> > xLevelMin, yLevelMin, xLevelMax, yLevelMax, StWork1,StWork2, Zsignal, conv;
+    QList<QList<double> > xLevelMin, yLevelMin, xLevelMax, yLevelMax, StWork1,StWork2;
     QList <QString> mnkStrMin, mnkStrMax; //для сохраниения легенды мнк
     QList <double> minx, miny, maxx, maxy, koef; //мин. и макс. x, y и коэффициент
     QList <double> expY, expYcopy, speedReaction, speedRecovery; //для экспоненциального сглаживания
     QList <QString> axis_x_Gr, axis_y_Gr; //наименования осей каждого графика
-    QVector<double> derivate, derivate2, derivateConv; //1-я и 2-я производных исх. сигнала, производная свертки
+    QVector<double> derivate, derivate2; //1-я и 2-я производных исх. сигнала, производная свертки
     int x1, x2; //индексы значений выделенного интервала
-    QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax, *graphZ; //все графики
+    QCPGraph *graphic1, *graphMin, *graphMax, *graphMnkMin, *graphLevelMin,*graphMnkMax, *graphLevelMax; //все графики
     QCPItemRect *rectPoint, *rectSpan; //прямоугольник для выделения точек
 
     QList<QList<QCPItemText*> > textListMin, textListMax;//точки экстрем. для отображения координат

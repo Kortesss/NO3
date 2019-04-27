@@ -21,15 +21,11 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     connect(ui->widget, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(spanMouseUp(QMouseEvent*)));
     connect(&timer, SIGNAL(timeout()), SLOT(TimerTick()));
 
+    ui->label_21->setVisible(false); ui->cmbBox_Correl->setVisible(false); ui->btn_CorrToText->setVisible(false);
+
     QAction *ActOpenCorr = new QAction("Открыть из файла...", this);
     ui->btn_CorrToText->addAction(ActOpenCorr);
     connect(ActOpenCorr, SIGNAL(triggered(bool)), this, SLOT(act_openCorr_clicked()));
-
-    QList <QAction*> actZ;  //создаем список для контекстного меню кнопки Z - сигнал
-    actZ.append(new QAction("Удалить", this));  actZ.append(new QAction("Скрыть", this));
-    ui->btn_BuildZ->addActions(actZ);
-    connect(actZ[0], SIGNAL(triggered()), this, SLOT(act_DelZ_clicked()));
-    connect(actZ[1], SIGNAL(triggered()), this, SLOT(act_HideZ_clicked()));
 
     t = 0; gr_index = 0; mouseDown = false; left = false; x1 = 0; x2 = 0;
     ui->listWidget->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -58,11 +54,6 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     graphLevelMax = ui->widget->addGraph(); //Добавление линии перегиба max
     graphLevelMax->setPen(QColor(2, 15, 250, 255));//задаем темно-синий цвет
     graphLevelMax->setName(" ");    graphLevelMax->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 4));
-
-    graphZ = ui->widget->addGraph(); //Добавление Z сигнала
-    graphZ->setPen(QColor(2, 15, 250, 255)); graphZ->setName("Z - сигнал");
-    graphZ->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
-    graphZ->removeFromLegend(ui->widget->legend);
 
     graphic1 = ui->widget->addGraph();	//Добавление графика 1
     graphic1->setPen(QColor(50, 50, 50, 255));//задаем цвет точки
@@ -162,7 +153,6 @@ void MainWindow::on_btn_openFile_clicked() //выбор файла и запол
         textListMNK.append(QList <QCPItemText*>()); //для отображения значения МНК на графике
         textListMNK[gr_index].append(new QCPItemText(ui->widget)); textListMNK[gr_index].append(new QCPItemText(ui->widget));
         StWork1.append(QList <double>());  StWork2.append(QList <double>());
-        Zsignal.append(QList <double>());  conv.append(QList <double>());
         axis_x_Gr.append("x");   axis_y_Gr.append("y");
         ui->listWidget->setCurrentRow(gr_index); //устанавливаем выделение последнему загруженному графику
         on_listWidget_clicked();//очищаем все графы предыдущего графика
@@ -271,8 +261,7 @@ void MainWindow::on_listWidget_clicked() //для перехода по граф
     ui->widget->xAxis->setLabel(axis_x_Gr[gr_index]);    ui->widget->yAxis->setLabel(axis_y_Gr[gr_index]);
     FalseVisibleAllGraph();
     x2 = mass_x_Gr[gr_index].count()-1;
-    if (ui->rbSourceSignal->isChecked())  expY = mass_y_Gr[gr_index];
-    else expY = Zsignal[gr_index];
+    expY = mass_y_Gr[gr_index];
     ui->spinGolay->setMaximum(mass_x_Gr[gr_index].count()); //для сглаживания Савицкого-Голея определим пределы (r) скользящего окна
     ui->SpinTimeExp->setMaximum(mass_x_Gr[gr_index].last()); //продолжительность опыта не больше значений иксов
 }
@@ -316,7 +305,6 @@ void MainWindow::FalseVisibleAllGraph() //скрытие графов
             textListMNK[j][0]->setVisible(false);  textListMNK[j][1]->setVisible(false);
         }
     }
-    graphZ->setVisible(false);
     ui->widget->replot();
 }
 
@@ -483,8 +471,7 @@ void MainWindow::spanMouseUp(QMouseEvent *event)
                         }
                     }
                 }
-            if (ui->rbSourceSignal->isChecked()) graphic1->setData(mass_x_Gr[gr_index].toVector(), expY.toVector());
-            else graphZ->setData(mass_x_Gr[gr_index].toVector(), expY.toVector());
+            graphic1->setData(mass_x_Gr[gr_index].toVector(), expY.toVector());
             ui->widget->replot();
             }
         }else if (ui->manualExtrem->isChecked()){//включена ручная настройка экстремумов: удаление
@@ -554,10 +541,6 @@ void MainWindow::spanMouseUp(QMouseEvent *event)
         }
     }
 }
-
-void MainWindow::on_rbSourceSignal_clicked(){ expY = mass_y_Gr[gr_index]; }
-
-void MainWindow::on_rbZSignal_clicked(){ expY = Zsignal[gr_index]; }
 
 void MainWindow::slotCustomMenuRequested(QPoint pos) //контекстное меню
 {
@@ -661,7 +644,6 @@ void MainWindow::on_btn_clearGraph_clicked() //очистить графы гр�
         textListMNK[gr_index][0]->setText("");  textListMNK[gr_index][1]->setText("");
         textListMin[gr_index].clear(); textListMax[gr_index].clear();
         StWork1[gr_index].clear(); StWork2[gr_index].clear();
-        Zsignal[gr_index].clear(); conv[gr_index].clear();
         ui->Browser_stWork->setText("Фазы начала рабочего режима:");
         ui->widget->replot();
         }else{
@@ -681,7 +663,6 @@ void MainWindow::on_btn_delGraph_clicked() //удаление выделеног
         mass_minY.removeAt(gr_index); mass_maxY.removeAt(gr_index);
         minx.removeAt(gr_index); miny.removeAt(gr_index);
         maxx.removeAt(gr_index); maxy.removeAt(gr_index); koef.removeAt(gr_index);
-        Zsignal.removeAt(gr_index);  conv.removeAt(gr_index);
         trendMin.removeAt(gr_index); trendMax.removeAt(gr_index);
         textListMin[gr_index].clear(); textListMax[gr_index].clear();
         textListMin.removeAt(gr_index); textListMax.removeAt(gr_index);
@@ -1245,61 +1226,9 @@ void MainWindow::on_SliderPointGr_valueChanged(int value) //показать/с�
     }else ui->SliderPointGr->setValue(0);
 }
 
-void MainWindow::on_btn_BuildZ_clicked() //Построение Z - сигнала
-{
-    if (ui->listWidget->count() > 0){
-        if (mass_minX[gr_index].count() > 0){
-            if (Zsignal[gr_index].count() == 0) graphZ->addToLegend(ui->widget->legend); //чтобы не добавлять по неск. раз легенду
-            Zsignal[gr_index].clear(); QList <double> Zx;
-            double s = 0.0;
-            int k = 0, h = 0, j = 1;
-            for (int i = 0; i < mass_y_Gr[gr_index].count(); i++){
-                for (int g = h; g <= i; g++){ //счистаем сумму и количество отсчетов до текущего эл-та
-                    s+= mass_y_Gr[gr_index][g];     k += 1;
-                }
-                Zsignal[gr_index].append(qPow(mass_y_Gr[gr_index][i]-(s/k), 2)); //вычисляем z-сигнал
-                s = 0.0; k = 0; Zx.append(mass_x_Gr[gr_index][i]); //обнуяем и записываем икс, чтобы было равное кол-во данных в graphZ->setData()
-                if (mass_minX[gr_index][j] == mass_x_Gr[gr_index][i]){ //если закончилась фаза, переводим j на другой элемент минимума
-                    h = i; j+=1; //h устанавливаем новое начало
-                }
-                if (mass_x_Gr[gr_index][i] == mass_minX[gr_index].last()) break;//цикл длится до последнего минимума из всех иксов
-            }
-            graphZ->setData(Zx.toVector(), Zsignal[gr_index].toVector());
-            graphZ->setVisible(true);     ui->widget->replot();
-        }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Начало рабочего режима не определено!"));
-    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Список графиков пуст!"));
-}
 
-void MainWindow::act_DelZ_clicked() //Удаление Z - сигнала
-{
-    if (ui->listWidget->count() > 0){
-        Zsignal[gr_index].clear();
-        graphZ->removeFromLegend(ui->widget->legend);
-        graphZ->setVisible(false);  ui->widget->replot();
-    }
-}
-
-void MainWindow::act_HideZ_clicked() //Скрытие Z - сигнала
-{
-    graphZ->setVisible(false);  ui->widget->replot();
-}
 
 void MainWindow::on_checkTimeExp_clicked()//когда выбираем скользящее окно, чтобы кнопка ручной настройки экстр. отжималась
 {
     ui->manualExtrem->setChecked(false);
-}
-
-void MainWindow::on_btnConv1_clicked() //свертка z-сигнала с производной исходного сигнала
-{
-    if (Zsignal[gr_index].count() > 0){
-        Derivat_triggered(0, mass_x_Gr[gr_index], mass_y_Gr[gr_index]); //вычисление производной  исходного сигнала с z-сигналом
-        conv[gr_index].clear();
-        int m = Zsignal[gr_index].count(), n = derivate.count();
-        for (int k = 0; k < (m + n - 1); k++){
-            conv[gr_index].append(0);
-            for (int i = qMax(0,k+1-n); i < qMin(k+1, m); i++) {
-                conv[gr_index][k] += Zsignal[gr_index][i] * derivate[k - i];
-            }
-        }
-    }
 }

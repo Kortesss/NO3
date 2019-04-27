@@ -158,10 +158,6 @@ public:
     QSpacerItem *horizontalSpacer_2;
     QWidget *tab_6;
     QHBoxLayout *horizontalLayout_17;
-    QVBoxLayout *verticalLayout_24;
-    QRadioButton *rbSourceSignal;
-    QRadioButton *rbZSignal;
-    QLabel *label_22;
     QFrame *frame;
     QVBoxLayout *verticalLayout_2;
     QVBoxLayout *verticalLayout;
@@ -194,16 +190,19 @@ public:
     QSpacerItem *horizontalSpacer_12;
     QSpacerItem *verticalSpacer_14;
     QLabel *label_33;
+    QVBoxLayout *verticalLayout_24;
+    QSpacerItem *verticalSpacer_15;
+    QLabel *label_22;
+    QComboBox *cmbBox_dispers;
+    QToolButton *btn_DispersToText;
+    QSpacerItem *verticalSpacer_16;
+    QLabel *label_34;
     QVBoxLayout *verticalLayout_22;
     QSpacerItem *verticalSpacer_13;
     QLabel *label_21;
     QComboBox *cmbBox_Correl;
     QToolButton *btn_CorrToText;
     QSpacerItem *verticalSpacer_12;
-    QLabel *label_34;
-    QVBoxLayout *verticalLayout_25;
-    QToolButton *btn_BuildZ;
-    QPushButton *btnConv1;
     QSpacerItem *horizontalSpacer_8;
     QWidget *tab_8;
     QHBoxLayout *horizontalLayout_24;
@@ -1206,34 +1205,6 @@ public:
         horizontalLayout_17->setSpacing(6);
         horizontalLayout_17->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_17->setObjectName(QStringLiteral("horizontalLayout_17"));
-        verticalLayout_24 = new QVBoxLayout();
-        verticalLayout_24->setSpacing(6);
-        verticalLayout_24->setObjectName(QStringLiteral("verticalLayout_24"));
-        rbSourceSignal = new QRadioButton(tab_6);
-        rbSourceSignal->setObjectName(QStringLiteral("rbSourceSignal"));
-        rbSourceSignal->setChecked(true);
-
-        verticalLayout_24->addWidget(rbSourceSignal);
-
-        rbZSignal = new QRadioButton(tab_6);
-        rbZSignal->setObjectName(QStringLiteral("rbZSignal"));
-
-        verticalLayout_24->addWidget(rbZSignal);
-
-
-        horizontalLayout_17->addLayout(verticalLayout_24);
-
-        label_22 = new QLabel(tab_6);
-        label_22->setObjectName(QStringLiteral("label_22"));
-        sizePolicy3.setHeightForWidth(label_22->sizePolicy().hasHeightForWidth());
-        label_22->setSizePolicy(sizePolicy3);
-        label_22->setMinimumSize(QSize(10, 0));
-        label_22->setMaximumSize(QSize(10, 16777215));
-        label_22->setFrameShape(QFrame::VLine);
-        label_22->setFrameShadow(QFrame::Raised);
-
-        horizontalLayout_17->addWidget(label_22);
-
         frame = new QFrame(tab_6);
         frame->setObjectName(QStringLiteral("frame"));
         QSizePolicy sizePolicy7(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -1505,6 +1476,55 @@ public:
 
         horizontalLayout_26->addWidget(label_33);
 
+        verticalLayout_24 = new QVBoxLayout();
+        verticalLayout_24->setSpacing(6);
+        verticalLayout_24->setObjectName(QStringLiteral("verticalLayout_24"));
+        verticalSpacer_15 = new QSpacerItem(20, 28, QSizePolicy::Minimum, QSizePolicy::Preferred);
+
+        verticalLayout_24->addItem(verticalSpacer_15);
+
+        label_22 = new QLabel(tab_7);
+        label_22->setObjectName(QStringLiteral("label_22"));
+
+        verticalLayout_24->addWidget(label_22);
+
+        cmbBox_dispers = new QComboBox(tab_7);
+        cmbBox_dispers->setObjectName(QStringLiteral("cmbBox_dispers"));
+
+        verticalLayout_24->addWidget(cmbBox_dispers);
+
+        btn_DispersToText = new QToolButton(tab_7);
+        btn_DispersToText->setObjectName(QStringLiteral("btn_DispersToText"));
+        sizePolicy1.setHeightForWidth(btn_DispersToText->sizePolicy().hasHeightForWidth());
+        btn_DispersToText->setSizePolicy(sizePolicy1);
+        btn_DispersToText->setMinimumSize(QSize(0, 24));
+        btn_DispersToText->setMaximumSize(QSize(16777215, 16777215));
+        btn_DispersToText->setStyleSheet(QStringLiteral(""));
+        btn_DispersToText->setCheckable(false);
+        btn_DispersToText->setChecked(false);
+        btn_DispersToText->setPopupMode(QToolButton::MenuButtonPopup);
+        btn_DispersToText->setToolButtonStyle(Qt::ToolButtonTextOnly);
+
+        verticalLayout_24->addWidget(btn_DispersToText);
+
+        verticalSpacer_16 = new QSpacerItem(20, 51, QSizePolicy::Minimum, QSizePolicy::Preferred);
+
+        verticalLayout_24->addItem(verticalSpacer_16);
+
+
+        horizontalLayout_26->addLayout(verticalLayout_24);
+
+        label_34 = new QLabel(tab_7);
+        label_34->setObjectName(QStringLiteral("label_34"));
+        sizePolicy3.setHeightForWidth(label_34->sizePolicy().hasHeightForWidth());
+        label_34->setSizePolicy(sizePolicy3);
+        label_34->setMinimumSize(QSize(10, 0));
+        label_34->setMaximumSize(QSize(10, 16777215));
+        label_34->setFrameShape(QFrame::VLine);
+        label_34->setFrameShadow(QFrame::Raised);
+
+        horizontalLayout_26->addWidget(label_34);
+
         verticalLayout_22 = new QVBoxLayout();
         verticalLayout_22->setSpacing(6);
         verticalLayout_22->setObjectName(QStringLiteral("verticalLayout_22"));
@@ -1543,38 +1563,6 @@ public:
 
 
         horizontalLayout_26->addLayout(verticalLayout_22);
-
-        label_34 = new QLabel(tab_7);
-        label_34->setObjectName(QStringLiteral("label_34"));
-        sizePolicy3.setHeightForWidth(label_34->sizePolicy().hasHeightForWidth());
-        label_34->setSizePolicy(sizePolicy3);
-        label_34->setMinimumSize(QSize(10, 0));
-        label_34->setMaximumSize(QSize(10, 16777215));
-        label_34->setFrameShape(QFrame::VLine);
-        label_34->setFrameShadow(QFrame::Raised);
-
-        horizontalLayout_26->addWidget(label_34);
-
-        verticalLayout_25 = new QVBoxLayout();
-        verticalLayout_25->setSpacing(6);
-        verticalLayout_25->setObjectName(QStringLiteral("verticalLayout_25"));
-        btn_BuildZ = new QToolButton(tab_7);
-        btn_BuildZ->setObjectName(QStringLiteral("btn_BuildZ"));
-        sizePolicy6.setHeightForWidth(btn_BuildZ->sizePolicy().hasHeightForWidth());
-        btn_BuildZ->setSizePolicy(sizePolicy6);
-        btn_BuildZ->setMinimumSize(QSize(100, 24));
-        btn_BuildZ->setPopupMode(QToolButton::MenuButtonPopup);
-        btn_BuildZ->setToolButtonStyle(Qt::ToolButtonTextOnly);
-
-        verticalLayout_25->addWidget(btn_BuildZ);
-
-        btnConv1 = new QPushButton(tab_7);
-        btnConv1->setObjectName(QStringLiteral("btnConv1"));
-
-        verticalLayout_25->addWidget(btnConv1);
-
-
-        horizontalLayout_26->addLayout(verticalLayout_25);
 
         horizontalSpacer_8 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
@@ -2043,7 +2031,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(6);
+        tabWidget->setCurrentIndex(0);
         btn_openFile->setDefault(false);
 
 
@@ -2173,9 +2161,6 @@ public:
         btn_grDerivative->setText(QApplication::translate("MainWindow", "\320\223\321\200\320\260\321\204\320\270\320\272 \321\201\320\272\320\276\321\200\320\276\321\201\321\202\320\270\n"
 "\320\270\320\267\320\274\320\265\320\275\320\265\320\275\320\270\321\217 \320\277\320\260\321\200\320\260\320\274\320\265\321\202\321\200\320\260", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab_5), QApplication::translate("MainWindow", "\320\241\320\272\320\276\321\200\320\276\321\201\321\202\321\214", 0));
-        rbSourceSignal->setText(QApplication::translate("MainWindow", "\320\230\321\201\321\205\320\276\320\264\320\275\321\213\320\271 \321\201\320\270\320\263\320\275\320\260\320\273", 0));
-        rbZSignal->setText(QApplication::translate("MainWindow", "Z - \321\201\320\270\320\263\320\275\320\260\320\273", 0));
-        label_22->setText(QString());
         checkExp->setText(QApplication::translate("MainWindow", "\320\255\320\272\321\201\320\277\320\276\320\275\320\265\320\275\321\206\320\270\320\260\320\273\321\214\320\275\320\276\320\265\n"
 "\321\201\320\263\320\273\320\260\320\266\320\270\320\262\320\260\320\275\320\270\320\265", 0));
         label_9->setText(QApplication::translate("MainWindow", "\320\232\320\276\321\215\321\204-\321\202, p", 0));
@@ -2196,6 +2181,14 @@ public:
 #endif // QT_NO_TOOLTIP
         btn_DFT->setText(QApplication::translate("MainWindow", "DFT", 0));
         label_33->setText(QString());
+        label_22->setText(QApplication::translate("MainWindow", "\320\224\320\270\321\201\320\277\320\265\321\200\321\201\320\270\320\276\320\275\320\275\321\213\320\271 \320\260\320\275\320\260\320\273\320\270\320\267:", 0));
+        cmbBox_dispers->clear();
+        cmbBox_dispers->insertItems(0, QStringList()
+         << QApplication::translate("MainWindow", "\320\241\320\272\320\276\321\200\320\276\321\201\321\202\321\214 \321\200\320\265\320\260\320\272\321\206\320\270\320\270", 0)
+         << QApplication::translate("MainWindow", "\320\241\320\272\320\276\321\200\320\276\321\201\321\202\321\214 \320\262\320\276\321\201\321\201\321\202\320\260\320\275\320\276\320\262\320\273\320\265\320\275\320\270\321\217", 0)
+        );
+        btn_DispersToText->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\262 \321\204\320\260\320\271\320\273", 0));
+        label_34->setText(QString());
         label_21->setText(QApplication::translate("MainWindow", "\320\232\320\276\321\200\321\200\320\265\320\273\321\217\321\206\320\270\320\276\320\275\320\275\321\213\320\271 \320\260\320\275\320\260\320\273\320\270\320\267:", 0));
         cmbBox_Correl->clear();
         cmbBox_Correl->insertItems(0, QStringList()
@@ -2204,9 +2197,6 @@ public:
          << QApplication::translate("MainWindow", "V\321\200\320\265\320\260\320\272\321\206\320\270\320\270 \342\206\224 V\320\262\320\276\321\201\321\201\321\202\320\260\320\275\320\276\320\262\320\273\320\265\320\275\320\270\321\217", 0)
         );
         btn_CorrToText->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\262 \321\204\320\260\320\271\320\273", 0));
-        label_34->setText(QString());
-        btn_BuildZ->setText(QApplication::translate("MainWindow", "Z - \321\201\320\270\320\263\320\275\320\260\320\273", 0));
-        btnConv1->setText(QApplication::translate("MainWindow", "\320\241\320\262\320\265\321\200\321\202\320\272\320\260", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab_7), QApplication::translate("MainWindow", "\320\242\320\265\321\205\320\275\320\270\321\207\320\265\321\201\320\272\320\270\320\271 \320\260\320\275\320\260\320\273\320\270\320\267", 0));
         label_mnk->setText(QApplication::translate("MainWindow", "\320\234\320\265\321\202\320\276\320\264 \320\275\320\260\320\270\320\274\320\265\320\275\321\214\321\210\320\270\321\205 \320\272\320\262\320\260\320\264\321\200\320\260\321\202\320\276\320\262:", 0));
         btn_BuildMnk->setText(QApplication::translate("MainWindow", "\320\237\320\276\321\201\321\202\321\200\320\276\320\270\321\202\321\214", 0));
