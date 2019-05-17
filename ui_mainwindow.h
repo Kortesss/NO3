@@ -113,7 +113,6 @@ public:
     QLabel *label_7;
     QSpinBox *SpinTimeExp;
     QHBoxLayout *horizontalLayout_15;
-    QCheckBox *checkTimeExp;
     QSpacerItem *verticalSpacer_11;
     QSpacerItem *horizontalSpacer_3;
     QWidget *tab_4;
@@ -662,7 +661,7 @@ public:
 " }\n"
 "QPushButton:checked{\n"
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
-"                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
+"                                       stop: 0 #aaaaaa, stop: 1 #a1a1a1);\n"
 " }"));
         startWork1->setCheckable(true);
         startWork1->setChecked(true);
@@ -740,7 +739,7 @@ public:
 " }\n"
 "QPushButton:checked{\n"
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
-"                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
+"                                       stop: 0 #aaaaaa, stop: 1 #a1a1a1);\n"
 " }"));
         startWork2->setCheckable(true);
         startWork2->setChecked(false);
@@ -799,14 +798,6 @@ public:
         horizontalLayout_15 = new QHBoxLayout();
         horizontalLayout_15->setSpacing(6);
         horizontalLayout_15->setObjectName(QStringLiteral("horizontalLayout_15"));
-        checkTimeExp = new QCheckBox(tab_3);
-        checkTimeExp->setObjectName(QStringLiteral("checkTimeExp"));
-        sizePolicy1.setHeightForWidth(checkTimeExp->sizePolicy().hasHeightForWidth());
-        checkTimeExp->setSizePolicy(sizePolicy1);
-        checkTimeExp->setMaximumSize(QSize(16777215, 16777215));
-
-        horizontalLayout_15->addWidget(checkTimeExp);
-
 
         verticalLayout_16->addLayout(horizontalLayout_15);
 
@@ -954,13 +945,14 @@ public:
 " }\n"
 "QPushButton:checked{\n"
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
-"                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
+"                                       stop: 0 #aaaaaa, stop: 1 #a1a1a1);\n"
 " }"));
         QIcon icon9;
         icon9.addFile(QStringLiteral(":/img/img/md-build.png"), QSize(), QIcon::Normal, QIcon::Off);
         manualExtrem->setIcon(icon9);
         manualExtrem->setIconSize(QSize(24, 24));
         manualExtrem->setCheckable(true);
+        manualExtrem->setChecked(false);
 
         horizontalLayout_22->addWidget(manualExtrem);
 
@@ -2114,7 +2106,6 @@ public:
         startWork2->setText(QApplication::translate("MainWindow", "\320\241\320\277\320\276\321\201\320\276\320\261 2", 0));
         label_20->setText(QString());
         label_7->setText(QApplication::translate("MainWindow", "\320\237\321\200\320\276\320\264\320\276\320\273\320\266\320\270\321\202\320\265\320\273\321\214\320\275\320\276\321\201\321\202\321\214 \321\204\320\260\320\267\321\213 \342\211\210", 0));
-        checkTimeExp->setText(QApplication::translate("MainWindow", "\320\241\320\272\320\276\320\273\321\214\320\267\321\217\321\211\320\265\320\265 \320\276\320\272\320\275\320\276", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindow", "\320\235\320\260\321\207\320\260\320\273\320\276 \321\200\320\260\320\261\320\276\321\207\320\265\320\263\320\276 \321\200\320\265\320\266\320\270\320\274\320\260", 0));
         label_23->setText(QApplication::translate("MainWindow", "\320\220\320\262\321\202\320\276\320\277\320\276\320\270\321\201\320\272 (\320\274\320\265\321\202\320\276\320\264 1)", 0));
         label_2->setText(QApplication::translate("MainWindow", "\320\244\320\270\320\273\321\214\321\202\321\200\320\260\321\206\320\270\321\217 \321\215\320\272\321\201\321\202\321\200\320\265\320\274\321\203\320\274\320\276\320\262:", 0));
@@ -2126,7 +2117,7 @@ public:
 #ifndef QT_NO_TOOLTIP
         btn_autoSearch2->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p>\320\255\321\202\320\276\321\202 \320\274\320\265\321\202\320\276\320\264 \320\264\320\273\321\217 \320\277\320\276\320\270\321\201\320\272\320\260<span style=\" font-weight:600;\"> \320\274\320\260\320\272\321\201\320\270\320\274\321\203\320\274\320\276\320\262</span>, \320\277\320\276\321\201\320\273\320\265 \320\276\320\277\321\200\320\265\320\264\320\265\320\273\320\265\320\275\320\270\321\217 \320\275\320\260\321\207\320\260\320\273\320\260 \321\200\320\260\320\261\320\276\321\207\320\265\320\263\320\276 \321\200\320\265\320\266\320\270\320\274\320\260</p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
-        btn_autoSearch2->setText(QApplication::translate("MainWindow", "\320\220\320\262\321\202\320\276\320\277\320\276\320\270\321\201\320\272\n"
+        btn_autoSearch2->setText(QApplication::translate("MainWindow", "\320\237\320\276\320\270\321\201\320\272 \320\274\320\260\320\272\321\201.\n"
 "(\320\274\320\265\321\202\320\276\320\264 2)", 0));
         label_25->setText(QString());
 #ifndef QT_NO_TOOLTIP

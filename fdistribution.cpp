@@ -1,44 +1,48 @@
-﻿#include <iostream>
-#include "fdistribution.h"
-
-int main()
+﻿#include "fdistribution.h"
+#include <QDebug>
+fdistribution::fdistribution(double alf, int n1, int n2)
 {
-	double h = 0.001;
-	double y = 0.0, alf = 1 - 0.05;
-	int n1 = 4, n2 = 4;
-	do {
-		y = FDist(h, n1, n2);	
-		h += 0.001;
-	} while (y < alf);
-	printf("Fcrit = %0.3f\n", h);
-
-	return 0;
+    Fcritical = 0.001;
+    double y = 0.0;
+    p_val = 1 - alf;
+    do{
+        y = FDist(Fcritical, n1, n2);
+        Fcritical += 0.001;
+        qDebug() << y;
+    } while (y < p_val);
 }
 
-
-
-/* P{ F > F(m, n) } = p */
-double FDist(double F, double m, double n)
+fdistribution::~fdistribution()
 {
-	double xx = 0.0, p = 0.0;
+
+}
+
+double fdistribution::get_Fcritic()
+{
+    return Fcritical;
+}
+
+// P {F>F(m,n)} = p
+double fdistribution::FDist(double F, int m, int n)
+{
+    double xx = 0.0, p = 0.0;
 
 	if (m <= 0 || n <= 0) p = -1;
-	else if (F > 0)
-	{
-		xx = F / (F + n / m);
-		p = betainc(xx, m / 2, n / 2);
+    else if (F > 0){
+        xx = F / (F + n / m);
+        p = betainc(xx, m / 2, n / 2);
 	}
-	return(p);
+    return(p);
 }
 
-double betainv(double p, double a, double b) //обратная неполная бета-функция
+double fdistribution::betainv(double p, double a, double b) //обратная неполная бета-функция
 {
 
 	int count_max_limit = 100;
 	int count_max = 0;
-	double x, xnew, y, h, pbeta, logkerna, logkernb;
-	double crit = 1.818989403545857e-012; // Настройка при двойной точности
-	//	float crit=6.4155306e-006;          // Установка при одиночной точности
+    double x, xnew, y, h, pbeta, logkerna, logkernb;
+    double crit = 1.818989403545857e-012; // Настройка при двойной точности
+    //	float crit=6.4155306e-006;          // Установка при одиночной точности
 
 	if (p == 0) x = 0;
 	if (p == 1) x = 1;
@@ -54,13 +58,13 @@ double betainv(double p, double a, double b) //обратная неполная
 
 		if (x > 1) p = 1;
 		pbeta = betainc(x, a, b);
-		if (pbeta > 1) pbeta = 1;
+        if (pbeta > 1) pbeta = 1;
 
 		logkerna = (a - 1) * log(x);
 		if ((a == 1) && (x == 0)) logkerna = 0;
 		logkernb = (b - 1) * log(1 - x);
-		if ((b == 1) && (x == 1)) logkernb = 0;
-		y = exp(logkerna + logkernb - log(beta(a, b)));
+        if ((b == 1) && (x == 1)) logkernb = 0;
+        y = exp(logkerna + logkernb - log(beta(a, b)));
 
 		h = (pbeta - p) / y;
 		xnew = x - h;
@@ -73,7 +77,7 @@ double betainv(double p, double a, double b) //обратная неполная
 	return x;
 }
 
-double beta(double z, double w)
+double fdistribution::beta(double z, double w)
 {
 	int m, n, k, l, j;
 	double h[10], bb[10], hh, t1, s1, ep, s, x, t2, g;
@@ -120,17 +124,17 @@ double beta(double z, double w)
 		hh = hh / 2.0;
 		n = n + n;
 	}
-	return(g);
+    return(g);
 }
 
-double betainc(double x, double a, double b)/* неполная бета-функция*/
+double fdistribution::betainc(double x, double a, double b) //неполная бета-функция
 {
-	double y, BT, AAA;
+    double y, BT, AAA;
 
-	if (x == 0 || x == 1)
-		BT = 0;
-	else
-	{
+    if (x == 0 || x == 1)
+        BT = 0;
+    else
+    {
 		AAA = gamma(a + b) - gamma(a) - gamma(b);
 		BT = exp(AAA + a * log(x) + b * log(1 - x));
 	}
@@ -142,10 +146,10 @@ double betainc(double x, double a, double b)/* неполная бета-фун�
 	return y;
 }
 
-double beta_cf(double a, double b, double x)
+double fdistribution::beta_cf(double a, double b, double x)
 {
 	int count, count_max = 100;
-	double eps = 0.0000001;
+    double eps = 0.0000001;
 	double AM = 1;
 	double BM = 1;
 	double AZ = 1;
@@ -179,7 +183,7 @@ double beta_cf(double a, double b, double x)
 	return AZ;
 }
 
-double gamma(double xx) //гамма-функция
+double fdistribution::gamma(double xx) //гамма-функция
 {
 	double coef_const[7];
 	double step = 2.50662827465;

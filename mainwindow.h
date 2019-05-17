@@ -74,21 +74,17 @@ private slots:
 
     void on_SpinTimeExp_valueChanged(int arg1); //изменение времени эксперимента
 
-    void on_checkTimeExp_toggled(bool checked); //вкл/выкл скользящего окна
-
     void on_doubleSpinBox1_valueChanged();  //изменение спина экстремомов (простой)
 
     void autoSearchSimple(); //1 способ поиска экстремумов (простой)
 
     void on_btn_autoSearch2_clicked(); //2 способ экстремумов
 
-    void on_manualExtrem_clicked(bool checked); //ручное изменение экстремумов
-
     void on_btn_delExtrem_clicked(); //удаление экстремумов
 
     void on_btn_grDerivative_clicked(); //отрисовка графика производной
 
-    void indexSearch(double valX1, double valX2);//ищем индекс массива выделенного интервала
+    void indexSearch(double valX1, double valX2); //ищем индекс массива выделенного интервала
 
     void speedSearch(); //для расчета скорости реакции и восстановления текущего графика
 
@@ -106,6 +102,8 @@ private slots:
 
     void on_cmbBox_Correl_activated(int index); //Корреляционный анализ
 
+    void on_cmbBox_dispers_activated(int index); //Дисперсионный анализ
+
     void on_btn_BuildMnk_clicked(); //Построить МНК
 
     void on_btn_delMnk_clicked(); //удаление МНК
@@ -122,7 +120,7 @@ private slots:
 
     void on_btn_CorrToText_clicked(); //сохранить скорости и размах в файл
 
-    void on_checkTimeExp_clicked();
+    void on_tabWidget_currentChanged(int index);
 
 private:
     Ui::MainWindow *ui;

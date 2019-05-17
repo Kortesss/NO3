@@ -11,17 +11,27 @@
  *
 */
 
-#include<stdlib.h>
-#include<stdio.h>
-#include<math.h>
+#include <qmath.h>
+#include <QMainWindow>
 
-double FDist(double F,double m,double n);
-double betainv(double p,double a,double b);
-double betainc(double x,double a, double b);
-double beta(double z,double w);
-double gamma(double xx);
-double beta_cf(double a,double b,double x);
+class fdistribution
+{
+public:
+    ~fdistribution();
+    fdistribution(double alf, int n1, int n2);
+    double betainc(double x, double a, double b);
+    double FDist(double F, int m, int n);
+    double betainv(double p, double a, double b);
 
+    double beta(double z, double w);
+    double gamma(double xx);
+    double beta_cf(double a, double b, double x);
+
+    double get_Fcritic();
+
+private:
+    double Fcritical, p_val;
+};
 
 #endif // FDISTRIBUTION_H
 

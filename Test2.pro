@@ -38,7 +38,8 @@ SOURCES += main.cpp\
     mnk.cpp \
     filterfft.cpp \
     extrem_simple.cpp \
-    correl_analysis.cpp
+    correl_analysis.cpp \
+    fdistribution.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
@@ -49,7 +50,8 @@ HEADERS  += mainwindow.h \
     mnk.h \
     filterfft.h \
     extrem_simple.h \
-    correl_analysis.h
+    correl_analysis.h \
+    fdistribution.h
 
 FORMS    += mainwindow.ui \
     somewindow.ui \
