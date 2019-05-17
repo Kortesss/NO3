@@ -709,7 +709,7 @@ QPushButton:pressed {
  }
 QPushButton:checked{
      background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,
-                                       stop: 0 #dadbde, stop: 1 #a0a0a4);
+                                       stop: 0 #aaaaaa, stop: 1 #a1a1a1);
  }</string>
             </property>
             <property name="text">
@@ -880,7 +880,7 @@ QPushButton:pressed {
  }
 QPushButton:checked{
      background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,
-                                       stop: 0 #dadbde, stop: 1 #a0a0a4);
+                                       stop: 0 #aaaaaa, stop: 1 #a1a1a1);
  }</string>
             </property>
             <property name="text">
@@ -998,27 +998,7 @@ QPushButton:checked{
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_15">
-            <item>
-             <widget class="QCheckBox" name="checkTimeExp">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>16777215</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Скользящее окно</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <layout class="QHBoxLayout" name="horizontalLayout_15"/>
           </item>
           <item>
            <spacer name="verticalSpacer_11">
@@ -1241,7 +1221,7 @@ QPushButton:checked{
  }</string>
           </property>
           <property name="text">
-           <string>Автопоиск
+           <string>Поиск макс.
 (метод 2)</string>
           </property>
           <property name="icon">
@@ -1332,7 +1312,7 @@ QPushButton:pressed {
  }
 QPushButton:checked{
      background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,
-                                       stop: 0 #dadbde, stop: 1 #a0a0a4);
+                                       stop: 0 #aaaaaa, stop: 1 #a1a1a1);
  }</string>
           </property>
           <property name="text">
@@ -1351,6 +1331,9 @@ QPushButton:checked{
           </property>
           <property name="checkable">
            <bool>true</bool>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
           </property>
          </widget>
         </item>

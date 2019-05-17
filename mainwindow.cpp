@@ -7,6 +7,7 @@
 #include "filterfft.h"
 #include "extrem_simple.h"
 #include "correl_analysis.h"
+#include "fdistribution.h"
 
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
@@ -15,7 +16,9 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     connect(CtrlZ, SIGNAL(activated()), this, SLOT(on_undo()));
     CtrlY = new QShortcut(this);    CtrlY->setKey(Qt::CTRL + Qt::Key_Y);
     connect(CtrlY, SIGNAL(activated()), this, SLOT(on_redo()));
-
+fdistribution *fd = new fdistribution(0.05, 4, 3);
+qDebug() << fd->get_Fcritic();
+delete fd;
     connect(ui->widget,SIGNAL(mousePress(QMouseEvent*)),this,SLOT(mousePress(QMouseEvent*)));
     connect(ui->widget, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(histogramMouseMoved(QMouseEvent*)));
     connect(ui->widget, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(spanMouseUp(QMouseEvent*)));
@@ -414,47 +417,113 @@ void MainWindow::histogramMouseMoved(QMouseEvent *event) //координаты 
 
 void MainWindow::spanMouseUp(QMouseEvent *event)
 {
-    if (event->button() == Qt::RightButton){
-        if (rectSpan->visible()) ui->SliderSpan->setValue(1);
-        else ui->SliderSpan->setValue(0);
-        if (!ui->manualExtrem->isChecked() && !ui->checkTimeExp->isChecked()){
+    if (ui->listWidget->count() > 0){
+        if (event->button() == Qt::RightButton){
+            if (rectSpan->visible()) ui->SliderSpan->setValue(1);
+            else ui->SliderSpan->setValue(0);
             mouseDown = false;
-            Derivat_triggered(0, mass_x_Gr[gr_index], mass_y_Gr[gr_index]);
-            if ((ui->checkExp->isChecked() || ui->checkGolay->isChecked()) && ui->listWidget->count() > 0){
+            switch (ui->tabWidget->currentIndex()){
+            case 2: //вкладка продолжительность раб. режима
+                indexSearch(ui->Spin_x1->value(), ui->Spin_x2->value());
+                if (ui->startWork1->isChecked()) ui->SpinTimeExp->setValue(x2-x1);
+                else ui->SpinTimeExp->setValue(x2-((x2-x1)/2)); //x2 минус радиус
+                break;
+            case 3: //вкладка экстремумы
+                if (ui->manualExtrem->isChecked()){//включена ручная настройка экстремумов: удаление
+                    rectPoint->setVisible(false); ui->widget->replot();
+                    if (ui->rbMin->isChecked()){
+                        for(int i = 0; i < mass_minX[gr_index].count(); i++){
+                            if(((mass_minX[gr_index][i] > rectPoint->topLeft->coords().x()) && (mass_minY[gr_index][i] < rectPoint->topLeft->coords().y()) && (mass_minX[gr_index][i] < rectPoint->bottomRight->coords().x()) && (mass_minY[gr_index][i] > rectPoint->bottomRight->coords().y()))
+                                || ((mass_minX[gr_index][i] < rectPoint->topLeft->coords().x()) && (mass_minY[gr_index][i] < rectPoint->topLeft->coords().y()) && (mass_minX[gr_index][i] > rectPoint->bottomRight->coords().x()) && (mass_minY[gr_index][i] > rectPoint->bottomRight->coords().y()))){
+                                if (textListMin[gr_index].count()>0){
+                                    textListMin[gr_index][i]->setVisible(false); textListMin[gr_index].removeAt(i);
+                                }
+                                mass_minX[gr_index].removeAt(i);   mass_minY[gr_index].removeAt(i);
+                                graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
+                                i-=1;
+                                if (trendMin[gr_index].count() > 0) on_btn_BuildMnk_clicked(); //перестраиваем МНК мин
+                            }
+                        }
+                    }else if (ui->rbMax->isChecked()){
+                        for(int i = 0; i < mass_maxX[gr_index].count(); i++){
+                            if (((mass_maxX[gr_index][i] > rectPoint->topLeft->coords().x()) && (mass_maxY[gr_index][i] < rectPoint->topLeft->coords().y()) && (mass_maxX[gr_index][i] < rectPoint->bottomRight->coords().x()) && (mass_maxY[gr_index][i] > rectPoint->bottomRight->coords().y()))
+                                || ((mass_maxX[gr_index][i] < rectPoint->topLeft->coords().x()) && (mass_maxY[gr_index][i] < rectPoint->topLeft->coords().y()) && (mass_maxX[gr_index][i] > rectPoint->bottomRight->coords().x()) && (mass_maxY[gr_index][i] > rectPoint->bottomRight->coords().y()))){
+                                if (textListMax[gr_index].count()>0){
+                                    textListMax[gr_index][i]->setVisible(false); textListMax[gr_index].removeAt(i);
+                                }
+                                mass_maxX[gr_index].removeAt(i);   mass_maxY[gr_index].removeAt(i);
+                                graphMax->setData(mass_maxX[gr_index].toVector(), mass_maxY[gr_index].toVector());
+                                i-=1;
+                                if (trendMax[gr_index].count() > 0) on_btn_BuildMnk_clicked(); //перестраиваем МНК макс
+                            }
+                        }
+                    }else if (ui->rbAll->isChecked()){
+                        for(int i = 0; i < mass_minX[gr_index].count(); i++){
+                            if(((mass_minX[gr_index][i] > rectPoint->topLeft->coords().x()) && (mass_minY[gr_index][i] < rectPoint->topLeft->coords().y()) && (mass_minX[gr_index][i] < rectPoint->bottomRight->coords().x()) && (mass_minY[gr_index][i] > rectPoint->bottomRight->coords().y()))
+                                || ((mass_minX[gr_index][i] < rectPoint->topLeft->coords().x()) && (mass_minY[gr_index][i] < rectPoint->topLeft->coords().y()) && (mass_minX[gr_index][i] > rectPoint->bottomRight->coords().x()) && (mass_minY[gr_index][i] > rectPoint->bottomRight->coords().y()))){
+                                if (textListMin[gr_index].count()>0){
+                                    textListMin[gr_index][i]->setVisible(false); textListMin[gr_index].removeAt(i);
+                                }
+                                mass_minX[gr_index].removeAt(i);   mass_minY[gr_index].removeAt(i);
+                                graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
+                                i-=1;
+                                if (trendMin[gr_index].count() > 0) on_btn_BuildMnk_clicked(); //перестраиваем МНК мин
+                            }
+                        }
+                        for(int i = 0; i < mass_maxX[gr_index].count(); i++){
+                            if (((mass_maxX[gr_index][i] > rectPoint->topLeft->coords().x()) && (mass_maxY[gr_index][i] < rectPoint->topLeft->coords().y()) && (mass_maxX[gr_index][i] < rectPoint->bottomRight->coords().x()) && (mass_maxY[gr_index][i] > rectPoint->bottomRight->coords().y()))
+                                || ((mass_maxX[gr_index][i] < rectPoint->topLeft->coords().x()) && (mass_maxY[gr_index][i] < rectPoint->topLeft->coords().y()) && (mass_maxX[gr_index][i] > rectPoint->bottomRight->coords().x()) && (mass_maxY[gr_index][i] > rectPoint->bottomRight->coords().y()))){
+                                if (textListMax[gr_index].count()>0){
+                                    textListMax[gr_index][i]->setVisible(false); textListMax[gr_index].removeAt(i);
+                                }
+                                mass_maxX[gr_index].removeAt(i);   mass_maxY[gr_index].removeAt(i);
+                                graphMax->setData(mass_maxX[gr_index].toVector(), mass_maxY[gr_index].toVector());
+                                i-=1;
+                                if (trendMax[gr_index].count() > 0) on_btn_BuildMnk_clicked(); //перестраиваем МНК макс
+                            }
+                        }
+                    }
+                    if (textListMin[gr_index].count()==0 && (textListMax[gr_index].count()==0)) ui->SliderPointGr->setValue(0);
+                    if (mass_minX[gr_index].count()==0) graphMin->setName(" ");
+                    if (mass_maxX[gr_index].count()==0) graphMax->setName(" ");
+                    ui->widget->replot();
+                }
+                break;
+            case 4: Derivat_triggered(0, mass_x_Gr[gr_index], mass_y_Gr[gr_index]); //вкладка скорость
+                break;
+            case 5: //вкладка сглаживание
                 expYcopy = expY;
                 QFile tempFile("tempUndo.bin");
                 QDataStream stream(&tempFile);
                 tempFile.open(QIODevice::WriteOnly);
                 stream << expYcopy;
                 tempFile.close();
-                //экспоненциальное сглаживание
-                if (ui->checkExp->isChecked()){
+                if (ui->checkExp->isChecked()){ //экспоненциальное сглаживание
                     for (int i = 1; i < mass_x_Gr[gr_index].count(); i++){
                         if ((mass_x_Gr[gr_index][i] < ui->Spin_x1->value()) || (mass_x_Gr[gr_index][i] > ui->Spin_x2->value())){
                             expY[i] = expYcopy[i];
                         }else if ((mass_x_Gr[gr_index][i] >= ui->Spin_x1->value()) && (mass_x_Gr[gr_index][i] <= ui->Spin_x2->value())){
-                            expY[i] = expY[i-1] + ui->SpinExp->value() * (expYcopy[i] - expY[i-1]); //записываем сглаженное значение
+                                expY[i] = expY[i-1] + ui->SpinExp->value() * (expYcopy[i] - expY[i-1]); //записываем сглаженное значение
                         }
                     }
                 }
-                //сглаживание Савицкого-Голея
-                if (ui->checkGolay->isChecked()){
+                if (ui->checkGolay->isChecked()){//сглаживание Савицкого-Голея
                     QList<int> h;
                     int r =  ui->spinGolay->value(), k = 0, s = 0; //с - кол-во выходов за пределы окна
                     double sum = 0;
-                    if (ui->rectORtriangle->value()==0)
+                    if (ui->rectORtriangle->value()==0){
                         for (int g = -r; g <= r; g++)
                             if (g==0) h.append(2);
                             else h.append(1);
-                    else{
+                    }else{
                         for (int g = 1; g <= r+1; g++)  h.append(g);
                         for (int g = r; g >= 1; g--)  h.append(g);
                     }
                     for (int i = 0; i < mass_x_Gr[gr_index].count(); i++){
                         if ((mass_x_Gr[gr_index][i] < ui->Spin_x1->value()) || (mass_x_Gr[gr_index][i] > ui->Spin_x2->value())){
                             expY[i] = expYcopy[i];
-                        }else if ((mass_x_Gr[gr_index][i] >= ui->Spin_x1->value()) && (mass_x_Gr[gr_index][i] <= ui->Spin_x2->value())){
-                            for (int j = i-r; j <= i+r; j++){ //для прохода по окну
+                            }else if ((mass_x_Gr[gr_index][i] >= ui->Spin_x1->value()) && (mass_x_Gr[gr_index][i] <= ui->Spin_x2->value())){
+                                for (int j = i-r; j <= i+r; j++){ //для прохода по окну
                                 //если окно выходит заграницы всего графика, т.к. не могу проверить границу житого элемента(из-за отрицательного значения)
                                 if ((j < 0) || (j >= mass_x_Gr[gr_index].count())){
                                     k+=1;
@@ -465,79 +534,16 @@ void MainWindow::spanMouseUp(QMouseEvent *event)
                                     s+=h[k];
                                     k+=1;
                                 }
-                            }
+                                }
                             expY[i] = sum / s; //записываем сглаженное значение
                             sum = 0; k = 0; s = 0;
-                        }
+                            }
                     }
                 }
-            graphic1->setData(mass_x_Gr[gr_index].toVector(), expY.toVector());
-            ui->widget->replot();
+                graphic1->setData(mass_x_Gr[gr_index].toVector(), expY.toVector());
+                ui->widget->replot();
+                break;
             }
-        }else if (ui->manualExtrem->isChecked()){//включена ручная настройка экстремумов: удаление
-            mouseDown = false;
-            rectPoint->setVisible(false); ui->widget->replot();
-            if (ui->rbMin->isChecked()){
-                for(int i = 0; i < mass_minX[gr_index].count(); i++){
-                    if(((mass_minX[gr_index][i] > rectPoint->topLeft->coords().x()) && (mass_minY[gr_index][i] < rectPoint->topLeft->coords().y()) && (mass_minX[gr_index][i] < rectPoint->bottomRight->coords().x()) && (mass_minY[gr_index][i] > rectPoint->bottomRight->coords().y()))
-                            || ((mass_minX[gr_index][i] < rectPoint->topLeft->coords().x()) && (mass_minY[gr_index][i] < rectPoint->topLeft->coords().y()) && (mass_minX[gr_index][i] > rectPoint->bottomRight->coords().x()) && (mass_minY[gr_index][i] > rectPoint->bottomRight->coords().y()))){
-                        if (textListMin[gr_index].count()>0){
-                            textListMin[gr_index][i]->setVisible(false); textListMin[gr_index].removeAt(i);
-                        }
-                        mass_minX[gr_index].removeAt(i);   mass_minY[gr_index].removeAt(i);
-                        graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
-                        i-=1;
-                    if (trendMin[gr_index].count() > 0) on_btn_BuildMnk_clicked(); //перестраиваем МНК мин
-                    }
-                }
-            }else if (ui->rbMax->isChecked()){
-                for(int i = 0; i < mass_maxX[gr_index].count(); i++){
-                    if (((mass_maxX[gr_index][i] > rectPoint->topLeft->coords().x()) && (mass_maxY[gr_index][i] < rectPoint->topLeft->coords().y()) && (mass_maxX[gr_index][i] < rectPoint->bottomRight->coords().x()) && (mass_maxY[gr_index][i] > rectPoint->bottomRight->coords().y()))
-                            || ((mass_maxX[gr_index][i] < rectPoint->topLeft->coords().x()) && (mass_maxY[gr_index][i] < rectPoint->topLeft->coords().y()) && (mass_maxX[gr_index][i] > rectPoint->bottomRight->coords().x()) && (mass_maxY[gr_index][i] > rectPoint->bottomRight->coords().y()))){
-                        if (textListMax[gr_index].count()>0){
-                            textListMax[gr_index][i]->setVisible(false); textListMax[gr_index].removeAt(i);
-                        }
-                        mass_maxX[gr_index].removeAt(i);   mass_maxY[gr_index].removeAt(i);
-                        graphMax->setData(mass_maxX[gr_index].toVector(), mass_maxY[gr_index].toVector());
-                        i-=1;
-                    if (trendMax[gr_index].count() > 0) on_btn_BuildMnk_clicked(); //перестраиваем МНК макс
-                    }
-                }
-            }else if (ui->rbAll->isChecked()){
-                for(int i = 0; i < mass_minX[gr_index].count(); i++){
-                    if(((mass_minX[gr_index][i] > rectPoint->topLeft->coords().x()) && (mass_minY[gr_index][i] < rectPoint->topLeft->coords().y()) && (mass_minX[gr_index][i] < rectPoint->bottomRight->coords().x()) && (mass_minY[gr_index][i] > rectPoint->bottomRight->coords().y()))
-                            || ((mass_minX[gr_index][i] < rectPoint->topLeft->coords().x()) && (mass_minY[gr_index][i] < rectPoint->topLeft->coords().y()) && (mass_minX[gr_index][i] > rectPoint->bottomRight->coords().x()) && (mass_minY[gr_index][i] > rectPoint->bottomRight->coords().y()))){
-                        if (textListMin[gr_index].count()>0){
-                            textListMin[gr_index][i]->setVisible(false); textListMin[gr_index].removeAt(i);
-                        }
-                        mass_minX[gr_index].removeAt(i);   mass_minY[gr_index].removeAt(i);
-                        graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
-                        i-=1;
-                    if (trendMin[gr_index].count() > 0) on_btn_BuildMnk_clicked(); //перестраиваем МНК мин
-                    }
-                }
-                for(int i = 0; i < mass_maxX[gr_index].count(); i++){
-                    if (((mass_maxX[gr_index][i] > rectPoint->topLeft->coords().x()) && (mass_maxY[gr_index][i] < rectPoint->topLeft->coords().y()) && (mass_maxX[gr_index][i] < rectPoint->bottomRight->coords().x()) && (mass_maxY[gr_index][i] > rectPoint->bottomRight->coords().y()))
-                            || ((mass_maxX[gr_index][i] < rectPoint->topLeft->coords().x()) && (mass_maxY[gr_index][i] < rectPoint->topLeft->coords().y()) && (mass_maxX[gr_index][i] > rectPoint->bottomRight->coords().x()) && (mass_maxY[gr_index][i] > rectPoint->bottomRight->coords().y()))){
-                        if (textListMax[gr_index].count()>0){
-                            textListMax[gr_index][i]->setVisible(false); textListMax[gr_index].removeAt(i);
-                        }
-                        mass_maxX[gr_index].removeAt(i);   mass_maxY[gr_index].removeAt(i);
-                        graphMax->setData(mass_maxX[gr_index].toVector(), mass_maxY[gr_index].toVector());
-                        i-=1;
-                    if (trendMax[gr_index].count() > 0) on_btn_BuildMnk_clicked(); //перестраиваем МНК макс
-                    }
-                }
-            }
-            if (textListMin[gr_index].count()==0 && (textListMax[gr_index].count()==0)) ui->SliderPointGr->setValue(0);
-            if (mass_minX[gr_index].count()==0) graphMin->setName(" ");
-            if (mass_maxX[gr_index].count()==0) graphMax->setName(" ");
-            ui->widget->replot();
-        }else{//здесь включен настройка продолжительности раб. режима
-            mouseDown = false;
-            indexSearch(ui->Spin_x1->value(), ui->Spin_x2->value());
-            if (ui->startWork1->isChecked()) ui->SpinTimeExp->setValue(x2-x1);
-            else ui->SpinTimeExp->setValue(x2-((x2-x1)/2)); //x2 минус радиус
         }
     }
 }
@@ -690,7 +696,7 @@ void MainWindow::on_btn_delGraph_clicked() //удаление выделеног
 void MainWindow::on_startWork1_clicked() //определение начала рабочего режима (1 метод)
 {
     ui->startWork2->setChecked(false);
-    if (ui->listWidget->count() > 0 && ui->checkTimeExp->isChecked() && ui->SpinTimeExp->value()!=0){
+    if ((ui->listWidget->count() > 0) && (ui->tabWidget->currentIndex() == 2) && (ui->SpinTimeExp->value()!=0)){
         ui->Browser_stWork->clear(); ui->Browser_stWork->append("Фазы начала рабочего режима:");
         QList <double> tempX, tempY, mnkLine;
         mass_minX[gr_index].clear(); mass_minY[gr_index].clear();
@@ -736,7 +742,7 @@ void MainWindow::on_SpinLimit_valueChanged(double arg1){ on_startWork1_clicked()
 void MainWindow::on_startWork2_clicked() //начало раб. режима (2 метод)
 {
     ui->startWork1->setChecked(false);
-    if (ui->listWidget->count() > 0 && ui->checkTimeExp->isChecked() && ui->SpinTimeExp->value()!=0){
+    if ((ui->listWidget->count() > 0) && (ui->tabWidget->currentIndex() == 2) && (ui->SpinTimeExp->value()!=0)){
         ui->Browser_stWork->clear(); ui->Browser_stWork->append("Фазы начала рабочего режима:");
         mass_minX[gr_index].clear(); mass_minY[gr_index].clear();
         int r = (x2-x1)/2, ind = 0, i = 0, k = 0;
@@ -775,12 +781,6 @@ void MainWindow::on_startWork2_clicked() //начало раб. режима (2 
 void MainWindow::on_SpinTimeExp_valueChanged(int arg1){ //изменение времени эксперимента
     if (ui->startWork1->isChecked()) on_startWork1_clicked();
     else on_startWork2_clicked();
-}
-
-void MainWindow::on_checkTimeExp_toggled(bool checked)//вкл/выкл скользящего окна
-{
-    if (checked) ui->widget->setCursor(QCursor(Qt::SplitHCursor));
-    else ui->widget->setCursor(QCursor(Qt::ArrowCursor));
 }
 
 void MainWindow::on_doubleSpinBox1_valueChanged(){ autoSearchSimple(); } //изменение спина экстремомов
@@ -845,11 +845,6 @@ void MainWindow::on_btn_autoSearch2_clicked() //2 способ экстрему�
             ui->widget->replot();
         }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Определите начало рабочего режима или точки минимумов."));
     }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
-}
-
-void MainWindow::on_manualExtrem_clicked(bool checked) //ручное изменение экстремумов
-{
-    if (checked) ui->checkTimeExp->setChecked(false);
 }
 
 void MainWindow::on_btn_delExtrem_clicked() //удаление экстремумов
@@ -947,7 +942,7 @@ void MainWindow::speedSearch() //скорость реакции и восста
 
 void MainWindow::Derivat_triggered(int d, QList<double> &x, QList<double> &y) //вызов вычисления производной кусочно-непрерывной функции
 {
-    if (ui->listWidget->count() > 0 && ui->Spin_x2->value()>ui->Spin_x1->value() && !ui->checkTimeExp->isChecked()){
+    if ((ui->listWidget->count() > 0) && (ui->Spin_x2->value()>ui->Spin_x1->value()) && (ui->tabWidget->currentIndex() == 4)){
         double sred = 0, znpozit = 0;
         indexSearch(ui->Spin_x1->value(), ui->Spin_x2->value()); //ищем индекс диапазона
         Derivative *der = new Derivative();
@@ -968,12 +963,12 @@ void MainWindow::Derivat_triggered(int d, QList<double> &x, QList<double> &y) //
 
 void MainWindow::on_checkExp_clicked(bool checked) //вкл./выкл. эксп. сглаживания
 {
-    ui->SpinExp->setEnabled(checked); ui->checkGolay->setChecked(false); ui->spinGolay->setEnabled(false); ui->checkTimeExp->setChecked(false);
+    ui->SpinExp->setEnabled(checked); ui->checkGolay->setChecked(false); ui->spinGolay->setEnabled(false);
 }
 
 void MainWindow::on_checkGolay_clicked(bool checked) //вкл./выкл. сглаживания Савицкого-Голея
 {
-    ui->spinGolay->setEnabled(checked); ui->checkExp->setChecked(false); ui->SpinExp->setEnabled(false); ui->checkTimeExp->setChecked(false);
+    ui->spinGolay->setEnabled(checked); ui->checkExp->setChecked(false); ui->SpinExp->setEnabled(false);
 }
 
 void MainWindow::on_undo()
@@ -1226,9 +1221,15 @@ void MainWindow::on_SliderPointGr_valueChanged(int value) //показать/с�
     }else ui->SliderPointGr->setValue(0);
 }
 
-
-
-void MainWindow::on_checkTimeExp_clicked()//когда выбираем скользящее окно, чтобы кнопка ручной настройки экстр. отжималась
+void MainWindow::on_cmbBox_dispers_activated(int index)
 {
-    ui->manualExtrem->setChecked(false);
+
+}
+
+void MainWindow::on_tabWidget_currentChanged(int index)//когда выбираем скользящее окно, чтобы кнопка ручной настройки экстр. отжималась
+{
+    if (ui->tabWidget->currentIndex() == 2){
+        ui->manualExtrem->setChecked(false);
+        ui->widget->setCursor(QCursor(Qt::SplitHCursor));
+    }else ui->widget->setCursor(QCursor(Qt::ArrowCursor));
 }
