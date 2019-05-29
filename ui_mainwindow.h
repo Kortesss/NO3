@@ -1482,6 +1482,7 @@ public:
 
         cmbBox_dispers = new QComboBox(tab_7);
         cmbBox_dispers->setObjectName(QStringLiteral("cmbBox_dispers"));
+        cmbBox_dispers->setEnabled(true);
 
         verticalLayout_24->addWidget(cmbBox_dispers);
 

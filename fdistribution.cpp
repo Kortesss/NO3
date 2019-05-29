@@ -8,7 +8,7 @@ fdistribution::fdistribution(double alf, int n1, int n2)
     do{
         y = FDist(Fcritical, n1, n2);
         Fcritical += 0.001;
-        qDebug() << y;
+        //qDebug() << y;
     } while (y < p_val);
 }
 
@@ -23,11 +23,11 @@ double fdistribution::get_Fcritic()
 }
 
 // P {F>F(m,n)} = p
-double fdistribution::FDist(double F, int m, int n)
+double fdistribution::FDist(double F, double m, double n)
 {
     double xx = 0.0, p = 0.0;
 
-	if (m <= 0 || n <= 0) p = -1;
+    if ((m <= 0) || (n <= 0)) p = -1;
     else if (F > 0){
         xx = F / (F + n / m);
         p = betainc(xx, m / 2, n / 2);
@@ -131,7 +131,7 @@ double fdistribution::betainc(double x, double a, double b) //неполная �
 {
     double y, BT, AAA;
 
-    if (x == 0 || x == 1)
+    if ((x == 0) || (x == 1))
         BT = 0;
     else
     {

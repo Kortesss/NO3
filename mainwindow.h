@@ -68,13 +68,13 @@ private slots:
 
     void on_startWork1_clicked(); //определение начала рабочего режима (1 метод)
 
-    void on_SpinLimit_valueChanged(double arg1); //изменение порог. знач. (R)  для старт режима (метод 1)
+    void on_SpinLimit_valueChanged(double ); //изменение порог. знач. (R)  для старт режима (метод 1)
 
     void on_startWork2_clicked(); //начало раб. режима (2 метод)
 
-    void on_SpinTimeExp_valueChanged(int arg1); //изменение времени эксперимента
+    void on_SpinTimeExp_valueChanged(int ); //изменение времени эксперимента
 
-    void on_doubleSpinBox1_valueChanged();  //изменение спина экстремомов (простой)
+    void on_doubleSpinBox1_valueChanged(double );  //изменение спина экстремомов (простой)
 
     void autoSearchSimple(); //1 способ поиска экстремумов (простой)
 
@@ -108,7 +108,7 @@ private slots:
 
     void on_btn_delMnk_clicked(); //удаление МНК
 
-    void on_spinLevel_valueChanged(); //спин мнк
+    void on_spinLevel_valueChanged(double); //спин мнк
 
     void on_btn_Manual_clicked(); //запуск руководства пользователя
 
@@ -129,10 +129,10 @@ private:
     bool mouseDown, left; //mauseDown - при движении мыши, проверяем была ли нажата правая кнопка, left - переключатель
     QList<QList<double> > mass_x_Gr, mass_y_Gr; //массив x и y каждого графика
     QList<QList<double> > mass_minX, mass_maxX, mass_minY, mass_maxY, trendMin, trendMax; //массивы мин. и макс. x, y и и точки для линии тренда для каждого графика
-    QList<QList<double> > xLevelMin, yLevelMin, xLevelMax, yLevelMax, StWork1,StWork2;
+    QList<QList<double> > xLevelMin, yLevelMin, xLevelMax, yLevelMax, StWork1,StWork2, speedReaction, speedRecovery;
     QList <QString> mnkStrMin, mnkStrMax; //для сохраниения легенды мнк
     QList <double> minx, miny, maxx, maxy, koef; //мин. и макс. x, y и коэффициент
-    QList <double> expY, expYcopy, speedReaction, speedRecovery; //для экспоненциального сглаживания
+    QList <double> expY, expYcopy; //для экспоненциального сглаживания
     QList <QString> axis_x_Gr, axis_y_Gr; //наименования осей каждого графика
     QVector<double> derivate, derivate2; //1-я и 2-я производных исх. сигнала, производная свертки
     int x1, x2; //индексы значений выделенного интервала
