@@ -7,7 +7,7 @@
 #include "filterfft.h"
 #include "extrem_simple.h"
 #include "correl_analysis.h"
-#include "fdistribution.h"
+#include "dispers_analysis.h"
 
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWindow){
     ui->setupUi(this);
@@ -16,15 +16,13 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     connect(CtrlZ, SIGNAL(activated()), this, SLOT(on_undo()));
     CtrlY = new QShortcut(this);    CtrlY->setKey(Qt::CTRL + Qt::Key_Y);
     connect(CtrlY, SIGNAL(activated()), this, SLOT(on_redo()));
-fdistribution *fd = new fdistribution(0.05, 4, 3);
-qDebug() << fd->get_Fcritic();
-delete fd;
+
     connect(ui->widget,SIGNAL(mousePress(QMouseEvent*)),this,SLOT(mousePress(QMouseEvent*)));
     connect(ui->widget, SIGNAL(mouseMove(QMouseEvent*)), this, SLOT(histogramMouseMoved(QMouseEvent*)));
     connect(ui->widget, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(spanMouseUp(QMouseEvent*)));
     connect(&timer, SIGNAL(timeout()), SLOT(TimerTick()));
 
-    ui->label_21->setVisible(false); ui->cmbBox_Correl->setVisible(false); ui->btn_CorrToText->setVisible(false);
+    //ui->label_21->setVisible(false); ui->cmbBox_Correl->setVisible(false); ui->btn_CorrToText->setVisible(false);
 
     QAction *ActOpenCorr = new QAction("Открыть из файла...", this);
     ui->btn_CorrToText->addAction(ActOpenCorr);
@@ -34,15 +32,15 @@ delete fd;
     ui->listWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->listWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotCustomMenuRequested(QPoint)));
 
-    ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+    ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom);
     graphMin = ui->widget->addGraph(); //Добавление минимумов
     graphMin->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
     graphMin->setLineStyle(QCPGraph::lsNone);//убираем линии
-    graphMin->setName(" ");   graphMin->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
+    graphMin->setName(" ");   graphMin->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 5));
     graphMax = ui->widget->addGraph(); //Добавление максимумов
     graphMax->setPen(QColor(255, 0, 0, 255));//задаем красный цвет точки
     graphMax->setLineStyle(QCPGraph::lsNone);
-    graphMax->setName(" ");    graphMax->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
+    graphMax->setName(" ");    graphMax->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 5));
 
     graphMnkMin = ui->widget->addGraph(); //Добавление МНК мин
     graphMnkMin->setPen(QColor(67, 138, 0, 255));//задаем зеленый цвет
@@ -156,6 +154,7 @@ void MainWindow::on_btn_openFile_clicked() //выбор файла и запол
         textListMNK.append(QList <QCPItemText*>()); //для отображения значения МНК на графике
         textListMNK[gr_index].append(new QCPItemText(ui->widget)); textListMNK[gr_index].append(new QCPItemText(ui->widget));
         StWork1.append(QList <double>());  StWork2.append(QList <double>());
+        speedReaction.append(QList <double>()); speedRecovery.append(QList <double>());
         axis_x_Gr.append("x");   axis_y_Gr.append("y");
         ui->listWidget->setCurrentRow(gr_index); //устанавливаем выделение последнему загруженному графику
         on_listWidget_clicked();//очищаем все графы предыдущего графика
@@ -172,7 +171,7 @@ void MainWindow::act_openCorr_clicked() //открыть файл с вычис�
                             QDir::currentPath(),
                             "(*.txt);;All files (*.*)");
         if (fileName.length() > 0){
-            speedReaction.clear();  mass_maxY[gr_index].clear(); speedRecovery.clear();
+            speedReaction[gr_index].clear();  mass_maxY[gr_index].clear(); speedRecovery[gr_index].clear();
             QFile file(fileName);
             if(!file.open(QIODevice::ReadOnly)) {QMessageBox::information(0, "Заголовок сообщения об ошибке", file.errorString());}
             QTextStream in(&file);
@@ -181,9 +180,9 @@ void MainWindow::act_openCorr_clicked() //открыть файл с вычис�
                 QRegExp rx("(\\ |\\t)"); //RegEx for ' ' or '\t'
                 line=line.replace(',','.');
                 QStringList fields = line.split(rx);
-                speedReaction.append(fields[0].toDouble()); //добавляем данные по последниему индексу списка графиков listwidget
+                speedReaction[gr_index].append(fields[0].toDouble()); //добавляем данные по последниему индексу списка графиков listwidget
                 mass_maxY[gr_index].append(fields[1].toDouble());
-                speedRecovery.append(fields[2].toDouble());
+                speedRecovery[gr_index].append(fields[2].toDouble());
             }
             file.close();
         }
@@ -737,7 +736,7 @@ void MainWindow::on_startWork1_clicked() //определение начала �
     }
 }
 
-void MainWindow::on_SpinLimit_valueChanged(double arg1){ on_startWork1_clicked(); } //изменение порог. знач. (R)  для старт режима (метод 1)
+void MainWindow::on_SpinLimit_valueChanged(double ){ on_startWork1_clicked(); } //изменение порог. знач. (R)  для старт режима (метод 1)
 
 void MainWindow::on_startWork2_clicked() //начало раб. режима (2 метод)
 {
@@ -778,12 +777,12 @@ void MainWindow::on_startWork2_clicked() //начало раб. режима (2 
     }
 }
 
-void MainWindow::on_SpinTimeExp_valueChanged(int arg1){ //изменение времени эксперимента
+void MainWindow::on_SpinTimeExp_valueChanged(int ){ //изменение времени эксперимента
     if (ui->startWork1->isChecked()) on_startWork1_clicked();
     else on_startWork2_clicked();
 }
 
-void MainWindow::on_doubleSpinBox1_valueChanged(){ autoSearchSimple(); } //изменение спина экстремомов
+void MainWindow::on_doubleSpinBox1_valueChanged(double ){ autoSearchSimple(); } //изменение спина экстремомов
 
 void MainWindow::autoSearchSimple() //Автопоиск экстремумов(простой)
 {
@@ -914,27 +913,28 @@ void MainWindow::indexSearch(double valX1, double valX2)//ищем индекс 
 void MainWindow::speedSearch() //скорость реакции и восстановления
 {
     if (mass_minX[gr_index].count() > 0){
+        bool up = false;
         double sred = 0, znpozit = 0, valX1 = 0, valX2 = 0;
-        int j = 0, k = 0;
-        speedReaction.clear(); speedRecovery.clear();
+        int k = 0, h = 0;
+        if (mass_maxX[gr_index][0] > mass_minX[gr_index][0]) up = true; //проверяем возрастает ли график
+        speedReaction[gr_index].clear(); speedRecovery[gr_index].clear();
         Derivative *der = new Derivative();
-        while (j < mass_maxX[gr_index].count()*2){
-            if (j % 2 == 0){ //сначала находим скорость реакции
+        while((k <  mass_minX[gr_index].count()) && (h <  mass_maxX[gr_index].count())){ //k - отвечает за порядковый номер min, h - max
+            if (up){ //находим скорость реакции
                 valX1 = mass_minX[gr_index][k];//StWork1[gr_index][k];
-                valX2 = mass_maxX[gr_index][k];
-            }else{ //потом скорость восстановления
-                valX1 = mass_maxX[gr_index][k];
-                valX2 = mass_minX[gr_index][k+1];//StWork1[gr_index][k+1];
-                k+=1;
+                valX2 = mass_maxX[gr_index][h];
+            }else{ //скорость восстановления
+                valX1 = mass_maxX[gr_index][h];
+                valX2 = mass_minX[gr_index][k];//StWork1[gr_index][k+1];
             }
             indexSearch(valX1, valX2); //ищем индекс диапазона
             for (int i = x1; i <= x2; i++) {
                 znpozit = der->get_dd(mass_x_Gr[gr_index][i],mass_x_Gr[gr_index][i+1], mass_y_Gr[gr_index][i], mass_y_Gr[gr_index][i+1]);
-                sred += znpozit;
+                sred += znpozit;//находим скорость
             }
-            if (j % 2 == 0) speedReaction.append(abs(sred));
-            else speedRecovery.append(abs(sred));
-            sred = 0; znpozit = 0; j+=1;
+            if (up) { speedReaction[gr_index].append(abs(sred)); k+=1; up = false; } //записываем и меняем на восстановление  и сдвигаем поряд. номер min
+            else{ speedRecovery[gr_index].append(abs(sred)); h+=1; up = true; } //записываем и меняем на реакцию и сдвигаем поряд. номер max
+            sred = 0; znpozit = 0;
         }
         delete der;
     }
@@ -1004,13 +1004,9 @@ void MainWindow::on_redo()
 void MainWindow::on_btn_delta_clicked() //Расчет изменения дельты сигнала
 {
     if (ui->listWidget->count() > 0){
-        if (mass_minX[gr_index].count()!=0 && mass_maxX[gr_index].count()!=0 && mass_minY[gr_index].count()!=0 && mass_maxY[gr_index].count()!=0){
-        //сортировка экстремумов по возрастанию, вдруг мы добавили в конец списка Qlist новый экстремум, который идет не по порядку
-            //std::sort(mass_minX[gr_index].begin(), mass_minX[gr_index].end());
-            //std::sort(mass_maxX[gr_index].begin(), mass_maxX[gr_index].end());
-        //но игрикам не подходит сортирвка, поэтому лучше строить по порядку пока что
+        if (mass_minX[gr_index].count()!=0 && mass_maxX[gr_index].count()!=0){
             speedSearch();
-            deltaWin *DeltaW = new deltaWin(mass_minX[gr_index], mass_maxX[gr_index], mass_minY[gr_index], mass_maxY[gr_index], speedReaction, speedRecovery, this);
+            deltaWin *DeltaW = new deltaWin(mass_minX[gr_index], mass_maxX[gr_index], mass_minY[gr_index], mass_maxY[gr_index], speedReaction[gr_index], speedRecovery[gr_index], this);
             DeltaW->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - Δ сигнала");
             DeltaW->show();
             DeltaW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
@@ -1047,9 +1043,9 @@ void MainWindow::on_cmbBox_Correl_activated(int index) //Корреляцион�
             speedSearch();
             correl_analysis *CorrelW;
             switch (index){
-                case 0 : CorrelW = new correl_analysis(speedReaction, mass_maxY[gr_index], "Скорость реакции V, м/с", "Размах сигнала R, Ом", this); break;
-                case 1 : CorrelW = new correl_analysis(speedRecovery, mass_maxY[gr_index], "Скорость восстановления V, м/с", "Размах сигнала R, Ом", this); break;
-                default: CorrelW = new correl_analysis(speedRecovery,speedReaction, "Скорость реакции V1, м/с", "Скорость восстановления V2, м/с", this);
+                case 0 : CorrelW = new correl_analysis(speedReaction[gr_index], mass_maxY[gr_index], "Скорость реакции V, м/с", "Размах сигнала R, Ом", this); break;
+                case 1 : CorrelW = new correl_analysis(speedRecovery[gr_index], mass_maxY[gr_index], "Скорость восстановления V, м/с", "Размах сигнала R, Ом", this); break;
+                default: CorrelW = new correl_analysis(speedRecovery[gr_index],speedReaction[gr_index], "Скорость реакции V1, м/с", "Скорость восстановления V2, м/с", this);
             }
             CorrelW->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - Корреляционный анализ");
             CorrelW->show();
@@ -1063,15 +1059,15 @@ void MainWindow::on_btn_CorrToText_clicked()//сохранить скорост�
     if (ui->listWidget->count() > 0){
         if (mass_maxY[gr_index].count() > 0){
             speedSearch();
-            if (speedReaction.count()>0){
+            if (speedReaction[gr_index].count()>0){
                 QString nameGr = "Корреляц. анализ";
                 QString fileName = QFileDialog::getSaveFileName(0, QString::fromUtf8("Сохранение значений для корреляц. анализа"),
                     nameGr, "Файл txt (*.txt)");
                 QFile fileOut(fileName);
                 if(fileOut.open(QIODevice::WriteOnly | QIODevice::Text)){
                 QTextStream writeStream(&fileOut);
-                for(int i = 0; i < speedReaction.count(); i++){
-                    writeStream << speedReaction[i] << "\t" << mass_maxY[gr_index][i] << "\t" << speedRecovery[i] << "\n";
+                for(int i = 0; i < speedReaction[gr_index].count(); i++){
+                    writeStream << speedReaction[gr_index][i] << "\t" << mass_maxY[gr_index][i] << "\t" << speedRecovery[gr_index][i] << "\n";
                     }
                 }
                 fileOut.close();
@@ -1169,7 +1165,7 @@ void MainWindow::on_btn_delMnk_clicked() //удаление МНК
     }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
 
-void MainWindow::on_spinLevel_valueChanged(){ on_btn_BuildMnk_clicked(); } //спин мнк
+void MainWindow::on_spinLevel_valueChanged(double ){ on_btn_BuildMnk_clicked(); } //спин мнк
 
 void MainWindow::on_btn_Manual_clicked() //запуск руководства пользователя
 {
@@ -1223,13 +1219,36 @@ void MainWindow::on_SliderPointGr_valueChanged(int value) //показать/с�
 
 void MainWindow::on_cmbBox_dispers_activated(int index)
 {
-
+    if (ui->listWidget->count() > 0) {
+        int g = gr_index;
+        gr_index = 0;
+        QList <QString> list;
+        for (int i = 0; i < ui->listWidget->count(); i++){ //сичтаю скорости всех графиков
+            speedSearch();
+            gr_index +=1;
+        }
+        gr_index = g;
+        for (int i = 0; i < ui->listWidget->count(); i++) list.append(ui->listWidget->item(i)->text());
+        if (index == 0){
+            dispers_analysis *DispersW = new dispers_analysis(ui->cmbBox_dispers->currentText(), list, speedReaction, this);
+            DispersW->show();
+            DispersW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+        } else{
+            dispers_analysis *DispersW = new dispers_analysis(ui->cmbBox_dispers->currentText(), list, speedRecovery, this);
+            DispersW->show();
+            DispersW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+        }
+    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
 
 void MainWindow::on_tabWidget_currentChanged(int index)//когда выбираем скользящее окно, чтобы кнопка ручной настройки экстр. отжималась
 {
-    if (ui->tabWidget->currentIndex() == 2){
+    if ((index == 2) && (ui->listWidget->count() > 0)){
         ui->manualExtrem->setChecked(false);
         ui->widget->setCursor(QCursor(Qt::SplitHCursor));
-    }else ui->widget->setCursor(QCursor(Qt::ArrowCursor));
+    }else{
+        ui->widget->setCursor(QCursor(Qt::ArrowCursor));
+        ui->manualExtrem->setChecked(false);
+    }
+
 }

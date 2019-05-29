@@ -20,7 +20,7 @@ public:
     ~fdistribution();
     fdistribution(double alf, int n1, int n2);
     double betainc(double x, double a, double b);
-    double FDist(double F, int m, int n);
+    double FDist(double F, double m, double n);
     double betainv(double p, double a, double b);
 
     double beta(double z, double w);

@@ -23,5 +23,6 @@
         <file>img/og-in.png</file>
         <file>img/open.png</file>
         <file>img/triangle.png</file>
+        <file>img/calculator.png</file>
     </qresource>
 </RCC>
