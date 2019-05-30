@@ -34,8 +34,6 @@ private slots:
 
     void on_btn_openFile_clicked(); //выбор файла и заполнение массива данных
 
-    void act_openCorr_clicked(); //открыть файл с вычисленной скоростью и размахом
-
     void on_btn_exit_clicked(); //выход из программы
 
     void on_btn_saveImage_clicked(); //Сохранение изображения графика
@@ -82,6 +80,10 @@ private slots:
 
     void on_btn_delExtrem_clicked(); //удаление экстремумов
 
+    void on_btn_openExtrem_clicked(); //открыть файл с экстремумами
+
+    void on_btn_saveExtrem_clicked(); //сохранить файл с экстремумами
+
     void on_btn_grDerivative_clicked(); //отрисовка графика производной
 
     void indexSearch(double valX1, double valX2); //ищем индекс массива выделенного интервала
@@ -90,11 +92,17 @@ private slots:
 
     void Derivat_triggered(int d, QList<double> &x, QList<double> &y); //расчет скорости по выделенному диапазону
 
+    void on_btn_calcSpeed_clicked(); //кнопка Вычислить скорость реакции и восстановления
+
+    void on_btn_openSpeed_clicked(); //кнопка Открыть файл со скоростьюи размахом
+
+    void on_btn_saveSpeed_clicked(); //кнопка Сохранить в файл скорости
+
     void on_checkExp_clicked(bool checked); //вкл./выкл. эксп. сглаживания
 
     void on_checkGolay_clicked(bool checked); //вкл./выкл. сглаживания Савицкого-Голея
 
-    void on_undo(); void on_redo();
+    void on_undo(); void on_redo(); //команды отменить, вернуть для сглаживания
 
     void on_btn_delta_clicked(); //Расчет изменения дельты сигнала
 
@@ -117,8 +125,6 @@ private slots:
     void on_SliderLegend_valueChanged(int value); //вкл./выкл. легенды
 
     void on_SliderPointGr_valueChanged(int value); //показать/скрыть координаты точек установленных вручную
-
-    void on_btn_CorrToText_clicked(); //сохранить скорости и размах в файл
 
     void on_tabWidget_currentChanged(int index);
 
