@@ -22,11 +22,7 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     connect(ui->widget, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(spanMouseUp(QMouseEvent*)));
     connect(&timer, SIGNAL(timeout()), SLOT(TimerTick()));
 
-    //ui->label_21->setVisible(false); ui->cmbBox_Correl->setVisible(false); ui->btn_CorrToText->setVisible(false);
-
-    QAction *ActOpenCorr = new QAction("Открыть из файла...", this);
-    ui->btn_CorrToText->addAction(ActOpenCorr);
-    connect(ActOpenCorr, SIGNAL(triggered(bool)), this, SLOT(act_openCorr_clicked()));
+    ui->label_21->setVisible(false); ui->cmbBox_Correl->setVisible(false); ui->label_34->setVisible(false);
 
     t = 0; gr_index = 0; mouseDown = false; left = false; x1 = 0; x2 = 0;
     ui->listWidget->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -161,32 +157,6 @@ void MainWindow::on_btn_openFile_clicked() //выбор файла и запол
         x2 = mass_x_Gr[gr_index].count()-1;
         ui->tabWidget->setCurrentIndex(1);
     }else {delete it; delete progBar;  /*delete btn;*/  delete l; delete wgt;}
-}
-
-void MainWindow::act_openCorr_clicked() //открыть файл с вычисленной скоростью и размахом
-{
-    if (ui->listWidget->count() > 0){
-        QString fileName = QFileDialog::getOpenFileName(0,
-                            QString::fromUtf8("Открыть файл"),
-                            QDir::currentPath(),
-                            "(*.txt);;All files (*.*)");
-        if (fileName.length() > 0){
-            speedReaction[gr_index].clear();  mass_maxY[gr_index].clear(); speedRecovery[gr_index].clear();
-            QFile file(fileName);
-            if(!file.open(QIODevice::ReadOnly)) {QMessageBox::information(0, "Заголовок сообщения об ошибке", file.errorString());}
-            QTextStream in(&file);
-            while(!in.atEnd()) {
-                QString line = in.readLine();
-                QRegExp rx("(\\ |\\t)"); //RegEx for ' ' or '\t'
-                line=line.replace(',','.');
-                QStringList fields = line.split(rx);
-                speedReaction[gr_index].append(fields[0].toDouble()); //добавляем данные по последниему индексу списка графиков listwidget
-                mass_maxY[gr_index].append(fields[1].toDouble());
-                speedRecovery[gr_index].append(fields[2].toDouble());
-            }
-            file.close();
-        }
-    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Список графиков пуст."));
 }
 
 void MainWindow::on_btn_exit_clicked(){ QApplication::quit(); } //выход из программы
@@ -332,6 +302,7 @@ void MainWindow::mousePress(QMouseEvent *event) //ручная установк�
                 textListMin[gr_index][i]->setVisible(false);
                 if (trendMin[gr_index].count() > 0) on_btn_BuildMnk_clicked(); //перестраиваем МНК мин
                 ui->widget->replot();
+                ui->btn_saveExtrem->setEnabled(true);
             }
             //добавляем максимумы x, y
             if (ui->manualExtrem->isChecked() && ui->rbMax->isChecked()){
@@ -348,6 +319,7 @@ void MainWindow::mousePress(QMouseEvent *event) //ручная установк�
                 textListMax[gr_index][i]->setVisible(false);
                 if (trendMax[gr_index].count() > 0) on_btn_BuildMnk_clicked(); //перестраиваем МНК макс
                 ui->widget->replot();
+                ui->btn_saveExtrem->setEnabled(true);
             }
         }
         if (event->button() == Qt::RightButton){
@@ -373,6 +345,7 @@ void MainWindow::mousePress(QMouseEvent *event) //ручная установк�
                 }
             }
             ui->widget->replot();
+
         }
     }
 }
@@ -480,11 +453,12 @@ void MainWindow::spanMouseUp(QMouseEvent *event)
                                 i-=1;
                                 if (trendMax[gr_index].count() > 0) on_btn_BuildMnk_clicked(); //перестраиваем МНК макс
                             }
-                        }
+                        }                      
                     }
                     if (textListMin[gr_index].count()==0 && (textListMax[gr_index].count()==0)) ui->SliderPointGr->setValue(0);
                     if (mass_minX[gr_index].count()==0) graphMin->setName(" ");
                     if (mass_maxX[gr_index].count()==0) graphMax->setName(" ");
+                    if ((mass_minX[gr_index].count()<=0) && (mass_maxX[gr_index].count()<=0)) ui->btn_saveExtrem->setEnabled(false);
                     ui->widget->replot();
                 }
                 break;
@@ -733,6 +707,7 @@ void MainWindow::on_startWork1_clicked() //определение начала �
         graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
         graphMin->setName("Минимумы"); graphMin->setVisible(true);
         ui->widget->replot();
+        ui->btn_saveExtrem->setEnabled(true);
     }
 }
 
@@ -774,6 +749,7 @@ void MainWindow::on_startWork2_clicked() //начало раб. режима (2 
         graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
         graphMin->setName("Минимумы"); graphMin->setVisible(true);
         ui->widget->replot();
+        ui->btn_saveExtrem->setEnabled(true);
     }
 }
 
@@ -809,6 +785,7 @@ void MainWindow::autoSearchSimple() //Автопоиск экстремумов(
         }
         graphMax->setName("Максимумы"); graphMax->setVisible(true);
         ui->widget->replot(); delete ex_s;
+        ui->btn_saveExtrem->setEnabled(true);
     }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
 
@@ -842,6 +819,7 @@ void MainWindow::on_btn_autoSearch2_clicked() //2 способ экстрему�
             graphMax->setData(mass_maxX[gr_index].toVector(), mass_maxY[gr_index].toVector());
             graphMax->setName("Максимумы"); graphMax->setVisible(true);
             ui->widget->replot();
+            ui->btn_saveExtrem->setEnabled(true);
         }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Определите начало рабочего режима или точки минимумов."));
     }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
@@ -884,7 +862,70 @@ void MainWindow::on_btn_delExtrem_clicked() //удаление экстрему�
             }
         }
         ui->widget->replot();
+        if ((mass_minX[gr_index].count()<=0) && (mass_maxX[gr_index].count()<=0)) ui->btn_saveExtrem->setEnabled(false);
     }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
+}
+
+void MainWindow::on_btn_openExtrem_clicked() //открыть файл с экстремумами
+{
+
+    if ((ui->listWidget->count() > 0) && (trendMin[gr_index].count()<=0) && (trendMax[gr_index].count()<=0)){
+        QString fileName = QFileDialog::getOpenFileName(0,
+                            QString::fromUtf8("Открыть файл"),
+                            QDir::currentPath(),
+                            "(*.txt);;All files (*.*)");
+        if (fileName.length() > 0){
+            QFile file(fileName);
+            if(!file.open(QIODevice::ReadOnly)) {QMessageBox::information(0, "Заголовок сообщения об ошибке", file.errorString());}
+            QTextStream in(&file);
+            bool b = false;
+            int i = 0, j = 0;
+            ui->rbAll->setChecked(true);
+            on_btn_delExtrem_clicked();
+            while(!in.atEnd()) {
+                QString line = in.readLine();
+                QRegExp rx("(\\ |\\t)"); //RegEx for ' ' or '\t'
+                line=line.replace(',','.');
+                QStringList fields = line.split(rx);
+                if (b){ //пропускаем 1 строку с подписью
+                    if (fields[0]!="0") mass_minX[gr_index].append(fields[0].toDouble()); //добавляем данные по последниему индексу списка графиков listwidget
+                    if (fields[1]!="0") mass_minY[gr_index].append(fields[1].toDouble());
+                    if (fields[2]!="0") mass_maxX[gr_index].append(fields[2].toDouble());
+                    if (fields[3]!="0") mass_maxY[gr_index].append(fields[3].toDouble());
+                }
+                b = true; i+=1; j+=1;
+            }
+            file.close();
+            graphMin->setData(mass_minX[gr_index].toVector(), mass_minY[gr_index].toVector());
+            graphMin->setName("Минимумы"); graphMin->setVisible(true);
+            graphMax->setData(mass_maxX[gr_index].toVector(), mass_maxY[gr_index].toVector());
+            graphMax->setName("Максимумы"); graphMax->setVisible(true);
+            ui->widget->replot();
+            ui->btn_saveExtrem->setEnabled(true);
+        }
+    }
+}
+
+void MainWindow::on_btn_saveExtrem_clicked() //сохранить файл с экстремумами
+{
+    QString nameGr = "Экстремумы - " + ui->listWidget->item(gr_index)->text() ;
+    QString fileName = QFileDialog::getSaveFileName(0, QString::fromUtf8("Сохранение значений экстремумов"),
+        nameGr, "Файл txt (*.txt)");
+    QFile fileOut(fileName);
+    if(fileOut.open(QIODevice::WriteOnly | QIODevice::Text)){
+        QTextStream writeStream(&fileOut);
+        writeStream << "Min X" << "   " << "Min Y" << "   " << "Max X" << "   "<< "Max Y" << "\n";
+        int i = 0, max = mass_minX[gr_index].count();
+        if (mass_maxX[gr_index].count() > max) max = mass_maxX[gr_index].count();
+        while (i < max){
+            if (i < mass_minX[gr_index].count()) writeStream << mass_minX[gr_index][i] << "\t" << mass_minY[gr_index][i] << "\t";
+            else writeStream << "0" << "\t" << "0" << "\t";
+            if (i < mass_maxY[gr_index].count()) writeStream << mass_maxX[gr_index][i] << "\t" << mass_maxY[gr_index][i] << "\n";
+            else writeStream << "0" << "\t" << "0" << "\n";
+            i+=1;
+        }
+    }
+    fileOut.close();
 }
 
 void MainWindow::on_btn_grDerivative_clicked() //отрисовка графика производной
@@ -912,7 +953,7 @@ void MainWindow::indexSearch(double valX1, double valX2)//ищем индекс 
 
 void MainWindow::speedSearch() //скорость реакции и восстановления
 {
-    if (mass_minX[gr_index].count() > 0){
+    if ((mass_minX[gr_index].count()>0) && (mass_maxX[gr_index].count()>0)){
         bool up = false;
         double sred = 0, znpozit = 0, valX1 = 0, valX2 = 0;
         int k = 0, h = 0;
@@ -961,6 +1002,84 @@ void MainWindow::Derivat_triggered(int d, QList<double> &x, QList<double> &y) //
     }
 }
 
+void MainWindow::on_btn_calcSpeed_clicked() //кнопка Вычислить скорость реакции и восстановления
+{
+    if (ui->listWidget->count() > 0){
+        ui->list_SpeedReact->clear(); ui->list_SpeedRecov->clear();
+        if ((mass_minX[gr_index].count()>0) && (mass_maxX[gr_index].count()>0)){
+            speedSearch();
+            for (int i = 0; i < speedReaction[gr_index].count(); i++)  ui->list_SpeedReact->addItem(QString::number(i+1)+ ") " + QString::number(speedReaction[gr_index][i]));
+            for (int i = 0; i < speedRecovery[gr_index].count(); i++)  ui->list_SpeedRecov->addItem(QString::number(i+1)+ ") " + QString::number(speedRecovery[gr_index][i]));
+            ui->btn_saveSpeed->setEnabled(true);
+        }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Экстремумы не определены!"));
+    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Список графиков пуст!"));
+}
+
+void MainWindow::on_btn_openSpeed_clicked() //кнопка Открыть файл со скоростьюи размахом
+{
+    if (ui->listWidget->count() > 0){
+        QString fileName = QFileDialog::getOpenFileName(0,
+                            QString::fromUtf8("Открыть файл"),
+                            QDir::currentPath(),
+                            "(*.txt);;All files (*.*)");
+        if (fileName.length() > 0){
+            speedReaction[gr_index].clear();  mass_maxY[gr_index].clear(); speedRecovery[gr_index].clear();
+            ui->list_SpeedReact->clear(); ui->list_SpeedRecov->clear();
+            QFile file(fileName);
+            if(!file.open(QIODevice::ReadOnly)) {QMessageBox::information(0, "Заголовок сообщения об ошибке", file.errorString());}
+            QTextStream in(&file);
+            bool b = false;
+            int i = 0, j = 0;
+            while(!in.atEnd()) {
+                QString line = in.readLine();
+                QRegExp rx("(\\ |\\t)"); //RegEx for ' ' or '\t'
+                line=line.replace(',','.');
+                QStringList fields = line.split(rx);
+                if (b){ //пропускаем 1 строку с подписью
+                    if (fields[0]!="0"){
+                        speedReaction[gr_index].append(fields[0].toDouble()); //добавляем данные по последниему индексу списка графиков listwidget
+                        ui->list_SpeedReact->addItem(QString::number(i)+ ") " + fields[0]);
+                    }
+                    if (fields[1]!="0")  mass_maxY[gr_index].append(fields[1].toDouble());
+
+                    if (fields[2]!="0"){
+                        speedRecovery[gr_index].append(fields[2].toDouble());
+                        ui->list_SpeedRecov->addItem(QString::number(j)+ ") " + fields[2]);
+                    }
+                }
+                b = true; i+=1; j+=1;
+            }
+            file.close();
+            ui->btn_saveSpeed->setEnabled(true);
+        }
+    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Список графиков пуст."));
+}
+
+void MainWindow::on_btn_saveSpeed_clicked() //кнопка Сохранить в файл скорости
+{
+    QString nameGr = "Скорость - " + ui->listWidget->item(gr_index)->text() ;
+    QString fileName = QFileDialog::getSaveFileName(0, QString::fromUtf8("Сохранение значений скорости"),
+        nameGr, "Файл txt (*.txt)");
+    QFile fileOut(fileName);
+    if(fileOut.open(QIODevice::WriteOnly | QIODevice::Text)){
+        QTextStream writeStream(&fileOut);
+        writeStream << "V reac." << " " << "Max" << "      " << "V recov." << "\n";
+        int i = 0, max = speedReaction[gr_index].count();
+        if (mass_maxY[gr_index].count() > max) max = mass_maxY[gr_index].count();
+        if (speedRecovery[gr_index].count() > max) max = speedRecovery[gr_index].count();
+        while (i < max){
+            if (i < speedReaction[gr_index].count()) writeStream << speedReaction[gr_index][i] << "\t";
+            else writeStream << "0" << "\t";
+            if (i < mass_maxY[gr_index].count()) writeStream << mass_maxY[gr_index][i] << "\t";
+            else writeStream << "0" << "\t";
+            if (i < speedRecovery[gr_index].count()) writeStream << speedRecovery[gr_index][i] << "\n";
+            else writeStream << "0" << "\n";
+            i+=1;
+        }
+    }
+    fileOut.close();
+}
+
 void MainWindow::on_checkExp_clicked(bool checked) //вкл./выкл. эксп. сглаживания
 {
     ui->SpinExp->setEnabled(checked); ui->checkGolay->setChecked(false); ui->spinGolay->setEnabled(false);
@@ -1004,8 +1123,7 @@ void MainWindow::on_redo()
 void MainWindow::on_btn_delta_clicked() //Расчет изменения дельты сигнала
 {
     if (ui->listWidget->count() > 0){
-        if (mass_minX[gr_index].count()!=0 && mass_maxX[gr_index].count()!=0){
-            speedSearch();
+        if ((mass_minX[gr_index].count()>0) && (mass_maxX[gr_index].count()>0)){
             deltaWin *DeltaW = new deltaWin(mass_minX[gr_index], mass_maxX[gr_index], mass_minY[gr_index], mass_maxY[gr_index], speedReaction[gr_index], speedRecovery[gr_index], this);
             DeltaW->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - Δ сигнала");
             DeltaW->show();
@@ -1038,42 +1156,33 @@ void MainWindow::on_btn_DFT_clicked() //Фильрация сигнала: Ди�
 
 void MainWindow::on_cmbBox_Correl_activated(int index) //Корреляционный анализ
 {
-    if (ui->listWidget->count() > 0){
-        if (mass_maxY[gr_index].count() > 0){
-            speedSearch();
-            correl_analysis *CorrelW;
+    if (ui->listWidget->count() > 0){        
             switch (index){
-                case 0 : CorrelW = new correl_analysis(speedReaction[gr_index], mass_maxY[gr_index], "Скорость реакции V, м/с", "Размах сигнала R, Ом", this); break;
-                case 1 : CorrelW = new correl_analysis(speedRecovery[gr_index], mass_maxY[gr_index], "Скорость восстановления V, м/с", "Размах сигнала R, Ом", this); break;
-                default: CorrelW = new correl_analysis(speedRecovery[gr_index],speedReaction[gr_index], "Скорость реакции V1, м/с", "Скорость восстановления V2, м/с", this);
-            }
-            CorrelW->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - Корреляционный анализ");
-            CorrelW->show();
-            CorrelW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
-        }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Экстремумы не определены!"));
+                case 0 : if (speedReaction[gr_index].count()>0){ //если выбрали скорость реакции/размах и скорость нашли, то хорошо. И т.д.
+                    correl_analysis *CorrelW;
+                    CorrelW = new correl_analysis(speedReaction[gr_index], mass_maxY[gr_index], "Скорость реакции V, м/с", "Размах сигнала R, Ом", this);
+                    CorrelW->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - Корреляционный анализ");
+                    CorrelW->show();
+                    CorrelW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+                }else QMessageBox::critical(NULL,QObject::tr("Внимание"),tr("Скорость реакции не определена."));
+                break;
+                case 1 :if (speedRecovery[gr_index].count()>0){
+                    correl_analysis *CorrelW;
+                    CorrelW = new correl_analysis(speedRecovery[gr_index], mass_maxY[gr_index], "Скорость восстановления V, м/с", "Размах сигнала R, Ом", this);
+                    CorrelW->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - Корреляционный анализ");
+                    CorrelW->show();
+                    CorrelW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+                }else QMessageBox::critical(NULL,QObject::tr("Внимание"),tr("Скорость восстановления не определена."));
+                break;
+                default: if (speedReaction[gr_index].count()>0){
+                    correl_analysis *CorrelW;
+                    CorrelW = new correl_analysis(speedRecovery[gr_index],speedReaction[gr_index], "Скорость реакции V1, м/с", "Скорость восстановления V2, м/с", this);
+                    CorrelW->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - Корреляционный анализ");
+                    CorrelW->show();
+                    CorrelW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+                }else QMessageBox::critical(NULL,QObject::tr("Внимание"),tr("Скорость реакции или восстановления не определены."));
+            }       
     }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
-}
-
-void MainWindow::on_btn_CorrToText_clicked()//сохранить скорости и размах в файл
-{
-    if (ui->listWidget->count() > 0){
-        if (mass_maxY[gr_index].count() > 0){
-            speedSearch();
-            if (speedReaction[gr_index].count()>0){
-                QString nameGr = "Корреляц. анализ";
-                QString fileName = QFileDialog::getSaveFileName(0, QString::fromUtf8("Сохранение значений для корреляц. анализа"),
-                    nameGr, "Файл txt (*.txt)");
-                QFile fileOut(fileName);
-                if(fileOut.open(QIODevice::WriteOnly | QIODevice::Text)){
-                QTextStream writeStream(&fileOut);
-                for(int i = 0; i < speedReaction[gr_index].count(); i++){
-                    writeStream << speedReaction[gr_index][i] << "\t" << mass_maxY[gr_index][i] << "\t" << speedRecovery[gr_index][i] << "\n";
-                    }
-                }
-                fileOut.close();
-            }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Скорость реакции или восстановления не определены!"));
-        }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Экстремумы не определены!"));
-    }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Список графиков пуст!"));
 }
 
 void MainWindow::on_btn_BuildMnk_clicked() //Построить МНК
@@ -1220,35 +1329,41 @@ void MainWindow::on_SliderPointGr_valueChanged(int value) //показать/с�
 void MainWindow::on_cmbBox_dispers_activated(int index)
 {
     if (ui->listWidget->count() > 0) {
-        int g = gr_index;
-        gr_index = 0;
-        QList <QString> list;
-        for (int i = 0; i < ui->listWidget->count(); i++){ //сичтаю скорости всех графиков
-            speedSearch();
-            gr_index +=1;
-        }
-        gr_index = g;
-        for (int i = 0; i < ui->listWidget->count(); i++) list.append(ui->listWidget->item(i)->text());
-        if (index == 0){
-            dispers_analysis *DispersW = new dispers_analysis(ui->cmbBox_dispers->currentText(), list, speedReaction, this);
-            DispersW->show();
-            DispersW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
-        } else{
-            dispers_analysis *DispersW = new dispers_analysis(ui->cmbBox_dispers->currentText(), list, speedRecovery, this);
-            DispersW->show();
-            DispersW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
-        }
+            int g = gr_index;
+            gr_index = 0;
+            QList <QString> list;
+            for (int j = 0; j < ui->listWidget->count(); j++){ //считаю скорости всех графиков
+                if (speedReaction[gr_index].count() == 0){
+                    speedSearch(); //если скоростей нет и их из файла не загружали, то попробуем рассчитать
+                    for (int i = 0; i < speedReaction[gr_index].count(); i++)  ui->list_SpeedReact->addItem(QString::number(i+1)+ ") " + QString::number(speedReaction[gr_index][i]));
+                    for (int i = 0; i < speedRecovery[gr_index].count(); i++)  ui->list_SpeedRecov->addItem(QString::number(i+1)+ ") " + QString::number(speedRecovery[gr_index][i]));
+                }
+                gr_index +=1;
+            }
+            gr_index = g;
+            for (int i = 0; i < ui->listWidget->count(); i++) list.append(ui->listWidget->item(i)->text());
+            if (index == 0){
+                dispers_analysis *DispersW = new dispers_analysis(ui->cmbBox_dispers->currentText(), list, speedReaction, this);
+                DispersW->show();
+                DispersW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+            }else{
+                dispers_analysis *DispersW = new dispers_analysis(ui->cmbBox_dispers->currentText(), list, speedRecovery, this);
+                DispersW->show();
+                DispersW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+            }
     }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
 
 void MainWindow::on_tabWidget_currentChanged(int index)//когда выбираем скользящее окно, чтобы кнопка ручной настройки экстр. отжималась
 {
-    if ((index == 2) && (ui->listWidget->count() > 0)){
-        ui->manualExtrem->setChecked(false);
-        ui->widget->setCursor(QCursor(Qt::SplitHCursor));
-    }else{
-        ui->widget->setCursor(QCursor(Qt::ArrowCursor));
-        ui->manualExtrem->setChecked(false);
+    if (ui->listWidget->count() > 0){
+        if (index == 2){
+            ui->manualExtrem->setChecked(false);
+            ui->widget->setCursor(QCursor(Qt::SplitHCursor));
+        }else{
+            ui->widget->setCursor(QCursor(Qt::ArrowCursor));
+            ui->manualExtrem->setChecked(false);
+        }
+        if ((index == 4) && (speedReaction[gr_index].count() > 0)) ui->btn_saveSpeed->setEnabled(true);
     }
-
 }
