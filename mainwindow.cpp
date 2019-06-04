@@ -149,7 +149,7 @@ void MainWindow::on_btn_openFile_clicked() //выбор файла и запол
         textListMin.append(QList <QCPItemText*>()); textListMax.append(QList <QCPItemText*>()); //для подписи координат на графике
         textListMNK.append(QList <QCPItemText*>()); //для отображения значения МНК на графике
         textListMNK[gr_index].append(new QCPItemText(ui->widget)); textListMNK[gr_index].append(new QCPItemText(ui->widget));
-        StWork1.append(QList <double>());  StWork2.append(QList <double>());
+        //StWork1.append(QList <double>());  StWork2.append(QList <double>());
         speedReaction.append(QList <double>()); speedRecovery.append(QList <double>());
         axis_x_Gr.append("x");   axis_y_Gr.append("y");
         ui->listWidget->setCurrentRow(gr_index); //устанавливаем выделение последнему загруженному графику
@@ -224,10 +224,16 @@ void MainWindow::on_listWidget_clicked() //для перехода по граф
     ui->Browser_Min->setText("Мин. X:\n" + QString("%1").arg(minx[gr_index]));
     ui->Browser_Max->setText("Макс. X:\n" + QString("%1").arg(maxx[gr_index]));
     ui->Browser_stWork->clear(); ui->Browser_stWork->append("Фазы начала рабочего режима:");
-    for(int i = 0; i < StWork1[gr_index].count(); i++){
-        ui->Browser_stWork->append(QString::number(i+1)+" - ("+QString::number(StWork1[gr_index][i])+"; "+QString::number(StWork2[gr_index][i])+")");
+    //for(int i = 0; i < StWork1[gr_index].count(); i++){
+    //    ui->Browser_stWork->append(QString::number(i+1)+" - ("+QString::number(StWork1[gr_index][i])+"; "+QString::number(StWork2[gr_index][i])+")");}
+    for(int i = 0; i < mass_minX[gr_index].count(); i++){
+        if (i==mass_minX[gr_index].count()-1) ui->Browser_stWork->append("Точка завершения:\n"+QString::number(i+1)+" - ("+QString::number(mass_minX[gr_index][i])+"; "+QString::number(mass_minY[gr_index][i])+")");
+        else ui->Browser_stWork->append(QString::number(i+1)+" - ("+QString::number(mass_minX[gr_index][i])+"; "+QString::number(mass_minY[gr_index][i])+")");
     }
     ui->Spin_x1->setValue(0.0); ui->Spin_x2->setValue(0.0);
+    ui->list_SpeedReact->clear(); ui->list_SpeedRecov->clear();
+    for (int i = 0; i < speedReaction[gr_index].count(); i++)  ui->list_SpeedReact->addItem(QString::number(i+1)+ ") " + QString::number(speedReaction[gr_index][i]));
+    for (int i = 0; i < speedRecovery[gr_index].count(); i++)  ui->list_SpeedRecov->addItem(QString::number(i+1)+ ") " + QString::number(speedRecovery[gr_index][i]));
     rectSpan->setVisible(false);
     ui->SliderSpan->setValue(0);
     ui->widget->xAxis->setLabel(axis_x_Gr[gr_index]);    ui->widget->yAxis->setLabel(axis_y_Gr[gr_index]);
@@ -622,7 +628,7 @@ void MainWindow::on_btn_clearGraph_clicked() //очистить графы гр�
         textListMNK[gr_index][0]->setVisible(false);  textListMNK[gr_index][1]->setVisible(false);
         textListMNK[gr_index][0]->setText("");  textListMNK[gr_index][1]->setText("");
         textListMin[gr_index].clear(); textListMax[gr_index].clear();
-        StWork1[gr_index].clear(); StWork2[gr_index].clear();
+        //StWork1[gr_index].clear(); StWork2[gr_index].clear();
         ui->Browser_stWork->setText("Фазы начала рабочего режима:");
         ui->widget->replot();
         }else{
@@ -642,6 +648,7 @@ void MainWindow::on_btn_delGraph_clicked() //удаление выделеног
         mass_minY.removeAt(gr_index); mass_maxY.removeAt(gr_index);
         minx.removeAt(gr_index); miny.removeAt(gr_index);
         maxx.removeAt(gr_index); maxy.removeAt(gr_index); koef.removeAt(gr_index);
+        speedReaction.removeAt(gr_index);  speedRecovery.removeAt(gr_index);
         trendMin.removeAt(gr_index); trendMax.removeAt(gr_index);
         textListMin[gr_index].clear(); textListMax[gr_index].clear();
         textListMin.removeAt(gr_index); textListMax.removeAt(gr_index);
@@ -649,13 +656,14 @@ void MainWindow::on_btn_delGraph_clicked() //удаление выделеног
         xLevelMin.removeAt(gr_index), yLevelMin.removeAt(gr_index),
         xLevelMax.removeAt(gr_index), yLevelMax.removeAt(gr_index);
         mass_x_Gr.removeAt(gr_index); mass_y_Gr.removeAt(gr_index);
-        StWork1[gr_index].removeAt(gr_index); StWork2[gr_index].removeAt(gr_index);
+        //StWork1[gr_index].removeAt(gr_index); StWork2[gr_index].removeAt(gr_index);
         ui->widget->xAxis->setLabel("");   ui->widget->yAxis->setLabel("");//важно сделать до replot
         ui->widget->replot();
         ui->listWidget->takeItem(gr_index); //удаляем из списка строку
         axis_x_Gr.removeAt(gr_index); axis_y_Gr.removeAt(gr_index);
 
         gr_index = 0; //передвигаем указатель графиков в начало
+        ui->list_SpeedReact->clear(); ui->list_SpeedRecov->clear();
         ui->textBrowser_X->clear(); ui->textBrowser_Y->clear(); ui->BrowserTime->clear();
         ui->Browser_Max->setText("Мин. X:");  ui->Browser_Min->setText("Макс. X:");
         ui->Browser_Derivative->setText("Производная:");
@@ -1007,10 +1015,12 @@ void MainWindow::on_btn_calcSpeed_clicked() //кнопка Вычислить с
     if (ui->listWidget->count() > 0){
         ui->list_SpeedReact->clear(); ui->list_SpeedRecov->clear();
         if ((mass_minX[gr_index].count()>0) && (mass_maxX[gr_index].count()>0)){
-            speedSearch();
-            for (int i = 0; i < speedReaction[gr_index].count(); i++)  ui->list_SpeedReact->addItem(QString::number(i+1)+ ") " + QString::number(speedReaction[gr_index][i]));
-            for (int i = 0; i < speedRecovery[gr_index].count(); i++)  ui->list_SpeedRecov->addItem(QString::number(i+1)+ ") " + QString::number(speedRecovery[gr_index][i]));
-            ui->btn_saveSpeed->setEnabled(true);
+            if (check_extrem()){
+                speedSearch();
+                for (int i = 0; i < speedReaction[gr_index].count(); i++)  ui->list_SpeedReact->addItem(QString::number(i+1)+ ") " + QString::number(speedReaction[gr_index][i]));
+                for (int i = 0; i < speedRecovery[gr_index].count(); i++)  ui->list_SpeedRecov->addItem(QString::number(i+1)+ ") " + QString::number(speedRecovery[gr_index][i]));
+                ui->btn_saveSpeed->setEnabled(true);
+            }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Экстремумы идут не по порядку. Значит и расчеты будут не правильные. Исправьте, пожалуйста."));
         }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Экстремумы не определены!"));
     }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Список графиков пуст!"));
 }
@@ -1120,14 +1130,45 @@ void MainWindow::on_redo()
     }
 }
 
+bool MainWindow::check_extrem() //Проверка экстремумов, чтобы они чередовались между собой
+{
+    bool b = true;
+    if (mass_minX[gr_index][0] < mass_maxX[gr_index][0]){//график возрастает изначально
+        if ((mass_maxX[gr_index].count()==mass_minX[gr_index].count()-1) || (mass_minX[gr_index].count()==mass_maxX[gr_index].count())){
+            for(int i = 0; ((i < mass_minX[gr_index].count()-1) && (i < mass_maxX[gr_index].count()-1)); i++){
+                if (i <  mass_minX[gr_index].count()-1){
+                    if ((mass_minX[gr_index][i] < mass_maxX[gr_index][i]) && (mass_maxX[gr_index][i] < mass_minX[gr_index][i+1]) && (mass_minX[gr_index][i+1] < mass_maxX[gr_index][i+1])){
+                        b = true;
+                    }else{
+                        b = false; break;
+                    }
+                }
+            }
+        }else b = false;
+    }else{ //график убывает
+            if ((mass_minX[gr_index].count()==mass_maxX[gr_index].count()-1) || (mass_maxX[gr_index].count()==mass_minX[gr_index].count())){
+            for(int i = 0; ((i < mass_minX[gr_index].count()-1) && (i < mass_maxX[gr_index].count()-1)); i++){
+                if ((mass_maxX[gr_index][i] < mass_minX[gr_index][i]) && (mass_minX[gr_index][i] < mass_maxX[gr_index][i+1])&& (mass_maxX[gr_index][i+1] < mass_minX[gr_index][i+1])){
+                    b = true;
+                }else{
+                    b = false; break;
+                }
+            }
+        }else b = false;
+    }
+    return b;
+}
+
 void MainWindow::on_btn_delta_clicked() //Расчет изменения дельты сигнала
 {
     if (ui->listWidget->count() > 0){
         if ((mass_minX[gr_index].count()>0) && (mass_maxX[gr_index].count()>0)){
-            deltaWin *DeltaW = new deltaWin(mass_minX[gr_index], mass_maxX[gr_index], mass_minY[gr_index], mass_maxY[gr_index], speedReaction[gr_index], speedRecovery[gr_index], this);
-            DeltaW->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - Δ сигнала");
-            DeltaW->show();
-            DeltaW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+            if (check_extrem()){
+                deltaWin *DeltaW = new deltaWin(mass_minX[gr_index], mass_maxX[gr_index], mass_minY[gr_index], mass_maxY[gr_index], speedReaction[gr_index], speedRecovery[gr_index], this);
+                DeltaW->setWindowTitle(ui->listWidget->item(gr_index)->text() + " - Δ сигнала");
+                DeltaW->show();
+                DeltaW->setAttribute(Qt::WA_DeleteOnClose); //деструктор
+            }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Экстремумы идут не по порядку. Значит и расчеты будут не правильные. Исправьте, пожалуйста."));
         }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Экстремумы не определены!"));
     }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Выберите файл с данными через диалог в меню для загрузки данных."));
 }
