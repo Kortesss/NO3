@@ -12,7 +12,7 @@ dispers_analysis::dispers_analysis(QString typeD, QList <QString> listWidget, QL
     ui->setupUi(this);
 
     ui->lab_1->setText("Итоги ("+typeD+"):");
-    ui->lab_warning->setStyleSheet("color: rgb(255, 0, 0)");
+    ui->lab_warning->setStyleSheet("color: rgb(255, 0, 0)"); //текст предупреждения - красный
     typeA = typeD;
     arr = Arr;
     for (int i = 0; i < listWidget.count(); i++){
@@ -86,7 +86,7 @@ double dispers_analysis::SSa(QList <double> ni) //между группами
     double res = 0, a = ui->tableResult->model()->rowCount();
     QList <double> sr;
     for (int i = 0; i < ui->listGr->count(); i++){
-        if (ui->listGr->item(i)->isSelected()){
+        if ((ui->listGr->item(i)->isSelected())  && (arr[i].count()>0)){
             sr.append(avg(arr[i])); //считаем среднее значение выделенного графика
         }
     }
@@ -101,7 +101,7 @@ double dispers_analysis::SSe(QList <double> ni) //внутри групп
     double res = 0, a = ui->tableResult->model()->rowCount();
     QList <double> dis;
     for (int i = 0; i < ui->listGr->count(); i++){
-        if (ui->listGr->item(i)->isSelected()){
+        if ((ui->listGr->item(i)->isSelected())  && (arr[i].count()>0)){
             dis.append(dispers(arr[i])); //считаем дисперсию выделенного графика
         }
     }
@@ -119,18 +119,20 @@ void dispers_analysis::on_pushButton_Calculate_clicked()
     X = 0; V = 0;
     QList <double> ni;
     model1->removeRows(0, ui->tableResult->model()->rowCount());
+    model2->removeRows(0, model2->rowCount());
+    ui->lab_opis->setText("");
     for (int i = 0; i < ui->listGr->count(); i++){
-        if (ui->listGr->item(i)->isSelected()) {rav = arr[i].count(); break;} //запоминаем кол-во данных первого выбраного графика
+        if ((ui->listGr->item(i)->isSelected())  && (arr[i].count()>0)) {rav = arr[i].count(); break;} //запоминаем кол-во данных первого не пустого выбраного графика
     }
     for (int i = 0; i < ui->listGr->count(); i++){
         if ((ui->listGr->item(i)->isSelected()) && (arr[i].count()>0)) c+=1;
-        if (arr[i].count() != rav) f1 = false; //если встретили не равное кол-во
+        if ((arr[i].count() != rav) && (arr[i].count()>0)) f1 = false; //если встретили не равное кол-во
     }
     if (c>1){ //если в списке графиков среди выделенных что-то есть больше 2, значит будем дальше считать
         if (!f1) ui->lab_warning->setText("Внимание! В выбранных графиках количество данных не равно между собой, из-за чего результат анализа может быть не точен!");
         else ui->lab_warning->setText("");
             for (int i = 0; i < ui->listGr->count(); i++){
-                if (ui->listGr->item(i)->isSelected()){
+                if ((ui->listGr->item(i)->isSelected()) && (arr[i].count()>0)){
                     model1->setItem(k, 0, new QStandardItem(ui->listGr->item(i)->text()));        //1 столбец - Графики
                     model1->setItem(k, 1, new QStandardItem(QString::number(arr[i].count())));    //2 столбец - Кол-во значений
                     model1->setItem(k, 2, new QStandardItem(QString::number(sum(arr[i]))));       //3 столбец - Сумма
@@ -148,7 +150,7 @@ void dispers_analysis::on_pushButton_Calculate_clicked()
             Ve = n - a; //число степеней свободы необъяснённой дисперсии
             //Вычислим суммы квадратов отклонений
             for (int i = 0; i < ui->listGr->count(); i++){
-                if (ui->listGr->item(i)->isSelected()){
+                if ((ui->listGr->item(i)->isSelected())  && (arr[i].count()>0)){
                     for (int j = 0; j < arr[i].count(); j++){
                         X += arr[i][j];
                     }
@@ -158,7 +160,6 @@ void dispers_analysis::on_pushButton_Calculate_clicked()
             if ((a-1) != 0) MSa = SSa(ni)/(a-1); //объяснённая дисперсия (между групами)
             if (Ve != 0) MSe = SSe(ni)/Ve; //необъяснённая дисперсия (внутри групп)
             if (MSe != 0) F = MSa/MSe; //фактическое отношение Фишера
-            model2->removeRows(0, model2->rowCount());
             model2->setItem(0, 0, new QStandardItem(QString("Между группами")));//Первый ряд
             model2->setItem(1, 0, new QStandardItem(QString("Внутри групп")));//Второй ряд
             model2->setItem(0, 1, new QStandardItem(QString::number(SSa(ni)))); //строка 1, столбец 2
