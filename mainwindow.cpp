@@ -96,6 +96,7 @@ void MainWindow::on_btn_openFile_clicked() //выбор файла и запол
     if (fileName.length() > 0){
             QFile file(fileName);
             setWindowTitle(file.fileName());
+            pathFile.append(file.fileName());
             ui->listWidget->insertItem(ui->listWidget->count()-1,it);//вставляем в список графиков тот итем
             ui->listWidget->setItemWidget(it, progBar);//связываем итем и прогресс-бар
             progBar->setFormat("График "+QString::number(ui->listWidget->count()));//настраиваем бар.. Текст
@@ -215,6 +216,7 @@ void MainWindow::on_listWidget_doubleClicked() //для отображения �
 void MainWindow::on_listWidget_clicked() //для перехода по графику
 {
     gr_index = ui->listWidget->currentRow();
+    setWindowTitle(pathFile[gr_index]);
     graphic1->setData(mass_x_Gr[gr_index].toVector(), mass_y_Gr[gr_index].toVector());
     graphic1->setVisible(true);//показать, если до этого удаляли график
     //Установим область, которая будет показываться на графике
@@ -661,8 +663,10 @@ void MainWindow::on_btn_delGraph_clicked() //удаление выделеног
         ui->widget->replot();
         ui->listWidget->takeItem(gr_index); //удаляем из списка строку
         axis_x_Gr.removeAt(gr_index); axis_y_Gr.removeAt(gr_index);
+        pathFile.removeAt(gr_index);
 
         gr_index = 0; //передвигаем указатель графиков в начало
+        setWindowTitle("Система мониторинга и обработки экспериментальных данных");
         ui->list_SpeedReact->clear(); ui->list_SpeedRecov->clear();
         ui->textBrowser_X->clear(); ui->textBrowser_Y->clear(); ui->BrowserTime->clear();
         ui->Browser_Max->setText("Мин. X:");  ui->Browser_Min->setText("Макс. X:");
@@ -1238,7 +1242,11 @@ void MainWindow::on_btn_BuildMnk_clicked() //Построить МНК
                 for(int i = 0; i < mass_minX[gr_index].count(); i++){
                     trendMin[gr_index].append(mnk1->get_yy(mass_minX[gr_index][i]));
                 }
-                yLevelMin[gr_index].append(trendMin[gr_index][0] + trendMin[gr_index][0]*(ui->spinLevel->value()/100));
+                if (trendMin[gr_index][1]>trendMin[gr_index][0]){
+                    yLevelMin[gr_index].append(trendMin[gr_index][0] + trendMin[gr_index][0]*(ui->spinLevel->value()/100));
+                }else{
+                    yLevelMin[gr_index].append(trendMin[gr_index][0] - trendMin[gr_index][0]*(ui->spinLevel->value()/100));
+                }
                 yLevelMin[gr_index].append(yLevelMin[gr_index][0]+yLevelMin[gr_index][0]*0.1);
                 yLevelMin[gr_index].append(yLevelMin[gr_index][0]-yLevelMin[gr_index][0]*0.1);
                 xLevelMin[gr_index].append((yLevelMin[gr_index][0]- mnk1->get_b()) / mnk1->get_a());
@@ -1269,9 +1277,13 @@ void MainWindow::on_btn_BuildMnk_clicked() //Построить МНК
                 for(int i = 0; i < mass_maxX[gr_index].count(); i++){
                     trendMax[gr_index].append(mnk2->get_yy(mass_maxX[gr_index][i]));
                 }
-                yLevelMax[gr_index].append(trendMax[gr_index][0] + trendMax[gr_index][0]*(ui->spinLevel->value()/100));
-                yLevelMax[gr_index].append(yLevelMax[gr_index][0]+yLevelMax[gr_index][0]*0.1);
-                yLevelMax[gr_index].append(yLevelMax[gr_index][0]-yLevelMax[gr_index][0]*0.1);
+                if (trendMax[gr_index][1]>trendMax[gr_index][0]){
+                    yLevelMax[gr_index].append(trendMax[gr_index][0] + trendMax[gr_index][0]*(ui->spinLevel->value()/100));
+                }else{
+                    yLevelMax[gr_index].append(trendMax[gr_index][0] - trendMax[gr_index][0]*(ui->spinLevel->value()/100));
+                }
+                yLevelMax[gr_index].append(yLevelMax[gr_index][0] + yLevelMax[gr_index][0]*0.1);
+                yLevelMax[gr_index].append(yLevelMax[gr_index][0] - yLevelMax[gr_index][0]*0.1);
                 xLevelMax[gr_index].append((yLevelMax[gr_index][0]-mnk2->get_b()) / mnk2->get_a());
                 xLevelMax[gr_index].append((yLevelMax[gr_index][0]-mnk2->get_b()) / mnk2->get_a());
                 xLevelMax[gr_index].append((yLevelMax[gr_index][0]-mnk2->get_b()) / mnk2->get_a());
