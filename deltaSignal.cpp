@@ -1,4 +1,4 @@
-#include "deltawin.h"
+#include "deltaSignal.h"
 #include "ui_deltawin.h"
 #include <qmath.h>
 

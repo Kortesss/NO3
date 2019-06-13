@@ -1,4 +1,4 @@
-#include "somewindow.h"
+#include "grDerivative.h"
 #include "ui_somewindow.h"
 #include <QDebug>
 

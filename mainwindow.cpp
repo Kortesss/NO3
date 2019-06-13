@@ -2,9 +2,9 @@
 #include "ui_mainwindow.h"
 #include "derivative.h"
 #include <QDebug>
-#include "somewindow.h"
-#include "deltawin.h"
-#include "filterfft.h"
+#include "grDerivative.h"
+#include "deltaSignal.h"
+#include "filterDFT.h"
 #include "extrem_simple.h"
 #include "correl_analysis.h"
 #include "dispers_analysis.h"
@@ -900,10 +900,10 @@ void MainWindow::on_btn_openExtrem_clicked() //открыть файл с экс
                 line=line.replace(',','.');
                 QStringList fields = line.split(rx);
                 if (b){ //пропускаем 1 строку с подписью
-                    if (fields[0]!="0") mass_minX[gr_index].append(fields[0].toDouble()); //добавляем данные по последниему индексу списка графиков listwidget
-                    if (fields[1]!="0") mass_minY[gr_index].append(fields[1].toDouble());
-                    if (fields[2]!="0") mass_maxX[gr_index].append(fields[2].toDouble());
-                    if (fields[3]!="0") mass_maxY[gr_index].append(fields[3].toDouble());
+                    if (fields[0]!="#") mass_minX[gr_index].append(fields[0].toDouble()); //добавляем данные по последниему индексу списка графиков listwidget
+                    if (fields[1]!="#") mass_minY[gr_index].append(fields[1].toDouble());
+                    if (fields[2]!="#") mass_maxX[gr_index].append(fields[2].toDouble());
+                    if (fields[3]!="#") mass_maxY[gr_index].append(fields[3].toDouble());
                 }
                 b = true; i+=1; j+=1;
             }
@@ -931,9 +931,9 @@ void MainWindow::on_btn_saveExtrem_clicked() //сохранить файл с э
         if (mass_maxX[gr_index].count() > max) max = mass_maxX[gr_index].count();
         while (i < max){
             if (i < mass_minX[gr_index].count()) writeStream << mass_minX[gr_index][i] << "\t" << mass_minY[gr_index][i] << "\t";
-            else writeStream << "0" << "\t" << "0" << "\t";
+            else writeStream << "#" << "\t" << "#" << "\t";
             if (i < mass_maxY[gr_index].count()) writeStream << mass_maxX[gr_index][i] << "\t" << mass_maxY[gr_index][i] << "\n";
-            else writeStream << "0" << "\t" << "0" << "\n";
+            else writeStream << "#" << "\t" << "#" << "\n";
             i+=1;
         }
     }
@@ -1050,13 +1050,13 @@ void MainWindow::on_btn_openSpeed_clicked() //кнопка Открыть фай
                 line=line.replace(',','.');
                 QStringList fields = line.split(rx);
                 if (b){ //пропускаем 1 строку с подписью
-                    if (fields[0]!="0"){
+                    if (fields[0]!="#"){
                         speedReaction[gr_index].append(fields[0].toDouble()); //добавляем данные по последниему индексу списка графиков listwidget
                         ui->list_SpeedReact->addItem(QString::number(i)+ ") " + fields[0]);
                     }
-                    if (fields[1]!="0")  mass_maxY[gr_index].append(fields[1].toDouble());
+                    if (fields[1]!="#")  mass_maxY[gr_index].append(fields[1].toDouble());
 
-                    if (fields[2]!="0"){
+                    if (fields[2]!="#"){
                         speedRecovery[gr_index].append(fields[2].toDouble());
                         ui->list_SpeedRecov->addItem(QString::number(j)+ ") " + fields[2]);
                     }
@@ -1083,11 +1083,11 @@ void MainWindow::on_btn_saveSpeed_clicked() //кнопка Сохранить в
         if (speedRecovery[gr_index].count() > max) max = speedRecovery[gr_index].count();
         while (i < max){
             if (i < speedReaction[gr_index].count()) writeStream << speedReaction[gr_index][i] << "\t";
-            else writeStream << "0" << "\t";
+            else writeStream << "#" << "\t";
             if (i < mass_maxY[gr_index].count()) writeStream << mass_maxY[gr_index][i] << "\t";
-            else writeStream << "0" << "\t";
+            else writeStream << "#" << "\t";
             if (i < speedRecovery[gr_index].count()) writeStream << speedRecovery[gr_index][i] << "\n";
-            else writeStream << "0" << "\n";
+            else writeStream << "#" << "\n";
             i+=1;
         }
     }
@@ -1332,7 +1332,7 @@ void MainWindow::on_spinLevel_valueChanged(double ){ on_btn_BuildMnk_clicked(); 
 void MainWindow::on_btn_Manual_clicked() //запуск руководства пользователя
 {
     QString path = qApp->applicationDirPath();
-    QProcess::execute("hh.exe "+path+"/manual1.chm");
+    QProcess::execute("hh.exe "+path+"/manual.chm");
 }
 
 void MainWindow::on_SliderSpan_valueChanged(int value) //вкл./выкл. диапазона значений

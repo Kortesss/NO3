@@ -1,5 +1,5 @@
 ﻿#include "fdistribution.h"
-#include <QDebug>
+
 fdistribution::fdistribution(double alf, int n1, int n2)
 {
     Fcritical = 0.001;
@@ -8,7 +8,6 @@ fdistribution::fdistribution(double alf, int n1, int n2)
     do{
         y = FDist(Fcritical, n1, n2);
         Fcritical += 0.001;
-        //qDebug() << y;
     } while (y < p_val);
 }
 
@@ -17,13 +16,13 @@ fdistribution::~fdistribution()
 
 }
 
-double fdistribution::get_Fcritic()
+double fdistribution::get_Fcritic() // возвращает F - распределение
 {
     return Fcritical;
 }
 
 // P {F>F(m,n)} = p
-double fdistribution::FDist(double F, double m, double n)
+double fdistribution::FDist(double F, double m, double n) // вычисление F-распределения
 {
     double xx = 0.0, p = 0.0;
 
@@ -77,7 +76,7 @@ double fdistribution::betainv(double p, double a, double b) //обратная �
 	return x;
 }
 
-double fdistribution::beta(double z, double w)
+double fdistribution::beta(double z, double w) //бета-функция
 {
 	int m, n, k, l, j;
 	double h[10], bb[10], hh, t1, s1, ep, s, x, t2, g;
@@ -146,7 +145,7 @@ double fdistribution::betainc(double x, double a, double b) //неполная �
 	return y;
 }
 
-double fdistribution::beta_cf(double a, double b, double x)
+double fdistribution::beta_cf(double a, double b, double x) //сравнение бета-функций
 {
 	int count, count_max = 100;
     double eps = 0.0000001;
