@@ -276,20 +276,23 @@ public:
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(940, 635);
         MainWindow->setMinimumSize(QSize(940, 0));
+        QIcon icon;
+        icon.addFile(QStringLiteral(":/img/img/set.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        MainWindow->setWindowIcon(icon);
         action_OpenFile1 = new QAction(MainWindow);
         action_OpenFile1->setObjectName(QStringLiteral("action_OpenFile1"));
-        QIcon icon;
-        icon.addFile(QStringLiteral(":/img/img/open.png"), QSize(), QIcon::Normal, QIcon::Off);
-        action_OpenFile1->setIcon(icon);
+        QIcon icon1;
+        icon1.addFile(QStringLiteral(":/img/img/open.png"), QSize(), QIcon::Normal, QIcon::Off);
+        action_OpenFile1->setIcon(icon1);
         action_GrFunc = new QAction(MainWindow);
         action_GrFunc->setObjectName(QStringLiteral("action_GrFunc"));
         action_exit1 = new QAction(MainWindow);
         action_exit1->setObjectName(QStringLiteral("action_exit1"));
         action_SaveImage1 = new QAction(MainWindow);
         action_SaveImage1->setObjectName(QStringLiteral("action_SaveImage1"));
-        QIcon icon1;
-        icon1.addFile(QStringLiteral(":/img/img/Line-Chart-icon.png"), QSize(), QIcon::Normal, QIcon::Off);
-        action_SaveImage1->setIcon(icon1);
+        QIcon icon2;
+        icon2.addFile(QStringLiteral(":/img/img/Line-Chart-icon.png"), QSize(), QIcon::Normal, QIcon::Off);
+        action_SaveImage1->setIcon(icon2);
         action_ClearGraph1 = new QAction(MainWindow);
         action_ClearGraph1->setObjectName(QStringLiteral("action_ClearGraph1"));
         actionD1 = new QAction(MainWindow);
@@ -317,9 +320,9 @@ public:
         startWork1_1->setChecked(true);
         action_SaveDataGr1 = new QAction(MainWindow);
         action_SaveDataGr1->setObjectName(QStringLiteral("action_SaveDataGr1"));
-        QIcon icon2;
-        icon2.addFile(QStringLiteral(":/img/img/512px-Save_font_awesome.svg.png"), QSize(), QIcon::Normal, QIcon::Off);
-        action_SaveDataGr1->setIcon(icon2);
+        QIcon icon3;
+        icon3.addFile(QStringLiteral(":/img/img/512px-Save_font_awesome.svg.png"), QSize(), QIcon::Normal, QIcon::Off);
+        action_SaveDataGr1->setIcon(icon3);
         action_autoSearch2_1 = new QAction(MainWindow);
         action_autoSearch2_1->setObjectName(QStringLiteral("action_autoSearch2_1"));
         action_Derivat1 = new QAction(MainWindow);
@@ -393,9 +396,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon3;
-        icon3.addFile(QStringLiteral(":/img/img/albums.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_openFile->setIcon(icon3);
+        QIcon icon4;
+        icon4.addFile(QStringLiteral(":/img/img/albums.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_openFile->setIcon(icon4);
         btn_openFile->setIconSize(QSize(18, 18));
         btn_openFile->setAutoDefault(false);
 
@@ -424,9 +427,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon4;
-        icon4.addFile(QStringLiteral(":/img/img/log-out.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_exit->setIcon(icon4);
+        QIcon icon5;
+        icon5.addFile(QStringLiteral(":/img/img/log-out.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_exit->setIcon(icon5);
         btn_exit->setIconSize(QSize(19, 19));
 
         verticalLayout_9->addWidget(btn_exit);
@@ -471,9 +474,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon5;
-        icon5.addFile(QStringLiteral(":/img/img/heart-monitor.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_saveImage->setIcon(icon5);
+        QIcon icon6;
+        icon6.addFile(QStringLiteral(":/img/img/heart-monitor.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_saveImage->setIcon(icon6);
         btn_saveImage->setIconSize(QSize(18, 18));
 
         verticalLayout_10->addWidget(btn_saveImage);
@@ -498,7 +501,7 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        btn_saveDataGr->setIcon(icon2);
+        btn_saveDataGr->setIcon(icon3);
         btn_saveDataGr->setCheckable(false);
         btn_saveDataGr->setChecked(false);
         btn_saveDataGr->setAutoExclusive(false);
@@ -598,9 +601,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon6;
-        icon6.addFile(QStringLiteral(":/img/img/img_clear.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_clearGraph->setIcon(icon6);
+        QIcon icon7;
+        icon7.addFile(QStringLiteral(":/img/img/img_clear.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_clearGraph->setIcon(icon7);
         btn_clearGraph->setIconSize(QSize(25, 25));
 
         verticalLayout_23->addWidget(btn_clearGraph);
@@ -626,9 +629,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon7;
-        icon7.addFile(QStringLiteral(":/img/img/del4.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_delGraph->setIcon(icon7);
+        QIcon icon8;
+        icon8.addFile(QStringLiteral(":/img/img/del4.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_delGraph->setIcon(icon8);
         btn_delGraph->setIconSize(QSize(25, 25));
 
         verticalLayout_23->addWidget(btn_delGraph);
@@ -919,9 +922,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon8;
-        icon8.addFile(QStringLiteral(":/img/img/max1.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_autoSearch2->setIcon(icon8);
+        QIcon icon9;
+        icon9.addFile(QStringLiteral(":/img/img/max1.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_autoSearch2->setIcon(icon9);
         btn_autoSearch2->setIconSize(QSize(28, 28));
         btn_autoSearch2->setCheckable(false);
         btn_autoSearch2->setChecked(false);
@@ -960,9 +963,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #aaaaaa, stop: 1 #a1a1a1);\n"
 " }"));
-        QIcon icon9;
-        icon9.addFile(QStringLiteral(":/img/img/md-build.png"), QSize(), QIcon::Normal, QIcon::Off);
-        manualExtrem->setIcon(icon9);
+        QIcon icon10;
+        icon10.addFile(QStringLiteral(":/img/img/md-build.png"), QSize(), QIcon::Normal, QIcon::Off);
+        manualExtrem->setIcon(icon10);
         manualExtrem->setIconSize(QSize(24, 24));
         manualExtrem->setCheckable(true);
         manualExtrem->setChecked(false);
@@ -1043,7 +1046,7 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        btn_openExtrem->setIcon(icon);
+        btn_openExtrem->setIcon(icon1);
 
         verticalLayout_28->addWidget(btn_openExtrem);
 
@@ -1066,7 +1069,7 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        btn_saveExtrem->setIcon(icon2);
+        btn_saveExtrem->setIcon(icon3);
 
         verticalLayout_28->addWidget(btn_saveExtrem);
 
@@ -1091,9 +1094,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon10;
-        icon10.addFile(QStringLiteral(":/img/img/md-remove-circle.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_delExtrem->setIcon(icon10);
+        QIcon icon11;
+        icon11.addFile(QStringLiteral(":/img/img/md-remove-circle.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_delExtrem->setIcon(icon11);
         btn_delExtrem->setIconSize(QSize(28, 28));
 
         verticalLayout_28->addWidget(btn_delExtrem);
@@ -1219,9 +1222,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon11;
-        icon11.addFile(QStringLiteral(":/img/img/md-trending-up.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_grDerivative->setIcon(icon11);
+        QIcon icon12;
+        icon12.addFile(QStringLiteral(":/img/img/md-trending-up.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_grDerivative->setIcon(icon12);
         btn_grDerivative->setIconSize(QSize(30, 30));
 
         horizontalLayout_27->addWidget(btn_grDerivative);
@@ -1312,9 +1315,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon12;
-        icon12.addFile(QStringLiteral(":/img/img/calculator.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_calcSpeed->setIcon(icon12);
+        QIcon icon13;
+        icon13.addFile(QStringLiteral(":/img/img/calculator.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_calcSpeed->setIcon(icon13);
 
         verticalLayout_27->addWidget(btn_calcSpeed);
 
@@ -1336,7 +1339,7 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        btn_openSpeed->setIcon(icon);
+        btn_openSpeed->setIcon(icon1);
 
         verticalLayout_27->addWidget(btn_openSpeed);
 
@@ -1359,7 +1362,7 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        btn_saveSpeed->setIcon(icon2);
+        btn_saveSpeed->setIcon(icon3);
 
         verticalLayout_27->addWidget(btn_saveSpeed);
 
@@ -1642,9 +1645,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon13;
-        icon13.addFile(QStringLiteral(":/img/img/triangle.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_delta->setIcon(icon13);
+        QIcon icon14;
+        icon14.addFile(QStringLiteral(":/img/img/triangle.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_delta->setIcon(icon14);
         btn_delta->setIconSize(QSize(25, 25));
 
         horizontalLayout_26->addWidget(btn_delta);
@@ -1765,9 +1768,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon14;
-        icon14.addFile(QStringLiteral(":/img/img/hammer.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_BuildMnk->setIcon(icon14);
+        QIcon icon15;
+        icon15.addFile(QStringLiteral(":/img/img/hammer.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_BuildMnk->setIcon(icon15);
 
         horizontalLayout_23->addWidget(btn_BuildMnk);
 
@@ -1792,9 +1795,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon15;
-        icon15.addFile(QStringLiteral(":/img/img/destroy.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_delMnk->setIcon(icon15);
+        QIcon icon16;
+        icon16.addFile(QStringLiteral(":/img/img/destroy.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_delMnk->setIcon(icon16);
 
         horizontalLayout_23->addWidget(btn_delMnk);
 
@@ -1965,9 +1968,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon16;
-        icon16.addFile(QStringLiteral(":/img/img/manual.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_Manual->setIcon(icon16);
+        QIcon icon17;
+        icon17.addFile(QStringLiteral(":/img/img/manual.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_Manual->setIcon(icon17);
         btn_Manual->setIconSize(QSize(20, 20));
         btn_Manual->setCheckable(false);
         btn_Manual->setChecked(false);
@@ -2227,13 +2230,25 @@ public:
         actionVreac_Max1->setText(QApplication::translate("MainWindow", "V\321\200\320\265\320\260\320\272\321\206\320\270\320\270 \342\206\224 \320\240\320\260\320\267\320\274\320\260\321\205 \321\201\320\270\320\263\320\275\320\260\320\273\320\260", 0));
         action_Vrecov_Max1->setText(QApplication::translate("MainWindow", "V\320\262\320\276\321\201\321\201\321\202\320\260\320\275\320\276\320\262\320\273\320\265\320\275\320\270\321\217 \342\206\224 \320\240\320\260\320\267\320\274\320\260\321\205 \321\201\320\270\320\263\320\275\320\260\320\273\320\260", 0));
         actionVreac_Vrec1->setText(QApplication::translate("MainWindow", "V\321\200\320\265\320\260\320\272\321\206\320\270\320\270 \342\206\224 V\320\262\320\276\321\201\321\201\321\202\320\260\320\275\320\276\320\262\320\273\320\265\320\275\320\270\321\217", 0));
+#ifndef QT_NO_TOOLTIP
+        btn_openFile->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p>\320\236\321\202\320\272\321\200\321\213\321\202\321\214 \321\204\320\260\320\271\320\273 \321\204\320\276\321\200\320\274\320\260\321\202\320\260 *.txt</p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
         btn_openFile->setText(QApplication::translate("MainWindow", "\320\236\321\202\320\272\321\200\321\213\321\202\321\214 \321\204\320\260\320\271\320\273", 0));
         btn_openFile->setShortcut(QApplication::translate("MainWindow", "Ctrl+O", 0));
+#ifndef QT_NO_TOOLTIP
+        btn_exit->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p>\320\227\320\260\320\272\321\200\321\213\321\202\321\214 \320\277\321\200\320\276\320\263\321\200\320\260\320\274\320\274\321\203</p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
         btn_exit->setText(QApplication::translate("MainWindow", "\320\222\321\213\321\205\320\276\320\264", 0));
         btn_exit->setShortcut(QApplication::translate("MainWindow", "Ctrl+Q", 0));
         label_8->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        btn_saveImage->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p>\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\270\320\267\320\276\320\261\321\200\320\260\320\266\320\265\320\275\320\270\320\265 \320\262 \321\204\320\276\321\200\320\274\320\260\321\202\320\260\321\205 *jpg, *.png, *bmp, *pdf</p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
         btn_saveImage->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\270\320\267\320\276\320\261\321\200\320\260\320\266\320\265\320\275\320\270\320\265 \320\263\321\200\320\260\321\204\320\270\320\272\320\260", 0));
         btn_saveImage->setShortcut(QApplication::translate("MainWindow", "Ctrl+Shift+S", 0));
+#ifndef QT_NO_TOOLTIP
+        btn_saveDataGr->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p>\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\321\217 \320\263\321\200\320\260\321\204\320\270\320\272\320\260 \320\262 \321\204\320\276\321\200\320\274\320\260\321\202\320\265 *.txt</p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
         btn_saveDataGr->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\321\217 \320\263\321\200\320\260\321\204\320\270\320\272\320\260", 0));
         btn_saveDataGr->setShortcut(QApplication::translate("MainWindow", "Ctrl+S", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "\320\244\320\260\320\271\320\273", 0));
@@ -2256,6 +2271,9 @@ public:
 "</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8.25pt;\">\320\234\320\260\320\272\321\201. X: </span></p></body></html>", 0));
         label_14->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        btn_clearGraph->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p>\320\224\320\273\321\217 \320\262\321\213\320\261\321\200\320\260\320\275\320\275\320\276\320\263\320\276 \320\263\321\200\320\260\321\204\320\270\320\272\320\260 \321\203\320\264\320\260\320\273\320\270\321\202\321\214 \320\262\321\201\320\265 \320\265\320\263\320\276 \320\263\321\200\320\260\321\204\321\213</p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
         btn_clearGraph->setText(QApplication::translate("MainWindow", "\320\236\321\207\320\270\321\201\321\202\320\270\321\202\321\214\n"
 "\320\263\321\200\320\260\321\204\321\213", 0));
 #ifndef QT_NO_TOOLTIP
@@ -2287,7 +2305,7 @@ public:
         label_25->setText(QString());
 #ifndef QT_NO_TOOLTIP
         manualExtrem->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">\320\240\321\203\321\207\320\275\320\260\321\217 \321\203\321\201\321\202\320\260\320\275\320\276\320\262\320\272\320\260 \320\270\320\273\320\270 \321\203\320\264\320\260\320\273\320\265\320\275\320\270\320\265 \321\215\320\272\321\201\321\202\321\200\320\265\320\274\321\203\320\274\320\276\320\262.</span></p><p>\320\243\321\201\321\202\320\260\320\275\320\276\320\262\320\272\320\260 \320\276\321\201\321\203\321\211\320\265\321\201\321\202\320\262\320\273\321\217\320\265\321\202\321\201\321\217 \320\277\321\200\320\270 \320\277\320\276\320\274\320\276\321\211\320\270 \320\273\320\265\320\262\320\276\320\271 \320\272\320\275\320\276\320\277\320\272\320\270 \320\274\321\213\321\210\320\270, \320\260 \321\203\320\264\320\260\320\273\320\265\320\275\320\270\320\265 \320\277\320\276 \320\262\321\213\320\264\320\265\320\273\320\265\320\275\320\275\320\276\320\274\321\203 \320\264\320\270\320\277\320\260\320\267\320\276\320\275\321\203 - \320\277\321\200\320\260"
-                        "\320\262\320\276\320\271 \320\272\320\275\320\276\320\277\320\272\320\276\320\271 \320\274\321\213\321\210\320\270.</p></body></html>", 0));
+                        "\320\262\320\276\320\271 \320\272\320\275\320\276\320\277\320\272\320\276\320\271 \320\274\321\213\321\210\320\270.</p><p><span style=\" font-style:italic;\">\320\222\320\260\320\266\320\275\320\276:\320\242\320\276\321\207\320\272\320\270 \321\215\320\272\321\201\321\202\321\200\320\265\320\274\321\203\320\274\320\276\320\262 \320\264\320\276\320\273\320\266\320\275\321\213 \321\207\320\265\321\200\320\265\320\264\320\276\320\262\320\260\321\202\321\214\321\201\321\217 \320\274\320\265\320\266\320\264\321\203 \321\201\320\276\320\261\320\276\320\271, \320\270\321\201\321\205\320\276\320\264\321\217 \320\270\320\267 \320\276\320\277\321\200\320\265\320\264\320\265\320\273\320\265\320\275\320\270\321\217 \320\264\320\260\320\275\320\275\320\276\320\263\320\276 \320\277\320\276\320\275\321\217\321\202\320\270\321\217.</span></p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         manualExtrem->setText(QApplication::translate("MainWindow", "\320\240\321\203\321\207\320\275\320\260\321\217\n"
 "\320\275\320\260\321\201\321\202\321\200\320\276\320\271\320\272\320\260", 0));
@@ -2296,7 +2314,13 @@ public:
         rbMin->setText(QApplication::translate("MainWindow", "\320\234\320\270\320\275\320\270\320\274\321\203\320\274", 0));
         rbAll->setText(QApplication::translate("MainWindow", "\320\222\321\201\320\265", 0));
         label_31->setText(QString());
+#ifndef QT_NO_TOOLTIP
+        btn_openExtrem->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p>\320\236\321\202\320\272\321\200\321\213\321\202\321\214 \321\204\320\260\320\271\320\273 \321\204\320\276\321\200\320\274\320\260\321\202\320\260 *.txt \321\201 \321\201\320\276\321\205\321\200\320\260\320\275\320\265\320\275\320\275\321\213\320\274\320\270 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\321\217\320\274\320\270 \321\215\320\272\321\201\321\202\321\200\320\265\320\274\321\203\320\274\320\276\320\262</p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
         btn_openExtrem->setText(QApplication::translate("MainWindow", "\320\236\321\202\320\272\321\200\321\213\321\202\321\214", 0));
+#ifndef QT_NO_TOOLTIP
+        btn_saveExtrem->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p>\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\262 \321\202\320\265\320\272\321\201\321\202\320\276\320\262\321\213\320\271 \321\204\320\276\321\200\320\274\320\260\321\202 *.txt</p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
         btn_saveExtrem->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214", 0));
 #ifndef QT_NO_TOOLTIP
         btn_delExtrem->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">\320\243\320\264\320\260\320\273\320\265\320\275\320\270\320\265 \321\215\320\272\321\201\321\202\321\200\320\265\320\274\321\203\320\274\320\276\320\262 \320\277\321\200\320\276\320\263\321\200\320\260\320\274\320\274\320\275\320\276</span>, \320\277\321\200\320\270 \320\262\321\213\320\261\320\276\321\200\320\265 1 \320\270\320\267 3 \320\262\320\260\321\200\320\270\320\260\320\275\321\202\320\276\320\262.</p></body></html>", 0));
@@ -2314,13 +2338,22 @@ public:
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8.25pt;\">\320\237\321\200\320\276\320\270\320\267\320\262\320\276\320\264\320\275\320\260\321\217: </span></p></body></html>", 0));
+#ifndef QT_NO_TOOLTIP
+        btn_grDerivative->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p>\320\237\320\276\320\272\320\260\320\267\320\260\321\202\321\214 \320\263\321\200\320\260\321\204\320\270\320\272 \321\201\320\272\320\276\321\200\320\276\321\201\321\202\320\270 \320\262\321\213\320\264\320\265\320\273\320\265\320\275\320\275\320\276\320\263\320\276 \320\264\320\270\320\260\320\277\320\260\320\267\320\276\320\275\320\260 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\271</p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
         btn_grDerivative->setText(QApplication::translate("MainWindow", "\320\223\321\200\320\260\321\204\320\270\320\272 \321\201\320\272\320\276\321\200\320\276\321\201\321\202\320\270\n"
 "\320\270\320\267\320\274\320\265\320\275\320\265\320\275\320\270\321\217 \320\277\320\260\321\200\320\260\320\274\320\265\321\202\321\200\320\260", 0));
         label_16->setText(QString());
         label_18->setText(QApplication::translate("MainWindow", "\320\241\320\272\320\276\321\200\320\276\321\201\321\202\321\214 \321\200\320\265\320\260\320\272\321\206\320\270\320\270:", 0));
         label_36->setText(QApplication::translate("MainWindow", "\320\241\320\272\320\276\321\200\320\276\321\201\321\202\321\214 \320\262\320\276\321\201\321\201\321\202\320\260\320\275\320\276\320\262\320\273\320\265\320\275\320\270\321\217:", 0));
         btn_calcSpeed->setText(QApplication::translate("MainWindow", "\320\222\321\213\321\207\320\270\321\201\320\273\320\270\321\202\321\214", 0));
+#ifndef QT_NO_TOOLTIP
+        btn_openSpeed->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p>\320\236\321\202\320\272\321\200\321\213\321\202\321\214 \321\204\320\260\320\271\320\273 \321\204\320\276\321\200\320\274\320\260\321\202\320\260 *.txt \321\201 \321\201\320\276\321\205\321\200\320\260\320\275\320\265\320\275\320\275\321\213\320\274\320\270 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\321\217\320\274\320\270 \321\201\320\272\320\276\321\200\320\276\321\201\321\202\320\270 \320\270 \321\200\320\260\320\267\320\274\320\260\321\205\320\260</p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
         btn_openSpeed->setText(QApplication::translate("MainWindow", "\320\236\321\202\320\272\321\200\321\213\321\202\321\214", 0));
+#ifndef QT_NO_TOOLTIP
+        btn_saveSpeed->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p>\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214 \320\262 \321\202\320\265\320\272\321\201\321\202\320\276\320\262\321\213\320\271 \321\204\320\276\321\200\320\274\320\260\321\202 *.txt</p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
         btn_saveSpeed->setText(QApplication::translate("MainWindow", "\320\241\320\276\321\205\321\200\320\260\320\275\320\270\321\202\321\214", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab_5), QApplication::translate("MainWindow", "\320\241\320\272\320\276\321\200\320\276\321\201\321\202\321\214", 0));
         checkExp->setText(QApplication::translate("MainWindow", "\320\255\320\272\321\201\320\277\320\276\320\275\320\265\320\275\321\206\320\270\320\260\320\273\321\214\320\275\320\276\320\265\n"
@@ -2336,7 +2369,7 @@ public:
         label_15->setText(QApplication::translate("MainWindow", "\320\224\320\270\321\201\320\272\321\200\320\265\321\202\320\275\320\276\320\265\n"
 "\320\277\321\200\320\265\320\276\320\261\321\200\320\260\320\267\320\276\320\262\320\260\320\275\320\270\320\265 \320\244\321\203\321\200\321\214\320\265", 0));
 #ifndef QT_NO_TOOLTIP
-        btn_DFT->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p><span style=\" font-weight:600;\">\320\224\320\270\321\201\320\272\321\200\320\265\321\202\320\275\320\276\320\265 \320\277\321\200\320\265\320\276\320\261\321\200\320\260\320\267\320\276\320\262\320\260\320\275\320\270\320\265 \320\244\321\203\321\200\321\214\320\265</span></p></body></html>", 0));
+        btn_DFT->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p>\320\224\320\270\321\201\320\272\321\200\320\265\321\202\320\275\320\276\320\265 \320\277\321\200\320\265\320\276\320\261\321\200\320\260\320\267\320\276\320\262\320\260\320\275\320\270\320\265 \320\244\321\203\321\200\321\214\320\265</p><p><span style=\" font-weight:400;\">\320\236\321\202\320\272\321\200\321\213\321\202\321\214 \320\264\320\273\321\217 \321\204\320\270\320\273\321\214\321\202\321\200\320\260\321\206\320\270\320\270 \320\262\321\213\320\264\320\265\320\273\320\265\320\275\320\275\320\276\320\263\320\276 \320\264\320\270\320\260\320\277\320\260\320\267\320\276\320\275\320\260 \320\267\320\275\320\260\321\207\320\265\320\275\320\270\320\271</span></p></body></html>", 0));
 #endif // QT_NO_TOOLTIP
         btn_DFT->setText(QApplication::translate("MainWindow", "DFT", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab_6), QApplication::translate("MainWindow", "\320\244\320\270\320\273\321\214\321\202\321\200\320\260\321\206\320\270\321\217", 0));
@@ -2359,7 +2392,13 @@ public:
         );
         tabWidget->setTabText(tabWidget->indexOf(tab_7), QApplication::translate("MainWindow", "\320\242\320\265\321\205\320\275\320\270\321\207\320\265\321\201\320\272\320\270\320\271 \320\260\320\275\320\260\320\273\320\270\320\267", 0));
         label_mnk->setText(QApplication::translate("MainWindow", "\320\234\320\265\321\202\320\276\320\264 \320\275\320\260\320\270\320\274\320\265\320\275\321\214\321\210\320\270\321\205 \320\272\320\262\320\260\320\264\321\200\320\260\321\202\320\276\320\262:", 0));
+#ifndef QT_NO_TOOLTIP
+        btn_BuildMnk->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p>\320\237\320\276\321\201\321\202\321\200\320\276\320\270\321\202\321\214 <span style=\" font-weight:600;\">\320\273\320\270\320\275\320\270\321\216 \321\202\321\200\320\265\320\275\320\264\320\260</span></p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
         btn_BuildMnk->setText(QApplication::translate("MainWindow", "\320\237\320\276\321\201\321\202\321\200\320\276\320\270\321\202\321\214", 0));
+#ifndef QT_NO_TOOLTIP
+        btn_delMnk->setToolTip(QApplication::translate("MainWindow", "<html><head/><body><p>\320\243\320\264\320\260\320\273\320\270\321\202\321\214 <span style=\" font-weight:600;\">\320\273\320\270\320\275\320\270\321\216 \321\202\321\200\320\265\320\275\320\264\320\260</span></p></body></html>", 0));
+#endif // QT_NO_TOOLTIP
         btn_delMnk->setText(QApplication::translate("MainWindow", "\320\243\320\264\320\260\320\273\320\270\321\202\321\214", 0));
         rbMinMnk->setText(QApplication::translate("MainWindow", "\320\234\320\270\320\275\320\270\320\274\321\203\320\274", 0));
         rbMaxMnk->setText(QApplication::translate("MainWindow", "\320\234\320\260\320\272\321\201\320\270\320\274\321\203\320\274", 0));

@@ -49,13 +49,13 @@ dispers_analysis::~dispers_analysis()
     delete ui;
 }
 
-void dispers_analysis::on_listGr_clicked(const QModelIndex &)
+void dispers_analysis::on_listGr_clicked(const QModelIndex &) //Проверка количества выбранных графиков, что их больше двух
 {
     if (ui->listGr->selectedItems().count() > 1) ui->pushButton_Calculate->setEnabled(true);
     else ui->pushButton_Calculate->setEnabled(false);
 }
 
-void dispers_analysis::on_pushButton_close_clicked()
+void dispers_analysis::on_pushButton_close_clicked() //закрытие окна
 {
     this->close();
 }
@@ -111,7 +111,7 @@ double dispers_analysis::SSe(QList <double> ni) //внутри групп
     return res;
 }
 
-void dispers_analysis::on_pushButton_Calculate_clicked()
+void dispers_analysis::on_pushButton_Calculate_clicked() 
 {
     int k = 0, c = 0, rav = 0;
     bool f1 = true;
@@ -187,7 +187,7 @@ void dispers_analysis::on_pushButton_Calculate_clicked()
     }else QMessageBox::critical(NULL,QObject::tr("Ошибка"),tr("Не во всех выбранных графиках расчитан анализируемый параметр!"));
 }
 
-void dispers_analysis::on_SpinAlpha_valueChanged(double arg1)
+void dispers_analysis::on_SpinAlpha_valueChanged(double arg1) // Расчет критического значения Фишера при изменении альфа
 {
     if ((ui->pushButton_Calculate->isEnabled()) && (Va !=0) && (Ve != 0)){
         fdistribution *fd = new fdistribution(arg1, Va, Ve);

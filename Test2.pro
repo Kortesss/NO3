@@ -33,34 +33,36 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     qcustomplot.cpp \
     derivative.cpp \
-    somewindow.cpp \
-    deltawin.cpp \
     mnk.cpp \
-    filterfft.cpp \
     extrem_simple.cpp \
     correl_analysis.cpp \
     fdistribution.cpp \
-    dispers_analysis.cpp
+    dispers_analysis.cpp \
+    grDerivative.cpp \
+    filterDFT.cpp \
+    deltaSignal.cpp
 
 HEADERS  += mainwindow.h \
     qcustomplot.h \
     derivative.h \
         ui_mainwindow.h \
-    somewindow.h \
-    deltawin.h \
     mnk.h \
-    filterfft.h \
     extrem_simple.h \
     correl_analysis.h \
     fdistribution.h \
-    dispers_analysis.h
+    dispers_analysis.h \
+    grDerivative.h \
+    filterDFT.h \
+    deltaSignal.h
 
 FORMS    += mainwindow.ui \
-    somewindow.ui \
-    deltawin.ui \
-    filterfft.ui \
     correl_analysis.ui \
-    dispers_analysis.ui
+    dispers_analysis.ui \
+    grDerivative.ui \
+    filterDFT.ui \
+    deltaSignal.ui
 
 RESOURCES += \
     source.qrc
+
+RC_FILE = test2.rc

@@ -1,5 +1,5 @@
-#ifndef SOMEWINDOW_H
-#define SOMEWINDOW_H
+#ifndef SomeWindow_H
+#define SomeWindow_H
 
 #include <QMainWindow>
 #include "qcustomplot.h"
@@ -28,4 +28,4 @@ private:
     QShortcut *CtrlShiftS, *CtrlQ;
 };
 
-#endif // SOMEWINDOW_H
+#endif // SomeWindow_H

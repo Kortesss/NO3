@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>Система мониторинга и обработки экспериментальных данных</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="source.qrc">
+    <normaloff>:/img/img/set.ico</normaloff>:/img/img/set.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_8">
     <item>
@@ -94,6 +98,9 @@
               <height>30</height>
              </size>
             </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Открыть файл формата *.txt&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="autoFillBackground">
              <bool>false</bool>
             </property>
@@ -156,6 +163,9 @@ QPushButton:checked{
               <width>130</width>
               <height>30</height>
              </size>
+            </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Закрыть программу&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="styleSheet">
              <string notr="true"> QPushButton {
@@ -246,6 +256,9 @@ QPushButton:checked{
               <height>30</height>
              </size>
             </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Сохранить изображение в форматах *jpg, *.png, *bmp, *pdf&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="styleSheet">
              <string notr="true"> QPushButton {
      border: 2px solid #8f8f91;
@@ -299,6 +312,9 @@ QPushButton:checked{
               <width>240</width>
               <height>30</height>
              </size>
+            </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Сохранить значения графика в формате *.txt&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="styleSheet">
              <string notr="true"> QPushButton {
@@ -530,6 +546,9 @@ p, li { white-space: pre-wrap; }
               <width>130</width>
               <height>50</height>
              </size>
+            </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Для выбранного графика удалить все его графы&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="autoFillBackground">
              <bool>false</bool>
@@ -1294,7 +1313,7 @@ QPushButton:checked{
            </size>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ручная установка или удаление экстремумов.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Установка осуществляется при помощи левой кнопки мыши, а удаление по выделенному дипазону - правой кнопкой мыши.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Ручная установка или удаление экстремумов.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Установка осуществляется при помощи левой кнопки мыши, а удаление по выделенному дипазону - правой кнопкой мыши.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-style:italic;&quot;&gt;Важно:Точки экстремумов должны чередоваться между собой, исходя из определения данного понятия.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
           </property>
           <property name="autoFillBackground">
            <bool>false</bool>
@@ -1479,6 +1498,9 @@ QPushButton:checked{
               <height>16777215</height>
              </size>
             </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Открыть файл формата *.txt с сохраненными значениями экстремумов&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="styleSheet">
              <string notr="true"> QPushButton {
      border: 2px solid #8f8f91;
@@ -1520,6 +1542,9 @@ QPushButton:checked{
               <width>130</width>
               <height>16777215</height>
              </size>
+            </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Сохранить в текстовый формат *.txt&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="styleSheet">
              <string notr="true"> QPushButton {
@@ -1820,6 +1845,9 @@ p, li { white-space: pre-wrap; }
                 <height>50</height>
                </size>
               </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Показать график скорости выделенного диапазона значений&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
               <property name="autoFillBackground">
                <bool>false</bool>
               </property>
@@ -2036,6 +2064,9 @@ QPushButton:checked{
               <height>16777215</height>
              </size>
             </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Открыть файл формата *.txt с сохраненными значениями скорости и размаха&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            </property>
             <property name="styleSheet">
              <string notr="true"> QPushButton {
      border: 2px solid #8f8f91;
@@ -2077,6 +2108,9 @@ QPushButton:checked{
               <width>130</width>
               <height>16777215</height>
              </size>
+            </property>
+            <property name="toolTip">
+             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Сохранить в текстовый формат *.txt&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
             </property>
             <property name="styleSheet">
              <string notr="true"> QPushButton {
@@ -2534,7 +2568,7 @@ QPushButton:checked{
                </font>
               </property>
               <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Дискретное преобразование Фурье&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Дискретное преобразование Фурье&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:400;&quot;&gt;Открыть для фильтрации выделенного диапазона значений&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="autoFillBackground">
                <bool>false</bool>
@@ -2918,6 +2952,9 @@ QPushButton:checked{
                 <height>30</height>
                </size>
               </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Построить &lt;span style=&quot; font-weight:600;&quot;&gt;линию тренда&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
               <property name="autoFillBackground">
                <bool>false</bool>
               </property>
@@ -2965,6 +3002,9 @@ QPushButton:checked{
                 <width>130</width>
                 <height>30</height>
                </size>
+              </property>
+              <property name="toolTip">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Удалить &lt;span style=&quot; font-weight:600;&quot;&gt;линию тренда&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
               <property name="autoFillBackground">
                <bool>false</bool>

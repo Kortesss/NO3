@@ -24,5 +24,6 @@
         <file>img/open.png</file>
         <file>img/triangle.png</file>
         <file>img/calculator.png</file>
+        <file>img/set.ico</file>
     </qresource>
 </RCC>

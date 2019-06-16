@@ -1,4 +1,4 @@
-#include "deltawin.h"
+#include "deltaSignal.h"
 #include "ui_deltawin.h"
 #include <qmath.h>
 
@@ -61,7 +61,6 @@ void deltaWin::deltaList(QList <double> &mass_minX, QList <double> &mass_maxX, Q
     }
     for(int i = 0; i < v1.count(); i++)        ui->listV1->addItem(QString::number(v1[i]));
     for(int i = 0; i < v2.count(); i++)        ui->listV2->addItem(QString::number(v2[i]));
-
 }
 
 deltaWin::~deltaWin(){ delete ui; }

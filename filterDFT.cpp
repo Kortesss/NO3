@@ -1,4 +1,4 @@
-#include "filterfft.h"
+#include "filterDFT.h"
 #include "ui_filterfft.h"
 #include <qmath.h>
 #include <QDebug>

@@ -18,13 +18,13 @@ public:
     ~dispers_analysis();
 
 private slots:
-    void on_listGr_clicked(const QModelIndex &);
+    void on_listGr_clicked(const QModelIndex &); //Проверка количества выбранных графиков, что их больше двух
 
-    void on_pushButton_close_clicked();
+    void on_pushButton_close_clicked(); //закрытие окна
 
-    void on_pushButton_Calculate_clicked();
+    void on_pushButton_Calculate_clicked(); //событие кнопки для вычисления однофакторного дисперсионного анализа
 
-    void on_SpinAlpha_valueChanged(double arg1);
+    void on_SpinAlpha_valueChanged(double arg1); //Расчет критического значения Фишера при изменении альфа
 
     double sum(QList <double> &k); //сумма значений
 

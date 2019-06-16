@@ -94,7 +94,7 @@ private slots:
 
     void on_btn_calcSpeed_clicked(); //кнопка Вычислить скорость реакции и восстановления
 
-    void on_btn_openSpeed_clicked(); //кнопка Открыть файл со скоростьюи размахом
+    void on_btn_openSpeed_clicked(); //кнопка Открыть файл со скоростью и размахом
 
     void on_btn_saveSpeed_clicked(); //кнопка Сохранить в файл скорости
 
