@@ -1,5 +1,5 @@
 #include "grDerivative.h"
-#include "ui_somewindow.h"
+#include "ui_grDerivative.h"
 #include <QDebug>
 
 SomeWindow::SomeWindow(QVector<double> &dirivate, int &x1, int &x2, double &koef, QWidget *parent) :

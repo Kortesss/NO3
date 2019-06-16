@@ -22,8 +22,6 @@ MainWindow::MainWindow(QWidget *parent):QMainWindow(parent), ui(new Ui::MainWind
     connect(ui->widget, SIGNAL(mouseRelease(QMouseEvent*)), this, SLOT(spanMouseUp(QMouseEvent*)));
     connect(&timer, SIGNAL(timeout()), SLOT(TimerTick()));
 
-    ui->label_21->setVisible(false); ui->cmbBox_Correl->setVisible(false); ui->label_34->setVisible(false);
-
     t = 0; gr_index = 0; mouseDown = false; left = false; x1 = 0; x2 = 0;
     ui->listWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->listWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotCustomMenuRequested(QPoint)));

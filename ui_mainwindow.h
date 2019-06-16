@@ -276,20 +276,23 @@ public:
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(940, 635);
         MainWindow->setMinimumSize(QSize(940, 0));
+        QIcon icon;
+        icon.addFile(QStringLiteral(":/img/img/set.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        MainWindow->setWindowIcon(icon);
         action_OpenFile1 = new QAction(MainWindow);
         action_OpenFile1->setObjectName(QStringLiteral("action_OpenFile1"));
-        QIcon icon;
-        icon.addFile(QStringLiteral(":/img/img/open.png"), QSize(), QIcon::Normal, QIcon::Off);
-        action_OpenFile1->setIcon(icon);
+        QIcon icon1;
+        icon1.addFile(QStringLiteral(":/img/img/open.png"), QSize(), QIcon::Normal, QIcon::Off);
+        action_OpenFile1->setIcon(icon1);
         action_GrFunc = new QAction(MainWindow);
         action_GrFunc->setObjectName(QStringLiteral("action_GrFunc"));
         action_exit1 = new QAction(MainWindow);
         action_exit1->setObjectName(QStringLiteral("action_exit1"));
         action_SaveImage1 = new QAction(MainWindow);
         action_SaveImage1->setObjectName(QStringLiteral("action_SaveImage1"));
-        QIcon icon1;
-        icon1.addFile(QStringLiteral(":/img/img/Line-Chart-icon.png"), QSize(), QIcon::Normal, QIcon::Off);
-        action_SaveImage1->setIcon(icon1);
+        QIcon icon2;
+        icon2.addFile(QStringLiteral(":/img/img/Line-Chart-icon.png"), QSize(), QIcon::Normal, QIcon::Off);
+        action_SaveImage1->setIcon(icon2);
         action_ClearGraph1 = new QAction(MainWindow);
         action_ClearGraph1->setObjectName(QStringLiteral("action_ClearGraph1"));
         actionD1 = new QAction(MainWindow);
@@ -317,9 +320,9 @@ public:
         startWork1_1->setChecked(true);
         action_SaveDataGr1 = new QAction(MainWindow);
         action_SaveDataGr1->setObjectName(QStringLiteral("action_SaveDataGr1"));
-        QIcon icon2;
-        icon2.addFile(QStringLiteral(":/img/img/512px-Save_font_awesome.svg.png"), QSize(), QIcon::Normal, QIcon::Off);
-        action_SaveDataGr1->setIcon(icon2);
+        QIcon icon3;
+        icon3.addFile(QStringLiteral(":/img/img/512px-Save_font_awesome.svg.png"), QSize(), QIcon::Normal, QIcon::Off);
+        action_SaveDataGr1->setIcon(icon3);
         action_autoSearch2_1 = new QAction(MainWindow);
         action_autoSearch2_1->setObjectName(QStringLiteral("action_autoSearch2_1"));
         action_Derivat1 = new QAction(MainWindow);
@@ -393,9 +396,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon3;
-        icon3.addFile(QStringLiteral(":/img/img/albums.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_openFile->setIcon(icon3);
+        QIcon icon4;
+        icon4.addFile(QStringLiteral(":/img/img/albums.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_openFile->setIcon(icon4);
         btn_openFile->setIconSize(QSize(18, 18));
         btn_openFile->setAutoDefault(false);
 
@@ -424,9 +427,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon4;
-        icon4.addFile(QStringLiteral(":/img/img/log-out.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_exit->setIcon(icon4);
+        QIcon icon5;
+        icon5.addFile(QStringLiteral(":/img/img/log-out.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_exit->setIcon(icon5);
         btn_exit->setIconSize(QSize(19, 19));
 
         verticalLayout_9->addWidget(btn_exit);
@@ -471,9 +474,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon5;
-        icon5.addFile(QStringLiteral(":/img/img/heart-monitor.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_saveImage->setIcon(icon5);
+        QIcon icon6;
+        icon6.addFile(QStringLiteral(":/img/img/heart-monitor.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_saveImage->setIcon(icon6);
         btn_saveImage->setIconSize(QSize(18, 18));
 
         verticalLayout_10->addWidget(btn_saveImage);
@@ -498,7 +501,7 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        btn_saveDataGr->setIcon(icon2);
+        btn_saveDataGr->setIcon(icon3);
         btn_saveDataGr->setCheckable(false);
         btn_saveDataGr->setChecked(false);
         btn_saveDataGr->setAutoExclusive(false);
@@ -598,9 +601,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon6;
-        icon6.addFile(QStringLiteral(":/img/img/img_clear.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_clearGraph->setIcon(icon6);
+        QIcon icon7;
+        icon7.addFile(QStringLiteral(":/img/img/img_clear.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_clearGraph->setIcon(icon7);
         btn_clearGraph->setIconSize(QSize(25, 25));
 
         verticalLayout_23->addWidget(btn_clearGraph);
@@ -626,9 +629,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon7;
-        icon7.addFile(QStringLiteral(":/img/img/del4.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_delGraph->setIcon(icon7);
+        QIcon icon8;
+        icon8.addFile(QStringLiteral(":/img/img/del4.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_delGraph->setIcon(icon8);
         btn_delGraph->setIconSize(QSize(25, 25));
 
         verticalLayout_23->addWidget(btn_delGraph);
@@ -919,9 +922,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon8;
-        icon8.addFile(QStringLiteral(":/img/img/max1.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_autoSearch2->setIcon(icon8);
+        QIcon icon9;
+        icon9.addFile(QStringLiteral(":/img/img/max1.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_autoSearch2->setIcon(icon9);
         btn_autoSearch2->setIconSize(QSize(28, 28));
         btn_autoSearch2->setCheckable(false);
         btn_autoSearch2->setChecked(false);
@@ -960,9 +963,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #aaaaaa, stop: 1 #a1a1a1);\n"
 " }"));
-        QIcon icon9;
-        icon9.addFile(QStringLiteral(":/img/img/md-build.png"), QSize(), QIcon::Normal, QIcon::Off);
-        manualExtrem->setIcon(icon9);
+        QIcon icon10;
+        icon10.addFile(QStringLiteral(":/img/img/md-build.png"), QSize(), QIcon::Normal, QIcon::Off);
+        manualExtrem->setIcon(icon10);
         manualExtrem->setIconSize(QSize(24, 24));
         manualExtrem->setCheckable(true);
         manualExtrem->setChecked(false);
@@ -1043,7 +1046,7 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        btn_openExtrem->setIcon(icon);
+        btn_openExtrem->setIcon(icon1);
 
         verticalLayout_28->addWidget(btn_openExtrem);
 
@@ -1066,7 +1069,7 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        btn_saveExtrem->setIcon(icon2);
+        btn_saveExtrem->setIcon(icon3);
 
         verticalLayout_28->addWidget(btn_saveExtrem);
 
@@ -1091,9 +1094,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon10;
-        icon10.addFile(QStringLiteral(":/img/img/md-remove-circle.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_delExtrem->setIcon(icon10);
+        QIcon icon11;
+        icon11.addFile(QStringLiteral(":/img/img/md-remove-circle.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_delExtrem->setIcon(icon11);
         btn_delExtrem->setIconSize(QSize(28, 28));
 
         verticalLayout_28->addWidget(btn_delExtrem);
@@ -1219,9 +1222,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon11;
-        icon11.addFile(QStringLiteral(":/img/img/md-trending-up.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_grDerivative->setIcon(icon11);
+        QIcon icon12;
+        icon12.addFile(QStringLiteral(":/img/img/md-trending-up.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_grDerivative->setIcon(icon12);
         btn_grDerivative->setIconSize(QSize(30, 30));
 
         horizontalLayout_27->addWidget(btn_grDerivative);
@@ -1312,9 +1315,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon12;
-        icon12.addFile(QStringLiteral(":/img/img/calculator.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_calcSpeed->setIcon(icon12);
+        QIcon icon13;
+        icon13.addFile(QStringLiteral(":/img/img/calculator.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_calcSpeed->setIcon(icon13);
 
         verticalLayout_27->addWidget(btn_calcSpeed);
 
@@ -1336,7 +1339,7 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        btn_openSpeed->setIcon(icon);
+        btn_openSpeed->setIcon(icon1);
 
         verticalLayout_27->addWidget(btn_openSpeed);
 
@@ -1359,7 +1362,7 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        btn_saveSpeed->setIcon(icon2);
+        btn_saveSpeed->setIcon(icon3);
 
         verticalLayout_27->addWidget(btn_saveSpeed);
 
@@ -1642,9 +1645,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon13;
-        icon13.addFile(QStringLiteral(":/img/img/triangle.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_delta->setIcon(icon13);
+        QIcon icon14;
+        icon14.addFile(QStringLiteral(":/img/img/triangle.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_delta->setIcon(icon14);
         btn_delta->setIconSize(QSize(25, 25));
 
         horizontalLayout_26->addWidget(btn_delta);
@@ -1765,9 +1768,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon14;
-        icon14.addFile(QStringLiteral(":/img/img/hammer.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_BuildMnk->setIcon(icon14);
+        QIcon icon15;
+        icon15.addFile(QStringLiteral(":/img/img/hammer.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_BuildMnk->setIcon(icon15);
 
         horizontalLayout_23->addWidget(btn_BuildMnk);
 
@@ -1792,9 +1795,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon15;
-        icon15.addFile(QStringLiteral(":/img/img/destroy.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_delMnk->setIcon(icon15);
+        QIcon icon16;
+        icon16.addFile(QStringLiteral(":/img/img/destroy.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_delMnk->setIcon(icon16);
 
         horizontalLayout_23->addWidget(btn_delMnk);
 
@@ -1965,9 +1968,9 @@ public:
 "     background-color: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,\n"
 "                                       stop: 0 #dadbde, stop: 1 #a0a0a4);\n"
 " }"));
-        QIcon icon16;
-        icon16.addFile(QStringLiteral(":/img/img/manual.png"), QSize(), QIcon::Normal, QIcon::Off);
-        btn_Manual->setIcon(icon16);
+        QIcon icon17;
+        icon17.addFile(QStringLiteral(":/img/img/manual.png"), QSize(), QIcon::Normal, QIcon::Off);
+        btn_Manual->setIcon(icon17);
         btn_Manual->setIconSize(QSize(20, 20));
         btn_Manual->setCheckable(false);
         btn_Manual->setChecked(false);

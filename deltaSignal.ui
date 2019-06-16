@@ -25,6 +25,10 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="source.qrc">
+    <normaloff>:/img/img/set.ico</normaloff>:/img/img/set.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_7">
     <item>
@@ -177,19 +181,6 @@
      </layout>
     </item>
    </layout>
-   <zorder>list2</zorder>
-   <zorder>list1</zorder>
-   <zorder>label_2</zorder>
-   <zorder>label_3</zorder>
-   <zorder>label</zorder>
-   <zorder>listV1</zorder>
-   <zorder>label_5</zorder>
-   <zorder>label_6</zorder>
-   <zorder>listV2</zorder>
-   <zorder>listR2</zorder>
-   <zorder>label_4</zorder>
-   <zorder>listR1</zorder>
-   <zorder>label_2</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -203,6 +194,8 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="source.qrc"/>
+ </resources>
  <connections/>
 </ui>

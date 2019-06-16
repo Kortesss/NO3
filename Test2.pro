@@ -64,3 +64,5 @@ FORMS    += mainwindow.ui \
 
 RESOURCES += \
     source.qrc
+
+RC_FILE = test2.rc

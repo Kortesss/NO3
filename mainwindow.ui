@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>Система мониторинга и обработки экспериментальных данных</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="source.qrc">
+    <normaloff>:/img/img/set.ico</normaloff>:/img/img/set.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_8">
     <item>

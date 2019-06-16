@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="source.qrc">
+    <normaloff>:/img/img/set.ico</normaloff>:/img/img/set.ico</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
@@ -22,7 +26,7 @@
         <property name="minimumSize">
          <size>
           <width>88</width>
-          <height>25</height>
+          <height>24</height>
          </size>
         </property>
         <property name="styleSheet">
@@ -62,7 +66,7 @@ QPushButton:pressed {
         <property name="minimumSize">
          <size>
           <width>144</width>
-          <height>25</height>
+          <height>24</height>
          </size>
         </property>
         <property name="styleSheet">
